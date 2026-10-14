@@ -7,9 +7,9 @@ import type { RunResult } from '../src/lib/runtime/wasm-runtime';
 
 export interface Runner {
   /** The raw run, as the worker would return it. */
-  run(code: string): RunResult;
+  run(code: string): Promise<RunResult>;
   /** The run as the result panel sees it. */
-  report(code: string): Report;
+  report(code: string): Promise<Report>;
   /** Lines the prelude adds before the learner's code. */
   offset: number;
 }
@@ -26,8 +26,8 @@ export function runner(id: string): Promise<Runner> {
       const engine = await lang.load();
       const prelude = lang.prelude();
       const offset = prelude.split('\n').length - 1;
-      const run = (code: string): RunResult => engine.run(prelude + code + lang.epilogue);
-      return { run, report: code => parseRun(run(code), code, offset, pack.errors), offset };
+      const run = async (code: string): Promise<RunResult> => engine.run(prelude + code + lang.epilogue);
+      return { run, report: async code => parseRun(await run(code), code, offset, pack.errors), offset };
     })());
   }
   return runners.get(id)!;

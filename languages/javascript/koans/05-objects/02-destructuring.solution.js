@@ -1,0 +1,11 @@
+const { name, age = 0 } = { name: 'Ada' };
+assert.equal(name, 'Ada', 'take a property by its name');
+assert.equal(age, 0, 'with a default when it is missing');
+const [first, , third] = [1, 2, 3];
+assert.equal(third, 3, 'take array items by position, skipping some');
+const [head, ...tail] = [1, 2, 3];
+assert.deepEqual(tail, [2, 3], '...tail takes the rest');
+let a = 1;
+let b = 2;
+[a, b] = [b, a];
+assert.equal(a, 2, 'swapping two values needs no temporary');

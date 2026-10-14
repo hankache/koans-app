@@ -34,7 +34,7 @@ for (const lang of chosenLanguages()) {
     for (const koan of section.koans) {
       if (!koan.code.includes('___')) { fail(koan, 'koan has no ___ blank to fill in'); continue; }
       for (const problem of lang.lint(koan.code)) fail(koan, problem);
-      const unsolved = run(koan.code);
+      const unsolved = await run(koan.code);
       const failing = failingLines(unsolved, offset);
       const silent = koan.code.split('\n').flatMap((l, i) => (l.includes('___') && !failing.has(i + 1) ? [i + 1] : []));
       if (silent.length) fail(koan, `blank on line ${silent.join(', ')} does not fail when left unfilled`, unsolved.lines);
@@ -43,7 +43,7 @@ for (const lang of chosenLanguages()) {
       if (koan.solution.includes('___')) { fail(koan, 'solution still contains ___'); continue; }
       const { problems } = blanksOf(koan);
       if (problems.length) { fail(koan, `does not line up with its solution: ${problems.join('; ')}`); continue; }
-      const solved = run(koan.solution);
+      const solved = await run(koan.solution);
       if (!passed(solved)) { fail(koan, 'solution does not pass', solved.lines); continue; }
 
       console.log(`✓ ${koan.id}`);

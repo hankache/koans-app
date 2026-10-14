@@ -14,7 +14,7 @@
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { dirname, join } from 'node:path';
+import { basename, dirname, join } from 'node:path';
 import { inflateRawSync } from 'node:zlib';
 import { chosenLanguages } from './lib/languages.mjs';
 
@@ -111,7 +111,8 @@ for (const lang of langs) {
   for (const file of FILES) {
     hashes[file] = sha256(got.files[file]);
     if (!update && hashes[file] !== lock.files[file]) die(`${file} differs from ${lang.id}/runtime.lock.json`);
-    writeFileSync(out + file, got.files[file]);
+    // Flat: a package's dist/acorn.mjs is served as acorn.mjs.
+    writeFileSync(out + basename(file), got.files[file]);
     console.log(`✓ ${file}  ${(got.files[file].length / 1e6).toFixed(1)} MB`);
   }
 

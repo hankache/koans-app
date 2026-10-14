@@ -1,17 +1,19 @@
 // The languages the build tools know about. Each one is a folder in languages/ whose node.mjs
 // describes it; adding a language means adding it here.
+import javascript from '../../languages/javascript/node.mjs';
 import python from '../../languages/python/node.mjs';
 import raku from '../../languages/raku/node.mjs';
 
 /**
  * @typedef {{ stream: 'out' | 'err', text: string }} OutputLine
- * @typedef {{ version: string, run(src: string, stdin?: string): { rc: number, lines: OutputLine[] } }} Engine
+ * @typedef {{ rc: number, lines: OutputLine[] }} Run
+ * @typedef {{ version: string, run(src: string, stdin?: string): Run | Promise<Run> }} Engine
  * @typedef {object} Language
  * @property {string} id           used in paths and ids: 'raku'
  * @property {string} name         shown to people: 'Raku'
  * @property {string} dir          the language's folder (absolute, ending in /)
  * @property {string} extension    of koan files: '.raku'
- * @property {string} comment      starts a koan's header lines (# title: …): '#'
+ * @property {string} comment      starts a koan's header lines (# title: …): '#', '//'
  * @property {() => string} prelude  run before every koan
  * @property {string} epilogue     run after every koan
  * @property {(code: string) => string[]} lint  problems in a koan that running it can't reveal
@@ -23,11 +25,12 @@ import raku from '../../languages/raku/node.mjs';
  * @typedef {{ kind?: 'github-zip', repo: string, asset: (tag: string) => string, files: string[], out: string }} GithubZip
  *   a zip attached to the GitHub releases of `repo`, with a .sha256 beside it
  * @typedef {{ kind: 'npm', package: string, files: string[], out: string }} NpmPackage
- *   an npm package in package.json, pinned by package-lock.json
+ *   an npm package in package.json, pinned by package-lock.json; `files` are paths in it, served
+ *   under their base names
  */
 
 /** @type {Language[]} */
-export const languages = [raku, python];
+export const languages = [raku, python, javascript];
 
 /**
  * The languages named with --lang (repeat it, or separate names with commas), or else all of

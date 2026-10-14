@@ -1,0 +1,10 @@
+const ages = new Map([['Ada', 36]]);
+assert.equal(ages.get('Ada'), 36, 'get a value by its key');
+ages.set('Alan', 41);
+assert.equal(ages.size, 2, 'set adds a key, and size counts them');
+assert.equal(ages.has('Grace'), false, 'has asks for a key');
+assert.equal(ages.get('Grace'), undefined, 'get gives undefined for a missing one');
+assert.deepEqual([...ages.keys()], ['Ada', 'Alan'], 'keys come in the order they were added');
+const key = {};
+const labels = new Map([[key, 'an object as a key']]);
+assert.equal(labels.get(key), 'an object as a key', 'any value can be a key');

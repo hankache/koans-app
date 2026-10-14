@@ -60,6 +60,16 @@ Foundation License (https://github.com/python/cpython):
 ${readFileSync(new URL('./licenses/Python-PSF.txt', import.meta.url), 'utf8').trim()}
 \`\`\`
 
+## Acorn
+
+The JavaScript parser the JavaScript koans use to find a syntax error's line:
+\`public/runtime/javascript/acorn.mjs\`, copied by \`npm run fetch-runtime\` from the \`acorn\` npm
+package (the version pinned in \`languages/javascript/runtime.lock.json\`), https://github.com/acornjs/acorn.
+
+\`\`\`
+${readFileSync(new URL('../node_modules/acorn/LICENSE', import.meta.url), 'utf8').trim()}
+\`\`\`
+
 ## Fonts
 
 Fraunces, Inter and JetBrains Mono are loaded from Google Fonts at run time and are not

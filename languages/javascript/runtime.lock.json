@@ -1,0 +1,8 @@
+{
+  "source": "https://www.npmjs.com/package/acorn/v/8.18.0",
+  "tag": "8.18.0",
+  "version": "Node 24.21.0 (V8 13.6.233.17-node.53)",
+  "files": {
+    "dist/acorn.mjs": "953573b8fdab71599749ea5f2b33d3e760c2116178f9423ee7458dbe39d59453"
+  }
+}

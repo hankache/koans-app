@@ -2,10 +2,11 @@
 // its pack.ts describes it to the app, and its node.mjs to the build tools (listed in
 // scripts/lib/languages.mjs).
 import type { LanguagePack } from '../src/lib/language';
+import javascript from './javascript/pack';
 import python from './python/pack';
 import raku from './raku/pack';
 
-export const packs: LanguagePack[] = [raku, python];
+export const packs: LanguagePack[] = [raku, python, javascript];
 
 export const packById = new Map(packs.map(p => [p.id, p]));
 

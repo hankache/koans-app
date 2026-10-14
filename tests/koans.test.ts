@@ -24,32 +24,32 @@ describe('revealAnswer', () => {
     ],
   };
 
-  test('the first blank, when no line is given', () => {
+  test('the first blank, when no line is given', async () => {
     expect(revealAnswer(koan, koan.code)).toEqual({ line: 1, answer: '2', start: 10, end: 13 });
   });
 
-  test('the blank on the preferred line', () => {
+  test('the blank on the preferred line', async () => {
     expect(revealAnswer(koan, koan.code, 2)).toMatchObject({ line: 2, answer: '6' });
   });
 
-  test('a wrong answer typed into the blank is what gets replaced', () => {
+  test('a wrong answer typed into the blank is what gets replaced', async () => {
     const code = koan.code.replace('___', '3');
     expect(revealAnswer(koan, code, 1)).toEqual({ line: 1, answer: '2', start: 10, end: 11 });
   });
 
-  test('a blank already answered right is skipped', () => {
+  test('a blank already answered right is skipped', async () => {
     expect(revealAnswer(koan, koan.code.replace('___', '2'))).toMatchObject({ line: 2, answer: '6' });
   });
 
-  test('lines the learner added are allowed for', () => {
+  test('lines the learner added are allowed for', async () => {
     expect(revealAnswer(koan, "say 'hi';\n" + koan.code)).toMatchObject({ line: 2, answer: '2' });
   });
 
-  test('a preferred line without a blank falls back to the first ___', () => {
+  test('a preferred line without a blank falls back to the first ___', async () => {
     expect(revealAnswer(koan, "say 'hi';\n" + koan.code, 1)).toMatchObject({ line: 2, answer: '2' });
   });
 
-  test('nothing to reveal once every answer is right', () => {
+  test('nothing to reveal once every answer is right', async () => {
     expect(revealAnswer(koan, "is 1 + 1, 2, 'add';\nis 2 * 3, 6, 'multiply';\n")).toBeNull();
   });
 });
@@ -62,7 +62,7 @@ for (const lang of languages) {
   describe.each(readKoans(lang).flatMap(s => s.koans))(`${lang.id}: $id`, ({ id, solution }) => {
     const koan = koanById.get(id)!;
 
-    test('revealing every answer in turn gives the solution', () => {
+    test('revealing every answer in turn gives the solution', async () => {
       let code = koan.code;
       for (let i = 0; i <= koan.answers.length; i++) {
         const r = revealAnswer(koan, code);
@@ -72,15 +72,15 @@ for (const lang of languages) {
       expect(code.trimEnd()).toBe(solution.trimEnd());
     });
 
-    test('unsolved, it fails on a blank, and the hint for that line is its answer', () => {
-      const r = report(koan.code);
+    test('unsolved, it fails on a blank, and the hint for that line is its answer', async () => {
+      const r = await report(koan.code);
       if (r.status !== 'failed') throw new Error(`expected a failure, got ${r.status}: ${'message' in r ? r.message : ''}`);
       expect(r.failure.blank).toBe(true);
       expect(revealAnswer(koan, koan.code, r.failure.line)?.line).toBe(r.failure.line);
     });
 
-    test('solved, it passes', () => {
-      expect(report(solution).status).toBe('passed');
+    test('solved, it passes', async () => {
+      expect((await report(solution)).status).toBe('passed');
     });
   });
 }
