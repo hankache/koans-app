@@ -4,7 +4,7 @@
   import { EditorState, StateEffect, StateField } from '@codemirror/state';
   import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
   import { HighlightStyle, syntaxHighlighting, bracketMatching } from '@codemirror/language';
-  import { raku } from '../lib/raku-mode';
+  import { pack } from '../../languages';
   import type { Reveal } from '../lib/koans';
   import { tags as t } from '@lezer/highlight';
 
@@ -133,7 +133,7 @@
           history(),
           highlightActiveLine(),
           bracketMatching(),
-          raku,
+          pack.highlight,
           syntaxHighlighting(highlight),
           spotField,
           marked,

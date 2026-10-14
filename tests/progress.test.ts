@@ -6,12 +6,12 @@ import { Progress } from '../src/lib/progress.svelte';
 
 let tabs: Progress[] = [];
 const openTab = async () => {
-  const tab = new Progress();
+  const tab = new Progress('raku');
   await tab.init();
   tabs.push(tab);
   return tab;
 };
-const stored = () => get<Record<string, { status: string; attempts: number }>>('raku-koans:progress');
+const stored = () => get<Record<string, { status: string; attempts: number }>>('koans:raku:progress');
 
 beforeEach(async () => {
   // Start each test from empty storage.

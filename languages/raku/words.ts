@@ -1,4 +1,4 @@
-// Word lists for the Raku syntax highlighter (raku-mode.ts), taken from Ace's Raku mode
+// Word lists for the Raku syntax highlighter (highlight.ts), taken from Ace's Raku mode
 // (ace-builds 1.44.0, src/mode/raku_highlight_rules.js; BSD-3-Clause, see THIRD-PARTY-NOTICES.md).
 
 /** Declarators, control flow and phasers. */

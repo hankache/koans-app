@@ -11,21 +11,26 @@ export interface RunResult {
   message?: string;
 }
 
-const WORKER_URL = `${import.meta.env.BASE_URL}runtime/raku/worker.js`;
-
-/** Raku.js in a Web Worker, with a watchdog that kills runaway programs. */
+/**
+ * A language's interpreter in a Web Worker, with a watchdog that kills runaway programs.
+ *
+ * The worker's protocol:  in  { type: 'run', id, src }
+ *                         out { type: 'ready', version } | { type: 'loaderror', message }
+ *                             { type: 'done', id, rc, lines: [{ stream, text }] }
+ *                             { type: 'crash', id, message, lines }
+ */
 export class WasmRuntime {
   ready!: Promise<string>;
   private worker!: Worker;
   private nextId = 1;
   private pending = new Map<number, (r: RunResult) => void>();
 
-  constructor(private timeoutMs = 8000) {
+  constructor(private workerUrl: string, private timeoutMs = 8000) {
     this.spawn();
   }
 
   private spawn() {
-    this.worker = new Worker(WORKER_URL);
+    this.worker = new Worker(this.workerUrl);
     this.ready = new Promise((resolve, reject) => {
       this.worker.onmessage = ({ data }) => {
         switch (data.type) {
@@ -41,7 +46,7 @@ export class WasmRuntime {
             });
         }
       };
-      this.worker.onerror = e => reject(new Error(e.message || 'Raku.js worker failed to start'));
+      this.worker.onerror = e => reject(new Error(e.message || 'The interpreter failed to start'));
     });
   }
 
@@ -51,7 +56,7 @@ export class WasmRuntime {
   }
 
   async run(src: string): Promise<RunResult> {
-    // Don't start the watchdog until the 8 MB interpreter has loaded.
+    // Don't start the watchdog until the interpreter has loaded.
     await this.ready;
     const id = this.nextId++;
     return new Promise(resolve => {

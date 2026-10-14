@@ -1,4 +1,4 @@
-import manifest from '../generated/raku.json';
+import { pack } from '../../languages';
 import { WasmRuntime } from './runtime/wasm-runtime';
 import { parseRun, type Report } from './tap';
 
@@ -21,7 +21,7 @@ export interface Reveal {
 }
 
 /**
- * Finds the answer for the blank on `preferLine` (the line Raku points at), or else for the
+ * Finds the answer for the blank on `preferLine` (the line the interpreter points at), or else for the
  * first line that still has a ___. Lines are matched by the text around their blank, so it
  * works even if the learner has added lines, or typed a wrong answer into that blank.
  */
@@ -57,6 +57,7 @@ export interface Section {
   koans: Koan[];
 }
 
+const { manifest } = pack;
 export const sections: Section[] = manifest.sections;
 export const allKoans: Koan[] = sections.flatMap(s => s.koans);
 export const koanById = new Map(allKoans.map(k => [k.id, k]));
@@ -70,12 +71,12 @@ export function neighbours(id: string) {
 const PRELUDE_LINES = manifest.prelude.split('\n').length - 1;
 
 let runtime: WasmRuntime | undefined;
-/** Created lazily, but call early (e.g. on page load) to start downloading the 8 MB interpreter. */
+/** Created lazily, but call early (e.g. on page load) to start downloading the interpreter. */
 export function getRuntime(): WasmRuntime {
-  return (runtime ??= new WasmRuntime());
+  return (runtime ??= new WasmRuntime(`${import.meta.env.BASE_URL}${pack.worker}`));
 }
 
 export async function runKoan(code: string): Promise<Report> {
   const result = await getRuntime().run(manifest.prelude + code + manifest.epilogue);
-  return parseRun(result, code, PRELUDE_LINES);
+  return parseRun(result, code, PRELUDE_LINES, pack.errors);
 }

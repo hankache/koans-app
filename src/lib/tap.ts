@@ -1,17 +1,18 @@
-// Turns a koan run (TAP from Raku's Test module + stderr) into something to show.
+// Turns a koan run (TAP from the language's test library + stderr) into something to show.
+import type { ErrorSyntax } from './language';
 import type { RunResult } from './runtime/wasm-runtime';
 
 export interface TestResult {
   n: number;
   ok: boolean;
   description: string;
-  /** 1-based line in the learner's code, when Raku reported one. */
+  /** 1-based line in the learner's code, when the interpreter reported one. */
   line?: number;
   /** '# …' diagnostics that followed the test, minus the leading '# '. */
   diag: string[];
   /**
    * The values from Test's "expected:"/"got:" lines. In a koan the learner writes the
-   * *expected* side, so it is their answer; *got* is what Raku actually computed.
+   * *expected* side, so it is their answer; *got* is what the language actually computed.
    */
   answer?: string;
   actual?: string;
@@ -26,14 +27,16 @@ export type Report =
 
 const ANSI = /\x1b\[[0-9;]*m/g;
 const TEST = /^(not )?ok (\d+)(?: - (.*))?$/;
-const AT_LINE = /(?:at web line|at line) (\d+)/;
+// Every language's prelude reports the learner's line with each failure: '# at web line N'.
+const AT_LINE = /at web line (\d+)/;
 
 /**
  * @param result  what the runtime returned
  * @param code    the learner's code (without prelude), to spot unfilled blanks
  * @param offset  how many prelude lines were prepended before `code`
+ * @param errors  how the language's interpreter reports errors outside the tests
  */
-export function parseRun(result: RunResult, code: string, offset: number): Report {
+export function parseRun(result: RunResult, code: string, offset: number, errors: ErrorSyntax): Report {
   const codeLines = code.trimEnd().split('\n');
   // Errors at end-of-input can point into the appended epilogue; clamp them.
   const toUserLine = (n: number) =>
@@ -41,7 +44,7 @@ export function parseRun(result: RunResult, code: string, offset: number): Repor
 
   const tests: TestResult[] = [];
   const output: string[] = [];
-  const errors: string[] = [];
+  const stderr: string[] = [];
   let last: TestResult | undefined;
   // A quoted value containing newlines spills onto following stderr lines without '#'.
   let openQuote = false;
@@ -118,7 +121,7 @@ export function parseRun(result: RunResult, code: string, offset: number): Repor
     } else if (/^1\.\.\d+$/.test(text)) {
       // plan line
     } else if (stream === 'err') {
-      errors.push(text);
+      stderr.push(text);
     } else {
       output.push(text); // the learner's own say/print
     }
@@ -131,7 +134,7 @@ export function parseRun(result: RunResult, code: string, offset: number): Repor
   if (result.aborted === 'crash') {
     return { status: 'error', tests, output,
       message: /RangeError|call stack/i.test(result.message ?? '')
-        ? 'Recursion went too deep for the browser (about 200 levels is the limit).'
+        ? `Recursion went too deep for the browser${errors.recursionLimit ? ` (about ${errors.recursionLimit} levels is the limit)` : ''}.`
         : `The interpreter crashed: ${result.message}` };
   }
 
@@ -148,10 +151,9 @@ export function parseRun(result: RunResult, code: string, offset: number): Repor
     return { status: 'failed', tests, failure, output };
   }
   // A compile error or an exception outside of any test.
-  if (errors.length && (result.rc !== 0 || !tests.length)) {
-    const joined = errors.join('\n');
-    const at = joined.match(AT_LINE);
-    const message = errors[0].replace(/^===SORRY!=== /, '').replace(/ at line \d+/, '');
+  if (stderr.length && (result.rc !== 0 || !tests.length)) {
+    const at = stderr.join('\n').match(errors.line);
+    const message = errors.message(stderr[0]);
     return { status: 'error', tests, output, message, line: at ? toUserLine(Number(at[1])) : undefined };
   }
 

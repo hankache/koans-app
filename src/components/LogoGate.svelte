@@ -4,8 +4,10 @@
   positions used below (fractions of the square). With reduced motion it is just the logo.
 -->
 <script lang="ts">
+  import { pack } from '../../languages';
+
   let { size = 112 }: { size?: number } = $props();
-  const dir = `${import.meta.env.BASE_URL}anim/`;
+  const dir = `${import.meta.env.BASE_URL}${pack.art.celebration}`;
 </script>
 
 <div class="scene" style:width="{size}px" style:height="{size}px" role="img" aria-label="The butterfly flies through the open gate">

@@ -7,6 +7,7 @@
   import PathMap from './components/PathMap.svelte';
   import KoanView from './components/KoanView.svelte';
   import Meter from './components/Meter.svelte';
+  import { pack } from '../languages';
 
   // Tiny hash router: #/ is the path, #/koan/<section>/<name> is a koan.
   let hash = $state(location.hash);
@@ -27,7 +28,7 @@
 </script>
 
 <header class="bar">
-  <a class="brand" href="#/"><GateMark size={32} /> <span>Raku Koans</span></a>
+  <a class="brand" href="#/"><GateMark size={32} /> <span>{pack.name} Koans</span></a>
   <div class="meter"><Meter {passed} total={allKoans.length} /></div>
   <ThemeToggle />
 </header>

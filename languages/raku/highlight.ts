@@ -3,7 +3,7 @@
 // The states and rules follow Ace's, in the same order. Deliberate fixes are marked "Fix:".
 import { StreamLanguage, type StreamParser, type StringStream } from '@codemirror/language';
 import { tags as t } from '@lezer/highlight';
-import { builtins, constants, keywords, types, wordOperators } from './raku-words';
+import { builtins, constants, keywords, types, wordOperators } from './words';
 
 type Mode = 'start' | 'qqstring' | 'qqinterpolation' | 'blockComment' | 'qheredoc' | 'qqheredoc' | 'qqheredocInterpolation';
 interface State {

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { sections, allKoans } from '../lib/koans';
   import { progress } from '../lib/progress.svelte';
+  import { pack } from '../../languages';
 
   const next = $derived(allKoans.find(k => progress.get(k.id)?.status !== 'passed'));
   const started = $derived(allKoans.some(k => progress.get(k.id)));
@@ -16,14 +17,14 @@
 </script>
 
 <section class="hero">
-  <img class="logo" src="{import.meta.env.BASE_URL}logo.webp" alt="Raku Koans: a butterfly beside a torii gate framing a question mark" width="200" height="200" />
+  <img class="logo" src="{import.meta.env.BASE_URL}{pack.art.logo.src}" alt={pack.art.logo.alt} width="200" height="200" />
   <div>
     <h1>The path to enlightenment</h1>
     <p>
-      Learn Raku from syntax to culture through {allKoans.length} browser-based koans.
+      {pack.tagline} through {allKoans.length} browser-based koans.
     </p>
     <p>
-      Test-driven from the start: fix failing tests written with Raku’s <code>Test</code> module to
+      Test-driven from the start: fix failing tests written with {pack.testLibraryOwner} <code>{pack.testLibrary}</code> module to
       master both the language and testing.
     </p>
     <div class="actions">

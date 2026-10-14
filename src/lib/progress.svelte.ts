@@ -1,5 +1,6 @@
 // Learner progress, kept in this browser's IndexedDB and shared by the site's open tabs.
 import { get, set, update } from 'idb-keyval';
+import { pack } from '../../languages';
 
 export interface KoanProgress {
   status: 'attempted' | 'passed';
@@ -11,18 +12,19 @@ export interface KoanProgress {
 
 type ProgressMap = Record<string, KoanProgress>;
 
-const STORAGE_KEY = 'raku-koans:progress';
-// Each saved change is announced here, so the site's other open tabs show it too.
-const CHANNEL = 'raku-koans:progress';
-
 type Message = { id: string; entry: KoanProgress } | { reset: true };
 
+/** One language's progress. */
 export class Progress {
   map = $state<ProgressMap>({});
   loaded = $state(false);
-  private channel = typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel(CHANNEL);
+  private key: string;
+  // Each saved change is announced here, so the site's other open tabs show it too.
+  private channel: BroadcastChannel | null;
 
-  constructor() {
+  constructor(language: string) {
+    this.key = `koans:${language}:progress`;
+    this.channel = typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel(this.key);
     this.channel?.addEventListener('message', ({ data }: MessageEvent<Message>) => {
       if ('reset' in data) this.map = {};
       else this.accept(data.id, data.entry);
@@ -31,7 +33,7 @@ export class Progress {
 
   async init() {
     try {
-      const stored = (await get<ProgressMap>(STORAGE_KEY)) ?? {};
+      const stored = (await get<ProgressMap>(this.key)) ?? {};
       // Keep anything another tab announced while this one was loading.
       this.map = { ...stored, ...$state.snapshot(this.map) };
       // Ask the browser not to evict our data under storage pressure.
@@ -74,7 +76,7 @@ export class Progress {
   async resetAll() {
     this.map = {};
     try {
-      await set(STORAGE_KEY, {});
+      await set(this.key, {});
     } catch {
       /* storage unavailable */
     }
@@ -100,7 +102,7 @@ export class Progress {
   private async save(id: string, change: (prev?: KoanProgress) => KoanProgress | undefined) {
     let entry: KoanProgress | undefined;
     try {
-      await update<ProgressMap>(STORAGE_KEY, stored => {
+      await update<ProgressMap>(this.key, stored => {
         const map = stored ?? {};
         entry = change(map[id]);
         return entry ? { ...map, [id]: entry } : map;
@@ -114,4 +116,4 @@ export class Progress {
   }
 }
 
-export const progress = new Progress();
+export const progress = new Progress(pack.id);

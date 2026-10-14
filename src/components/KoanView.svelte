@@ -5,6 +5,7 @@
   import type { Report } from '../lib/tap';
   import { inlineCode } from '../lib/inline-code';
   import { modKey, modPressed } from '../lib/platform';
+  import { pack } from '../../languages';
   import Editor from './Editor.svelte';
   import Meditation from './Meditation.svelte';
 
@@ -31,7 +32,7 @@
   // a run clears it, and the cursor then goes to the start of the failing line.
   let cursorSpot = $state<number | null>(null);
   // Only surfaced if the interpreter fails to load.
-  const LOAD_ERROR = 'Could not load the Raku interpreter. Check your connection and reload the page.';
+  const LOAD_ERROR = `Could not load the ${pack.name} interpreter. Check your connection and reload the page.`;
   let runtimeError = $state<string | undefined>();
   getRuntime().ready.catch(e => {
     console.error(e);
@@ -104,7 +105,7 @@
   });
 </script>
 
-<svelte:head><title>{koan.title} · Raku Koans</title></svelte:head>
+<svelte:head><title>{koan.title} · {pack.name} Koans</title></svelte:head>
 <svelte:window {onkeydown} />
 
 <article>

@@ -4,6 +4,7 @@
   import type { Reveal } from '../lib/koans';
   import LogoGate from './LogoGate.svelte';
   import { modKey } from '../lib/platform';
+  import { pack } from '../../languages';
 
   interface Props {
     report: Report | null;
@@ -96,7 +97,7 @@
     {#if !f.blank && f.actual !== undefined}
       <dl class="compare">
         {#if f.answer !== undefined}<dt>Your answer</dt><dd>{f.answer}</dd>{/if}
-        <dt>Raku says</dt><dd>{f.actual}</dd>
+        <dt>{pack.name} says</dt><dd>{f.actual}</dd>
       </dl>
     {:else if !f.blank && f.diag.length}
       <pre class="diag">{f.diag.join('\n')}</pre>
