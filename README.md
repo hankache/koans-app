@@ -115,7 +115,8 @@ koans/*.raku ──build-koans──► src/generated/koans.json ──► the a
 - **Highlighting.** The editor is [CodeMirror 6](https://codemirror.net) with a Raku mode
   ([raku-mode.ts](src/lib/raku-mode.ts)) ported from [Ace](https://ace.c9.io/).
 - **Progress** ([progress.svelte.ts](src/lib/progress.svelte.ts)) is stored in the browser's
-  IndexedDB. It stays on one device, and clearing the site's data resets it. "Start over" on the
+  IndexedDB, one koan at a time, so tabs open side by side don't overwrite each other, and each
+  tab shows the others' progress as it happens. It stays on one device, and clearing the site's data resets it. "Start over" on the
   home page erases it.
 
 ## Writing koans
