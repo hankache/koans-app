@@ -1,0 +1,6 @@
+assert 'é'.encode() == b'\xc3\xa9', 'é takes two bytes in UTF-8'
+assert len('é'.encode()) == 2, 'so its length in bytes is 2'
+assert len('é') == 1, 'but it is one character'
+assert b'abc'[0] == 97, 'indexing bytes gives a number'
+assert b'caf\xc3\xa9'.decode() == 'café', 'decode turns bytes into text'
+assert type(b'') is bytes, 'the b prefix makes bytes'

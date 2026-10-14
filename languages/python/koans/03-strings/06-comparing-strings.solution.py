@@ -1,0 +1,7 @@
+assert 'ell' in 'hello', 'in finds a substring'
+assert ('apple' < 'banana') == True, 'strings compare like a dictionary'
+assert ('Zebra' < 'apple') == True, 'but capitals come before lower case'
+assert ('a' == 'A') == False, 'case matters'
+assert 'Straße'.casefold() == 'strasse', 'casefold for comparing without case'
+assert ord('A') == 65, 'the code point of A'
+assert chr(97) == 'a', 'and back from a code point'

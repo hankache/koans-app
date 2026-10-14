@@ -1,4 +1,4 @@
 {
   "title": "Strings",
-  "blurb": "Quoting, f-strings, slicing, and the methods every string has."
+  "blurb": "Quoting, f-strings and format specs, slicing, methods, escapes, and bytes."
 }

@@ -27,7 +27,7 @@ const koanIds = JSON.parse(readFileSync(join(root, 'src/generated/summary.json')
  */
 const LANGUAGES = [
   { id: 'raku', error: "is 1, 1, 'fine';\ndie 'boom';", says: /boom/, loop: 'loop { }' },
-  { id: 'python', error: "assert_equal(1, 1, 'fine')\nprint(nope)", says: /NameError/, loop: 'while True:\n    pass' },
+  { id: 'python', error: "assert True, 'fine'\nprint(nope)", says: /NameError/, loop: 'while True:\n    pass' },
   { id: 'javascript', error: "assert.ok(true, 'fine');\nnope();", says: /ReferenceError/, loop: 'while (true) {}' },
   { id: 'ruby', error: "assert true, 'fine'\nnope", says: /NameError/, loop: 'loop { }' },
   { id: 'lua', error: "assert(true, 'fine')\nnope()", says: /attempt to call a nil value/, loop: 'while true do end' },
@@ -238,9 +238,9 @@ async function checkImport(browser, base, exported, dir) {
   await page.waitForFunction(() => /Nothing new/.test(document.querySelector('.note')?.textContent ?? ''), { timeout: 5000 }).catch(() => {});
   check('importing it again changes nothing', /Nothing new/.test(await text(page, '.note')));
 
-  await page.goto(`${base}#/python/koan/awakening/assertions`);
+  await page.goto(`${base}#/python/koan/${koanIds.python[0].id}`);
   await page.waitForSelector('.cm-content');
-  check('and brings the saved code', (await text(page, '.cm-content')).includes('assert_true(True'));
+  check('and brings the saved code', (await text(page, '.cm-content')).includes('assert True'));
 
   const bad = join(dir, 'bad.json');
   writeFileSync(bad, '{"hello": 1}');

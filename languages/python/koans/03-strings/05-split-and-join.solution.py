@@ -1,0 +1,7 @@
+assert 'a,b,c'.split(',') == ['a', 'b', 'c'], 'split at commas'
+assert '  one  two '.split() == ['one', 'two'], 'with no argument, split at any whitespace'
+assert 'a,b,c'.split(',', 1) == ['a', 'b,c'], 'at most one split'
+assert '-'.join(['x', 'y', 'z']) == 'x-y-z', 'join with a dash'
+assert ''.join(reversed('abc')) == 'cba', 'join with nothing between'
+assert 'ab' * 3 == 'ababab', 'repeat a string'
+assert 'one\ntwo'.splitlines() == ['one', 'two'], 'splitlines cuts at line breaks'

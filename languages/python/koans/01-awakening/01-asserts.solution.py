@@ -1,0 +1,5 @@
+assert True, 'an assert wants something true'
+assert 1 + 1 == 2, '== compares two values'
+assert 'Py' + 'thon' == 'Python', '+ joins strings'
+assert 3 != 4, '!= wants them to differ'
+assert len('koan') == 4, 'len counts the characters'

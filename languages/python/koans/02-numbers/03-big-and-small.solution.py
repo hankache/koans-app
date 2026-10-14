@@ -1,6 +1,7 @@
-assert_equal(2 ** 100, 1267650600228229401496703205376, 'integers grow as large as needed')
-assert_equal(0.1 + 0.2 == 0.3, False, 'floats are approximations')
-assert_equal(round(0.1 + 0.2, 10), 0.3, 'round them before comparing')
-assert_equal(1_000_000, 1000000, 'underscores group digits')
-assert_equal(0b1010, 10, '0b starts a binary number')
-assert_equal(0xff, 255, '0x starts a hexadecimal one')
+assert 2 ** 100 == 1267650600228229401496703205376, 'integers grow as large as needed'
+assert (0.1 + 0.2 == 0.3) == False, 'floats are approximations'
+assert 0.1 + 0.2 == pytest.approx(0.3), 'pytest.approx allows for that'
+assert 1_000_000 == 1000000, 'underscores group digits'
+assert 0b1010 == 10, '0b starts a binary number'
+assert 0xff == 255, '0x starts a hexadecimal one'
+assert float('inf') > 10 ** 300, 'infinity is bigger than any number'

@@ -1,0 +1,7 @@
+assert f'{3.14159:.2f}' == '3.14', 'two decimals'
+assert f'{42:>5}' == '   42', 'right-aligned in five places'
+assert f'{42:05}' == '00042', 'padded with zeros'
+assert f'{1234567:,}' == '1,234,567', 'with thousands separators'
+assert f'{0.25:.0%}' == '25%', 'as a percentage'
+assert f'{255:#x}' == '0xff', 'in hexadecimal'
+assert f'{"hi":*^6}' == '**hi**', 'centred, padded with a character'

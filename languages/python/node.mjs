@@ -26,10 +26,14 @@ export default {
   // A blank line ends any block the koan leaves open.
   epilogue: '\n',
 
-  /** A plain assert stops the koan at its first failure, so later blanks could never be checked. */
+  /**
+   * The runner checks asserts and pytest.raises blocks, so that's where a blank goes: anywhere else
+   * it would just break the koan.
+   */
   lint(code) {
     return code.split('\n').flatMap((l, i) =>
-      /^\s*assert\s/.test(l) ? [`line ${i + 1} uses a plain assert; use assert_true, assert_equal, …`] : [],
+      l.includes('___') && !/^\s*(assert\b|with\s+pytest\.raises\()/.test(l)
+        ? [`line ${i + 1} has a blank outside an assert or a with pytest.raises(…)`] : [],
     );
   },
 
@@ -43,37 +47,15 @@ export default {
   },
 
   async load() {
-    let loadPyodide;
+    let loadPyodide, makeRunner;
     try {
       ({ loadPyodide } = await import(runtimeDir + 'pyodide.mjs'));
-    } catch {
-      throw new Error('Pyodide runtime missing — run `npm run fetch-runtime` first.');
+      ({ makeRunner } = await import(runtimeDir + 'worker.js'));
+    } catch (e) {
+      throw new Error(`Pyodide runtime missing — run \`npm run fetch-runtime\` first. (${e.message})`);
     }
     const py = await loadPyodide({ indexURL: runtimeDir });
-
-    let sink = null;
-    py.setStdout({ batched: t => sink?.push({ stream: 'out', text: t }) });
-    py.setStderr({ batched: t => sink?.push({ stream: 'err', text: t }) });
-
-    return {
-      version: `Pyodide ${py.version}, Python ${py.runPython('import sys; sys.version.split()[0]')}`,
-      /** Runs a whole program in fresh globals, as the worker does; returns exit code and output lines. */
-      run(src) {
-        sink = [];
-        const globals = py.globals.get('dict')();
-        globals.set('__name__', '__main__');
-        try {
-          py.runPython(src, { globals });
-          return { rc: 0, lines: sink };
-        } catch (e) {
-          // An exception the koan didn't catch: its traceback is the error output.
-          for (const text of String(e.message).replace(/\n+$/, '').split('\n')) sink.push({ stream: 'err', text });
-          return { rc: 1, lines: sink };
-        } finally {
-          globals.destroy();
-          sink = null;
-        }
-      },
-    };
+    const version = `Pyodide ${py.version}, Python ${py.runPython('import sys; sys.version.split()[0]')}`;
+    return { version, run: makeRunner(py) };
   },
 };

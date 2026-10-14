@@ -1,5 +1,0 @@
-assert_true(True, 'assert_true passes when given something true')
-assert_false(False, 'assert_false passes when given something false')
-assert_equal(1 + 1, 2, 'assert_equal compares two values')
-assert_equal('Py' + 'thon', 'Python', 'strings join with +')
-assert_not_equal(1, 2, 'assert_not_equal wants them to differ')

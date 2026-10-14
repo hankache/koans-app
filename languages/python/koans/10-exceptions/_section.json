@@ -1,0 +1,4 @@
+{
+  "title": "Exceptions",
+  "blurb": "Catching, raising, chaining, and cleaning up with context managers."
+}

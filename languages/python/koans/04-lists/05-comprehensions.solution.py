@@ -1,0 +1,6 @@
+assert list(range(5)) == [0, 1, 2, 3, 4], 'range stops before its end'
+assert list(range(2, 8, 2)) == [2, 4, 6], 'start, stop and step'
+assert [n * n for n in range(5)] == [0, 1, 4, 9, 16], 'square each one'
+assert [n for n in range(10) if n % 3 == 0] == [0, 3, 6, 9], 'keep only some'
+assert [(x, y) for x in 'ab' for y in [1, 2]] == [('a', 1), ('a', 2), ('b', 1), ('b', 2)], 'two loops, the outer first'
+assert [[0] * 2 for _ in range(2)] == [[0, 0], [0, 0]], 'a list of lists'

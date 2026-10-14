@@ -5,10 +5,10 @@ export default {
   id: 'python',
   name: 'Python',
   tagline: 'Learn Python from the first assertion to its built-in collections',
-  testedWith: '`unittest`-style assertions',
+  testedWith: 'pytest-style `assert` statements',
   look: { monogram: 'Py', accent: { light: '#3f7f78', dark: '#7fbfb5' } },
-  sample: 'assert_equal(1 + 1, 2)',
-  teaser: { before: 'assert_equal(-7 // 2, ', after: ')', choices: ['-3', '-4', '-3.5'], answer: '-4', why: '// rounds down, toward minus infinity.' },
+  sample: 'assert 1 + 1 == 2',
+  teaser: { before: 'assert -7 // 2 == ', after: '', choices: ['-3', '-4', '-3.5'], answer: '-4', why: '// rounds down, toward minus infinity.' },
   worker: { url: 'runtime/python/worker.js', type: 'module' },
   errors: {
     // A traceback names each frame's file and line; the koan is "<exec>", and its first frame is

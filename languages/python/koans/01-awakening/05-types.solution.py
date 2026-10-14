@@ -1,6 +1,7 @@
-assert_is(type(42), int, 'a whole number')
-assert_is(type(4.2), float, 'a number with a point')
-assert_is(type('42'), str, 'quotes make a string')
-assert_is(type(True), bool, 'True and False')
-assert_is(type([]), list, 'square brackets make a list')
-assert_is_instance(True, int, 'a bool is a kind of int')
+assert type(42) is int, 'a whole number'
+assert type(4.2) is float, 'a number with a point'
+assert type('42') is str, 'quotes make a string'
+assert type(True) is bool, 'True and False'
+assert type([]) is list, 'square brackets make a list'
+assert isinstance(True, int), 'a bool is a kind of int'
+assert isinstance(3, (int, float)), 'isinstance takes a tuple of types too'

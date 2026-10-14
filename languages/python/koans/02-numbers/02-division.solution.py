@@ -1,6 +1,7 @@
-assert_equal(7 / 2, 3.5, '/ gives a float')
-assert_equal(6 / 3, 2.0, 'even when it divides exactly')
-assert_equal(7 // 2, 3, '// rounds down')
-assert_equal(-7 // 2, -4, 'down means toward minus infinity, not toward zero')
-assert_equal(7 % 2, 1, '% is the remainder')
-assert_equal(divmod(17, 5), (3, 2), 'divmod gives quotient and remainder')
+assert 7 / 2 == 3.5, '/ gives a float'
+assert 6 / 3 == 2.0, 'even when it divides exactly'
+assert 7 // 2 == 3, '// rounds down'
+assert -7 // 2 == -4, 'down means toward minus infinity, not toward zero'
+assert 7 % 2 == 1, '% is the remainder'
+assert -7 % 3 == 2, 'it takes the sign of the divisor'
+assert divmod(17, 5) == (3, 2), 'divmod gives quotient and remainder'

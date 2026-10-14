@@ -1,5 +1,12 @@
-assert_raises(ZeroDivisionError, lambda: 1 / 0, 'dividing by zero')
-assert_raises(KeyError, lambda: {}['missing'], 'a key the dictionary does not have')
-assert_raises(IndexError, lambda: [1, 2, 3][10], 'an index past the end of a list')
-assert_raises(ValueError, lambda: int('ten'), 'int() wants digits')
-assert_raises(TypeError, lambda: 'a' + 1, 'a string and a number do not add up')
+with pytest.raises(ZeroDivisionError):  # dividing by zero
+    1 / 0
+with pytest.raises(KeyError):  # a key the dictionary does not have
+    {}['missing']
+with pytest.raises(IndexError):  # an index past the end of a list
+    [1, 2, 3][10]
+with pytest.raises(ValueError):  # int() wants digits
+    int('ten')
+with pytest.raises(TypeError):  # a string and a number do not add up
+    'a' + 1
+with pytest.raises(AttributeError):  # None has no upper()
+    None.upper()

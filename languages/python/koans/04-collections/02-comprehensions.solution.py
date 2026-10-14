@@ -1,6 +1,0 @@
-assert_equal(list(range(5)), [0, 1, 2, 3, 4], 'range stops before its end')
-assert_equal(list(range(2, 8, 2)), [2, 4, 6], 'start, stop and step')
-assert_equal([n * n for n in range(5)], [0, 1, 4, 9, 16], 'square each one')
-assert_equal([n for n in range(10) if n % 3 == 0], [0, 3, 6, 9], 'keep only some')
-assert_equal(sum(range(101)), 5050, 'sum adds them up')
-assert_equal({w: len(w) for w in ['hi', 'hey']}, {'hi': 2, 'hey': 3}, 'braces make a dict comprehension')

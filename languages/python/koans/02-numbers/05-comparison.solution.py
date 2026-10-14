@@ -1,7 +1,7 @@
-assert_equal(3 < 5, True, 'less than')
-assert_equal(1 < 2 < 3, True, 'comparisons chain')
-assert_equal(3 < 2 < 4, False, 'and every link must hold')
-assert_equal(5 == 5.0, True, 'an int equals the float with the same value')
-assert_equal(max(3, 7, 1), 7, 'the largest')
-assert_equal(min(3, 7, 1), 1, 'the smallest')
-assert_equal(abs(-4), 4, 'distance from zero')
+assert 1 < 2 < 3, 'comparisons chain'
+assert (3 < 2 < 4) == False, 'and every link must hold'
+assert 5 == 5.0, 'an int equals the float with the same value'
+assert max(3, 7, 1) == 7, 'the largest'
+assert min([3, 7, 1]) == 1, 'or the smallest, of an iterable'
+assert abs(-4) == 4, 'distance from zero'
+assert sum([1, 2, 3]) == 6, 'sum adds them up'

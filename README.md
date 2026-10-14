@@ -33,7 +33,7 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/).
 | Language                      | Koans | Interpreter                                         | Tests written with |
 |-------------------------------|-------|-----------------------------------------------------|--------------------|
 | [Raku](languages/raku/)       | 105   | [Raku++](https://github.com/ash/rakupp) (Raku.js)   | Raku's `Test`      |
-| [Python](languages/python/)   | 20    | [Pyodide](https://pyodide.org) (CPython 3.14)       | `unittest`-style assertions |
+| [Python](languages/python/)   | 71    | [Pyodide](https://pyodide.org) (CPython 3.14)       | pytest-style `assert`s |
 | [JavaScript](languages/javascript/) | 30 | the browser's own engine                      | Node's `assert` API |
 | [TypeScript](languages/typescript/) | 30 | the TypeScript 6 compiler, then the browser's engine | Node's `assert` API, plus type assertions |
 | [Ruby](languages/ruby/)       | 30    | [ruby.wasm](https://github.com/ruby/ruby.wasm) (CRuby 4.0) | Minitest's assertions |
