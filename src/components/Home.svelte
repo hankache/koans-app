@@ -231,17 +231,13 @@
     <h2>What is a koan?</h2>
     <div class="about">
       <p>
-        In Zen, a koan is a short story or question a student meditates on until its meaning becomes
-        clear. Programming koans borrow the idea: each one is a few lines of code with tests that fail,
-        and a blank, <code class="blank">___</code>, where the answer goes. Ruby Koans made the format
-        popular; koans.app brings it to more languages, right in the browser.
+        In Zen, a koan is a short puzzle you think about until it makes sense. Here, a koan is a few
+        lines of code with tests that fail, and a blank, <code class="blank">___</code>, where the
+        answer goes.
       </p>
       <p>
-        <strong>It's test-driven from the first line.</strong> In test-driven development (TDD) you
-        write a test that fails, then the code that makes it pass: red, then green. A koan hands you the
-        failing test, and you supply what turns it green. Along the way you learn the language
-        <em>and</em> how it's tested: Raku's <code>Test</code> module, Python's <code>unittest</code>
-        style, Node's <code>assert</code>, Minitest, busted.
+        <strong>It's test-driven.</strong> In test-driven development (TDD), you write a failing test
+        first, then make it pass: red, then green. A koan gives you the failing test; you turn it green.
       </p>
     </div>
     <ol class="steps">
@@ -459,8 +455,7 @@
   .how h2 { margin-bottom: 16px; }
   .about { max-width: 46rem; margin-bottom: 28px; color: var(--ink-soft); }
   .about p { margin: 0 0 12px; }
-  .about strong, .about em { color: var(--ink); }
-  .about code:not(.blank) { font-family: var(--font-mono); font-size: 0.9em; color: var(--ink); }
+  .about strong { color: var(--ink); }
   .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
   .steps li { display: flex; flex-direction: column; gap: 12px; padding: 22px; background: var(--bg-raised); border: 1px solid var(--line); color: var(--ink-soft); }
   .steps strong { display: block; margin-bottom: 4px; font-family: var(--font-display); font-size: 20px; color: var(--ink); }
