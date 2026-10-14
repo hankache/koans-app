@@ -20,7 +20,6 @@
   const koanLists = summary as Record<string, KoanInfo[]>;
   const languages = packs.map(pack => ({ pack, progress: progressFor(pack.id), koans: koanLists[pack.id] ?? [] }));
   type Language = (typeof languages)[number];
-  const totalKoans = languages.reduce((n, l) => n + l.koans.length, 0);
   onMount(() => {
     for (const l of languages) void l.progress.ready();
   });
@@ -118,20 +117,20 @@
 <div class="home">
   <section class="hero">
     <div class="pitch">
-      <p class="eyebrow">Koans for {languages.length} languages</p>
+      <p class="eyebrow">Programming koans</p>
       <h1>Learn a language, one&nbsp;koan at a&nbsp;time.</h1>
       <p class="lead">
-        Each koan is a small program whose tests fail. Fill in the blanks until they pass, and the
+        A koan is a small program whose tests fail. Make them pass, one blank at a time, and the
         language itself tells you whether you got it right.
       </p>
       <ul class="facts">
-        <li>{languages.length} languages</li>
-        <li>{totalKoans} koans</li>
+        <li>Test-driven</li>
+        <li>Runs in your browser</li>
         <li>No sign-up</li>
       </ul>
       <div class="ctas">
         <button class="cta" onclick={() => show('languages')}>Choose a language</button>
-        <button class="secondary" onclick={() => show('how')}>How it works</button>
+        <button class="secondary" onclick={() => show('what')}>What is a koan?</button>
       </div>
     </div>
 
@@ -228,20 +227,35 @@
     </ul>
   </section>
 
-  <section id="how" class="how">
-    <h2>How a koan works</h2>
+  <section id="what" class="how">
+    <h2>What is a koan?</h2>
+    <div class="about">
+      <p>
+        In Zen, a koan is a short story or question a student meditates on until its meaning becomes
+        clear. Programming koans borrow the idea: each one is a few lines of code with tests that fail,
+        and a blank, <code class="blank">___</code>, where the answer goes. Ruby Koans made the format
+        popular; koans.app brings it to more languages, right in the browser.
+      </p>
+      <p>
+        <strong>It's test-driven from the first line.</strong> In test-driven development (TDD) you
+        write a test that fails, then the code that makes it pass: red, then green. A koan hands you the
+        failing test, and you supply what turns it green. Along the way you learn the language
+        <em>and</em> how it's tested: Raku's <code>Test</code> module, Python's <code>unittest</code>
+        style, Node's <code>assert</code>, Minitest, busted.
+      </p>
+    </div>
     <ol class="steps">
       <li>
-        <span class="num">1</span>
-        <span><strong>Read</strong>A short intro, then a few lines of code with tests that don't pass yet.</span>
+        <span class="num red">1</span>
+        <span><strong>Red</strong>Read the koan: a short intro, and tests that don't pass yet.</span>
       </li>
       <li>
         <span class="num">2</span>
-        <span><strong>Fill the blanks</strong>Replace each <code class="blank">___</code> with what makes its test pass. Stuck? Reveal the answer.</span>
+        <span><strong>Fill the blank</strong>Replace each <code class="blank">___</code> with what makes its test pass. Stuck? Reveal the answer.</span>
       </li>
       <li>
         <span class="num pass">3</span>
-        <span><strong>Reach enlightenment</strong>The language's own interpreter runs your code, right in the page, and shows what it got.</span>
+        <span><strong>Green</strong>The language's own interpreter runs your code, right in the page. When every test passes: enlightenment.</span>
       </li>
     </ol>
   </section>
@@ -294,11 +308,13 @@
 <style>
   .home {
     --home-accent: #b8327a;
+    --badge-red: #a3402a;
+    --badge-green: #1f7a52;
     display: flex;
     flex-direction: column;
     padding: 56px 0 24px;
   }
-  :global([data-theme='dark']) .home { --home-accent: #f07cb6; }
+  :global([data-theme='dark']) .home { --home-accent: #f07cb6; --badge-red: var(--fail); --badge-green: var(--pass); }
   /* A language's own colour, in either theme. */
   .tile, .mark, .bar { --accent: var(--accent-light, var(--ink)); }
   :global([data-theme='dark']) .tile, :global([data-theme='dark']) .mark, :global([data-theme='dark']) .bar {
@@ -440,12 +456,18 @@
     border-block: 1px solid var(--line);
     z-index: -1;
   }
-  .how h2 { margin-bottom: 24px; }
+  .how h2 { margin-bottom: 16px; }
+  .about { max-width: 46rem; margin-bottom: 28px; color: var(--ink-soft); }
+  .about p { margin: 0 0 12px; }
+  .about strong, .about em { color: var(--ink); }
+  .about code:not(.blank) { font-family: var(--font-mono); font-size: 0.9em; color: var(--ink); }
   .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
   .steps li { display: flex; flex-direction: column; gap: 12px; padding: 22px; background: var(--bg-raised); border: 1px solid var(--line); color: var(--ink-soft); }
   .steps strong { display: block; margin-bottom: 4px; font-family: var(--font-display); font-size: 20px; color: var(--ink); }
   .num { width: 36px; height: 36px; display: grid; place-items: center; background: var(--ink); color: var(--bg); font-weight: 600; }
-  .num.pass { background: var(--pass); }
+  /* Light text on these needs darker shades than the theme's result colours, in the light theme. */
+  .num.pass { background: var(--badge-green); }
+  .num.red { background: var(--badge-red); }
 
   /* Promises */
   .promises { order: 5; padding: 48px 0 16px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
