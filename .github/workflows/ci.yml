@@ -22,5 +22,7 @@ jobs:
       - run: npm run fetch-runtime
       # Every blank must fail while unfilled and every solution must pass, on the same engine as the browser.
       - run: npm run check:koans
+      # The result panel's reading of real runs, and answer hints for every koan.
+      - run: npm test
       - run: npm run build:koans && npm run check
       - run: npm run build

@@ -9,6 +9,8 @@
     "fetch-runtime": "node scripts/fetch-runtime.mjs",
     "build:koans": "node scripts/build-koans.mjs",
     "check:koans": "node scripts/check-koans.mjs",
+    "pretest": "npm run build:koans",
+    "test": "vitest run",
     "predev": "npm run build:koans",
     "dev": "vite",
     "prebuild": "npm run build:koans && node -e \"require('fs').copyFileSync('THIRD-PARTY-NOTICES.md', 'public/third-party-notices.txt')\"",
@@ -23,7 +25,8 @@
     "svelte": "^5.57.1",
     "svelte-check": "^4.7.6",
     "typescript": "^6.0.3",
-    "vite": "^8.3.1"
+    "vite": "^8.3.1",
+    "vitest": "^5.0.3"
   },
   "dependencies": {
     "@codemirror/commands": "^6.11.1",

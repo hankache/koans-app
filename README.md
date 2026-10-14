@@ -72,6 +72,7 @@ npm run dev             # http://localhost:5173
 | `npm run build`           | Builds the site into `dist/`                                            |
 | `npm run preview`         | Serves the built site at http://localhost:4173                          |
 | `npm run check:koans`     | Runs every koan and its solution on the interpreter (see below)         |
+| `npm test`                | Tests how the app reads results and reveals answers, on real runs       |
 | `npm run check`           | Type-checks the app                                                     |
 | `npm run fetch-runtime`   | Downloads the pinned interpreter into `public/runtime/`                 |
 | `npm run notices`         | Regenerates `THIRD-PARTY-NOTICES.md` after dependencies change          |

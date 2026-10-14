@@ -58,7 +58,8 @@ export function parseRun(result: RunResult, code: string, offset: number): Repor
     const text = raw.replace(ANSI, '');
 
     // Indented lines belong to a subtest: remember its first failure, show nothing.
-    if (/^\s+\S/.test(text)) {
+    // (An exception's backtrace is indented too, but it isn't TAP: it falls through to the errors.)
+    if (/^\s+\S/.test(text) && (stream === 'out' || text.trim().startsWith('#'))) {
       const s = text.trim();
       const it = s.match(TEST);
       if (it?.[1] && inner.description === undefined) inner.description = it[3] ?? '';
