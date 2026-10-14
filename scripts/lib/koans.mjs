@@ -1,55 +1,46 @@
-// Reads koans/ into a structured list. Shared by build-koans and check-koans.
+// Reads a language's koans into a structured list. Shared by build-koans, check-koans and the tests.
 //
-// Layout:
-//   koans/_prelude.raku                   one line, prepended to every run
-//   koans/NN-section/_section.json        { "title", "blurb" }
-//   koans/NN-section/NN-name.raku          the koan: header comments, then code with ___ blanks
-//   koans/NN-section/NN-name.solution.raku the same code, blanks filled (never shipped to the browser)
+// Layout, for each language in languages/ (see scripts/lib/languages.mjs):
+//   languages/<id>/koans/NN-section/_section.json            { "title", "blurb" }
+//   languages/<id>/koans/NN-section/NN-name<ext>              the koan: header comments, then code with ___ blanks
+//   languages/<id>/koans/NN-section/NN-name.solution<ext>     the same code, blanks filled (never shipped to the browser)
 //
 // Numeric prefixes set the order but are dropped from ids, so koans can be
 // reordered without losing anyone's saved progress.
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-export const koansDir = fileURLToPath(new URL('../../koans/', import.meta.url));
-// Closes the block the prelude opens (see koans/_prelude.raku).
-export const EPILOGUE = '\n}\ndone-testing;\n';
+const escape = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-const slug = name => name.replace(/^\d+-/, '').replace(/(\.solution)?\.raku$/, '');
-const HEADER = /^#\s*(\w+):\s*(.*)$/;
+/** @param {import('./languages.mjs').Language} lang */
+export function readKoans(lang) {
+  const koansDir = join(lang.dir, 'koans');
+  const ext = escape(lang.extension);
+  const slug = name => name.replace(/^\d+-/, '').replace(new RegExp(`(\\.solution)?${ext}$`), '');
+  const header = new RegExp(`^${escape(lang.comment)}\\s*(\\w+):\\s*(.*)$`);
+  const isKoan = new RegExp(`^\\d+-.*${ext}$`);
 
-/** The prelude folded onto one line, so error line numbers shift by exactly one. */
-export function readPrelude() {
-  return readFileSync(join(koansDir, '_prelude.raku'), 'utf8')
-    .split('\n')
-    .map(l => l.trim())
-    .filter(l => l && !l.startsWith('#'))
-    .join(' ') + '\n';
-}
-
-export function readKoans() {
   const sections = [];
   for (const dir of readdirSync(koansDir).filter(d => /^\d+-/.test(d)).sort()) {
     const path = join(koansDir, dir);
     const meta = JSON.parse(readFileSync(join(path, '_section.json'), 'utf8'));
     const section = { id: slug(dir), title: meta.title, blurb: meta.blurb ?? '', koans: [] };
 
-    const files = readdirSync(path).filter(f => /^\d+-.*\.raku$/.test(f) && !f.endsWith('.solution.raku')).sort();
+    const files = readdirSync(path).filter(f => isKoan.test(f) && !f.endsWith(`.solution${lang.extension}`)).sort();
     for (const file of files) {
       const lines = readFileSync(join(path, file), 'utf8').split('\n');
       const meta = {};
-      while (lines.length && HEADER.test(lines[0])) {
-        const [, key, value] = lines.shift().match(HEADER);
+      while (lines.length && header.test(lines[0])) {
+        const [, key, value] = lines.shift().match(header);
         meta[key] = value;
       }
-      const solutionPath = join(path, file.replace(/\.raku$/, '.solution.raku'));
+      const solutionPath = join(path, file.slice(0, -lang.extension.length) + `.solution${lang.extension}`);
       section.koans.push({
         id: `${section.id}/${slug(file)}`,
         title: meta.title ?? slug(file),
         intro: meta.intro ?? '',
         code: lines.join('\n').trim() + '\n',
-        file: join(dir, file),
+        file: join(lang.id, 'koans', dir, file),
         solution: existsSync(solutionPath) ? readFileSync(solutionPath, 'utf8') : null,
       });
     }

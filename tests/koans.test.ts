@@ -1,7 +1,8 @@
 import { describe, expect, test } from 'vitest';
 import { readKoans } from '../scripts/lib/koans.mjs';
+import { languages } from '../scripts/lib/languages.mjs';
 import { koanById, revealAnswer, type Koan, type Reveal } from '../src/lib/koans';
-import { report } from './raku';
+import { runner } from './run';
 
 const fill = (code: string, r: Reveal) => {
   const lines = code.split('\n');
@@ -53,27 +54,30 @@ describe('revealAnswer', () => {
 });
 
 // Every koan as the browser sees it: the manifest the app ships, read by the app's own code.
-describe.each(readKoans().flatMap(s => s.koans))('$id', ({ id, solution }) => {
-  const koan = koanById.get(id)!;
+for (const lang of languages) {
+  const { report } = await runner(lang.id);
+  describe.each(readKoans(lang).flatMap(s => s.koans))(`${lang.id}: $id`, ({ id, solution }) => {
+    const koan = koanById.get(id)!;
 
-  test('revealing every answer in turn gives the solution', () => {
-    let code = koan.code;
-    for (let i = 0; i <= koan.answers.length; i++) {
-      const r = revealAnswer(koan, code);
-      if (!r) break;
-      code = fill(code, r);
-    }
-    expect(code.trimEnd()).toBe(solution.trimEnd());
-  });
+    test('revealing every answer in turn gives the solution', () => {
+      let code = koan.code;
+      for (let i = 0; i <= koan.answers.length; i++) {
+        const r = revealAnswer(koan, code);
+        if (!r) break;
+        code = fill(code, r);
+      }
+      expect(code.trimEnd()).toBe(solution.trimEnd());
+    });
 
-  test('unsolved, it fails on a blank, and the hint for that line is its answer', () => {
-    const r = report(koan.code);
-    if (r.status !== 'failed') throw new Error(`expected a failure, got ${r.status}: ${'message' in r ? r.message : ''}`);
-    expect(r.failure.blank).toBe(true);
-    expect(revealAnswer(koan, koan.code, r.failure.line)?.line).toBe(r.failure.line);
-  });
+    test('unsolved, it fails on a blank, and the hint for that line is its answer', () => {
+      const r = report(koan.code);
+      if (r.status !== 'failed') throw new Error(`expected a failure, got ${r.status}: ${'message' in r ? r.message : ''}`);
+      expect(r.failure.blank).toBe(true);
+      expect(revealAnswer(koan, koan.code, r.failure.line)?.line).toBe(r.failure.line);
+    });
 
-  test('solved, it passes', () => {
-    expect(report(solution).status).toBe('passed');
+    test('solved, it passes', () => {
+      expect(report(solution).status).toBe('passed');
+    });
   });
-});
+}

@@ -1,0 +1,41 @@
+// The languages the build tools know about. Each one is a folder in languages/ whose node.mjs
+// describes it; adding a language means adding it here.
+import raku from '../../languages/raku/node.mjs';
+
+/**
+ * @typedef {{ stream: 'out' | 'err', text: string }} OutputLine
+ * @typedef {{ version: string, run(src: string, stdin?: string): { rc: number, lines: OutputLine[] } }} Engine
+ * @typedef {object} Language
+ * @property {string} id           used in paths and ids: 'raku'
+ * @property {string} name         shown to people: 'Raku'
+ * @property {string} dir          the language's folder (absolute, ending in /)
+ * @property {string} extension    of koan files: '.raku'
+ * @property {string} comment      starts a koan's header lines (# title: …): '#'
+ * @property {() => string} prelude  run before every koan
+ * @property {string} epilogue     run after every koan
+ * @property {(code: string) => string[]} lint  problems in a koan that running it can't reveal
+ * @property {{ repo: string, asset: (tag: string) => string, files: string[], out: string }} runtime
+ *   the interpreter: a zip attached to the GitHub releases of `repo`, with a .sha256 beside it;
+ *   `files` are taken out of it into `out`
+ * @property {() => Promise<Engine>} load  the interpreter, under Node
+ */
+
+/** @type {Language[]} */
+export const languages = [raku];
+
+/**
+ * The languages named with --lang (repeat it, or separate names with commas), or else all of
+ * them. Exits with a message for a name it doesn't know.
+ */
+export function chosenLanguages(args = process.argv.slice(2)) {
+  const names = args.flatMap((a, i) => (a === '--lang' ? (args[i + 1] ?? '').split(',') : []));
+  if (!names.length) return languages;
+  return names.map(n => {
+    const lang = languages.find(l => l.id === n);
+    if (!lang) {
+      console.error(`✗ unknown language "${n}"; known: ${languages.map(l => l.id).join(', ')}`);
+      process.exit(1);
+    }
+    return lang;
+  });
+}

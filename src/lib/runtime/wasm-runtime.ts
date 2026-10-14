@@ -11,7 +11,7 @@ export interface RunResult {
   message?: string;
 }
 
-const WORKER_URL = `${import.meta.env.BASE_URL}runtime/raku-worker.js`;
+const WORKER_URL = `${import.meta.env.BASE_URL}runtime/raku/worker.js`;
 
 /** Raku.js in a Web Worker, with a watchdog that kills runaway programs. */
 export class WasmRuntime {

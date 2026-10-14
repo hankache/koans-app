@@ -1,25 +1,20 @@
-// Downloads Raku.js (Raku++ compiled to WebAssembly, Artistic-2.0) from an official Raku++
-// release on GitHub (https://github.com/ash/rakupp/releases) into public/runtime/.
+// Downloads each language's interpreter (or those named with --lang) from the GitHub releases
+// its languages/<id>/node.mjs names, into public/runtime/<id>/, and checks it against the
+// checksum published with the release and the one pinned in languages/<id>/runtime.lock.json.
 //
-//   npm run fetch-runtime                    the release pinned in runtime.lock.json, verified
-//   npm run fetch-runtime -- --update        move to the latest release and re-pin it
-//   npm run fetch-runtime -- --update v4.1.0 move to a given release
+//   npm run fetch-runtime                                 the pinned releases, verified
+//   npm run fetch-runtime -- --lang raku --update         move Raku to its latest release and re-pin it
+//   npm run fetch-runtime -- --lang raku --update v5.1.0  move Raku to a given release
 //
 // After --update, run `npm run check:koans` before publishing.
 import { createHash } from 'node:crypto';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { inflateRawSync } from 'node:zlib';
-
-const REPO = 'ash/rakupp';
-const FILES = ['rakujs.js', 'rakujs.wasm'];
-const outDir = fileURLToPath(new URL('../public/runtime/', import.meta.url));
-const lockPath = fileURLToPath(new URL('../runtime.lock.json', import.meta.url));
+import { chosenLanguages } from './lib/languages.mjs';
 
 const args = process.argv.slice(2);
 const update = args.includes('--update');
-const wantedTag = update ? args[args.indexOf('--update') + 1] : undefined;
-const lock = existsSync(lockPath) ? JSON.parse(readFileSync(lockPath, 'utf8')) : null;
+const wantedTag = update && !args[args.indexOf('--update') + 1]?.startsWith('--') ? args[args.indexOf('--update') + 1] : undefined;
 const sha256 = buf => createHash('sha256').update(buf).digest('hex');
 const die = msg => {
   console.error(`✗ ${msg}`);
@@ -27,7 +22,7 @@ const die = msg => {
 };
 
 async function download(url) {
-  const res = await fetch(url, { headers: { 'User-Agent': 'raku-koans' } });
+  const res = await fetch(url, { headers: { 'User-Agent': 'koans-app' } });
   if (!res.ok) die(`${url}: HTTP ${res.status}`);
   return Buffer.from(await res.arrayBuffer());
 }
@@ -59,40 +54,50 @@ function unzip(zip, names) {
   return found;
 }
 
-// Which release?
-let tag = lock?.tag;
-if (update) {
-  tag = wantedTag ?? JSON.parse((await download(`https://api.github.com/repos/${REPO}/releases/latest`)).toString()).tag_name;
-} else if (!tag) {
-  die('runtime.lock.json has no release pinned: run `npm run fetch-runtime -- --update` once.');
-}
+const langs = chosenLanguages(args);
+if (update && (langs.length !== 1 || !args.includes('--lang'))) die('--update moves one language at a time: add --lang <id>');
 
-// Download it and check it against the checksum Raku++ publishes with the release.
-const base = `https://github.com/${REPO}/releases/download/${tag}/rakujs-${tag}.zip`;
-const zip = await download(base);
-const published = (await download(`${base}.sha256`)).toString().trim().split(/\s+/)[0];
-const zipHash = sha256(zip);
-if (zipHash !== published) die(`rakujs-${tag}.zip does not match the checksum published with the release`);
-if (!update && zipHash !== lock.zip) {
-  die(`rakujs-${tag}.zip differs from the one pinned in runtime.lock.json. Re-run with --update to accept it, then npm run check:koans.`);
-}
-console.log(`✓ rakujs-${tag}.zip  ${(zip.length / 1e6).toFixed(1)} MB, checksum verified`);
+for (const lang of langs) {
+  const { repo, asset, files: FILES, out } = lang.runtime;
+  const lockPath = lang.dir + 'runtime.lock.json';
+  const lock = existsSync(lockPath) ? JSON.parse(readFileSync(lockPath, 'utf8')) : null;
 
-const files = unzip(zip, FILES);
-const hashes = {};
-for (const name of FILES) {
-  hashes[name] = sha256(files[name]);
-  if (!update && hashes[name] !== lock.files[name]) die(`${name} differs from runtime.lock.json`);
-  writeFileSync(outDir + name, files[name]);
-  console.log(`✓ ${name}  ${(files[name].length / 1e6).toFixed(1)} MB`);
-}
+  // Which release?
+  let tag = lock?.tag;
+  if (update) {
+    tag = wantedTag ?? JSON.parse((await download(`https://api.github.com/repos/${repo}/releases/latest`)).toString()).tag_name;
+  } else if (!tag) {
+    die(`${lang.id}/runtime.lock.json has no release pinned: run \`npm run fetch-runtime -- --lang ${lang.id} --update\` once.`);
+  }
 
-const { loadRaku } = await import('./lib/raku-node.mjs');
-const { version } = await loadRaku();
-console.log(`✓ Raku++ ${version}`);
+  // Download it and check it against the checksum published with the release.
+  const name = asset(tag);
+  const base = `https://github.com/${repo}/releases/download/${tag}/${name}`;
+  const zip = await download(base);
+  const published = (await download(`${base}.sha256`)).toString().trim().split(/\s+/)[0];
+  const zipHash = sha256(zip);
+  if (zipHash !== published) die(`${name} does not match the checksum published with the release`);
+  if (!update && zipHash !== lock.zip) {
+    die(`${name} differs from the one pinned in ${lang.id}/runtime.lock.json. Re-run with --update to accept it, then npm run check:koans.`);
+  }
+  console.log(`✓ ${name}  ${(zip.length / 1e6).toFixed(1)} MB, checksum verified`);
 
-if (update) {
-  const source = `https://github.com/${REPO}/releases/tag/${tag}`;
-  writeFileSync(lockPath, JSON.stringify({ source, tag, version, zip: zipHash, files: hashes }, null, 2) + '\n');
-  console.log(`✓ runtime.lock.json now pins ${tag}. Run npm run check:koans before publishing.`);
+  const files = unzip(zip, FILES);
+  const hashes = {};
+  mkdirSync(out, { recursive: true });
+  for (const file of FILES) {
+    hashes[file] = sha256(files[file]);
+    if (!update && hashes[file] !== lock.files[file]) die(`${file} differs from ${lang.id}/runtime.lock.json`);
+    writeFileSync(out + file, files[file]);
+    console.log(`✓ ${file}  ${(files[file].length / 1e6).toFixed(1)} MB`);
+  }
+
+  const { version } = await lang.load();
+  console.log(`✓ ${lang.name} interpreter ${version}`);
+
+  if (update) {
+    const source = `https://github.com/${repo}/releases/tag/${tag}`;
+    writeFileSync(lockPath, JSON.stringify({ source, tag, version, zip: zipHash, files: hashes }, null, 2) + '\n');
+    console.log(`✓ ${lang.id}/runtime.lock.json now pins ${tag}. Run npm run check:koans before publishing.`);
+  }
 }

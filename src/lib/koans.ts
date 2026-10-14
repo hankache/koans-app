@@ -1,4 +1,4 @@
-import manifest from '../generated/koans.json';
+import manifest from '../generated/raku.json';
 import { WasmRuntime } from './runtime/wasm-runtime';
 import { parseRun, type Report } from './tap';
 
