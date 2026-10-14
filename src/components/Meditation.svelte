@@ -3,6 +3,7 @@
   import type { Report } from '../lib/tap';
   import type { Reveal } from '../lib/koans';
   import LogoGate from './LogoGate.svelte';
+  import { modKey } from '../lib/platform';
 
   interface Props {
     report: Report | null;
@@ -71,7 +72,7 @@
   {#if running}
     <p class="lead muted">Meditating…</p>
   {:else if !report}
-    <p class="lead muted">Replace each <code class="blank">___</code>, then press <kbd>Run</kbd> or <kbd>Ctrl</kbd>+<kbd>Enter</kbd>.</p>
+    <p class="lead muted">Replace each <code class="blank">___</code>, then press <kbd>Run</kbd> or <kbd>{modKey}</kbd>+<kbd>Enter</kbd>.</p>
     {#if runtimeError}<p class="small error-note">{runtimeError}</p>{/if}
     {@render answer()}
   {:else if report.status === 'passed'}

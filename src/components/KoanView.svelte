@@ -4,6 +4,7 @@
   import { progress } from '../lib/progress.svelte';
   import type { Report } from '../lib/tap';
   import { inlineCode } from '../lib/inline-code';
+  import { modKey, modPressed } from '../lib/platform';
   import Editor from './Editor.svelte';
   import Meditation from './Meditation.svelte';
 
@@ -67,6 +68,14 @@
     else if (r.status === 'error') editor.focusLine(r.line);
   }
 
+  // Mod+Enter runs from anywhere on the page. The editor handles it itself when it has focus.
+  function onkeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter' && modPressed(e) && !e.defaultPrevented) {
+      e.preventDefault();
+      void run();
+    }
+  }
+
   function reset() {
     code = koan.code;
     report = null;
@@ -96,6 +105,7 @@
 </script>
 
 <svelte:head><title>{koan.title} · Raku Koans</title></svelte:head>
+<svelte:window {onkeydown} />
 
 <article>
   <nav class="crumbs">
@@ -127,7 +137,7 @@
       />
 
       <div class="actions">
-        <button class="primary" onclick={run} disabled={running}>{running ? 'Running…' : 'Run'}</button>
+        <button class="primary" onclick={run} disabled={running} title="Run ({modKey}+Enter)">{running ? 'Running…' : 'Run'}</button>
         <button onclick={reset} title="Restore the original koan">Reset</button>
         <span class="spacer"></span>
         {#if nav.prev}<a href="#/koan/{nav.prev.id}" class="nav">← {nav.prev.title}</a>{/if}
