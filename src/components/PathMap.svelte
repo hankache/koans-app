@@ -3,6 +3,8 @@
   import { progress } from '../lib/progress.svelte';
   import { pack } from '../../languages';
   import { site } from '../site';
+  import { inlineCode } from '../lib/inline-code';
+  import GateMark from './GateMark.svelte';
 
   const next = $derived(allKoans.find(k => progress.get(k.id)?.status !== 'passed'));
   const started = $derived(allKoans.some(k => progress.get(k.id)));
@@ -20,14 +22,18 @@
 <svelte:head><title>{pack.name} Koans · {site.name}</title></svelte:head>
 
 <section class="hero">
-  <img class="logo" src="{import.meta.env.BASE_URL}{pack.art.logo.src}" alt={pack.art.logo.alt} width="200" height="200" />
+  {#if pack.art}
+    <img class="logo" src="{import.meta.env.BASE_URL}{pack.art.logo.src}" alt={pack.art.logo.alt} width="200" height="200" />
+  {:else}
+    <div class="logo mark"><GateMark size={150} /></div>
+  {/if}
   <div>
     <h1>The path to enlightenment</h1>
     <p>
       {pack.tagline} through {allKoans.length} browser-based koans.
     </p>
     <p>
-      Test-driven from the start: fix failing tests written with {pack.testLibraryOwner} <code>{pack.testLibrary}</code> module to
+      Test-driven from the start: fix failing tests written with {#each inlineCode(pack.testedWith) as part}{#if part.code}<code>{part.text}</code>{:else}{part.text}{/if}{/each} to
       master both the language and testing.
     </p>
     <div class="actions">
@@ -90,6 +96,7 @@
     padding: 2.5rem 0 2rem;
   }
   .logo { flex: none; width: 200px; height: 200px; box-shadow: var(--shadow); }
+  .logo.mark { display: grid; place-items: center; background: var(--bg-raised); color: var(--ink); }
   .hero h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.02em; }
   .hero p { color: var(--ink-soft); max-width: 38rem; margin: 0.8rem 0 0; }
   .hero p + p { margin-top: 0.6rem; }

@@ -1,0 +1,7 @@
+assert_equal('hello'.upper(), 'HELLO', 'upper case')
+assert_equal('  pad  '.strip(), 'pad', 'strip removes the spaces around')
+assert_equal('banana'.count('a'), 3, 'count a substring')
+assert_equal('banana'.find('n'), 2, 'where it first appears')
+assert_equal('hello world'.title(), 'Hello World', 'a capital for each word')
+assert_equal('koan'.startswith('ko'), True, 'how a string begins')
+assert_equal('a-b-c'.replace('-', '+'), 'a+b+c', 'replace every match')

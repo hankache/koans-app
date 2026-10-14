@@ -1,0 +1,6 @@
+assert_equal('a,b,c'.split(','), ['a', 'b', 'c'], 'split at commas')
+assert_equal('  one  two '.split(), ['one', 'two'], 'with no argument, split at any whitespace')
+assert_equal('-'.join(['x', 'y', 'z']), 'x-y-z', 'join with a dash')
+assert_equal(''.join(reversed('abc')), 'cba', 'join with nothing between')
+assert_equal('ab' * 3, 'ababab', 'repeat a string')
+assert_equal(list('hi'), ['h', 'i'], 'a string is a sequence of characters')

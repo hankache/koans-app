@@ -1,0 +1,5 @@
+assert_raises(ZeroDivisionError, lambda: 1 / 0, 'dividing by zero')
+assert_raises(KeyError, lambda: {}['missing'], 'a key the dictionary does not have')
+assert_raises(IndexError, lambda: [1, 2, 3][10], 'an index past the end of a list')
+assert_raises(ValueError, lambda: int('ten'), 'int() wants digits')
+assert_raises(TypeError, lambda: 'a' + 1, 'a string and a number do not add up')

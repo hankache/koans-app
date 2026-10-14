@@ -39,6 +39,27 @@ https://github.com/ajaxorg/ace, under the BSD 3-Clause License:
 ${readFileSync(new URL('./licenses/Ace-BSD-3-Clause.txt', import.meta.url), 'utf8').trim()}
 \`\`\`
 
+## Pyodide and CPython
+
+The interpreter the Python koans run on: \`public/runtime/python/\` (\`pyodide.mjs\`,
+\`pyodide.asm.mjs\`, \`pyodide.asm.wasm\`, \`python_stdlib.zip\`, \`pyodide-lock.json\`), copied by
+\`npm run fetch-runtime\` from the \`pyodide\` npm package (the version pinned in
+\`languages/python/runtime.lock.json\`).
+
+Pyodide is licensed under the Mozilla Public License 2.0. Its source code is at
+https://github.com/pyodide/pyodide, tagged with the version above.
+
+\`\`\`
+${readFileSync(new URL('./licenses/Pyodide-MPL-2.0.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
+It contains CPython, the Python interpreter and its standard library, under the Python Software
+Foundation License (https://github.com/python/cpython):
+
+\`\`\`
+${readFileSync(new URL('./licenses/Python-PSF.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
 ## Fonts
 
 Fraunces, Inter and JetBrains Mono are loaded from Google Fonts at run time and are not

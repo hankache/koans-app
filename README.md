@@ -25,14 +25,16 @@ nothing to install and no need for accounts and log-ins. Progress is saved local
 
 The idea comes from [Ruby Koans](https://www.rubykoans.com/).
 
-> **Work in progress.** koans.app grows out of [Raku Koans](https://hankache.github.io/raku-koans/),
-> and Raku is its first language. The site still shows only Raku. [PLAN.md](PLAN.md) has the plan.
+> **Work in progress.** koans.app grows out of [Raku Koans](https://hankache.github.io/raku-koans/).
+> Raku and Python work; until the site has a language picker, Raku is the default and
+> `?lang=python` in the address opens Python. [PLAN.md](PLAN.md) has the plan.
 
 ## Languages
 
 | Language                      | Koans | Interpreter                                         | Tests written with |
 |-------------------------------|-------|-----------------------------------------------------|--------------------|
 | [Raku](languages/raku/)       | 105   | [Raku++](https://github.com/ash/rakupp) (Raku.js)   | Raku's `Test`      |
+| [Python](languages/python/)   | 20    | [Pyodide](https://pyodide.org) (CPython 3.14)       | `unittest`-style assertions |
 
 ## Running it locally
 
@@ -66,6 +68,7 @@ The koan list is compiled when the dev server starts, so restart it after adding
 languages/        one folder per language: its koans, prelude, highlighting and interpreter setup
   index.ts          the languages the app offers
   raku/             see languages/raku/README.md
+  python/           see languages/python/README.md
 src/              the app (Svelte 5 + TypeScript)
   components/       the path, the koan page, the editor, the result panel, the logo animation
   lib/              running koans, reading their results, progress, the language-pack interface
@@ -193,9 +196,15 @@ Then list it in [scripts/lib/languages.mjs](scripts/lib/languages.mjs) and
 
 Each language's interpreter comes from its official releases, and its
 `languages/<id>/runtime.lock.json` pins the release and the checksums of its files.
-`npm run fetch-runtime` verifies each download against the checksum published with the release and
-against the lock, and stops if either differs. The interpreter files aren't committed: the build
-fetches them.
+`npm run fetch-runtime` gets each one and checks it against the lock, and stops if anything
+differs. It comes from one of two kinds of source, set in the language's `node.mjs`:
+
+- **A GitHub release zip** (Raku): downloaded and also checked against the checksum published
+  with the release.
+- **An npm package** (Python): installed by `npm install`, which checks it against
+  `package-lock.json`, then copied.
+
+The interpreter files aren't committed: the build fetches them.
 
 To move a language to a newer release:
 
@@ -204,6 +213,9 @@ npm run fetch-runtime -- --lang raku --update     # the latest release, or: --up
 npm run check:koans -- --lang raku                # every koan must still pass before you publish
 npm test
 ```
+
+For an npm package, install the new version first (`npm install --save-dev pyodide@<version>`);
+`--update` then pins what's installed.
 
 ## Publishing
 

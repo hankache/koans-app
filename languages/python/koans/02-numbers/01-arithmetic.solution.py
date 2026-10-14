@@ -1,0 +1,6 @@
+assert_equal(7 + 3, 10, 'addition')
+assert_equal(7 - 10, -3, 'subtraction')
+assert_equal(7 * 3, 21, 'multiplication')
+assert_equal(2 ** 10, 1024, 'a power')
+assert_equal(2 + 3 * 4, 14, 'multiplication comes first')
+assert_equal((2 + 3) * 4, 20, 'parentheses come before everything')

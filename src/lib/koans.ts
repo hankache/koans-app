@@ -73,7 +73,7 @@ const PRELUDE_LINES = manifest.prelude.split('\n').length - 1;
 let runtime: WasmRuntime | undefined;
 /** Created lazily, but call early (e.g. on page load) to start downloading the interpreter. */
 export function getRuntime(): WasmRuntime {
-  return (runtime ??= new WasmRuntime(`${import.meta.env.BASE_URL}${pack.worker}`));
+  return (runtime ??= new WasmRuntime(`${import.meta.env.BASE_URL}${pack.worker.url}`, pack.worker.type));
 }
 
 export async function runKoan(code: string): Promise<Report> {

@@ -1,0 +1,6 @@
+assert_equal('ell' in 'hello', True, 'in finds a substring')
+assert_equal('apple' < 'banana', True, 'strings compare like a dictionary')
+assert_equal('Zebra' < 'apple', True, 'but capitals come before lower case')
+assert_equal('a' == 'A', False, 'case matters')
+assert_equal(ord('A'), 65, 'the code point of A')
+assert_equal(chr(97), 'a', 'and back from a code point')

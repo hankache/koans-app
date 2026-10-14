@@ -1,7 +1,8 @@
 import { describe, expect, test } from 'vitest';
 import { readKoans } from '../scripts/lib/koans.mjs';
 import { languages } from '../scripts/lib/languages.mjs';
-import { koanById, revealAnswer, type Koan, type Reveal } from '../src/lib/koans';
+import { packs } from '../languages';
+import { revealAnswer, type Koan, type Reveal } from '../src/lib/koans';
 import { runner } from './run';
 
 const fill = (code: string, r: Reveal) => {
@@ -56,6 +57,7 @@ describe('revealAnswer', () => {
 // Every koan as the browser sees it: the manifest the app ships, read by the app's own code.
 for (const lang of languages) {
   const { report } = await runner(lang.id);
+  const koanById = new Map(packs.find(p => p.id === lang.id)!.manifest.sections.flatMap(s => s.koans).map(k => [k.id, k]));
   describe.each(readKoans(lang).flatMap(s => s.koans))(`${lang.id}: $id`, ({ id, solution }) => {
     const koan = koanById.get(id)!;
 

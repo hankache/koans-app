@@ -1,0 +1,7 @@
+assert_equal(bool(0), False, 'zero is false')
+assert_equal(bool(42), True, 'other numbers are true')
+assert_equal(bool(''), False, 'the empty string is false')
+assert_equal(bool('0'), True, 'a string with something in it is true, even "0"')
+assert_equal(bool([]), False, 'an empty list is false')
+assert_equal(bool(None), False, 'None is false')
+assert_equal(not None, True, 'not turns false into True')

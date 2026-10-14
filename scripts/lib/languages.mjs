@@ -1,5 +1,6 @@
 // The languages the build tools know about. Each one is a folder in languages/ whose node.mjs
 // describes it; adding a language means adding it here.
+import python from '../../languages/python/node.mjs';
 import raku from '../../languages/raku/node.mjs';
 
 /**
@@ -14,14 +15,19 @@ import raku from '../../languages/raku/node.mjs';
  * @property {() => string} prelude  run before every koan
  * @property {string} epilogue     run after every koan
  * @property {(code: string) => string[]} lint  problems in a koan that running it can't reveal
- * @property {{ repo: string, asset: (tag: string) => string, files: string[], out: string }} runtime
- *   the interpreter: a zip attached to the GitHub releases of `repo`, with a .sha256 beside it;
- *   `files` are taken out of it into `out`
+ * @property {GithubZip | NpmPackage} runtime  where the interpreter comes from; its `files` go into `out`
  * @property {() => Promise<Engine>} load  the interpreter, under Node
  */
 
+/**
+ * @typedef {{ kind?: 'github-zip', repo: string, asset: (tag: string) => string, files: string[], out: string }} GithubZip
+ *   a zip attached to the GitHub releases of `repo`, with a .sha256 beside it
+ * @typedef {{ kind: 'npm', package: string, files: string[], out: string }} NpmPackage
+ *   an npm package in package.json, pinned by package-lock.json
+ */
+
 /** @type {Language[]} */
-export const languages = [raku];
+export const languages = [raku, python];
 
 /**
  * The languages named with --lang (repeat it, or separate names with commas), or else all of

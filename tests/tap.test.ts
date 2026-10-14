@@ -7,7 +7,7 @@ import type { ErrorSyntax } from '../src/lib/language';
 
 // Runs the interpreter can't report on itself: stopped by the watchdog, or crashed.
 describe('parseRun on aborted runs', () => {
-  const errors: ErrorSyntax = { line: /at line (\d+)/, message: m => m, recursionLimit: 200 };
+  const errors: ErrorSyntax = { line: /at line (\d+)/, message: ([m]) => m, recursionLimit: 200 };
   const aborted = (r: Partial<RunResult>) => parseRun({ rc: -1, lines: [], ...r }, 'is 1, 1;\n', 1, errors);
 
   test('timeout', () => {

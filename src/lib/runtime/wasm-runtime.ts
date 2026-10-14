@@ -25,12 +25,16 @@ export class WasmRuntime {
   private nextId = 1;
   private pending = new Map<number, (r: RunResult) => void>();
 
-  constructor(private workerUrl: string, private timeoutMs = 8000) {
+  constructor(
+    private workerUrl: string,
+    private workerType: WorkerType = 'classic',
+    private timeoutMs = 8000,
+  ) {
     this.spawn();
   }
 
   private spawn() {
-    this.worker = new Worker(this.workerUrl);
+    this.worker = new Worker(this.workerUrl, { type: this.workerType });
     this.ready = new Promise((resolve, reject) => {
       this.worker.onmessage = ({ data }) => {
         switch (data.type) {

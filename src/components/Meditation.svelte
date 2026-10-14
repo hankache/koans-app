@@ -3,6 +3,7 @@
   import type { Report } from '../lib/tap';
   import type { Reveal } from '../lib/koans';
   import LogoGate from './LogoGate.svelte';
+  import GateMark from './GateMark.svelte';
   import { modKey } from '../lib/platform';
   import { pack } from '../../languages';
 
@@ -78,7 +79,7 @@
     {@render answer()}
   {:else if report.status === 'passed'}
     <div class="celebrate">
-      {#key report}<LogoGate size={112} />{/key}
+      {#key report}{#if pack.art}<LogoGate size={112} />{:else}<div class="arrive"><GateMark size={96} /></div>{/if}{/key}
       <div>
         <p class="lead">Enlightenment!</p>
         <p class="small">{report.tests.length === 1 ? 'The assertion holds.' : `All ${report.tests.length} assertions hold.`}</p>
@@ -220,6 +221,12 @@
   }
   details { margin-top: 1rem; }
   summary { cursor: pointer; font-size: 0.85rem; color: var(--ink-soft); }
+  /* The gateless gate, for languages without their own artwork: it settles into place. */
+  .arrive { flex: none; animation: arrive 0.9s cubic-bezier(0.3, 1.4, 0.5, 1) both; }
+  @keyframes arrive {
+    from { transform: scale(0.6) rotate(-6deg); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
   kbd {
     font-family: var(--font-mono);
     font-size: 0.8em;

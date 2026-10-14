@@ -1,0 +1,6 @@
+assert_is(type(42), int, 'a whole number')
+assert_is(type(4.2), float, 'a number with a point')
+assert_is(type('42'), str, 'quotes make a string')
+assert_is(type(True), bool, 'True and False')
+assert_is(type([]), list, 'square brackets make a list')
+assert_is_instance(True, int, 'a bool is a kind of int')

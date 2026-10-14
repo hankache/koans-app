@@ -153,7 +153,7 @@ export function parseRun(result: RunResult, code: string, offset: number, errors
   // A compile error or an exception outside of any test.
   if (stderr.length && (result.rc !== 0 || !tests.length)) {
     const at = stderr.join('\n').match(errors.line);
-    const message = errors.message(stderr[0]);
+    const message = errors.message(stderr);
     return { status: 'error', tests, output, message, line: at ? toUserLine(Number(at[1])) : undefined };
   }
 
