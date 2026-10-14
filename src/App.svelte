@@ -8,6 +8,7 @@
   import KoanView from './components/KoanView.svelte';
   import Meter from './components/Meter.svelte';
   import { pack } from '../languages';
+  import { site } from './site';
 
   // Tiny hash router: #/ is the path, #/koan/<section>/<name> is a koan.
   let hash = $state(location.hash);
@@ -28,7 +29,7 @@
 </script>
 
 <header class="bar">
-  <a class="brand" href="#/"><GateMark size={32} /> <span>{pack.name} Koans</span></a>
+  <a class="brand" href="#/"><GateMark size={32} /> <span>{site.name}</span></a>
   <div class="meter"><Meter {passed} total={allKoans.length} /></div>
   <ThemeToggle />
 </header>
@@ -47,10 +48,10 @@
   © 2026 Naoum Hankache ·
   Code: <a href="https://opensource.org/license/artistic-2-0">Artistic License 2.0</a> ·
   Koans and artwork: <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> ·
-  <a href="https://github.com/hankache/raku-koans">GitHub</a>
+  <a href={site.repo}>GitHub</a>
   <span class="build">
     {#if __BUILD__}
-      Version <a href="https://github.com/hankache/raku-koans/commit/{__BUILD__.commit}">{__BUILD__.short}</a> · {__BUILD__.date}
+      Version <a href="{site.repo}/commit/{__BUILD__.commit}">{__BUILD__.short}</a> · {__BUILD__.date}
     {:else}
       Development build
     {/if}

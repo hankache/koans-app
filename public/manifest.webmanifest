@@ -1,6 +1,6 @@
 {
-  "name": "Raku Koans",
-  "short_name": "Raku Koans",
+  "name": "koans.app",
+  "short_name": "koans.app",
   "start_url": "./",
   "display": "browser",
   "background_color": "#f6f2e9",

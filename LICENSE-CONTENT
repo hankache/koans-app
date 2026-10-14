@@ -5,13 +5,14 @@ The koans of koans.app are licensed under the Creative Commons Attribution-Share
 International License (CC BY-SA 4.0), whose full text follows.
 Summary: https://creativecommons.org/licenses/by-sa/4.0/
 
-This covers, for every language:
+This covers, for every language (languages/<id>/koans/):
 
-  koans/NN-section/NN-name.raku            the koans: their titles, intros and code
-  koans/NN-section/NN-name.solution.raku   their solutions
-  koans/NN-section/_section.json           the groups' titles and blurbs
+  NN-section/NN-name.<ext>            the koans: their titles, intros and code
+  NN-section/NN-name.solution.<ext>   their solutions
+  NN-section/_section.json            the groups' titles and blurbs
 
-The prelude (koans/_prelude.raku) is code, under the Artistic License 2.0: see LICENSE.
+Each language's prelude (languages/<id>/prelude.*) is code, under the Artistic License 2.0:
+see LICENSE.
 
 Koans published earlier as part of Raku Koans (github.com/hankache/raku-koans) were
 released under the Artistic License 2.0, and those versions remain available under it.

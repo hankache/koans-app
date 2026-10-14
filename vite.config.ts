@@ -29,7 +29,7 @@ function buildInfo(command: string) {
 
 export default defineConfig(({ command }) => ({
   // Relative links, so one build works at a domain's root or in a sub-folder
-  // (e.g. user.github.io/raku-koans/). Safe because the app is a single page:
+  // (e.g. user.github.io/koans-app/). Safe because the app is a single page:
   // koans only change the #… part of the address, so the page is always index.html.
   base: './',
   define: {

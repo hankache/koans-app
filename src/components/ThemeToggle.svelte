@@ -6,7 +6,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  const KEY = 'raku-koans:theme';
+  const KEY = 'koans:theme';
   let theme = $state(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
 
   function apply(next: string) {

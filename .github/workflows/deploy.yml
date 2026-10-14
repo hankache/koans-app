@@ -28,7 +28,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      # Downloads the Raku++ release pinned in runtime.lock.json, verified against its checksums.
+      # Downloads each language's interpreter, pinned in languages/<id>/runtime.lock.json and verified.
       - run: npm run fetch-runtime
       # Every blank must fail while unfilled and every solution must pass.
       - run: npm run check:koans

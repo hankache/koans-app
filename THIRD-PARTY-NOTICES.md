@@ -1,17 +1,17 @@
 # Third-party notices
 
-Raku Koans ships the following third-party software in the built site. Their licenses are
+koans.app ships the following third-party software in the built site. Their licenses are
 reproduced below.
 
 ## Raku.js (Raku++)
 
-The interpreter the koans run on: `public/runtime/rakujs.js` and `rakujs.wasm`, downloaded by
+The interpreter the Raku koans run on: `public/runtime/raku/rakujs.js` and `rakujs.wasm`, downloaded by
 `npm run fetch-runtime` from the Raku++ releases at https://github.com/ash/rakupp/releases.
-Licensed under the Artistic License 2.0, the same license as Raku Koans' code; see `LICENSE`.
+Licensed under the Artistic License 2.0, the same license as koans.app's code; see `LICENSE`.
 
 ## Ace (Raku syntax highlighting)
 
-The editor's Raku highlighting (`src/lib/raku-mode.ts`, `src/lib/raku-words.ts`) is adapted
+The editor's Raku highlighting (`languages/raku/highlight.ts`, `languages/raku/words.ts`) is adapted
 from Ace's Raku mode (ace-builds 1.44.0, `src/mode/raku_highlight_rules.js`),
 https://github.com/ajaxorg/ace, under the BSD 3-Clause License:
 

@@ -2,6 +2,7 @@
   import { sections, allKoans } from '../lib/koans';
   import { progress } from '../lib/progress.svelte';
   import { pack } from '../../languages';
+  import { site } from '../site';
 
   const next = $derived(allKoans.find(k => progress.get(k.id)?.status !== 'passed'));
   const started = $derived(allKoans.some(k => progress.get(k.id)));
@@ -15,6 +16,8 @@
     confirming = false;
   }
 </script>
+
+<svelte:head><title>{pack.name} Koans · {site.name}</title></svelte:head>
 
 <section class="hero">
   <img class="logo" src="{import.meta.env.BASE_URL}{pack.art.logo.src}" alt={pack.art.logo.alt} width="200" height="200" />
