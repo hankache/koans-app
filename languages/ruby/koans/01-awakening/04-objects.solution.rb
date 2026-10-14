@@ -1,0 +1,6 @@
+assert_equal Integer, 42.class, 'numbers are objects'
+assert_equal String, 'hi'.class, 'so are strings'
+assert_equal Class, String.class, 'and classes themselves'
+assert_equal true, 42.respond_to?(:+), '+ is a method'
+assert_equal 3, 1.+(2), 'which you can call like any other'
+assert_equal true, 42.frozen?, 'some objects can never change'

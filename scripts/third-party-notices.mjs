@@ -88,6 +88,23 @@ Its notices for third-party material in the library files:
 ${readFileSync(new URL('../node_modules/typescript/ThirdPartyNoticeText.txt', import.meta.url), 'utf8').trim()}
 \`\`\`
 
+## ruby.wasm (Ruby)
+
+The interpreter the Ruby koans run on: \`public/runtime/ruby/ruby.wasm\` (CRuby compiled to
+WebAssembly) and \`browser.umd.js\`, downloaded by \`npm run fetch-runtime\` from the
+\`@ruby/4.0-wasm-wasi\` npm package (the version pinned in \`languages/ruby/runtime.lock.json\`),
+https://github.com/ruby/ruby.wasm. Its license:
+
+\`\`\`
+${readFileSync(new URL('./licenses/ruby.wasm-LICENSE.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
+And its notices, for Ruby itself and the libraries built into it:
+
+\`\`\`
+${readFileSync(new URL('./licenses/ruby.wasm-NOTICE.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
 ## Fonts
 
 Fraunces, Inter and JetBrains Mono are loaded from Google Fonts at run time and are not

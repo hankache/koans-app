@@ -1,0 +1,6 @@
+assert_equal -1, 1 <=> 2, 'less'
+assert_equal 1, 'b' <=> 'a', 'greater'
+assert_equal 0, 3 <=> 3, 'equal'
+assert_equal true, 5.between?(1, 10), 'between? includes both ends'
+assert_equal 10, 15.clamp(1, 10), 'clamp keeps a value within bounds'
+assert_equal [1, 3], [3, 1, 2].minmax, 'minmax gives both ends at once'

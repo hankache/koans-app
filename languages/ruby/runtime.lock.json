@@ -1,0 +1,10 @@
+{
+  "source": "https://www.npmjs.com/package/@ruby/4.0-wasm-wasi/v/2.10.1",
+  "tag": "2.10.1",
+  "version": "ruby 4.0.0",
+  "archive": "48ba7538badb10f829c13be0f79e109c7ed14a1d29f45a42a5d384eef18dc2ce",
+  "files": {
+    "dist/ruby.wasm": "84504b924bbaa5745c8280d711a1f0597d6374969b5a324d7e53994f32a94d32",
+    "dist/browser.umd.js": "43d796d63912dc7bf45b0a442c2d05a1419249eacee6c188ea9460b31e41c779"
+  }
+}

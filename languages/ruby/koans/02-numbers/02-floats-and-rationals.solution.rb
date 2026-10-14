@@ -1,0 +1,6 @@
+assert_equal false, 0.1 + 0.2 == 0.3, 'floats are approximations'
+assert_equal 0.3, (0.1 + 0.2).round(2), 'round them before comparing'
+assert_equal Integer, (2**100).class, 'integers grow as large as needed'
+assert_equal Rational, (1/3r).class, '1/3r is a rational'
+assert_equal 1/2r, 1/3r + 1/6r, 'and rationals add exactly'
+assert_equal 0.5, (1/2r).to_f, 'to_f turns one into a float'

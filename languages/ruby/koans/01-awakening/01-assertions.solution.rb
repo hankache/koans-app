@@ -1,0 +1,5 @@
+assert true, 'assert passes when given something true'
+refute false, 'refute passes when given something false'
+assert_equal 2, 1 + 1, 'assert_equal: what you expect, then what the code computes'
+assert_equal 'Ruby', 'Ru' + 'by', 'strings join with +'
+refute_equal 'dog', 'cat', 'refute_equal wants them to differ'

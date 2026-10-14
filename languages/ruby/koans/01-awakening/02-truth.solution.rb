@@ -1,0 +1,6 @@
+assert_equal true, !!true, 'true is true'
+assert_equal false, !!nil, 'nil counts as false'
+assert_equal true, !!0, 'zero counts as true'
+assert_equal true, !!'', 'so does the empty string'
+assert_equal true, !![], 'and an empty array'
+assert_equal 'default', (nil || 'default'), '|| picks the first true value'
