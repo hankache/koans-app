@@ -1,0 +1,5 @@
+assert.are.equal('3.14', string.format('%.2f', 3.14159), 'two decimals')
+assert.are.equal('00042', string.format('%05d', 42), 'padded with zeros')
+assert.are.equal('a-b', ('%s-%s'):format('a', 'b'), 'format as a method')
+assert.are.equal('ff', ('%x'):format(255), 'hexadecimal')
+assert.are.equal('"hi"', ('%q'):format('hi'), '%q quotes a string the way Lua would')

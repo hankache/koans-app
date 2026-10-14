@@ -1,0 +1,6 @@
+assert.has_error(function() error('stop') end, 'has_error wants the function to raise')
+assert.error_matches(function() error('out of coffee') end, 'coffee', 'error_matches checks the message')
+local ok, message = pcall(error, 'oops', 0)
+assert.are.equal(false, ok, 'pcall returns false when the call fails')
+assert.are.equal('oops', message, 'and the error message')
+assert.are.equal(true, (pcall(math.floor, 1.5)), 'and true when it works')

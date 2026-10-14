@@ -1,0 +1,6 @@
+assert.are.equal('integer', math.type(7 // 2), '// of integers is an integer')
+assert.are.equal('float', math.type(6 / 2), '/ is a float, even when it divides exactly')
+assert.are.equal(true, math.maxinteger + 1 == math.mininteger, 'integers wrap around')
+assert.are.equal(false, 0.1 + 0.2 == 0.3, 'floats are approximations')
+assert.are.equal(3, math.tointeger(3.0), 'a float with no fraction can become an integer')
+assert.are.equal(nil, math.tointeger(3.5), 'one with a fraction cannot')

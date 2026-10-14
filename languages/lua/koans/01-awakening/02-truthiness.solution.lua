@@ -1,0 +1,6 @@
+assert.are.equal(true, not not 0, 'zero counts as true')
+assert.are.equal(true, not not '', 'so does the empty string')
+assert.are.equal(false, not not nil, 'nil counts as false')
+assert.are.equal('default', nil or 'default', 'or picks the first true value')
+assert.are.equal(nil, nil and 'never', 'and stops at the first false one')
+assert.are.equal('big', 10 > 5 and 'big' or 'small', 'and with or chooses')

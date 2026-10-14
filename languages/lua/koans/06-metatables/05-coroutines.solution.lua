@@ -1,0 +1,15 @@
+local co = coroutine.create(function()
+  coroutine.yield(1)
+  coroutine.yield(2)
+  return 3
+end)
+assert.are.equal(1, select(2, coroutine.resume(co)), 'resume runs until the first yield')
+assert.are.equal('suspended', coroutine.status(co), 'then the coroutine waits')
+assert.are.equal(2, select(2, coroutine.resume(co)), 'and carries on from there')
+assert.are.equal(3, select(2, coroutine.resume(co)), 'until it returns')
+assert.are.equal('dead', coroutine.status(co), 'and is finished')
+local squares = coroutine.wrap(function()
+  for i = 1, 3 do coroutine.yield(i * i) end
+end)
+squares()
+assert.are.equal(4, squares(), 'wrap makes a generator')

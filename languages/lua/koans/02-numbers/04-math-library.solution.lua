@@ -1,0 +1,6 @@
+assert.are.equal(7, math.max(3, 7, 1), 'the largest')
+assert.are.equal(4, math.abs(-4), 'distance from zero')
+assert.are.equal(3, math.floor(3.7), 'floor rounds down')
+assert.are.equal(4, math.ceil(3.2), 'ceil rounds up')
+assert.are.equal(true, math.huge > 10 ^ 300, 'math.huge is infinity')
+assert.are.equal(true, math.pi > 3.14, 'and math.pi is what you think')

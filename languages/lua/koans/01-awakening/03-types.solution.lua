@@ -1,0 +1,7 @@
+assert.are.equal('number', type(42), 'numbers')
+assert.are.equal('string', type('hi'), 'strings')
+assert.are.equal('nil', type(nil), 'nil has a type of its own')
+assert.are.equal('table', type({}), 'tables are the only data structure')
+assert.are.equal('function', type(print), 'functions are values')
+assert.are.equal('integer', math.type(1), 'an integer')
+assert.are.equal('float', math.type(1.0), 'and a float')

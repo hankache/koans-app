@@ -1,0 +1,10 @@
+{
+  "source": "https://www.npmjs.com/package/wasmoon/v/1.16.0",
+  "tag": "1.16.0",
+  "version": "Lua 5.4 (wasmoon)",
+  "archive": "7a07cb6d39af10911fabd50740833477b18b47b6f03148f15218edf474c8af56",
+  "files": {
+    "dist/index.js": "dc2dcf019449008bb224370052473dc760db28b3ba14fc604e1ca3e8646af35d",
+    "dist/glue.wasm": "95f3f19ddb740125883bc41d5ec670cd0828e7b58c8bdad385323cbff497b55c"
+  }
+}

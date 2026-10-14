@@ -1,0 +1,6 @@
+assert.are.equal(3.5, 7 / 2, '/ divides exactly')
+assert.are.equal(3, 7 // 2, '// rounds down')
+assert.are.equal(-4, -7 // 2, 'down means toward minus infinity')
+assert.are.equal(1, 7 % 3, '% is the remainder')
+assert.are.equal(2, -7 % 3, 'with the sign of the divisor')
+assert.are.equal(1024.0, 2 ^ 10, '^ is a power')

@@ -1,0 +1,5 @@
+assert.are.equal(5, #'hello', '# is the length')
+assert.are.equal('hello world', 'hello' .. ' ' .. 'world', '.. joins')
+assert.are.equal(3, #'a\nb', '\\n is one character')
+assert.are.equal(4, #[[a\nb]], 'in long brackets, it is two')
+assert.are.equal('ababab', string.rep('ab', 3), 'rep repeats')

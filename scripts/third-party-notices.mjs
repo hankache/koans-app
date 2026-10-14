@@ -105,6 +105,23 @@ And its notices, for Ruby itself and the libraries built into it:
 ${readFileSync(new URL('./licenses/ruby.wasm-NOTICE.txt', import.meta.url), 'utf8').trim()}
 \`\`\`
 
+## wasmoon (Lua)
+
+The interpreter the Lua koans run on: \`public/runtime/lua/index.js\` and \`glue.wasm\` (Lua 5.4
+compiled to WebAssembly), downloaded by \`npm run fetch-runtime\` from the \`wasmoon\` npm package
+(the version pinned in \`languages/lua/runtime.lock.json\`), https://github.com/ceifa/wasmoon.
+Its license (from its repository; the npm package has no copy):
+
+\`\`\`
+${readFileSync(new URL('./licenses/wasmoon-LICENSE.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
+It contains Lua, https://www.lua.org, under the MIT License:
+
+\`\`\`
+${readFileSync(new URL('./licenses/Lua-MIT.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
 ## Fonts
 
 Fraunces, Inter and JetBrains Mono are loaded from Google Fonts at run time and are not

@@ -1,0 +1,6 @@
+assert.are.equal(42, tonumber('42'), 'a string of digits')
+assert.are.equal(nil, tonumber('42px'), 'tonumber wants the whole string')
+assert.are.equal(255, tonumber('ff', 16), 'in any base')
+assert.are.equal('42', tostring(42), 'tostring')
+assert.are.equal(15, '10' + 5, 'arithmetic converts strings to numbers')
+assert.are.equal('105', '10' .. 5, 'and .. converts numbers to strings')

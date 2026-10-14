@@ -27,6 +27,7 @@ const LANGUAGES = [
   { id: 'python', ext: 'py', error: "assert_equal(1, 1, 'fine')\nprint(nope)", says: /NameError/, loop: 'while True:\n    pass' },
   { id: 'javascript', ext: 'js', error: "assert.ok(true, 'fine');\nnope();", says: /ReferenceError/, loop: 'while (true) {}' },
   { id: 'ruby', ext: 'rb', error: "assert true, 'fine'\nnope", says: /NameError/, loop: 'loop { }' },
+  { id: 'lua', ext: 'lua', error: "assert(true, 'fine')\nnope()", says: /attempt to call a nil value/, loop: 'while true do end' },
   { id: 'typescript', ext: 'ts', error: "assert.ok(true, 'fine');\nconst n: number = 'text';", says: /TS2322/, loop: 'while (true) {}' },
 ];
 

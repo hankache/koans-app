@@ -1,0 +1,6 @@
+assert.are.equal(7, ('hello world'):find('world'), 'find gives where it starts')
+assert.are.equal('42', ('order 42'):match('%d+'), 'match gives what matched')
+local key, value = ('name=Ada'):match('(%a+)=(%a+)')
+assert.are.equal('Ada', value, 'parentheses capture parts')
+assert.are.equal('a#b#', (('a1b2'):gsub('%d', '#')), 'gsub replaces every match')
+assert.are.equal(2, select(2, ('a1b2'):gsub('%d', '#')), 'and also says how many')

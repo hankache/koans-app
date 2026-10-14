@@ -1,0 +1,6 @@
+assert(true, 'assert passes when given something true')
+assert.are.equal(2, 1 + 1, 'are.equal: what you expect, then what the code computes')
+assert.are.equal('Lua', 'Lu' .. 'a', '.. joins strings')
+assert.is_true(true, 'is_true wants true itself')
+assert.is_nil(nil, 'is_nil wants nil')
+assert.are.same({1, 2}, {1, 2}, 'are.same compares tables by their contents')

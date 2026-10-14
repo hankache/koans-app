@@ -37,6 +37,7 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/).
 | [JavaScript](languages/javascript/) | 30 | the browser's own engine                      | Node's `assert` API |
 | [TypeScript](languages/typescript/) | 30 | the TypeScript 6 compiler, then the browser's engine | Node's `assert` API, plus type assertions |
 | [Ruby](languages/ruby/)       | 30    | [ruby.wasm](https://github.com/ruby/ruby.wasm) (CRuby 4.0) | Minitest's assertions |
+| [Lua](languages/lua/)         | 30    | [wasmoon](https://github.com/ceifa/wasmoon) (Lua 5.4) | busted's assertions |
 
 ## Running it locally
 
@@ -75,6 +76,7 @@ languages/        one folder per language: its koans, prelude, highlighting and 
   javascript/       see languages/javascript/README.md
   typescript/       see languages/typescript/README.md
   ruby/             see languages/ruby/README.md
+  lua/              see languages/lua/README.md
   _template/        a starting point for a new language
 src/              the app (Svelte 5 + TypeScript)
   components/       the home page, the path, the koan page, the editor, the result panel, the logo animation
@@ -233,8 +235,9 @@ differs. It comes from one of two kinds of source, set in the language's `node.m
   with the release.
 - **An npm package** (Python's Pyodide, JavaScript's Acorn parser, the TypeScript compiler): installed by `npm install`,
   which checks it against `package-lock.json`, then copied.
-- **An npm package too big to install** (Ruby's ruby.wasm): its tarball is downloaded from the
-  npm registry and checked against the integrity hash the registry publishes.
+- **An npm package not worth installing** (Ruby's ruby.wasm, too big; Lua's wasmoon, with
+  dependencies of its own): its tarball is downloaded from the npm registry and checked against the
+  integrity hash the registry publishes.
 
 The interpreter files aren't committed: the build fetches them.
 
