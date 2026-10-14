@@ -1,0 +1,10 @@
+{
+  "source": "https://www.npmjs.com/package/sql.js/v/1.14.2",
+  "tag": "1.14.2",
+  "version": "SQLite 3.49.1 (sql.js)",
+  "archive": "9d491337e1850df39362be640c23f9751bf0fbd33fc232c2a580bb87b70d62fd",
+  "files": {
+    "dist/sql-wasm.js": "f1c84000dbc856c9d87f4f3aabc4d3654bd436165db4be3da13751db3a9c20d7",
+    "dist/sql-wasm.wasm": "38c14f6e379210bc942bdc4ebca44e7bfdb4318ecc1c72ca666a28fdce96670a"
+  }
+}

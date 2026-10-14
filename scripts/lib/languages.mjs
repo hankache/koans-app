@@ -5,6 +5,7 @@ import lua from '../../languages/lua/node.mjs';
 import python from '../../languages/python/node.mjs';
 import raku from '../../languages/raku/node.mjs';
 import ruby from '../../languages/ruby/node.mjs';
+import sql from '../../languages/sql/node.mjs';
 import typescript from '../../languages/typescript/node.mjs';
 
 /**
@@ -19,7 +20,7 @@ import typescript from '../../languages/typescript/node.mjs';
  * @property {string} comment      starts a koan's header lines (# title: …): '#', '//'
  * @property {() => string} prelude  run before every koan
  * @property {string} epilogue     run after every koan
- * @property {(code: string) => string[]} lint  problems in a koan that running it can't reveal
+ * @property {(code: string) => string[] | Promise<string[]>} lint  problems in a koan that running it can't reveal
  * @property {GithubZip | NpmPackage | NpmTarball} runtime  where the interpreter comes from; its `files` go into `out`
  * @property {() => Promise<Engine>} load  the interpreter, under Node
  */
@@ -36,7 +37,7 @@ import typescript from '../../languages/typescript/node.mjs';
  */
 
 /** @type {Language[]} */
-export const languages = [raku, python, javascript, typescript, ruby, lua];
+export const languages = [raku, python, javascript, typescript, ruby, lua, sql];
 
 /**
  * The languages named with --lang (repeat it, or separate names with commas), or else all of

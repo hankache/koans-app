@@ -33,7 +33,7 @@ for (const lang of chosenLanguages()) {
   for (const section of readKoans(lang)) {
     for (const koan of section.koans) {
       if (!koan.code.includes('___')) { fail(koan, 'koan has no ___ blank to fill in'); continue; }
-      for (const problem of lang.lint(koan.code)) fail(koan, problem);
+      for (const problem of await lang.lint(koan.code)) fail(koan, problem);
       const unsolved = await run(koan.code);
       const failing = failingLines(unsolved, offset);
       const silent = koan.code.split('\n').flatMap((l, i) => (l.includes('___') && !failing.has(i + 1) ? [i + 1] : []));

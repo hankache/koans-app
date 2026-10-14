@@ -14,21 +14,24 @@ import { fileURLToPath } from 'node:url';
 import { computeSystemExecutablePath } from '@puppeteer/browsers';
 import puppeteer from 'puppeteer-core';
 import { preview } from 'vite';
+import { readKoans } from '../../scripts/lib/koans.mjs';
+import { languages as toolLanguages } from '../../scripts/lib/languages.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const koanIds = JSON.parse(readFileSync(join(root, 'src/generated/summary.json'), 'utf8'));
 
 /**
- * Each language's koan flow: its first koan's solution comes from its files; `error` must stop
- * with an error on line 2 matching `says`, and `loop` must never end.
+ * Each language's koan flow, on its first koan (taken, with its solution, from its files): `error`
+ * must stop with an error on line 2 matching `says`, and `loop` must never end.
  */
 const LANGUAGES = [
-  { id: 'raku', ext: 'raku', error: "is 1, 1, 'fine';\ndie 'boom';", says: /boom/, loop: 'loop { }' },
-  { id: 'python', ext: 'py', error: "assert_equal(1, 1, 'fine')\nprint(nope)", says: /NameError/, loop: 'while True:\n    pass' },
-  { id: 'javascript', ext: 'js', error: "assert.ok(true, 'fine');\nnope();", says: /ReferenceError/, loop: 'while (true) {}' },
-  { id: 'ruby', ext: 'rb', error: "assert true, 'fine'\nnope", says: /NameError/, loop: 'loop { }' },
-  { id: 'lua', ext: 'lua', error: "assert(true, 'fine')\nnope()", says: /attempt to call a nil value/, loop: 'while true do end' },
-  { id: 'typescript', ext: 'ts', error: "assert.ok(true, 'fine');\nconst n: number = 'text';", says: /TS2322/, loop: 'while (true) {}' },
+  { id: 'raku', error: "is 1, 1, 'fine';\ndie 'boom';", says: /boom/, loop: 'loop { }' },
+  { id: 'python', error: "assert_equal(1, 1, 'fine')\nprint(nope)", says: /NameError/, loop: 'while True:\n    pass' },
+  { id: 'javascript', error: "assert.ok(true, 'fine');\nnope();", says: /ReferenceError/, loop: 'while (true) {}' },
+  { id: 'ruby', error: "assert true, 'fine'\nnope", says: /NameError/, loop: 'loop { }' },
+  { id: 'lua', error: "assert(true, 'fine')\nnope()", says: /attempt to call a nil value/, loop: 'while true do end' },
+  { id: 'sql', error: "SELECT 1; -- expect: 1\nINSERT INTO nowhere VALUES (1);", says: /no such table/, loop: 'WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM n) SELECT count(*) FROM n;' },
+  { id: 'typescript', error: "assert.ok(true, 'fine');\nconst n: number = 'text';", says: /TS2322/, loop: 'while (true) {}' },
 ];
 
 // --- Which browsers
@@ -135,12 +138,14 @@ async function checkSite(browser, base) {
 
   // Every language's koan flow
   for (const lang of LANGUAGES) {
-    await page.goto(`${base}#/${lang.id}/koan/awakening/assertions`);
+    const first = readKoans(toolLanguages.find(l => l.id === lang.id))[0].koans[0];
+    const blankLine = first.code.split('\n').findIndex(l => l.includes('___')) + 1;
+    await page.goto(`${base}#/${lang.id}/koan/${first.id}`);
     await page.waitForSelector('.cm-content');
     await page.click('button.primary');
-    check(`${lang.id}: the unsolved koan points at line 1`, /Meditate on line 1/.test(await panel(page, /Meditate/)));
+    check(`${lang.id}: the unsolved koan points at its first blank`, new RegExp(`Meditate on line ${blankLine}\\b`).test(await panel(page, /Meditate/)));
 
-    const solution = readFileSync(join(root, `languages/${lang.id}/koans/01-awakening/01-assertions.solution.${lang.ext}`), 'utf8').trimEnd();
+    const solution = first.solution.trimEnd();
     await setCode(page, solution);
     await page.keyboard.down('Control');
     await page.keyboard.press('Enter');

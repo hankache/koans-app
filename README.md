@@ -38,6 +38,7 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/).
 | [TypeScript](languages/typescript/) | 30 | the TypeScript 6 compiler, then the browser's engine | Node's `assert` API, plus type assertions |
 | [Ruby](languages/ruby/)       | 30    | [ruby.wasm](https://github.com/ruby/ruby.wasm) (CRuby 4.0) | Minitest's assertions |
 | [Lua](languages/lua/)         | 30    | [wasmoon](https://github.com/ceifa/wasmoon) (Lua 5.4) | busted's assertions |
+| [SQL](languages/sql/)         | 30    | [sql.js](https://github.com/sql-js/sql.js) (SQLite 3.49) | expected rows in `-- expect:` comments |
 
 ## Running it locally
 
@@ -77,6 +78,7 @@ languages/        one folder per language: its koans, prelude, highlighting and 
   typescript/       see languages/typescript/README.md
   ruby/             see languages/ruby/README.md
   lua/              see languages/lua/README.md
+  sql/              see languages/sql/README.md
   _template/        a starting point for a new language
 src/              the app (Svelte 5 + TypeScript)
   components/       the home page, the path, the koan page, the editor, the result panel, the logo animation
@@ -167,6 +169,7 @@ a one-line blurb.
   "Meditate on line N" by looking for `___` on that line.
 
 Each language's README adds its own rules, like [Raku's](languages/raku/README.md#rules-for-raku-blanks).
+SQL, which has no assertions, has [rules of its own](languages/sql/README.md#rules-for-sql-blanks).
 
 Numeric prefixes set the order but are dropped from ids (`lists-and-hashes/hashes`), so koans can
 be reordered without losing anyone's progress. Renaming a koan, or moving it to another group,
@@ -236,7 +239,7 @@ differs. It comes from one of two kinds of source, set in the language's `node.m
 - **An npm package** (Python's Pyodide, JavaScript's Acorn parser, the TypeScript compiler): installed by `npm install`,
   which checks it against `package-lock.json`, then copied.
 - **An npm package not worth installing** (Ruby's ruby.wasm, too big; Lua's wasmoon, with
-  dependencies of its own): its tarball is downloaded from the npm registry and checked against the
+  dependencies of its own; SQL's sql.js, with many builds): its tarball is downloaded from the npm registry and checked against the
   integrity hash the registry publishes.
 
 The interpreter files aren't committed: the build fetches them.

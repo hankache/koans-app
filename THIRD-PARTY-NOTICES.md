@@ -2387,6 +2387,61 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
+## sql.js (SQLite)
+
+The database the SQL koans run on: `public/runtime/sql/sql-wasm.js` and `sql-wasm.wasm` (SQLite
+compiled to WebAssembly), downloaded by `npm run fetch-runtime` from the `sql.js` npm package (the
+version pinned in `languages/sql/runtime.lock.json`), https://github.com/sql-js/sql.js. Its license:
+
+```
+MIT license
+===========
+
+Copyright (c) 2017 sql.js authors (see AUTHORS)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+
+# Some portions of the Makefile taken from:
+Copyright 2017 Ryusei Yamaguchi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
+
+It contains SQLite, https://sqlite.org, which is in the public domain.
+
 ## Fonts
 
 Fraunces, Inter and JetBrains Mono are loaded from Google Fonts at run time and are not
@@ -2394,12 +2449,13 @@ distributed with the site. All three are under the SIL Open Font License 1.1.
 
 ## JavaScript packages
 
-### @codemirror/autocomplete 6.20.3, @codemirror/commands 6.11.1, @codemirror/lang-javascript 6.2.5, @codemirror/lang-python 6.2.1, @codemirror/language 6.12.4, @codemirror/legacy-modes 6.5.4, @codemirror/lint 6.9.7, @codemirror/state 6.7.6, @codemirror/view 6.43.13
+### @codemirror/autocomplete 6.20.3, @codemirror/commands 6.11.1, @codemirror/lang-javascript 6.2.5, @codemirror/lang-python 6.2.1, @codemirror/lang-sql 6.10.0, @codemirror/language 6.12.4, @codemirror/legacy-modes 6.5.4, @codemirror/lint 6.9.7, @codemirror/state 6.7.6, @codemirror/view 6.43.13
 
 - @codemirror/autocomplete 6.20.3 (MIT)
 - @codemirror/commands 6.11.1 (MIT)
 - @codemirror/lang-javascript 6.2.5 (MIT)
 - @codemirror/lang-python 6.2.1 (MIT)
+- @codemirror/lang-sql 6.10.0 (MIT)
 - @codemirror/language 6.12.4 (MIT)
 - @codemirror/legacy-modes 6.5.4 (MIT)
 - @codemirror/lint 6.9.7 (MIT)

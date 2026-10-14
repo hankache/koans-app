@@ -1,0 +1,4 @@
+{
+  "title": "Subqueries, CTEs and windows",
+  "blurb": "Queries inside queries, WITH, recursion, window functions, and JSON."
+}
