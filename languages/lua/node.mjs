@@ -4,7 +4,6 @@
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
-import { compileFunction, constants } from 'node:vm';
 
 const dir = fileURLToPath(new URL('./', import.meta.url));
 const runtimeDir = fileURLToPath(new URL('../../public/runtime/lua/', import.meta.url));
@@ -48,14 +47,17 @@ export default {
     try {
       ({ makeRunner } = await import(runtimeDir + 'worker.js'));
       // index.js is a UMD bundle; under Node it's CommonJS, which our "type": "module" package can't
-      // require directly, so give it the CommonJS variables it expects. It also uses import(), which
-      // needs a loader wherever the code was compiled (the test runner has none by default).
-      const module = { exports: {} };
+      // require directly, so give it the CommonJS variables it expects. Its one import(), of Node's
+      // module for createRequire, is handed createRequire directly: code made by new Function can't
+      // import() under the test runner.
       const file = runtimeDir + 'index.js';
-      compileFunction(readFileSync(file, 'utf8'), ['module', 'exports', 'require', '__dirname', '__filename'], {
-        filename: file,
-        importModuleDynamically: constants.USE_MAIN_CONTEXT_DEFAULT_LOADER,
-      })(module, module.exports, createRequire(file), runtimeDir, file);
+      const source = readFileSync(file, 'utf8');
+      const IMPORT = "await import('module')";
+      if (!source.includes(IMPORT)) throw new Error(`wasmoon changed: ${IMPORT} not found in index.js`);
+      const module = { exports: {} };
+      new Function('module', 'exports', 'require', '__dirname', '__filename', '__createRequire',
+        source.replace(IMPORT, '({ createRequire: __createRequire })'),
+      )(module, module.exports, createRequire(file), runtimeDir, file, createRequire);
       ({ LuaFactory } = module.exports);
     } catch (e) {
       throw new Error(`Lua runtime missing — run \`npm run fetch-runtime\` first. (${e.message})`);
