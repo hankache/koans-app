@@ -1,14 +1,10 @@
 {
-  "name": "raku-koans",
+  "name": "koans-app",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Raku Koans — walk the path to enlightenment in your browser",
+  "description": "koans.app — learn programming languages by fixing failing tests, in your browser",
   "license": "Artistic-2.0",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hankache/raku-koans.git"
-  },
   "scripts": {
     "fetch-runtime": "node scripts/fetch-runtime.mjs",
     "build:koans": "node scripts/build-koans.mjs",
