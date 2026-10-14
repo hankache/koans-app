@@ -5,8 +5,9 @@ import type { LanguagePack } from '../src/lib/language';
 import javascript from './javascript/pack';
 import python from './python/pack';
 import raku from './raku/pack';
+import typescript from './typescript/pack';
 
-export const packs: LanguagePack[] = [raku, python, javascript];
+export const packs: LanguagePack[] = [raku, python, javascript, typescript];
 
 export const packById = new Map(packs.map(p => [p.id, p]));
 

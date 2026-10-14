@@ -70,6 +70,24 @@ package (the version pinned in \`languages/javascript/runtime.lock.json\`), http
 ${readFileSync(new URL('../node_modules/acorn/LICENSE', import.meta.url), 'utf8').trim()}
 \`\`\`
 
+## TypeScript
+
+The compiler the TypeScript koans are checked and compiled with, and the library files they're
+checked against: \`public/runtime/typescript/typescript.js\` and \`lib.*.d.ts\`, copied by
+\`npm run fetch-runtime\` from the \`typescript\` npm package (the version pinned in
+\`languages/typescript/runtime.lock.json\`), https://github.com/microsoft/TypeScript. Licensed
+under the Apache License 2.0:
+
+\`\`\`
+${readFileSync(new URL('../node_modules/typescript/LICENSE.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
+Its notices for third-party material in the library files:
+
+\`\`\`
+${readFileSync(new URL('../node_modules/typescript/ThirdPartyNoticeText.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
 ## Fonts
 
 Fraunces, Inter and JetBrains Mono are loaded from Google Fonts at run time and are not

@@ -1,0 +1,10 @@
+const scores: number[] = [90, 85];
+assert.type<number[]>(scores, 'an array of numbers');
+const pair: [string, number] = ['Ada', 36];
+assert.type<[string, number]>(pair, 'a tuple fixes the length and each type');
+assert.type<number>(pair[1], 'each position has its own type');
+const [who] = pair;
+assert.type<string>(who, 'destructuring keeps them');
+assert.equal(pair.length, 2, 'a tuple is an array when the code runs');
+const names: readonly string[] = ['Ada'];
+assert.typeEqual<typeof names, readonly string[]>('readonly arrays cannot be changed');

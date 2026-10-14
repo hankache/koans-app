@@ -26,6 +26,7 @@ const LANGUAGES = [
   { id: 'raku', ext: 'raku', error: "is 1, 1, 'fine';\ndie 'boom';", says: /boom/, loop: 'loop { }' },
   { id: 'python', ext: 'py', error: "assert_equal(1, 1, 'fine')\nprint(nope)", says: /NameError/, loop: 'while True:\n    pass' },
   { id: 'javascript', ext: 'js', error: "assert.ok(true, 'fine');\nnope();", says: /ReferenceError/, loop: 'while (true) {}' },
+  { id: 'typescript', ext: 'ts', error: "assert.ok(true, 'fine');\nconst n: number = 'text';", says: /TS2322/, loop: 'while (true) {}' },
 ];
 
 // --- Which browsers

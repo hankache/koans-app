@@ -10,6 +10,6 @@
     "skipLibCheck": true,
     "types": ["svelte", "vite/client"]
   },
-  "include": ["src/**/*.ts", "src/**/*.svelte", "languages/**/*.ts"],
-  "exclude": ["**/*.test.ts", "languages/_template/**"]
+  "include": ["src/**/*.ts", "src/**/*.svelte", "languages/*.ts", "languages/*/*.ts"],
+  "exclude": ["**/*.test.ts", "languages/_template/**", "languages/*/prelude.*"]
 }

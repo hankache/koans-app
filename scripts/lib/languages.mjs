@@ -3,6 +3,7 @@
 import javascript from '../../languages/javascript/node.mjs';
 import python from '../../languages/python/node.mjs';
 import raku from '../../languages/raku/node.mjs';
+import typescript from '../../languages/typescript/node.mjs';
 
 /**
  * @typedef {{ stream: 'out' | 'err', text: string }} OutputLine
@@ -30,7 +31,7 @@ import raku from '../../languages/raku/node.mjs';
  */
 
 /** @type {Language[]} */
-export const languages = [raku, python, javascript];
+export const languages = [raku, python, javascript, typescript];
 
 /**
  * The languages named with --lang (repeat it, or separate names with commas), or else all of

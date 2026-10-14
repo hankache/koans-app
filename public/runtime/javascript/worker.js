@@ -74,14 +74,26 @@ export function deepEqual(a, b, seen = new Map()) {
   return keys.length === Object.keys(b).length && keys.every(k => Object.hasOwn(b, k) && deepEqual(a[k], b[k], seen));
 }
 
-/** The koan's line that made this call: the first stack frame in koan.js below the prelude (line 1). */
-function learnerLine(stack = new Error().stack ?? '') {
-  for (const m of stack.matchAll(/koan\.js:(\d+):\d+/g)) if (Number(m[1]) > 1) return Number(m[1]);
+/**
+ * The koan's line in a stack trace: the first frame in koan.js below the prelude (line 1).
+ * `mapLine` turns a line of the code that ran into a line of the koan, for code that was compiled
+ * first (TypeScript's types are removed before it runs).
+ */
+function learnerLine(stack, mapLine = n => n) {
+  for (const m of stack.matchAll(/koan\.js:(\d+):\d+/g)) {
+    const line = mapLine(Number(m[1]));
+    if (line > 1) return line;
+  }
   return 0;
 }
 
-/** Node's assert (the strict flavour), printing TAP: a failure reports itself and the koan carries on. */
-function makeAssert(out, err) {
+/**
+ * Node's assert (the strict flavour), printing TAP: a failure reports itself and the koan carries on.
+ * With `typeChecks` (a Map from koan line to a check the TypeScript worker made before the run),
+ * it also has assert.type and assert.typeEqual, which report those checks in their turn.
+ */
+function makeAssert(out, err, { mapLine, typeChecks } = {}) {
+  const here = () => learnerLine(new Error().stack ?? '', mapLine);
   let tests = 0;
   const report = (ok, msg, line, diag = []) => {
     tests++;
@@ -96,7 +108,7 @@ function makeAssert(out, err) {
     report(ok, msg, line, [`expected: ${show(expected)}`, `     got: ${show(actual)}`]);
   // Every assertion fails when given ___, whatever it would otherwise check.
   const check = (args, msg, test) => {
-    const line = learnerLine();
+    const line = here();
     return args.some(a => a === ___) ? report(false, msg, line) : test(line);
   };
   // assert.throws(fn, 'message') takes the string as the message, as Node does.
@@ -131,7 +143,7 @@ function makeAssert(out, err) {
     },
     rejects: async (promiseOrFn, expected, msg) => {
       [expected, msg] = wanted(expected, msg);
-      const line = learnerLine();
+      const line = here();
       if ([promiseOrFn, expected].some(a => a === ___)) {
         // Still settle the promise, so its rejection doesn't go unhandled.
         if (typeof promiseOrFn?.then === 'function') promiseOrFn.then(undefined, () => {});
@@ -145,11 +157,23 @@ function makeAssert(out, err) {
       return report(false, msg, line, [`expected: ${expected === undefined ? 'a rejection' : show(expected)}`, '     got: it resolved']);
     },
   });
+
+  if (typeChecks) {
+    const typeCheck = msg => {
+      const line = here();
+      const found = typeChecks.get(line);
+      if (!found) return report(false, msg, line, ['no type check was made for this line']);
+      if (found.blank) return report(false, msg, line);
+      return report(found.ok, msg, line, [`expected: ${found.expected}`, `     got: ${found.actual}`]);
+    };
+    assert.type = (value, msg) => typeCheck(msg);
+    assert.typeEqual = msg => typeCheck(msg);
+  }
   return assert;
 }
 
 /** An error the koan didn't catch, as stderr lines: its message, then the koan's line. */
-async function describe(error, src) {
+async function describe(error, src, mapLine) {
   if (error instanceof SyntaxError && !/koan\.js:\d+/.test(error.stack ?? '')) {
     // Browsers don't say where a syntax error is in eval'd code; a parser does.
     const { parse } = await import('./acorn.mjs');
@@ -160,12 +184,15 @@ async function describe(error, src) {
     }
   }
   const head = error instanceof Error ? `${error.name}: ${error.message}` : `Uncaught ${show(error)}`;
-  const line = error instanceof Error ? learnerLine(error.stack ?? '') : 0;
+  const line = error instanceof Error ? learnerLine(error.stack ?? '', mapLine) : 0;
   return line ? [head, `    at ${FILE}:${line}`] : [head];
 }
 
-/** Runs a whole koan (prelude + code + epilogue); returns its exit code and output lines. */
-export async function run(src) {
+/**
+ * Runs a whole koan (prelude + code + epilogue); returns its exit code and output lines.
+ * `options` (mapLine, typeChecks) are for code compiled from TypeScript: see makeAssert.
+ */
+export async function run(src, options = {}) {
   const lines = [];
   const push = stream => text => {
     for (const t of String(text).split('\n')) lines.push({ stream, text: t });
@@ -175,12 +202,12 @@ export async function run(src) {
   const format = args => args.map(a => (typeof a === 'string' ? a : show(a))).join(' ');
   const console = globalThis.console;
   globalThis.console = { ...console, log: (...a) => out(format(a)), info: (...a) => out(format(a)), warn: (...a) => err(format(a)), error: (...a) => err(format(a)) };
-  globalThis.__koan = { ___, assert: makeAssert(out, err) };
+  globalThis.__koan = { ___, assert: makeAssert(out, err, options) };
   try {
     await (0, eval)(`${src}\n//# sourceURL=${FILE}`);
     return { rc: 0, lines };
   } catch (error) {
-    for (const line of await describe(error, src)) err(line);
+    for (const line of await describe(error, src, options.mapLine)) err(line);
     return { rc: 1, lines };
   } finally {
     globalThis.console = console;
@@ -188,8 +215,9 @@ export async function run(src) {
   }
 }
 
-// In a browser worker: answer the page.
-if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
+// In a browser worker, when this is the worker's own script (not imported by another worker's,
+// as TypeScript's imports it): answer the page.
+if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope && self.location.href === import.meta.url) {
   Error.stackTraceLimit = 50;
   self.onmessage = async ({ data }) => {
     if (data.type !== 'run') return;

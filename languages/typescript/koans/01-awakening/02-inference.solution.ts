@@ -1,0 +1,12 @@
+const name = 'Ada';
+assert.type<'Ada'>(name, 'a const string has its exact value as its type');
+let city = 'London';
+assert.type<string>(city, 'a let widens to string');
+const year = 1815;
+assert.type<1815>(year, 'numbers too');
+const list = [1, 2, 3];
+assert.type<number[]>(list, 'an array of numbers');
+const mixed = [1, 'two'];
+assert.type<(string | number)[]>(mixed, 'mixed items give an array of a union');
+const point = { x: 1, y: 2 };
+assert.type<{ x: number; y: number }>(point, 'object properties widen, since they may change');

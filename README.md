@@ -35,6 +35,7 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/).
 | [Raku](languages/raku/)       | 105   | [Raku++](https://github.com/ash/rakupp) (Raku.js)   | Raku's `Test`      |
 | [Python](languages/python/)   | 20    | [Pyodide](https://pyodide.org) (CPython 3.14)       | `unittest`-style assertions |
 | [JavaScript](languages/javascript/) | 30 | the browser's own engine                      | Node's `assert` API |
+| [TypeScript](languages/typescript/) | 30 | the TypeScript 6 compiler, then the browser's engine | Node's `assert` API, plus type assertions |
 
 ## Running it locally
 
@@ -71,6 +72,7 @@ languages/        one folder per language: its koans, prelude, highlighting and 
   raku/             see languages/raku/README.md
   python/           see languages/python/README.md
   javascript/       see languages/javascript/README.md
+  typescript/       see languages/typescript/README.md
   _template/        a starting point for a new language
 src/              the app (Svelte 5 + TypeScript)
   components/       the home page, the path, the koan page, the editor, the result panel, the logo animation
@@ -227,7 +229,7 @@ differs. It comes from one of two kinds of source, set in the language's `node.m
 
 - **A GitHub release zip** (Raku): downloaded and also checked against the checksum published
   with the release.
-- **An npm package** (Python's Pyodide, and JavaScript's Acorn parser): installed by `npm install`,
+- **An npm package** (Python's Pyodide, JavaScript's Acorn parser, the TypeScript compiler): installed by `npm install`,
   which checks it against `package-lock.json`, then copied.
 
 The interpreter files aren't committed: the build fetches them.
