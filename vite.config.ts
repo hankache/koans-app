@@ -1,5 +1,7 @@
+/// <reference types="vitest/config" />
 import { execSync } from 'node:child_process';
 import { defineConfig } from 'vite';
+import { configDefaults } from 'vitest/config';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -36,4 +38,6 @@ export default defineConfig(({ command }) => ({
     __BUILD__: JSON.stringify(buildInfo(command)),
   },
   plugins: [svelte()],
+  // languages/_template is a starting point for new languages, not a language.
+  test: { exclude: [...configDefaults.exclude, 'languages/_template/**'] },
 }));

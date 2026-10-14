@@ -70,6 +70,7 @@ languages/        one folder per language: its koans, prelude, highlighting and 
   raku/             see languages/raku/README.md
   python/           see languages/python/README.md
   javascript/       see languages/javascript/README.md
+  _template/        a starting point for a new language
 src/              the app (Svelte 5 + TypeScript)
   components/       the home page, the path, the koan page, the editor, the result panel, the logo animation
   lib/              addresses, opened languages (course.ts), running koans, reading their results,
@@ -178,8 +179,9 @@ hint for each failing line is its answer, and revealing every answer gives the s
 
 ## Adding a language
 
-A language is a folder in `languages/` with two descriptions of it, one for the build tools and one
-for the app, plus the files they point to:
+[languages/_template/](languages/_template/README.md) is a starting point, with step-by-step
+instructions. In short, a language is a folder in `languages/` with two descriptions of it, one for
+the build tools and one for the app, plus the files they point to:
 
 | File                                  | What it is                                                                 |
 |---------------------------------------|----------------------------------------------------------------------------|
@@ -276,7 +278,7 @@ npm run build           # then publish dist/
   which lists the files it covers.
 - **Third-party software** shipped in the site: [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
-Contributions are accepted under these same licenses.
+Contributions are accepted under these same licenses: see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 The name "koans.app" and the gateless gate mark identify this project. You're welcome to reuse
 the code, koans and artwork under their licenses, but please don't present a copy or fork as koans.app.
