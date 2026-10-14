@@ -73,7 +73,7 @@ On top of [the rules for every language](../../README.md#rules-for-blanks):
 ## Known limitations
 
 - Raku.js runs in the browser: there's no network access, concurrency is limited, and recursion
-  tops out at about 200 levels.
+  tops out at about 1,000 levels (measured with Raku++ 5.4.1 in Chrome; Firefox allows more).
 - Not covered: installing modules and the Native Calling Interface (neither can run in a browser),
   and the terminal parts of I/O (`get`, `prompt`, `run`, `shell`). File I/O works against an
   in-memory filesystem.

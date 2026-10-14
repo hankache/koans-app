@@ -8,13 +8,13 @@ for 1..10 -> $n {
 }
 is-deeply @found, ___, 'next skips the even numbers, last stops after 7';
 my @pairs;
-OUTER: for 1..3 -> $i {
+ROW: for 1..3 -> $i {
     for 1..3 -> $j {
-        next OUTER if $j > $i;
+        next ROW if $j > $i;
         @pairs.push("$i$j");
     }
 }
-is-deeply @pairs, ___, 'next OUTER continues the outer loop';
+is-deeply @pairs, ___, 'next ROW continues the outer loop';
 my @log;
 for 1..3 {
     FIRST @log.push('start');

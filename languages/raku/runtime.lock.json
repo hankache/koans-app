@@ -1,10 +1,10 @@
 {
-  "source": "https://github.com/ash/rakupp/releases/tag/v5.0.1",
-  "tag": "v5.0.1",
-  "version": "5.0.1",
-  "zip": "60cf9922bf4d498feab2ad6f13a7f1d25c2346ab0a7395afa03735775305c303",
+  "source": "https://github.com/ash/rakupp/releases/tag/v5.4.1",
+  "tag": "v5.4.1",
+  "version": "5.4.1",
+  "zip": "2d6585949a42bb4cb3e3a39fed6458ec911f7b6c401c9d17e9fa6d1c9bbf81df",
   "files": {
-    "rakujs.js": "9ea8c02eadc0b92791c586921c8b2fc569bf73dd10ed9f945e7896d5e427555b",
-    "rakujs.wasm": "01f15657c6caf9161170fb9cd221c2390c68fa9636af09d6ab7e8146bfa6daeb"
+    "rakujs.js": "19b27b3ef8f0ec1f3b6aa59bf5b26eaaa5cb2baa700843a22d75a42bf1588030",
+    "rakujs.wasm": "9d6be04e5ed13e55bf2fe3feebd7bc7c798f89de467bcaed0da630586021e4a7"
   }
 }

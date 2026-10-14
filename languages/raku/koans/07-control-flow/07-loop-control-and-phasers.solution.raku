@@ -6,13 +6,13 @@ for 1..10 -> $n {
 }
 is-deeply @found, [1, 3, 5, 7], 'next skips the even numbers, last stops after 7';
 my @pairs;
-OUTER: for 1..3 -> $i {
+ROW: for 1..3 -> $i {
     for 1..3 -> $j {
-        next OUTER if $j > $i;
+        next ROW if $j > $i;
         @pairs.push("$i$j");
     }
 }
-is-deeply @pairs, ['11', '21', '22', '31', '32', '33'], 'next OUTER continues the outer loop';
+is-deeply @pairs, ['11', '21', '22', '31', '32', '33'], 'next ROW continues the outer loop';
 my @log;
 for 1..3 {
     FIRST @log.push('start');

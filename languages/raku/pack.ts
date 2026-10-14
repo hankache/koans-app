@@ -16,7 +16,8 @@ export default {
     // in an exception's backtrace.
     line: /(?:at web line|at line) (\d+)/,
     message: ([first]) => first.replace(/^===SORRY!=== /, '').replace(/ at line \d+/, ''),
-    recursionLimit: 200,
+    // Measured with Raku++ 5.4.1: 1,000 levels work in Chrome (2,000 in Firefox).
+    recursionLimit: 1000,
   },
   load: () => import('./content').then(m => m.default),
 } satisfies LanguagePack;
