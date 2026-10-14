@@ -1,20 +1,20 @@
-Raku Koans artwork
+koans.app artwork
 Copyright © 2026 Naoum Hankache
 
-The artwork of Raku Koans is licensed under the Creative Commons
+The artwork of koans.app is licensed under the Creative Commons
 Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0), whose full text
 follows. Summary: https://creativecommons.org/licenses/by-sa/4.0/
 
 This covers:
 
-  design/logo.jpg                  the logo (a butterfly beside a torii gate framing a question mark)
+  design/logo.jpg                  the Raku Koans logo (a butterfly beside a torii gate framing a question mark)
   public/logo.webp                 the logo, resized
   public/anim/                     the layers of the "door opens, butterfly flies in" animation,
                                    cut from design/logo.jpg
 
-Everything else in this repository, including the code, the koans, the "gateless gate"
-mark (src/components/GateMark.svelte, public/favicon*) and the build scripts in design/,
-is licensed under the Artistic License 2.0: see LICENSE.
+The code, including the "gateless gate" mark (src/components/GateMark.svelte, public/favicon*)
+and the build scripts in design/, is licensed under the Artistic License 2.0: see LICENSE.
+The koans are licensed under CC BY-SA 4.0: see LICENSE-CONTENT.
 
 To credit the artwork: "Raku Koans logo by Naoum Hankache, CC BY-SA 4.0".
 

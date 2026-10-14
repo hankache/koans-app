@@ -45,7 +45,7 @@
 <footer>
   © 2026 Naoum Hankache ·
   Code: <a href="https://opensource.org/license/artistic-2-0">Artistic License 2.0</a> ·
-  Artwork: <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> ·
+  Koans and artwork: <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> ·
   <a href="https://github.com/hankache/raku-koans">GitHub</a>
   <span class="build">
     {#if __BUILD__}

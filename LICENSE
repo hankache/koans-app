@@ -1,8 +1,17 @@
-Raku Koans
-Copyright © 2026 Naoum Hankache
+koans.app
+Copyright © 2026 Naoum Hankache and contributors
 
-The code of Raku Koans, including the koans, is licensed under the Artistic License 2.0,
-whose full text follows. The artwork is licensed separately: see LICENSE-ARTWORK.
+The code of koans.app is licensed under the Artistic License 2.0, whose full text follows.
+This covers the app, the build and check scripts, each language's prelude (koans/_prelude.raku),
+and the "gateless gate" mark (src/components/GateMark.svelte, public/favicon*).
+
+Licensed separately:
+
+  the koans      CC BY-SA 4.0, see LICENSE-CONTENT
+  the artwork    CC BY-SA 4.0, see LICENSE-ARTWORK
+
+The name "koans.app" and the gateless gate mark identify this project. These licenses let you
+reuse its code, koans and artwork, but not present a copy or fork as koans.app.
 
 =======================================================================
 

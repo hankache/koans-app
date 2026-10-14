@@ -16,6 +16,7 @@
   <a href="https://github.com/hankache/raku-koans/actions/workflows/deploy.yml"><img src="https://github.com/hankache/raku-koans/actions/workflows/deploy.yml/badge.svg" alt="Deploy to GitHub Pages"></a>
   <a href="https://github.com/ash/rakupp/releases"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhankache%2Fraku-koans%2Fmain%2Fruntime.lock.json&query=%24.tag&label=Raku%2B%2B" alt="Raku++ version"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/code-Artistic--2.0-blue" alt="Code licence: Artistic License 2.0"></a>
+  <a href="LICENSE-CONTENT"><img src="https://img.shields.io/badge/koans-CC%20BY--SA%204.0-lightgrey" alt="Koans licence: CC BY-SA 4.0"></a>
   <a href="LICENSE-ARTWORK"><img src="https://img.shields.io/badge/artwork-CC%20BY--SA%204.0-lightgrey" alt="Artwork licence: CC BY-SA 4.0"></a>
 </p>
 
@@ -239,8 +240,15 @@ npm run build           # then publish dist/
 
 ## License
 
-- **Code**, including the koans and the "gateless gate" mark: [Artistic License 2.0](LICENSE).
-- **Artwork** (the logo and its animation layers): [CC BY-SA 4.0](LICENSE-ARTWORK), which lists the
-  files it covers.
+- **Code**, including each language's prelude and the "gateless gate" mark:
+  [Artistic License 2.0](LICENSE).
+- **Koans** (the koans, their solutions, and the groups' titles and blurbs):
+  [CC BY-SA 4.0](LICENSE-CONTENT).
+- **Artwork** (the Raku Koans logo and its animation layers): [CC BY-SA 4.0](LICENSE-ARTWORK),
+  which lists the files it covers.
 - **Third-party software** shipped in the site: [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
- 
+
+Contributions are accepted under these same licenses.
+
+The name "koans.app" and the gateless gate mark identify this project. You're welcome to reuse
+the code, koans and artwork under their licenses, but please don't present a copy or fork as koans.app.
