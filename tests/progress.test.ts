@@ -84,3 +84,16 @@ test('resetting code keeps the status until the next run', async () => {
     expect((await stored())?.['numbers/arithmetic']).toMatchObject({ status: 'passed', code: 'is 1 + 1, ___;' }),
   );
 });
+
+test('an import takes the newer entry for each koan, and every tab sees it', async () => {
+  const a = await openTab();
+  const b = await openTab();
+  a.record('numbers/arithmetic', 'mine, newer', false);
+  await vi.waitFor(async () => expect((await stored())?.['numbers/arithmetic']).toBeDefined());
+  const old = { status: 'passed', code: 'old', attempts: 1, passedAt: '2020-01-01T00:00:00.000Z', updatedAt: '2020-01-01T00:00:00.000Z' } as const;
+  const taken = await a.merge({ 'numbers/arithmetic': old, 'strings/quoting': old });
+  expect(taken).toBe(1);
+  expect(a.get('numbers/arithmetic')?.code).toBe('mine, newer');
+  expect(a.get('strings/quoting')?.code).toBe('old');
+  await vi.waitFor(() => expect(b.get('strings/quoting')?.status).toBe('passed'));
+});

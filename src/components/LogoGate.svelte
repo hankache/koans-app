@@ -4,11 +4,10 @@
   positions used below (fractions of the square). With reduced motion it is just the logo.
 -->
 <script lang="ts">
-  import { pack } from '../../languages';
+  import type { LanguagePack } from '../lib/language';
 
-  let { size = 112 }: { size?: number } = $props();
-  // Shown only for a language with artwork (see Meditation.svelte).
-  const dir = `${import.meta.env.BASE_URL}${pack.art?.celebration}`;
+  let { size = 112, art }: { size?: number; art: NonNullable<LanguagePack['art']> } = $props();
+  const dir = $derived(`${import.meta.env.BASE_URL}${art.celebration}`);
 </script>
 
 <div class="scene" style:width="{size}px" style:height="{size}px" role="img" aria-label="The butterfly flies through the open gate">

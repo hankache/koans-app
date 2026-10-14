@@ -25,9 +25,8 @@ nothing to install and no need for accounts and log-ins. Progress is saved local
 
 The idea comes from [Ruby Koans](https://www.rubykoans.com/).
 
-> **Work in progress.** koans.app grows out of [Raku Koans](https://hankache.github.io/raku-koans/).
-> Raku and Python work; until the site has a language picker, Raku is the default and
-> `?lang=python` in the address opens Python. [PLAN.md](PLAN.md) has the plan.
+> **Work in progress.** koans.app grows out of [Raku Koans](https://hankache.github.io/raku-koans/),
+> and isn't published yet. [PLAN.md](PLAN.md) has the plan.
 
 ## Languages
 
@@ -70,8 +69,9 @@ languages/        one folder per language: its koans, prelude, highlighting and 
   raku/             see languages/raku/README.md
   python/           see languages/python/README.md
 src/              the app (Svelte 5 + TypeScript)
-  components/       the path, the koan page, the editor, the result panel, the logo animation
-  lib/              running koans, reading their results, progress, the language-pack interface
+  components/       the home page, the path, the koan page, the editor, the result panel, the logo animation
+  lib/              addresses, opened languages (course.ts), running koans, reading their results,
+                    progress and its export, the language-pack interface
 public/           static files: favicons, artwork, each language's interpreter worker
   runtime/<id>/     a language's worker.js, with its interpreter beside it (downloaded)
 scripts/          build and check tools: koan lists, koan checker, interpreter download, notices
@@ -103,10 +103,20 @@ languages/<id>/koans/ ──build-koans──► src/generated/<id>.json ──�
   Web Worker. After 8 seconds the worker is stopped and replaced
   ([wasm-runtime.ts](src/lib/runtime/wasm-runtime.ts)).
 - **Highlighting.** The editor is [CodeMirror 6](https://codemirror.net), with each language's mode.
+- **Addresses** ([route.ts](src/lib/route.ts)): `#/` picks a language, `#/<language>/` is its
+  path and `#/<language>/koan/<section>/<name>` a koan. Raku Koans' `#/koan/…` addresses lead to
+  the same Raku koan.
+- **Loading.** The home page loads no language. Opening one loads its koans and editor mode (a
+  separate file of the build, `languages/<id>/content.ts`) and starts its interpreter downloading
+  ([course.ts](src/lib/course.ts)). The home page counts progress from
+  `src/generated/summary.json`, which lists every language's koan ids.
 - **Progress** ([progress.svelte.ts](src/lib/progress.svelte.ts)) is stored per language in the
   browser's IndexedDB, one koan at a time, so tabs open side by side don't overwrite each other,
   and each tab shows the others' progress as it happens. It stays on one device, and clearing the
-  site's data resets it. "Start over" on the home page erases it.
+  site's data resets it. "Start over" on a language's path erases that language's progress.
+- **Export and import** ([transfer.ts](src/lib/transfer.ts)): the home page saves everyone's
+  progress to a JSON file (`"format": "koans.app/progress"`) and reads one back, keeping the newer
+  entry for each koan. Damaged entries and unknown languages are left out.
 
 ## Writing koans
 

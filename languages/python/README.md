@@ -3,8 +3,7 @@
 Learn Python from the first assertion to its built-in collections, through 20 koans. The koans
 run on [Pyodide](https://pyodide.org): CPython 3.14 compiled to WebAssembly.
 
-Until the site has a language picker, open the Python path with `?lang=python` in the address:
-`http://localhost:5173/?lang=python`.
+Its path is at `#/python/` (`http://localhost:5173/#/python/` in development).
 
 ## The path
 

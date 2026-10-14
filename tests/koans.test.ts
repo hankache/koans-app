@@ -57,7 +57,8 @@ describe('revealAnswer', () => {
 // Every koan as the browser sees it: the manifest the app ships, read by the app's own code.
 for (const lang of languages) {
   const { report } = await runner(lang.id);
-  const koanById = new Map(packs.find(p => p.id === lang.id)!.manifest.sections.flatMap(s => s.koans).map(k => [k.id, k]));
+  const { manifest } = await packs.find(p => p.id === lang.id)!.load();
+  const koanById = new Map(manifest.sections.flatMap(s => s.koans).map(k => [k.id, k]));
   describe.each(readKoans(lang).flatMap(s => s.koans))(`${lang.id}: $id`, ({ id, solution }) => {
     const koan = koanById.get(id)!;
 

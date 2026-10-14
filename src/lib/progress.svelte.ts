@@ -1,6 +1,5 @@
 // Learner progress, kept in this browser's IndexedDB and shared by the site's open tabs.
 import { get, set, update } from 'idb-keyval';
-import { pack } from '../../languages';
 
 export interface KoanProgress {
   status: 'attempted' | 'passed';
@@ -10,9 +9,10 @@ export interface KoanProgress {
   updatedAt: string;
 }
 
-type ProgressMap = Record<string, KoanProgress>;
+export type ProgressMap = Record<string, KoanProgress>;
 
-type Message = { id: string; entry: KoanProgress } | { reset: true };
+// reload: another tab changed many entries at once (an import); read them all again.
+type Message = { id: string; entry: KoanProgress } | { reset: true } | { reload: true };
 
 /** One language's progress. */
 export class Progress {
@@ -21,21 +21,33 @@ export class Progress {
   private key: string;
   // Each saved change is announced here, so the site's other open tabs show it too.
   private channel: BroadcastChannel | null;
+  private started?: Promise<void>;
 
   constructor(language: string) {
     this.key = `koans:${language}:progress`;
     this.channel = typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel(this.key);
     this.channel?.addEventListener('message', ({ data }: MessageEvent<Message>) => {
       if ('reset' in data) this.map = {};
+      else if ('reload' in data) void this.init();
       else this.accept(data.id, data.entry);
     });
   }
 
+  /** Loads the saved progress, once; later calls wait for the same load. */
+  ready(): Promise<void> {
+    return (this.started ??= this.init());
+  }
+
+  /** Loads the saved progress (again). */
   async init() {
     try {
-      const stored = (await get<ProgressMap>(this.key)) ?? {};
-      // Keep anything another tab announced while this one was loading.
-      this.map = { ...stored, ...$state.snapshot(this.map) };
+      const map = (await get<ProgressMap>(this.key)) ?? {};
+      // Keep anything newer that this tab already has: another tab may have announced it while
+      // this one was loading.
+      for (const [id, entry] of Object.entries($state.snapshot(this.map))) {
+        if (!map[id] || map[id].updatedAt < entry.updatedAt) map[id] = entry;
+      }
+      this.map = map;
       // Ask the browser not to evict our data under storage pressure.
       void navigator.storage?.persist?.();
     } catch {
@@ -83,6 +95,44 @@ export class Progress {
     this.channel?.postMessage({ reset: true } satisfies Message);
   }
 
+  /** Everything saved, for an export. */
+  snapshot(): ProgressMap {
+    return $state.snapshot(this.map);
+  }
+
+  /**
+   * Adds imported entries, in one transaction: for each koan, the newer of the saved and the
+   * imported entry wins, so an import never undoes later work. Returns how many entries it took.
+   * Every open tab then reloads.
+   */
+  async merge(entries: ProgressMap): Promise<number> {
+    let taken = 0;
+    try {
+      await update<ProgressMap>(this.key, stored => {
+        const map = { ...(stored ?? {}) };
+        for (const [id, entry] of Object.entries(entries)) {
+          if (!map[id] || map[id].updatedAt < entry.updatedAt) {
+            map[id] = entry;
+            taken++;
+          }
+        }
+        return map;
+      });
+    } catch {
+      // Storage unavailable: take them in memory only.
+      for (const [id, entry] of Object.entries(entries)) {
+        if (!this.map[id] || this.map[id].updatedAt < entry.updatedAt) {
+          this.map[id] = entry;
+          taken++;
+        }
+      }
+      return taken;
+    }
+    await this.init();
+    this.channel?.postMessage({ reload: true } satisfies Message);
+    return taken;
+  }
+
   /** Stops listening to other tabs. */
   close() {
     this.channel?.close();
@@ -116,4 +166,11 @@ export class Progress {
   }
 }
 
-export const progress = new Progress(pack.id);
+const stores = new Map<string, Progress>();
+
+/** The progress of the language with this id: one store per language, shared by the whole page. */
+export function progressFor(language: string): Progress {
+  let store = stores.get(language);
+  if (!store) stores.set(language, (store = new Progress(language)));
+  return store;
+}

@@ -1,10 +1,13 @@
 <script lang="ts">
-  import { sections, allKoans } from '../lib/koans';
-  import { progress } from '../lib/progress.svelte';
-  import { pack } from '../../languages';
+  import { untrack } from 'svelte';
+  import type { Course } from '../lib/course';
   import { site } from '../site';
   import { inlineCode } from '../lib/inline-code';
   import GateMark from './GateMark.svelte';
+
+  let { course }: { course: Course } = $props();
+  // App keys this component by language, so the course never changes under it.
+  const { pack, progress, sections, allKoans } = untrack(() => course);
 
   const next = $derived(allKoans.find(k => progress.get(k.id)?.status !== 'passed'));
   const started = $derived(allKoans.some(k => progress.get(k.id)));
@@ -38,7 +41,7 @@
     </p>
     <div class="actions">
       {#if next}
-        <a class="cta" href="#/koan/{next.id}">{started ? 'Continue' : 'Begin'}: {next.title} →</a>
+        <a class="cta" href={course.href(next.id)}>{started ? 'Continue' : 'Begin'}: {next.title} →</a>
       {:else}
         <span class="done">You have walked the whole path. 🦋</span>
       {/if}
@@ -48,7 +51,7 @@
     </div>
     {#if confirming}
       <div class="confirm">
-        <span>Erase all your progress and saved code? This cannot be undone.</span>
+        <span>Erase all your {pack.name} progress and saved code? This cannot be undone.</span>
         <button class="danger" onclick={resetAll}>Erase everything</button>
         <button onclick={() => (confirming = false)}>Cancel</button>
       </div>
@@ -73,7 +76,7 @@
           {@const state = progress.get(koan.id)?.status ?? 'new'}
           <li>
             <a
-              href="#/koan/{koan.id}"
+              href={course.href(koan.id)}
               class="stone {state}"
               class:next={koan.id === next?.id}
               aria-label="{koan.title} ({state})"

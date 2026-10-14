@@ -1,24 +1,52 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { allKoans, koanById, getRuntime } from './lib/koans';
-  import { progress } from './lib/progress.svelte';
+  import { onMount, untrack } from 'svelte';
+  import { legacyLanguage, packById, packs } from '../languages';
+  import { openCourse, type Course } from './lib/course';
+  import { parseRoute } from './lib/route';
   import GateMark from './components/GateMark.svelte';
   import ThemeToggle from './components/ThemeToggle.svelte';
+  import Home from './components/Home.svelte';
   import PathMap from './components/PathMap.svelte';
   import KoanView from './components/KoanView.svelte';
   import Meter from './components/Meter.svelte';
-  import { pack } from '../languages';
   import { site } from './site';
 
-  // Tiny hash router: #/ is the path, #/koan/<section>/<name> is a koan.
+  // A tiny hash router: see lib/route.ts for the addresses.
   let hash = $state(location.hash);
+  const route = $derived(parseRoute(hash, packs.map(p => p.id), legacyLanguage));
+  const lang = $derived(route.page === 'path' || route.page === 'koan' ? route.lang : null);
+
+  // The opened language. Opening loads its koans and saved progress, then starts its interpreter
+  // downloading, so it's usually ready by the time the learner presses Run.
+  let course = $state<Course | null>(null);
+  let loadError = $state('');
+  const shown = $derived(course && course.pack.id === lang ? course : null);
   // Count current koans only: saved progress may include koans that were since removed.
-  const passed = $derived(allKoans.filter(k => progress.get(k.id)?.status === 'passed').length);
-  const koanId = $derived(hash.match(/^#\/koan\/(.+)$/)?.[1]);
+  const passed = $derived(shown ? shown.allKoans.filter(k => shown.progress.get(k.id)?.status === 'passed').length : 0);
+
+  $effect(() => {
+    if (route.page === 'redirect') location.replace(route.to);
+  });
+
+  $effect(() => {
+    const id = lang;
+    loadError = '';
+    if (!id || untrack(() => course)?.pack.id === id) return;
+    const pack = packById.get(id)!;
+    openCourse(pack).then(
+      c => {
+        if (lang !== id) return; // moved on meanwhile
+        course = c;
+        c.getRuntime();
+      },
+      e => {
+        console.error(e);
+        if (lang === id) loadError = `Could not load ${pack.name}. Check your connection and reload the page.`;
+      },
+    );
+  });
 
   onMount(() => {
-    progress.init();
-    getRuntime(); // start loading the interpreter in the background
     const onHash = () => {
       hash = location.hash;
       window.scrollTo(0, 0);
@@ -30,17 +58,26 @@
 
 <header class="bar">
   <a class="brand" href="#/"><GateMark size={32} /> <span>{site.name}</span></a>
-  <div class="meter"><Meter {passed} total={allKoans.length} /></div>
+  {#if shown}
+    <a class="lang" href={shown.href()}>{shown.pack.name}</a>
+    <div class="meter"><Meter {passed} total={shown.allKoans.length} /></div>
+  {:else}
+    <span class="spacer"></span>
+  {/if}
   <ThemeToggle />
 </header>
 
 <main>
-  {#if !progress.loaded}
-    <!-- a moment while saved progress loads -->
-  {:else if koanId && koanById.has(koanId)}
-    {#key koanId}<KoanView id={koanId} />{/key}
-  {:else}
-    <PathMap />
+  {#if route.page === 'home'}
+    <Home />
+  {:else if loadError}
+    <p class="status">{loadError}</p>
+  {:else if lang && !shown}
+    <p class="status" aria-busy="true">Opening {packById.get(lang)?.name}…</p>
+  {:else if shown && route.page === 'koan' && shown.koanById.has(route.id)}
+    {#key `${lang}/${route.id}`}<KoanView course={shown} id={route.id} />{/key}
+  {:else if shown}
+    {#key lang}<PathMap course={shown} />{/key}
   {/if}
 </main>
 
@@ -81,7 +118,17 @@
     font-size: 1.15rem;
     white-space: nowrap;
   }
+  .lang {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--ink-soft);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .lang:hover { color: var(--ink); }
   .meter { flex: 1; min-width: 0; max-width: 360px; margin-left: auto; }
+  .spacer { flex: 1; }
+  .status { color: var(--ink-soft); padding: 3rem 0; }
   main { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
   footer { text-align: center; color: var(--ink-faint); font-size: 0.8rem; padding: 3rem 16px 2rem; }
   footer a { color: var(--ink-soft); }

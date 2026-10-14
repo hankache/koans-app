@@ -1,6 +1,4 @@
-import { pack } from '../../languages';
-import { WasmRuntime } from './runtime/wasm-runtime';
-import { parseRun, type Report } from './tap';
+// A koan and its hidden answers. Everything about a whole language's koans is in course.ts.
 
 export interface Koan {
   id: string;
@@ -55,28 +53,4 @@ export interface Section {
   title: string;
   blurb: string;
   koans: Koan[];
-}
-
-const { manifest } = pack;
-export const sections: Section[] = manifest.sections;
-export const allKoans: Koan[] = sections.flatMap(s => s.koans);
-export const koanById = new Map(allKoans.map(k => [k.id, k]));
-export const sectionOf = (id: string) => sections.find(s => s.koans.some(k => k.id === id))!;
-
-export function neighbours(id: string) {
-  const i = allKoans.findIndex(k => k.id === id);
-  return { prev: allKoans[i - 1], next: allKoans[i + 1] };
-}
-
-const PRELUDE_LINES = manifest.prelude.split('\n').length - 1;
-
-let runtime: WasmRuntime | undefined;
-/** Created lazily, but call early (e.g. on page load) to start downloading the interpreter. */
-export function getRuntime(): WasmRuntime {
-  return (runtime ??= new WasmRuntime(`${import.meta.env.BASE_URL}${pack.worker.url}`, pack.worker.type));
-}
-
-export async function runKoan(code: string): Promise<Report> {
-  const result = await getRuntime().run(manifest.prelude + code + manifest.epilogue);
-  return parseRun(result, code, PRELUDE_LINES, pack.errors);
 }

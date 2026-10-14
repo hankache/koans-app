@@ -22,6 +22,13 @@ export interface ErrorSyntax {
   recursionLimit?: number;
 }
 
+/** The heavy part of a language, loaded when it's opened: its koans and its editor mode. */
+export interface LanguageContent {
+  manifest: Manifest;
+  highlight: Extension;
+}
+
+/** A language, as the site knows it before it's opened. */
 export interface LanguagePack {
   /** Used in addresses, storage keys and file paths: 'raku'. */
   id: string;
@@ -39,7 +46,7 @@ export interface LanguagePack {
   };
   /** The interpreter's Web Worker, relative to the site root (see wasm-runtime.ts for its protocol). */
   worker: { url: string; type: WorkerType };
-  manifest: Manifest;
-  highlight: Extension;
   errors: ErrorSyntax;
+  /** Loads the language's content (languages/<id>/content.ts), in a separate file of the build. */
+  load(): Promise<LanguageContent>;
 }

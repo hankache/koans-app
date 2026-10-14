@@ -5,9 +5,13 @@
   import LogoGate from './LogoGate.svelte';
   import GateMark from './GateMark.svelte';
   import { modKey } from '../lib/platform';
-  import { pack } from '../../languages';
+  import type { LanguagePack } from '../lib/language';
 
   interface Props {
+    /** The language: its name and artwork. */
+    pack: LanguagePack;
+    /** The language's path, for "Back to the path" after the last koan. */
+    pathHref: string;
     report: Report | null;
     /** Assertions this run got past that the previous run did not. */
     gained: number;
@@ -19,7 +23,7 @@
     /** Put the revealed answer into the code. */
     onuse?: () => void;
   }
-  let { report, gained, running, runtimeError, nextHref, hint, onuse }: Props = $props();
+  let { pack, pathHref, report, gained, running, runtimeError, nextHref, hint, onuse }: Props = $props();
 
   // Which answer was revealed: a new line or a new answer hides it again.
   let revealedKey = $state('');
@@ -79,13 +83,13 @@
     {@render answer()}
   {:else if report.status === 'passed'}
     <div class="celebrate">
-      {#key report}{#if pack.art}<LogoGate size={112} />{:else}<div class="arrive"><GateMark size={96} /></div>{/if}{/key}
+      {#key report}{#if pack.art}<LogoGate size={112} art={pack.art} />{:else}<div class="arrive"><GateMark size={96} /></div>{/if}{/key}
       <div>
         <p class="lead">Enlightenment!</p>
         <p class="small">{report.tests.length === 1 ? 'The assertion holds.' : `All ${report.tests.length} assertions hold.`}</p>
       </div>
     </div>
-    {#if nextHref}<a class="next" href={nextHref}>Next koan →</a>{:else}<a class="next" href="#/">Back to the path</a>{/if}
+    {#if nextHref}<a class="next" href={nextHref}>Next koan →</a>{:else}<a class="next" href={pathHref}>Back to the path</a>{/if}
   {:else if report.status === 'failed'}
     {@const f = report.failure}
     {#if gained > 0}

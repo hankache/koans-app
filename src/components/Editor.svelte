@@ -1,14 +1,15 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { EditorView, keymap, lineNumbers, highlightActiveLine, Decoration, WidgetType, type DecorationSet } from '@codemirror/view';
-  import { EditorState, StateEffect, StateField } from '@codemirror/state';
+  import { EditorState, StateEffect, StateField, type Extension } from '@codemirror/state';
   import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
   import { HighlightStyle, syntaxHighlighting, bracketMatching } from '@codemirror/language';
-  import { pack } from '../../languages';
   import type { Reveal } from '../lib/koans';
   import { tags as t } from '@lezer/highlight';
 
   interface Props {
+    /** The language's editor mode (syntax highlighting). Read once, when the editor is made. */
+    language: Extension;
     value: string;
     /** 1-based line to flag, e.g. the failing assertion. */
     markLine?: number;
@@ -22,7 +23,7 @@
     /** The line of the answer spot the cursor is on, or null when it isn't on one. */
     onspot: (line: number | null) => void;
   }
-  let { value, markLine, markKind = 'fail', markRun = 0, spots, onchange, onrun, onspot }: Props = $props();
+  let { value, language, markLine, markKind = 'fail', markRun = 0, spots, onchange, onrun, onspot }: Props = $props();
 
   let host: HTMLDivElement;
   let view: EditorView;
@@ -133,7 +134,7 @@
           history(),
           highlightActiveLine(),
           bracketMatching(),
-          pack.highlight,
+          language,
           syntaxHighlighting(highlight),
           spotField,
           marked,

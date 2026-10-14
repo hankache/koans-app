@@ -1,24 +1,24 @@
 <script lang="ts">
   import { untrack } from 'svelte';
-  import { koanById, neighbours, revealAnswer, runKoan, sectionOf, getRuntime } from '../lib/koans';
-  import { progress } from '../lib/progress.svelte';
+  import { revealAnswer } from '../lib/koans';
+  import type { Course } from '../lib/course';
   import type { Report } from '../lib/tap';
   import { inlineCode } from '../lib/inline-code';
   import { modKey, modPressed } from '../lib/platform';
-  import { pack } from '../../languages';
   import Editor from './Editor.svelte';
   import Meditation from './Meditation.svelte';
 
-  let { id }: { id: string } = $props();
+  let { course, id }: { course: Course; id: string } = $props();
 
-  const koan = $derived(koanById.get(id)!);
-  const section = $derived(sectionOf(id));
-  const nav = $derived(neighbours(id));
+  const { pack, progress } = untrack(() => course);
+  const koan = $derived(course.koanById.get(id)!);
+  const section = $derived(course.sectionOf(id));
+  const nav = $derived(course.neighbours(id));
   const index = $derived(section.koans.indexOf(koan) + 1);
 
-  // App keys this component by koan id and waits for saved progress to load,
-  // so reading it once here is enough (and must not re-run after each save).
-  let code = $state(untrack(() => progress.get(id)?.code ?? koanById.get(id)!.code));
+  // App keys this component by language and koan, and opens the course (saved progress
+  // included) first, so reading it once here is enough (and must not re-run after each save).
+  let code = $state(untrack(() => progress.get(id)?.code ?? course.koanById.get(id)!.code));
   let report = $state<Report | null>(null);
   let editor: Editor;
   // How far into the koan the last run got (assertions passed before the first failure),
@@ -34,7 +34,7 @@
   // Only surfaced if the interpreter fails to load.
   const LOAD_ERROR = `Could not load the ${pack.name} interpreter. Check your connection and reload the page.`;
   let runtimeError = $state<string | undefined>();
-  getRuntime().ready.catch(e => {
+  untrack(() => course).getRuntime().ready.catch(e => {
     console.error(e);
     runtimeError = LOAD_ERROR;
   });
@@ -46,7 +46,7 @@
     const ranFor = id;
     let r;
     try {
-      r = await runKoan(code);
+      r = await course.runKoan(code);
     } catch {
       // The interpreter failed to load; the idle panel says so.
       runtimeError = LOAD_ERROR;
@@ -110,7 +110,7 @@
 
 <article>
   <nav class="crumbs">
-    <a href="#/">Path</a> <span>/</span> {section.title} <span>/</span> {koan.title} · {index} of {section.koans.length}
+    <a href={course.href()}>{pack.name}</a> <span>/</span> {section.title} <span>/</span> {koan.title} · {index} of {section.koans.length}
   </nav>
 
   <div class="layout">
@@ -127,6 +127,7 @@
 
       <Editor
         value={code}
+        language={course.highlight}
         onchange={c => (code = c)}
         onrun={run}
         bind:this={editor}
@@ -141,13 +142,13 @@
         <button class="primary" onclick={run} disabled={running} title="Run ({modKey}+Enter)">{running ? 'Running…' : 'Run'}</button>
         <button onclick={reset} title="Restore the original koan">Reset</button>
         <span class="spacer"></span>
-        {#if nav.prev}<a href="#/koan/{nav.prev.id}" class="nav">← {nav.prev.title}</a>{/if}
-        {#if nav.next}<a href="#/koan/{nav.next.id}" class="nav">{nav.next.title} →</a>{/if}
+        {#if nav.prev}<a href={course.href(nav.prev.id)} class="nav">← {nav.prev.title}</a>{/if}
+        {#if nav.next}<a href={course.href(nav.next.id)} class="nav">{nav.next.title} →</a>{/if}
       </div>
     </div>
 
     <aside>
-      <Meditation {report} {gained} {running} {hint} onuse={() => hint && editor.fillAnswer(hint)} {runtimeError} nextHref={nav.next ? `#/koan/${nav.next.id}` : undefined} />
+      <Meditation {report} {gained} {running} {hint} onuse={() => hint && editor.fillAnswer(hint)} {runtimeError} {pack} pathHref={course.href()} nextHref={nav.next ? course.href(nav.next.id) : undefined} />
     </aside>
   </div>
 </article>
