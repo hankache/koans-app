@@ -6,6 +6,9 @@ export default {
   name: 'Ruby',
   tagline: 'Learn Ruby from its objects to its blocks',
   testedWith: 'Minitest’s assertions, like `assert_equal`',
+  look: { monogram: 'Rb', accent: { light: '#9a6535', dark: '#d49a66' } },
+  sample: 'assert_equal 2, 1 + 1',
+  teaser: { before: 'assert_equal ', after: ', -7 % 3', choices: ['-1', '1', '2'], answer: '2', why: 'Ruby’s % takes the sign of the divisor.' },
   worker: { url: 'runtime/ruby/worker.js', type: 'module' },
   errors: {
     // The worker ends an uncaught error with the koan's line: "    at koan.rb:3".

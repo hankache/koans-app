@@ -118,6 +118,9 @@ languages/<id>/koans/ ──build-koans──► src/generated/<id>.json ──�
 - **Addresses** ([route.ts](src/lib/route.ts)): `#/` picks a language, `#/<language>/` is its
   path and `#/<language>/koan/<section>/<name>` a koan. Raku Koans' `#/koan/…` addresses lead to
   the same Raku koan.
+- **The home page** offers a one-blank koan to try by tapping an answer (from the packs' `teaser`),
+  a "continue" card pointing at the unsolved koan worked on last, a tile per language, and, out of
+  the way, export and import. It's laid out for a phone first.
 - **Loading.** The home page loads no language. Opening one loads its koans and editor mode (a
   separate file of the build, `languages/<id>/content.ts`) and starts its interpreter downloading
   ([course.ts](src/lib/course.ts)). The home page counts progress from
@@ -196,7 +199,7 @@ the build tools and one for the app, plus the files they point to:
 | File                                  | What it is                                                                 |
 |---------------------------------------|----------------------------------------------------------------------------|
 | `languages/<id>/node.mjs`             | For the tools: koan extension and comment style, prelude, epilogue, lint, where the interpreter is released, how to run it under Node. The type is in [scripts/lib/languages.mjs](scripts/lib/languages.mjs) |
-| `languages/<id>/pack.ts`              | For the app: name and wording, artwork, worker, highlighting, error formats. The type is in [src/lib/language.ts](src/lib/language.ts) |
+| `languages/<id>/pack.ts`              | For the app: name and wording, its home-page tile (monogram, accent colours, a line of code) and optional koan to try, artwork, worker, highlighting, error formats. The type is in [src/lib/language.ts](src/lib/language.ts) |
 | `languages/<id>/prelude.*`            | Run before every koan                                                      |
 | `languages/<id>/runtime.lock.json`    | The pinned interpreter release, written by `fetch-runtime --update`        |
 | `languages/<id>/koans/`               | The koans                                                                  |

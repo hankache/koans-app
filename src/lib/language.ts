@@ -28,6 +28,18 @@ export interface LanguageContent {
   highlight: Extension;
 }
 
+/** A one-blank koan for the home page's "try one", answered by tapping one of `choices`. */
+export interface Teaser {
+  /** A line shown above the one with the blank, if the koan needs one. */
+  context?: string;
+  before: string;
+  after: string;
+  choices: string[];
+  answer: string;
+  /** One sentence on why, shown with the right answer. */
+  why: string;
+}
+
 /** A language, as the site knows it before it's opened. */
 export interface LanguagePack {
   /** Used in addresses, storage keys and file paths: 'raku'. */
@@ -38,6 +50,12 @@ export interface LanguagePack {
   tagline: string;
   /** Finishes "fix failing tests written with …", with `code` in backticks: 'Raku’s `Test` module'. */
   testedWith: string;
+  /** How its tile on the home page looks: a short monogram, and an accent colour for each theme. */
+  look: { monogram: string; accent: { light: string; dark: string } };
+  /** A line of its koans' code, shown on its tile. */
+  sample: string;
+  /** A koan to try on the home page, for some languages. */
+  teaser?: Teaser;
   /** The language's artwork, relative to the site root. Without it, the gateless gate stands in. */
   art?: {
     logo: { src: string; alt: string };

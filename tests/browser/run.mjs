@@ -1,5 +1,6 @@
-// Checks the built site in real browsers: the home page, what each page downloads, every language's
-// koan flow, old addresses, progress across tabs, and export/import.
+// Checks the built site in real browsers: the home page (its koan to try, where to continue, and its
+// phone layout), what each page downloads, every language's koan flow, old addresses, progress
+// across tabs, and export/import.
 //
 //   npm run test:browser                      Chrome and Firefox (builds the site first)
 //   npm run test:browser -- --browser chrome  one of them
@@ -126,11 +127,21 @@ async function checkSite(browser, base) {
 
   // The home page, and loading each language only when it's opened
   await page.goto(`${base}#/`, { waitUntil: 'networkidle0' });
-  const names = await page.$$eval('.language .name', ns => ns.map(n => n.textContent));
+  const names = await page.$$eval('.tile .name', ns => ns.map(n => n.textContent));
   check('the home page lists every language', names.length === LANGUAGES.length, names.join(', '));
   check('the home page loads no language', seen.loaded.length === 0, seen.loaded.join(' '));
+  check('a first visit shows no "continue"', !(await page.$('.resume')));
 
-  await page.click('a.language[href="#/python/"]');
+  // Its koan to try: a wrong answer, then the right one (JavaScript's, shown first).
+  const choose = async answer => {
+    const buttons = await page.$$('.choice');
+    for (const b of buttons) if ((await b.evaluate(e => e.textContent)) === answer) await b.click();
+    return text(page, '.feedback');
+  };
+  check('the koan to try says when an answer is wrong', /Not quite/.test(await choose('7')));
+  check('and when it is right', /Enlightenment/.test(await choose("'52'")) && (await text(page, '.code')).includes("'52'"));
+
+  await page.click('a.tile[href="#/python/"]');
   await page.waitForSelector('.sections');
   await page.waitForNetworkIdle({ idleTime: 500 });
   check('picking a language opens its path', page.url().endsWith('#/python/'));
@@ -181,15 +192,20 @@ async function checkSite(browser, base) {
   await page.waitForSelector('h1');
   check('an old Raku Koans address opens the same Raku koan', (await text(page, 'h1')).startsWith('Division'));
   await page.goto(`${base}#/no-such-language/`);
-  await page.waitForSelector('.languages');
+  await page.waitForSelector('.tiles');
   check('an unknown language leads home', true);
 
   // Progress on the home page, then export
   await page.goto(`${base}#/`);
-  await page.waitForSelector('.language .progress');
-  const meters = await page.$$eval('.language .progress', ms => ms.map(m => m.textContent.replace(/\s+/g, ' ').trim()));
-  const counts = LANGUAGES.map(l => `1 done · ${koanIds[l.id].length - 1} to go`);
-  check("the home page shows each language's progress", counts.every((c, i) => meters[i]?.includes(c)), meters.join(' | '));
+  await page.waitForSelector('.tile .progress');
+  const tiles = await page.$$eval('.tile', ts => ts.map(t => t.textContent.replace(/\s+/g, ' ').trim()));
+  check("the home page shows each language's progress", LANGUAGES.every((l, i) => tiles[i]?.includes(`1/${koanIds[l.id].length}`)), tiles.join(' | '));
+  const resume = await page.$eval('.resume', r => ({ href: r.getAttribute('href'), text: r.textContent.replace(/\s+/g, ' ') })).catch(() => null);
+  // The last koan run was JavaScript's second, by the line-number checks above, which left it unsolved.
+  check('and where to continue: the unsolved koan worked on last',
+    resume?.href === `#/javascript/koan/${koanIds.javascript[1].id}` && resume.text.includes(koanIds.javascript[1].title), JSON.stringify(resume));
+
+  await page.click('.keep-toggle');
 
   await page.click('.buttons button:first-child');
   await page.waitForSelector('.note');
@@ -208,13 +224,15 @@ async function checkImport(browser, base, exported, dir) {
   const context = await browser.createBrowserContext();
   const page = await context.newPage();
   await page.goto(`${base}#/`);
-  await page.waitForSelector('.language .progress');
+  await page.waitForSelector('.keep-toggle');
+  await page.click('.keep-toggle');
   const path = join(dir, 'progress.json');
   writeFileSync(path, exported);
   await (await page.$('input[type=file]')).uploadFile(path);
   await page.waitForSelector('.note');
-  const after = await page.$$eval('.language .progress', ms => ms.map(m => m.textContent.replace(/\s+/g, ' ').trim()));
-  check('import in a fresh browser brings the progress back', after.length === LANGUAGES.length && after.every(m => /1 done/.test(m)), await text(page, '.note'));
+  await page.waitForSelector('.tile .progress');
+  const after = await page.$$eval('.tile', ts => ts.map(t => t.textContent.replace(/\s+/g, ' ').trim()));
+  check('import in a fresh browser brings the progress back', after.length === LANGUAGES.length && after.every(t => /\b1\/\d+/.test(t)), await text(page, '.note'));
 
   await (await page.$('input[type=file]')).uploadFile(path);
   await page.waitForFunction(() => /Nothing new/.test(document.querySelector('.note')?.textContent ?? ''), { timeout: 5000 }).catch(() => {});
@@ -227,10 +245,25 @@ async function checkImport(browser, base, exported, dir) {
   const bad = join(dir, 'bad.json');
   writeFileSync(bad, '{"hello": 1}');
   await page.goto(`${base}#/`);
-  await page.waitForSelector('input[type=file]');
+  await page.waitForSelector('.keep-toggle');
+  await page.click('.keep-toggle');
   await (await page.$('input[type=file]')).uploadFile(bad);
   await page.waitForSelector('.note.error');
   check('a file that is not a progress file is refused', /not a koans.app progress file/.test(await text(page, '.note')));
+
+  // The home page on a phone-sized screen, with progress to continue from.
+  await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true });
+  await page.goto(`${base}#/javascript/`);
+  await page.goto(`${base}#/`);
+  await page.waitForSelector('.resume');
+  const phone = await page.evaluate(() => ({
+    sideways: document.documentElement.scrollWidth - window.innerWidth,
+    columns: getComputedStyle(document.querySelector('.tiles')).gridTemplateColumns.split(' ').length,
+    resumeFirst: document.querySelector('.resume').getBoundingClientRect().top < document.querySelector('.hero').getBoundingClientRect().top,
+  }));
+  check('on a phone: no sideways scrolling', phone.sideways <= 0, `${phone.sideways}px too wide`);
+  check('on a phone: two columns of languages', phone.columns === 2, `${phone.columns} columns`);
+  check('on a phone: "continue" comes first', phone.resumeFirst);
   await context.close();
 }
 

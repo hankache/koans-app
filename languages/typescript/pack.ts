@@ -6,6 +6,8 @@ export default {
   name: 'TypeScript',
   tagline: 'Learn TypeScript’s types, from annotations to generics',
   testedWith: 'Node’s `assert` assertions, plus `assert.type` for types',
+  look: { monogram: 'TS', accent: { light: '#173f4d', dark: '#7fb0c4' } },
+  sample: 'assert.type<36>(age);',
   worker: { url: 'runtime/typescript/worker.js', type: 'module' },
   errors: {
     // The worker ends a type error, or an uncaught error, with the koan's line: "    at koan.js:3".

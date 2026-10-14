@@ -10,6 +10,8 @@ export default {
     logo: { src: 'logo.webp', alt: 'Raku Koans: a butterfly beside a torii gate framing a question mark' },
     celebration: 'anim/',
   },
+  look: { monogram: 'Ra', accent: { light: '#b8327a', dark: '#f07cb6' } },
+  sample: "is 1 + 1, 2, 'is compares';",
   worker: { url: 'runtime/raku/worker.js', type: 'classic' },
   errors: {
     // "===SORRY!=== Parse error at line 3: …" for compile errors, "in block <unit> at web line 3"

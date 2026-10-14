@@ -2,8 +2,8 @@
 // is opened), for each language, or those named with --lang. Whole solutions stay out of the
 // bundle; each blank's answer goes in, for the result panel's hidden answer.
 //
-// Also src/generated/summary.json: each language's koan ids, small enough for the home page to
-// show everyone's progress without loading any language.
+// Also src/generated/summary.json: each language's koans (id, title and group), small enough for
+// the home page to show progress and where to continue without loading any language.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { blanksOf, readKoans } from './lib/koans.mjs';
@@ -21,7 +21,7 @@ for (const lang of chosenLanguages()) {
   }));
   const manifest = { prelude: lang.prelude(), epilogue: lang.epilogue, sections };
   writeFileSync(`${out}${lang.id}.json`, JSON.stringify(manifest, null, 2) + '\n');
-  summary[lang.id] = sections.flatMap(s => s.koans.map(k => k.id));
+  summary[lang.id] = sections.flatMap(s => s.koans.map(k => ({ id: k.id, title: k.title, section: s.title })));
   const count = sections.reduce((n, s) => n + s.koans.length, 0);
   console.log(`✓ ${lang.name}: ${count} koans in ${sections.length} sections → src/generated/${lang.id}.json`);
 }

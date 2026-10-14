@@ -87,6 +87,8 @@
 
 html, body {
   margin: 0;
+  /* Full-width bands (the home page's) reach the window's edges; never scroll sideways for them. */
+  overflow-x: clip;
   background: var(--bg);
   color: var(--ink);
   font: 16px/1.55 var(--font-body);

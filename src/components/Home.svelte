@@ -1,4 +1,7 @@
-<!-- The home page: pick a language, see your progress in each, and keep a copy of it. -->
+<!--
+  The home page: a koan to try on the spot, where to continue, every language's path, how a koan
+  works, and a way to keep a copy of your progress. Laid out for a phone first.
+-->
 <script lang="ts">
   import { onMount } from 'svelte';
   import summary from '../generated/summary.json';
@@ -7,24 +10,61 @@
   import { href } from '../lib/route';
   import { exportName, makeExport, readImport } from '../lib/transfer';
   import { site } from '../site';
-  import GateMark from './GateMark.svelte';
-  import Meter from './Meter.svelte';
 
-  // Each language's koan ids, from the build: enough to count progress without loading a language.
-  const koanIds = summary as Record<string, string[]>;
-  const languages = packs.map(pack => ({ pack, progress: progressFor(pack.id), koans: koanIds[pack.id] ?? [] }));
+  // Each language's koans, from the build: enough for progress and "continue" without loading any language.
+  interface KoanInfo {
+    id: string;
+    title: string;
+    section: string;
+  }
+  const koanLists = summary as Record<string, KoanInfo[]>;
+  const languages = packs.map(pack => ({ pack, progress: progressFor(pack.id), koans: koanLists[pack.id] ?? [] }));
   type Language = (typeof languages)[number];
+  const totalKoans = languages.reduce((n, l) => n + l.koans.length, 0);
   onMount(() => {
     for (const l of languages) void l.progress.ready();
   });
 
   // Current koans only: saved progress may include koans that were since removed.
-  const passedIn = (l: Language) => l.koans.filter(id => l.progress.get(id)?.status === 'passed').length;
-  const startedIn = (l: Language) => l.koans.some(id => l.progress.get(id));
+  const passed = (l: Language, id: string) => l.progress.get(id)?.status === 'passed';
+  const passedIn = (l: Language) => l.koans.filter(k => passed(l, k.id)).length;
+  const startedIn = (l: Language) => l.koans.some(k => l.progress.get(k.id));
   const koans = (n: number, name = '') => `${n} ${name ? name + ' ' : ''}koan${n === 1 ? '' : 's'}`;
 
+  // Where to continue: in the language worked on last, the koan worked on last if it isn't passed,
+  // or else the next one that isn't.
+  const resume = $derived.by(() => {
+    let last: { l: Language; index: number; at: string } | null = null;
+    for (const l of languages) {
+      for (let index = 0; index < l.koans.length; index++) {
+        const at = l.progress.get(l.koans[index].id)?.updatedAt;
+        if (at && (!last || at > last.at)) last = { l, index, at };
+      }
+    }
+    if (!last) return null;
+    const { l, index } = last;
+    const after = [...l.koans.slice(index), ...l.koans.slice(0, index)];
+    const koan = after.find(k => !passed(l, k.id));
+    return koan ? { l, koan, done: passedIn(l), total: l.koans.length } : null;
+  });
+
+  // "Try one": a one-blank koan, answered by tapping.
+  const teasers = packs.filter(p => p.teaser);
+  let tryId = $state(teasers.find(p => p.id === 'javascript')?.id ?? teasers[0]?.id);
+  let picked = $state<string | null>(null);
+  const tryPack = $derived(teasers.find(p => p.id === tryId));
+  const teaser = $derived(tryPack?.teaser);
+  const right = $derived(teaser !== undefined && picked === teaser.answer);
+
+  function show(id: string) {
+    const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.getElementById(id)?.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+  }
+
+  // Export and import, out of the way until asked for.
+  let keeping = $state(false);
   let note = $state<{ text: string; error?: boolean } | null>(null);
-  let fileInput: HTMLInputElement;
+  let fileInput = $state<HTMLInputElement>();
 
   async function exportProgress() {
     await Promise.all(languages.map(l => l.progress.ready()));
@@ -38,8 +78,8 @@
   }
 
   async function importProgress() {
-    const file = fileInput.files?.[0];
-    fileInput.value = ''; // so choosing the same file again still counts
+    const file = fileInput?.files?.[0];
+    if (fileInput) fileInput.value = ''; // so choosing the same file again still counts
     if (!file) return;
     let text: string;
     try {
@@ -75,108 +115,388 @@
 
 <svelte:head><title>{site.name}</title></svelte:head>
 
-<section class="hero">
-  <div class="logo"><GateMark size={150} /></div>
-  <div>
-    <h1>Choose your path</h1>
-    <p>
-      Each koan is a small program whose tests fail. Fill in the blanks until they pass, and the
-      language tells you whether you got it right.
-    </p>
-    <p>Everything runs in your browser: nothing to install, no account.</p>
-  </div>
-</section>
+<div class="home">
+  <section class="hero">
+    <div class="pitch">
+      <p class="eyebrow">Koans for {languages.length} languages</p>
+      <h1>Learn a language, one&nbsp;koan at a&nbsp;time.</h1>
+      <p class="lead">
+        Each koan is a small program whose tests fail. Fill in the blanks until they pass, and the
+        language itself tells you whether you got it right.
+      </p>
+      <ul class="facts">
+        <li>{languages.length} languages</li>
+        <li>{totalKoans} koans</li>
+        <li>No sign-up</li>
+      </ul>
+      <div class="ctas">
+        <button class="cta" onclick={() => show('languages')}>Choose a language</button>
+        <button class="secondary" onclick={() => show('how')}>How it works</button>
+      </div>
+    </div>
 
-<ul class="languages">
-  {#each languages as l (l.pack.id)}
-    {@const passed = passedIn(l)}
-    <li>
-      <a class="language" href={href(l.pack.id)}>
-        {#if l.pack.art}
-          <img class="icon" src="{import.meta.env.BASE_URL}{l.pack.art.logo.src}" alt="" width="64" height="64" />
-        {:else}
-          <span class="icon mark"><GateMark size={44} /></span>
-        {/if}
-        <span class="text">
-          <span class="name">{l.pack.name}</span>
-          <span class="tagline">{l.pack.tagline}, in {koans(l.koans.length)}.</span>
+    {#if teaser && tryPack}
+      <div class="try">
+        <div class="tabs" role="tablist" aria-label="Try a koan in">
+          {#each teasers as p (p.id)}
+            <button
+              role="tab"
+              aria-selected={p.id === tryId}
+              class:selected={p.id === tryId}
+              onclick={() => {
+                tryId = p.id;
+                picked = null;
+              }}>{p.name}</button>
+          {/each}
+        </div>
+        <div class="try-body">
+          <p class="hint">Try one. Which answer makes the test pass?</p>
+          <pre class="code">{#if teaser.context}<span class="context">{teaser.context}</span>
+{/if}{teaser.before}<span class="blank" class:filled={right}>{right ? teaser.answer : '___'}</span>{teaser.after}</pre>
+          <div class="choices">
+            {#each teaser.choices as choice (choice)}
+              <button
+                class="choice"
+                class:good={picked === choice && right}
+                class:bad={picked === choice && !right}
+                onclick={() => (picked = choice)}>{choice}</button>
+            {/each}
+          </div>
+          <p class="feedback" class:good={right} class:bad={picked !== null && !right} role="status">
+            {#if picked === null}Tap an answer.{:else if right}✓ Enlightenment! {teaser.why}{:else}Not quite. Try another answer.{/if}
+          </p>
+        </div>
+      </div>
+    {/if}
+  </section>
+
+  {#if resume}
+    <a class="resume" href={href(resume.l.pack.id, resume.koan.id)}>
+      <span class="mark" style:--accent-light={resume.l.pack.look.accent.light} style:--accent-dark={resume.l.pack.look.accent.dark}>
+        {resume.l.pack.look.monogram}
+      </span>
+      <span class="resume-text">
+        <span class="small">Continue where you left off</span>
+        <span class="resume-title">{resume.l.pack.name} · {resume.koan.title}</span>
+        <span class="bar-row">
+          <span class="bar" style:--accent-light={resume.l.pack.look.accent.light} style:--accent-dark={resume.l.pack.look.accent.dark}>
+            <span style:width="{Math.round((resume.done / resume.total) * 100)}%"></span>
+          </span>
+          <span class="small">{resume.done} of {resume.total}</span>
         </span>
-        <span class="progress"><Meter {passed} total={l.koans.length} /></span>
-        <span class="go">{passed === l.koans.length && passed ? 'Walked ✓' : startedIn(l) ? 'Continue →' : 'Begin →'}</span>
-      </a>
-    </li>
-  {/each}
-</ul>
+      </span>
+      <span class="go" aria-hidden="true">→</span>
+    </a>
+  {/if}
 
-<section class="keep">
-  <h2>Your progress</h2>
-  <p>
-    Progress is saved in this browser only. Export it to keep a copy, or to carry it to another
-    browser. Importing keeps whichever is newer for each koan, so it never undoes your work.
-  </p>
-  <div class="buttons">
-    <button onclick={exportProgress}>Export progress</button>
-    <button onclick={() => fileInput.click()}>Import progress…</button>
-    <input bind:this={fileInput} type="file" accept="application/json,.json" onchange={importProgress} hidden />
-  </div>
-  {#if note}<p class="note" class:error={note.error} role="status">{note.text}</p>{/if}
-</section>
+  <section id="languages" class="paths">
+    <div class="heading">
+      <h2>Choose your path</h2>
+      <p>Each path starts with the first assertion and ends deep in the language.</p>
+    </div>
+    <ul class="tiles">
+      {#each languages as l (l.pack.id)}
+        {@const done = passedIn(l)}
+        <li>
+          <a class="tile" href={href(l.pack.id)} style:--accent-light={l.pack.look.accent.light} style:--accent-dark={l.pack.look.accent.dark}>
+            <span class="tile-top">
+              {#if l.pack.art}
+                <img src="{import.meta.env.BASE_URL}{l.pack.art.logo.src}" alt="" width="44" height="44" />
+              {:else}
+                <span class="mark">{l.pack.look.monogram}</span>
+              {/if}
+              <span>
+                <span class="name">{l.pack.name}</span>
+                <span class="small">{koans(l.koans.length)}</span>
+              </span>
+            </span>
+            <code class="sample">{l.pack.sample}</code>
+            <span class="fill"></span>
+            {#if done === l.koans.length && done > 0}
+              <span class="status">Walked ✓</span>
+            {:else if startedIn(l)}
+              <span class="bar-row progress">
+                <span class="bar"><span style:width="{Math.round((done / l.koans.length) * 100)}%"></span></span>
+                <span class="small">{done}/{l.koans.length}</span>
+              </span>
+            {:else}
+              <span class="status">Begin →</span>
+            {/if}
+          </a>
+        </li>
+      {/each}
+    </ul>
+  </section>
+
+  <section id="how" class="how">
+    <h2>How a koan works</h2>
+    <ol class="steps">
+      <li>
+        <span class="num">1</span>
+        <span><strong>Read</strong>A short intro, then a few lines of code with tests that don't pass yet.</span>
+      </li>
+      <li>
+        <span class="num">2</span>
+        <span><strong>Fill the blanks</strong>Replace each <code class="blank">___</code> with what makes its test pass. Stuck? Reveal the answer.</span>
+      </li>
+      <li>
+        <span class="num pass">3</span>
+        <span><strong>Reach enlightenment</strong>The language's own interpreter runs your code, right in the page, and shows what it got.</span>
+      </li>
+    </ol>
+  </section>
+
+  <section class="promises">
+    <div>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M5 21h14" /><path d="M3 3l18 18" /></svg>
+      <strong>Nothing to install</strong>
+      <span>Every interpreter runs in your browser.</span>
+    </div>
+    <div>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" /><path d="M3 3l18 18" /></svg>
+      <strong>No account</strong>
+      <span>Open a koan and start.</span>
+    </div>
+    <div>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+      <strong>Private progress</strong>
+      <span>Kept in your browser. Export it anytime.</span>
+    </div>
+    <div>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="m8 12 3 3 5-6" /></svg>
+      <strong>The real thing</strong>
+      <span>CPython, Ruby, SQLite and the rest check every answer.</span>
+    </div>
+  </section>
+
+  <section class="keep">
+    <button class="keep-toggle" aria-expanded={keeping} onclick={() => (keeping = !keeping)}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M5 21h14" /></svg>
+      Export or import your progress
+    </button>
+    {#if keeping}
+      <div class="keep-panel">
+        <p>
+          Progress is saved in this browser only. Export it to keep a copy, or to carry it to another
+          browser. Importing keeps whichever is newer for each koan, so it never undoes your work.
+        </p>
+        <div class="buttons">
+          <button onclick={exportProgress}>Export progress</button>
+          <button onclick={() => fileInput?.click()}>Import progress…</button>
+          <input bind:this={fileInput} type="file" accept="application/json,.json" onchange={importProgress} hidden />
+        </div>
+        {#if note}<p class="note" class:error={note.error} role="status">{note.text}</p>{/if}
+      </div>
+    {/if}
+  </section>
+</div>
 
 <style>
-  .hero {
+  .home {
+    --home-accent: #b8327a;
     display: flex;
-    gap: 1.5rem;
-    align-items: flex-start;
-    padding: 2.5rem 0 2rem;
+    flex-direction: column;
+    padding: 56px 0 24px;
   }
-  .logo {
-    flex: none;
-    display: grid;
-    place-items: center;
-    width: 200px;
-    height: 200px;
-    background: var(--bg-raised);
-    color: var(--ink);
-    box-shadow: var(--shadow);
+  :global([data-theme='dark']) .home { --home-accent: #f07cb6; }
+  /* A language's own colour, in either theme. */
+  .tile, .mark, .bar { --accent: var(--accent-light, var(--ink)); }
+  :global([data-theme='dark']) .tile, :global([data-theme='dark']) .mark, :global([data-theme='dark']) .bar {
+    --accent: var(--accent-dark, var(--ink));
   }
-  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.02em; }
-  .hero p { color: var(--ink-soft); max-width: 38rem; margin: 0.8rem 0 0; }
 
-  .languages { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; }
-  .language {
-    display: grid;
-    grid-template-columns: 64px minmax(0, 1fr) minmax(0, 260px) auto;
+  h2 { font-size: 32px; }
+  .small { font-size: 13px; color: var(--ink-soft); }
+  .blank { font-family: var(--font-mono); color: var(--home-accent); font-weight: 600; }
+
+  /* Hero */
+  .hero { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px; align-items: center; order: 1; }
+  .pitch { display: flex; flex-direction: column; gap: 18px; }
+  .eyebrow { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--home-accent); }
+  h1 { font-size: 52px; line-height: 1.08; letter-spacing: -0.02em; }
+  .lead { margin: 0; font-size: 18px; color: var(--ink-soft); max-width: 34rem; }
+  .facts { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .facts li { padding: 6px 12px; border: 1px solid var(--line); background: var(--bg-raised); font-size: 14px; font-weight: 500; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+  .cta, .secondary { min-height: 48px; padding: 0 22px; font-weight: 600; }
+  .cta { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .secondary { background: transparent; }
+
+  .try { background: var(--bg-raised); border: 1px solid var(--line); box-shadow: var(--shadow); min-width: 0; }
+  .tabs { display: flex; border-bottom: 1px solid var(--line); overflow-x: auto; }
+  .tabs button {
+    flex: none;
+    min-height: 48px;
+    padding: 0 18px;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    color: var(--ink-soft);
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .tabs button.selected { color: var(--ink); border-bottom-color: var(--home-accent); }
+  .try-body { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+  .hint { margin: 0; font-size: 14px; color: var(--ink-soft); }
+  .code {
+    margin: 0;
+    padding: 18px 20px;
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    font: 16px/1.7 var(--font-mono);
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .context { color: var(--ink-soft); }
+  .code .blank { padding: 1px 6px; background: color-mix(in srgb, var(--home-accent) 14%, transparent); }
+  .code .blank.filled { background: var(--pass-bg); color: var(--pass); }
+  .choices { display: flex; flex-wrap: wrap; gap: 10px; }
+  .choice { min-height: 48px; min-width: 72px; padding: 0 18px; font: 600 16px var(--font-mono); }
+  .choice.good { border-color: var(--pass); background: var(--pass-bg); }
+  .choice.bad { border-color: var(--fail); background: var(--fail-bg); }
+  .feedback { margin: 0; min-height: 26px; font-weight: 600; color: var(--ink-soft); }
+  .feedback.good { color: var(--pass); }
+  .feedback.bad { color: var(--fail); }
+
+  /* Continue */
+  .resume {
+    order: 2;
+    margin-top: 48px;
+    display: flex;
     align-items: center;
-    gap: 1.2rem;
-    padding: 1rem 1.2rem;
+    gap: 16px;
+    padding: 18px 22px;
     background: var(--bg-raised);
     border: 1px solid var(--line);
-    color: var(--ink);
+    box-shadow: var(--shadow);
     text-decoration: none;
-    transition: border-color 0.15s, transform 0.15s;
   }
-  .language:hover { border-color: var(--ink-faint); transform: translateX(3px); }
-  .icon { width: 64px; height: 64px; display: block; }
-  .icon.mark { display: grid; place-items: center; background: var(--bg-sunken); }
-  .text { display: grid; gap: 0.2rem; min-width: 0; }
-  .name { font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; }
-  .tagline { color: var(--ink-soft); font-size: 0.92rem; }
-  .go { font-weight: 600; white-space: nowrap; }
-
-  .keep { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); max-width: 42rem; }
-  .keep h2 { font-size: 1.2rem; }
-  .keep p { color: var(--ink-soft); margin: 0.6rem 0 0; font-size: 0.92rem; }
-  .buttons { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
-  .note { color: var(--ink); }
-  .note.error { color: var(--fail); }
-
-  @media (max-width: 760px) {
-    .language { grid-template-columns: 48px minmax(0, 1fr); }
-    .icon { width: 48px; height: 48px; }
-    .progress, .go { grid-column: 1 / -1; }
+  .resume:hover { border-color: var(--ink-faint); }
+  .resume-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .resume-title { font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.2; }
+  .go { flex: none; font-size: 24px; font-weight: 600; }
+  .mark {
+    flex: none;
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    color: var(--accent);
+    font: 600 16px var(--font-mono);
   }
-  @media (max-width: 600px) {
-    .hero { flex-direction: column; }
-    .logo { width: 120px; height: 120px; }
+  .bar-row { display: flex; align-items: center; gap: 10px; }
+  .bar { flex: 0 1 240px; height: 5px; background: var(--bg-sunken); }
+  .bar > span { display: block; height: 5px; background: var(--accent); }
+
+  /* Languages */
+  .paths { order: 3; padding-top: 64px; }
+  .heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 24px; margin-bottom: 24px; }
+  .heading p { margin: 0; color: var(--ink-soft); }
+  .tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .tile {
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px;
+    min-height: 196px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--accent);
+    text-decoration: none;
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .tile:hover { transform: translateY(-2px); border-color: var(--ink-faint); border-top-color: var(--accent); }
+  .tile-top { display: flex; align-items: center; gap: 12px; }
+  .tile-top > span:last-child { display: flex; flex-direction: column; min-width: 0; }
+  .tile img { width: 44px; height: 44px; object-fit: cover; flex: none; }
+  .tile .mark { width: 44px; height: 44px; font-size: 15px; }
+  .name { font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.2; }
+  .sample {
+    display: block;
+    padding: 8px 10px;
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    font-size: 12.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--ink-soft);
+  }
+  .fill { flex-grow: 1; }
+  .status { font-size: 14px; font-weight: 600; }
+  .progress .bar { flex: 1 1 auto; }
+
+  /* How it works */
+  /* isolate: so the full-width band (::before) sits behind this section, not behind the page. */
+  .how { order: 4; margin-top: 72px; padding: 56px 0; position: relative; isolation: isolate; }
+  .how::before {
+    content: '';
+    position: absolute;
+    inset: 0 calc(50% - 50vw);
+    background: var(--bg-sunken);
+    border-block: 1px solid var(--line);
+    z-index: -1;
+  }
+  .how h2 { margin-bottom: 24px; }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .steps li { display: flex; flex-direction: column; gap: 12px; padding: 22px; background: var(--bg-raised); border: 1px solid var(--line); color: var(--ink-soft); }
+  .steps strong { display: block; margin-bottom: 4px; font-family: var(--font-display); font-size: 20px; color: var(--ink); }
+  .num { width: 36px; height: 36px; display: grid; place-items: center; background: var(--ink); color: var(--bg); font-weight: 600; }
+  .num.pass { background: var(--pass); }
+
+  /* Promises */
+  .promises { order: 5; padding: 48px 0 16px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+  .promises div { display: flex; flex-direction: column; gap: 4px; }
+  .promises span { font-size: 14px; color: var(--ink-soft); }
+  .promises svg { width: 24px; height: 24px; margin-bottom: 6px; }
+  svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .promises svg { stroke: var(--home-accent); }
+
+  /* Export and import */
+  .keep { order: 6; padding-top: 24px; border-top: 1px solid var(--line); margin-top: 24px; }
+  .keep-toggle { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; font-weight: 500; }
+  .keep-toggle svg { width: 18px; height: 18px; }
+  .keep-panel { margin-top: 12px; max-width: 42rem; }
+  .keep-panel p { color: var(--ink-soft); margin: 0 0 12px; font-size: 15px; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+  .buttons button { min-height: 44px; }
+  .note { margin-top: 12px !important; color: var(--ink) !important; }
+  .note.error { color: var(--fail) !important; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+    .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .promises { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px) {
+    .home { padding-top: 16px; }
+    /* On a phone, a returning learner sees where to continue first. */
+    .resume { order: 0; margin: 0 0 24px; padding: 14px; gap: 12px; }
+    .resume .bar { flex: 1 1 auto; }
+    .resume-title { font-size: 18px; }
+    .hero { padding-top: 8px; }
+    h1 { font-size: 36px; }
+    .lead { font-size: 17px; }
+    h2 { font-size: 26px; }
+    .try-body { padding: 16px; }
+    .code { padding: 14px; font-size: 15px; }
+    .choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .choice { min-width: 0; padding: 0 8px; min-height: 52px; }
+    .paths { padding-top: 48px; }
+    .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .tile { padding: 14px; min-height: 164px; gap: 10px; }
+    /* The mark above the name, so a long name like TypeScript gets the tile's whole width. */
+    .tile-top { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .tile .mark, .tile img { width: 40px; height: 40px; font-size: 14px; }
+    .name { font-size: 18px; }
+    .sample { display: none; }
+    .how { margin-top: 48px; padding: 36px 0; }
+    .steps { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+    .steps li { flex-direction: row; gap: 14px; padding: 16px; font-size: 15px; }
+    .steps strong { font-family: var(--font-body); font-size: 16px; }
+    .num { flex: none; width: 32px; height: 32px; }
   }
 </style>
