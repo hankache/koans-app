@@ -53,6 +53,7 @@ npm run dev             # http://localhost:5173
 | `npm run preview`         | Serves the built site at http://localhost:4173                          |
 | `npm run check:koans`     | Runs every koan and its solution on its interpreter (see below)         |
 | `npm test`                | Tests how the app reads results, reveals answers and saves progress     |
+| `npm run test:browser`    | Builds the site and checks it in Chrome and Firefox (see below)         |
 | `npm run check`           | Type-checks the app                                                     |
 | `npm run fetch-runtime`   | Downloads the pinned interpreters into `public/runtime/<language>/`     |
 | `npm run notices`         | Regenerates `THIRD-PARTY-NOTICES.md` after dependencies change          |
@@ -206,6 +207,17 @@ Then list it in [scripts/lib/languages.mjs](scripts/lib/languages.mjs) and
 3. An error outside the tests names a line the pack's `errors.line` pattern can find.
 4. A program can be stopped at any moment by terminating its worker.
 
+## Browser tests
+
+`npm run test:browser` builds the site, serves it, and drives the Chrome and Firefox installed on
+the machine through every language's koan flow: a failing koan, its solution, an error, an
+infinite loop. It also checks what each page downloads, old addresses, export and import, and two
+tabs sharing progress. It takes a couple of minutes.
+
+`-- --browser chrome` (or `firefox`) runs one browser. Set `CHROME_PATH` or `FIREFOX_PATH` if a
+browser isn't where it's usually installed; one that isn't found is skipped with a warning. CI
+runs these checks on every change, before publishing.
+
 ## Interpreters
 
 Each language's interpreter comes from its official releases, and its
@@ -242,7 +254,8 @@ npm ci
 npm run fetch-runtime
 npm run check:koans
 npm test
-npm run build           # then publish dist/
+npm run build
+node tests/browser/run.mjs   # then publish dist/
 ```
 
 - The site serves its own copy of each interpreter, so once published it doesn't depend on GitHub

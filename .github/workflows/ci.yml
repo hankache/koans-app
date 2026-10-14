@@ -26,3 +26,5 @@ jobs:
       - run: npm test
       - run: npm run build:koans && npm run check
       - run: npm run build
+      # The built site in Chrome and Firefox (both come with GitHub's Ubuntu runners).
+      - run: node tests/browser/run.mjs

@@ -43,8 +43,8 @@ npm run check          # type-checks the app
 ```
 
 For a change to koans, `npm run check:koans -- --lang <id>` checks only that language. For a
-change to the site, also try it with `npm run dev`: a failing koan, a solved one, an error, and
-the home page. Changes to how a koan runs should be tried in Chrome and Firefox.
+change to the site or to how a koan runs, also run `npm run test:browser`, which checks the built
+site in Chrome and Firefox, and try the change yourself with `npm run dev`.
 
 Describe what you changed and why, in plain words, in the commit message.
 

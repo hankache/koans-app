@@ -45,8 +45,9 @@ the tools only know the languages listed in `scripts/lib/languages.mjs`, so noth
    [CONTRIBUTING.md](../../CONTRIBUTING.md).
 8. **Check.** `npm run check:koans -- --lang <id>` checks every koan and solution;
    `tap.test.ts` (fill it in) checks how the app reads the interpreter's real output; `npm test`
-   runs it all, including every koan through the app's own code. Then try the language in Chrome
-   and Firefox: a failing koan, a solved one, an error, an infinite loop.
+   runs it all, including every koan through the app's own code. Then add a row to `LANGUAGES` in
+   [tests/browser/run.mjs](../../tests/browser/run.mjs) (an error and an infinite loop in the
+   language) and run `npm run test:browser`, which tries its koans in Chrome and Firefox.
 9. **Document.** Write `README.md` (the path, the assertions, how a koan runs, the language's own
    rules for blanks, its limitations), add the language to the table in the main README, and add
    the interpreter to `scripts/third-party-notices.mjs`, then run `npm run notices`.
