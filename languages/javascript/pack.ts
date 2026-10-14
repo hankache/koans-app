@@ -5,10 +5,10 @@ export default {
   id: 'javascript',
   name: 'JavaScript',
   tagline: 'Learn modern JavaScript from its values to async functions',
-  testedWith: 'the assertions of Node’s `assert` module',
+  testedWith: 'Vitest-style `expect` (same API as Jest)',
   look: { monogram: 'JS', accent: { light: '#8a6a1f', dark: '#e2bf72' } },
-  sample: 'assert.equal(1 + 1, 2);',
-  teaser: { before: "assert.equal('5' + 2, ", after: ');', choices: ['7', "'52'", 'NaN'], answer: "'52'", why: 'With a string on either side, + joins strings.' },
+  sample: 'expect(1 + 1).toBe(2);',
+  teaser: { before: "expect('5' + 2).toBe(", after: ');', choices: ['7', "'52'", 'NaN'], answer: "'52'", why: 'With a string on either side, + joins strings.' },
   worker: { url: 'runtime/javascript/worker.js', type: 'module' },
   errors: {
     // The worker ends an uncaught error with the koan's line: "    at koan.js:3".

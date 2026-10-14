@@ -1,0 +1,4 @@
+{
+  "title": "Generics",
+  "blurb": "Functions and types that work for any type, keeping track of which one."
+}

@@ -25,10 +25,10 @@ export default {
   // Closes the async function the prelude opens; the worker waits for it.
   epilogue: '\n})()\n',
 
-  /** console.assert prints and carries on without a test result, so a blank in it is never checked. */
+  /** A blank goes in an expect(…) line; anywhere else it would just break the koan. */
   lint(code) {
     return code.split('\n').flatMap((l, i) =>
-      /\bconsole\.assert\(/.test(l) ? [`line ${i + 1} uses console.assert; use assert.ok, assert.equal, …`] : [],
+      l.includes('___') && !/\bexpect\(/.test(l) ? [`line ${i + 1} has a blank outside an expect(…)`] : [],
     );
   },
 

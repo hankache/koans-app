@@ -1,7 +1,7 @@
 const s = 'JavaScript';
-assert.equal(s[0], 'J', 'the first character');
-assert.equal(s.at(-1), 't', 'at(-1) is the last');
-assert.equal(s.slice(0, 4), 'Java', 'a slice stops before its end');
-assert.equal(s.slice(-6), 'Script', 'or counts from the end');
-assert.equal(s.length, 10, 'length counts the characters');
-assert.equal(s[100], undefined, 'past the end there is nothing');
+expect(s[0], 'the first character').toBe('J');
+expect(s.at(-1), 'at(-1) is the last').toBe('t');
+expect(s.slice(0, 4), 'a slice stops before its end').toBe('Java');
+expect(s.slice(-6), 'or counts from the end').toBe('Script');
+expect(s[100], 'past the end there is nothing').toBe(undefined);
+expect(s, 'toHaveLength works on strings').toHaveLength(10);

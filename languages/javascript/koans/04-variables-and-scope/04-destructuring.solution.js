@@ -1,0 +1,11 @@
+const { name, age = 0 } = { name: 'Ada' };
+expect(name, 'take a property by its name').toBe('Ada');
+expect(age, 'with a default when it is missing').toBe(0);
+const { city: town } = { city: 'London' };
+expect(town, 'rename as you take it').toBe('London');
+const [first, , third] = [1, 2, 3];
+expect(third, 'take array items by position, skipping some').toBe(3);
+const [head, ...tail] = [1, 2, 3];
+expect(tail, '...tail takes the rest').toEqual([2, 3]);
+const { user: { id } } = { user: { id: 7 } };
+expect(id, 'destructuring nests').toBe(7);

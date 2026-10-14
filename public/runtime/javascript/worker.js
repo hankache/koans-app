@@ -1,11 +1,16 @@
 // Runs JavaScript koans on the browser's own engine. In the browser this is a module worker,
 // so a runaway koan can't freeze the page and can be killed; under Node, the build tools import
 // run() from it (languages/javascript/node.mjs), so the checker and the tests use this same code.
+// TypeScript's worker runs its compiled koans through it too.
+//
+// The koans are tested the way most JavaScript developers test: with Vitest's `expect`
+// (`expect(value, 'message').toBe(___)`, the same matchers as Jest's). Each matcher prints TAP: a
+// failure reports itself and the koan carries on, so every blank is checked.
 //
 // A koan runs through indirect eval as a strict script named koan.js (its //# sourceURL), so
 // stack traces give its line numbers. Its first line is the prelude (languages/javascript/
-// prelude.js), which takes ___ and assert from globalThis.__koan and opens an async function,
-// so koans can use await; the epilogue closes the function, and the run waits for it.
+// prelude.js), which takes ___ and expect from globalThis.__koan and opens an async function, so
+// koans can use await; the epilogue closes the function, and the run waits for it.
 //
 // Protocol:  in  { type: 'run', id, src }
 //            out { type: 'ready', version }
@@ -27,7 +32,7 @@ export function show(value, seen = new Set()) {
     case 'bigint':
       return `${value}n`;
     case 'function':
-      // Classes and functions by name: assert.throws shows which error it wanted (TypeError).
+      // Classes and functions by name: toThrow shows which error it wanted (TypeError).
       return value.name || '(anonymous function)';
     case 'object':
       break;
@@ -54,24 +59,39 @@ export function show(value, seen = new Set()) {
   }
 }
 
-/** Node's deepStrictEqual: same structure, same prototypes, primitives compared with Object.is. */
-export function deepEqual(a, b, seen = new Map()) {
+/**
+ * Vitest's equality. Loose (toEqual): recursively equal, properties that are undefined count as
+ * missing, and prototypes don't matter. Strict (toStrictEqual): prototypes and undefined
+ * properties count too.
+ */
+export function equals(a, b, strict = false, seen = new Map()) {
   if (Object.is(a, b)) return true;
   if (typeof a !== 'object' || typeof b !== 'object' || a === null || b === null) return false;
-  if (Object.getPrototypeOf(a) !== Object.getPrototypeOf(b)) return false;
+  if (strict && Object.getPrototypeOf(a) !== Object.getPrototypeOf(b)) return false;
+  if (Array.isArray(a) !== Array.isArray(b)) return false;
   if (seen.get(a) === b) return true;
   seen.set(a, b);
-  if (a instanceof Date) return Object.is(a.getTime(), b.getTime());
-  if (a instanceof RegExp) return String(a) === String(b);
-  if (a instanceof Map) {
-    return a.size === b.size && [...a].every(([k, v]) => b.has(k) && deepEqual(v, b.get(k), seen));
+  if (a instanceof Date || b instanceof Date) return a instanceof Date && b instanceof Date && Object.is(a.getTime(), b.getTime());
+  if (a instanceof RegExp || b instanceof RegExp) return String(a) === String(b);
+  if (a instanceof Map || b instanceof Map) {
+    return a instanceof Map && b instanceof Map && a.size === b.size &&
+      [...a].every(([k, v]) => b.has(k) && equals(v, b.get(k), strict, seen));
   }
-  if (a instanceof Set) {
-    return a.size === b.size && [...a].every(v => b.has(v) || [...b].some(w => deepEqual(v, w, seen)));
+  if (a instanceof Set || b instanceof Set) {
+    return a instanceof Set && b instanceof Set && a.size === b.size &&
+      [...a].every(v => b.has(v) || [...b].some(w => equals(v, w, strict, seen)));
   }
   if (Array.isArray(a) && a.length !== b.length) return false;
-  const keys = Object.keys(a);
-  return keys.length === Object.keys(b).length && keys.every(k => Object.hasOwn(b, k) && deepEqual(a[k], b[k], seen));
+  const keys = o => Object.keys(o).filter(k => strict || o[k] !== undefined);
+  const ka = keys(a);
+  return ka.length === keys(b).length && ka.every(k => Object.hasOwn(b, k) && equals(a[k], b[k], strict, seen));
+}
+
+/** Whether `actual` has every property of `expected`, deeply: toMatchObject. */
+function matchesObject(actual, expected) {
+  if (typeof expected !== 'object' || expected === null || typeof actual !== 'object' || actual === null) return equals(actual, expected);
+  if (Array.isArray(expected)) return Array.isArray(actual) && actual.length === expected.length && expected.every((v, i) => matchesObject(actual[i], v));
+  return Object.keys(expected).every(k => k in actual && matchesObject(actual[k], expected[k]));
 }
 
 /**
@@ -88,11 +108,10 @@ function learnerLine(stack, mapLine = n => n) {
 }
 
 /**
- * Node's assert (the strict flavour), printing TAP: a failure reports itself and the koan carries on.
- * With `typeChecks` (a Map from koan line to a check the TypeScript worker made before the run),
- * it also has assert.type and assert.typeEqual, which report those checks in their turn.
+ * Vitest's expect, printing TAP. With `typeChecks` (a Map from koan line to a check the TypeScript
+ * worker made before the run), there's also expectTypeOf, which reports those checks in turn.
  */
-function makeAssert(out, err, { mapLine, typeChecks } = {}) {
+function makeExpect(out, err, { mapLine, typeChecks } = {}) {
   const here = () => learnerLine(new Error().stack ?? '', mapLine);
   let tests = 0;
   const report = (ok, msg, line, diag = []) => {
@@ -102,74 +121,123 @@ function makeAssert(out, err, { mapLine, typeChecks } = {}) {
       for (const d of diag) err(`# ${d}`);
       err(`# at web line ${line}`);
     }
-    return ok;
   };
-  const compare = (ok, expected, actual, msg, line) =>
-    report(ok, msg, line, [`expected: ${show(expected)}`, `     got: ${show(actual)}`]);
-  // Every assertion fails when given ___, whatever it would otherwise check.
-  const check = (args, msg, test) => {
-    const line = here();
-    return args.some(a => a === ___) ? report(false, msg, line) : test(line);
-  };
-  // assert.throws(fn, 'message') takes the string as the message, as Node does.
-  const wanted = (expected, msg) => (typeof expected === 'string' ? [undefined, expected] : [expected, msg]);
-  const matches = (error, expected) =>
-    expected === undefined ||
-    (expected instanceof RegExp ? expected.test(String(error?.message ?? error)) : error instanceof expected);
+  const errorText = error => String(error?.message ?? error);
 
-  const assert = (value, msg) => assert.ok(value, msg);
-  Object.assign(assert, {
-    ok: (value, msg) => check([value], msg, line => report(Boolean(value), msg, line)),
-    equal: (actual, expected, msg) =>
-      check([actual, expected], msg, line => compare(Object.is(actual, expected), expected, actual, msg, line)),
-    notEqual: (actual, unexpected, msg) =>
-      check([actual, unexpected], msg, line => report(!Object.is(actual, unexpected), msg, line, [`didn't want: ${show(unexpected)}`])),
-    deepEqual: (actual, expected, msg) =>
-      check([actual, expected], msg, line => compare(deepEqual(actual, expected), expected, actual, msg, line)),
-    notDeepEqual: (actual, unexpected, msg) =>
-      check([actual, unexpected], msg, line => report(!deepEqual(actual, unexpected), msg, line, [`didn't want: ${show(unexpected)}`])),
-    match: (string, regexp, msg) =>
-      check([string, regexp], msg, line => compare(regexp instanceof RegExp && regexp.test(string), regexp, string, msg, line)),
-    throws: (fn, expected, msg) => {
-      [expected, msg] = wanted(expected, msg);
-      return check([fn, expected], msg, line => {
-        try {
-          fn();
-        } catch (error) {
-          return matches(error, expected) ? report(true, msg, line) : compare(false, expected, error?.constructor ?? error, msg, line);
+  // Each matcher: (actual, ...args) → [pass, what it expected, what it got], the last two for a failure.
+  const matchers = {
+    toBe: (a, e) => [Object.is(a, e), show(e), show(a)],
+    toEqual: (a, e) => [equals(a, e), show(e), show(a)],
+    toStrictEqual: (a, e) => [equals(a, e, true), show(e), show(a)],
+    toBeTruthy: a => [Boolean(a), 'a truthy value', show(a)],
+    toBeFalsy: a => [!a, 'a falsy value', show(a)],
+    toBeNull: a => [a === null, 'null', show(a)],
+    toBeUndefined: a => [a === undefined, 'undefined', show(a)],
+    toBeDefined: a => [a !== undefined, 'a defined value', show(a)],
+    toBeNaN: a => [Number.isNaN(a), 'NaN', show(a)],
+    toBeGreaterThan: (a, n) => [a > n, `> ${show(n)}`, show(a)],
+    toBeGreaterThanOrEqual: (a, n) => [a >= n, `>= ${show(n)}`, show(a)],
+    toBeLessThan: (a, n) => [a < n, `< ${show(n)}`, show(a)],
+    toBeLessThanOrEqual: (a, n) => [a <= n, `<= ${show(n)}`, show(a)],
+    toBeCloseTo: (a, n, digits = 2) => [Math.abs(a - n) < 10 ** -digits / 2, `${show(n)} (to ${digits} places)`, show(a)],
+    toContain: (a, item) => [typeof a === 'string' ? a.includes(item) : [...a].some(x => x === item), `something containing ${show(item)}`, show(a)],
+    toContainEqual: (a, item) => [[...a].some(x => equals(x, item)), `something containing ${show(item)}`, show(a)],
+    toHaveLength: (a, n) => [a?.length === n, `length ${show(n)}`, `length ${show(a?.length)}`],
+    toHaveProperty: (a, path, ...value) => {
+      const keys = Array.isArray(path) ? path : String(path).split('.');
+      let target = a;
+      for (const k of keys) {
+        if (target === null || target === undefined || !(k in Object(target))) return [false, `a property ${show(path)}`, show(a)];
+        target = target[k];
+      }
+      return value.length ? [equals(target, value[0]), `${show(path)} to be ${show(value[0])}`, show(target)] : [true, '', ''];
+    },
+    toMatch: (a, p) => [p instanceof RegExp ? p.test(a) : String(a).includes(p), show(p), show(a)],
+    toMatchObject: (a, o) => [matchesObject(a, o), show(o), show(a)],
+    toBeInstanceOf: (a, cls) => [a instanceof cls, `an instance of ${show(cls)}`, a?.constructor ? show(a.constructor) : show(a)],
+    // toThrow gets the error the function threw (or, for .rejects, the rejection), else no error.
+    toThrow: (thrown, expected) => {
+      if (!thrown.threw) return [false, expected === undefined ? 'an error' : show(expected), 'no error'];
+      const e = thrown.error;
+      const ok =
+        expected === undefined ? true
+        : expected instanceof RegExp ? expected.test(errorText(e))
+        : typeof expected === 'string' ? errorText(e).includes(expected)
+        : typeof expected === 'function' ? e instanceof expected
+        : errorText(e) === errorText(expected);
+      return [ok, show(expected), typeof expected === 'function' ? show(e?.constructor ?? e) : show(errorText(e))];
+    },
+  };
+
+  const settle = promise => {
+    // A blank shouldn't leave a rejection unhandled.
+    if (typeof promise?.then === 'function') promise.then(undefined, () => {});
+  };
+
+  function build(actual, msg, { negate = false, mode = null } = {}) {
+    const chain = {};
+    for (const [name, matcher] of Object.entries(matchers)) {
+      chain[name] = (...args) => {
+        const line = here();
+        if (actual === ___ || args.some(a => a === ___)) {
+          if (mode) settle(actual);
+          report(false, msg, line);
+          return mode ? Promise.resolve() : undefined;
         }
-        return report(false, msg, line, [`expected: ${expected === undefined ? 'an exception' : show(expected)}`, '     got: no exception']);
-      });
-    },
-    rejects: async (promiseOrFn, expected, msg) => {
-      [expected, msg] = wanted(expected, msg);
-      const line = here();
-      if ([promiseOrFn, expected].some(a => a === ___)) {
-        // Still settle the promise, so its rejection doesn't go unhandled.
-        if (typeof promiseOrFn?.then === 'function') promiseOrFn.then(undefined, () => {});
-        return report(false, msg, line);
-      }
-      try {
-        await (typeof promiseOrFn === 'function' ? promiseOrFn() : promiseOrFn);
-      } catch (error) {
-        return matches(error, expected) ? report(true, msg, line) : compare(false, expected, error?.constructor ?? error, msg, line);
-      }
-      return report(false, msg, line, [`expected: ${expected === undefined ? 'a rejection' : show(expected)}`, '     got: it resolved']);
-    },
-  });
-
-  if (typeChecks) {
-    const typeCheck = msg => {
-      const line = here();
-      const found = typeChecks.get(line);
-      if (!found) return report(false, msg, line, ['no type check was made for this line']);
-      if (found.blank) return report(false, msg, line);
-      return report(found.ok, msg, line, [`expected: ${found.expected}`, `     got: ${found.actual}`]);
-    };
-    assert.type = (value, msg) => typeCheck(msg);
-    assert.typeEqual = msg => typeCheck(msg);
+        const judge = value => {
+          const [pass, expected, got] = matcher(value, ...args);
+          const ok = negate ? !pass : pass;
+          report(ok, msg, line, ok ? [] : negate ? [`expected not: ${expected}`, `     got: ${got}`] : [`expected: ${expected}`, `     got: ${got}`]);
+        };
+        if (mode) {
+          return Promise.resolve(actual).then(
+            value => {
+              if (mode === 'rejects') report(false, msg, line, ['expected: a rejection', `     got: it resolved to ${show(value)}`]);
+              else judge(name === 'toThrow' ? { threw: false } : value);
+            },
+            error => {
+              if (mode === 'resolves') report(false, msg, line, ['expected: it to resolve', `     got: a rejection: ${errorText(error)}`]);
+              else judge(name === 'toThrow' ? { threw: true, error } : error);
+            },
+          );
+        }
+        if (name === 'toThrow') {
+          let thrown = { threw: false };
+          try {
+            actual();
+          } catch (error) {
+            thrown = { threw: true, error };
+          }
+          judge(thrown);
+        } else {
+          judge(actual);
+        }
+      };
+    }
+    if (!negate) Object.defineProperty(chain, 'not', { get: () => build(actual, msg, { negate: true, mode }) });
+    if (!mode) {
+      Object.defineProperty(chain, 'resolves', { get: () => build(actual, msg, { negate, mode: 'resolves' }) });
+      Object.defineProperty(chain, 'rejects', { get: () => build(actual, msg, { negate, mode: 'rejects' }) });
+    }
+    return chain;
   }
-  return assert;
+
+  const expect = (actual, msg) => build(actual, msg);
+
+  // expectTypeOf(value).toEqualTypeOf<T>(), and its modifiers: the TypeScript worker decided these
+  // before the run, so at run time the chain only reports them, in turn with the other tests.
+  const typeCheck = () => {
+    const line = here();
+    const found = typeChecks?.get(line);
+    if (!found) return report(false, undefined, line, ['no type check was made for this line']);
+    if (found.blank) return report(false, found.desc, line);
+    report(found.ok, found.desc, line, found.diag ?? [`expected: ${found.expected}`, `     got: ${found.actual}`]);
+  };
+  const typeChain = { toEqualTypeOf: typeCheck, toExtend: typeCheck, parameter: () => typeChain };
+  for (const name of ['not', 'returns', 'resolves', 'items']) Object.defineProperty(typeChain, name, { get: () => typeChain });
+  const expectTypeOf = () => typeChain;
+
+  return { expect, expectTypeOf };
 }
 
 /** An error the koan didn't catch, as stderr lines: its message, then the koan's line. */
@@ -190,7 +258,7 @@ async function describe(error, src, mapLine) {
 
 /**
  * Runs a whole koan (prelude + code + epilogue); returns its exit code and output lines.
- * `options` (mapLine, typeChecks) are for code compiled from TypeScript: see makeAssert.
+ * `options` (mapLine, typeChecks) are for code compiled from TypeScript: see makeExpect.
  */
 export async function run(src, options = {}) {
   const lines = [];
@@ -202,7 +270,7 @@ export async function run(src, options = {}) {
   const format = args => args.map(a => (typeof a === 'string' ? a : show(a))).join(' ');
   const console = globalThis.console;
   globalThis.console = { ...console, log: (...a) => out(format(a)), info: (...a) => out(format(a)), warn: (...a) => err(format(a)), error: (...a) => err(format(a)) };
-  globalThis.__koan = { ___, assert: makeAssert(out, err, options) };
+  globalThis.__koan = { ___, ...makeExpect(out, err, options) };
   try {
     await (0, eval)(`${src}\n//# sourceURL=${FILE}`);
     return { rc: 0, lines };

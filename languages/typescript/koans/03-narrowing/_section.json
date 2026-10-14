@@ -1,4 +1,0 @@
-{
-  "title": "Narrowing",
-  "blurb": "How checks in the code make a union's type narrower, branch by branch."
-}

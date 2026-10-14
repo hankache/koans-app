@@ -1,0 +1,4 @@
+{
+  "title": "Iterators and generators",
+  "blurb": "The iteration protocol, generator functions, and making your own iterables."
+}

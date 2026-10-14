@@ -1,0 +1,4 @@
+{
+  "title": "Type operators",
+  "blurb": "Making types from other types: keyof, typeof, indexed access, conditional and mapped types, and template literals."
+}

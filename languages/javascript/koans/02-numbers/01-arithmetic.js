@@ -1,10 +1,9 @@
 // title: Arithmetic
 // intro: The usual operators, plus `**` for powers and `%` for the remainder. There is no integer division: `/` always divides exactly.
-assert.equal(7 + 3, ___, 'addition');
-assert.equal(7 - 10, ___, 'subtraction');
-assert.equal(7 * 3, ___, 'multiplication');
-assert.equal(2 ** 10, ___, 'a power');
-assert.equal(7 / 2, ___, '/ divides exactly');
-assert.equal(Math.trunc(7 / 2), ___, 'Math.trunc drops the fraction');
-assert.equal(7 % 3, ___, '% is the remainder');
-assert.equal(-7 % 3, ___, 'it keeps the sign of the left side');
+expect(7 + 3, 'addition').toBe(___);
+expect(7 - 10, 'subtraction').toBe(___);
+expect(2 ** 10, 'a power').toBe(___);
+expect(7 / 2, '/ divides exactly').toBe(___);
+expect(Math.trunc(7 / 2), 'Math.trunc drops the fraction').toBe(___);
+expect(7 % 3, '% is the remainder').toBe(___);
+expect(-7 % 3, 'it keeps the sign of the left side').toBe(___);

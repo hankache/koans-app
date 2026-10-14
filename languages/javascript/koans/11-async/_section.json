@@ -1,0 +1,4 @@
+{
+  "title": "Async",
+  "blurb": "Promises, async functions, combinators, errors, and the event loop."
+}

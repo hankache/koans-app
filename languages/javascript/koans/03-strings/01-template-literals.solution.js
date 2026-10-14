@@ -1,6 +1,8 @@
 const name = 'Ada';
-assert.equal(`Hello, ${name}!`, 'Hello, Ada!', 'a template fills in a value');
-assert.equal(`${1 + 2}`, '3', 'or any expression');
-assert.equal(`${name.toUpperCase()}`, 'ADA', 'including method calls');
-assert.equal("It's" === 'It\'s', true, 'two ways to write a quote inside quotes');
-assert.equal(String.raw`a\nb`.length, 4, 'String.raw keeps backslashes as they are');
+expect(`Hello, ${name}!`, 'a template fills in a value').toBe('Hello, Ada!');
+expect(`${1 + 2}`, 'or any expression').toBe('3');
+const twoLines = `a
+b`;
+expect(twoLines.length, 'a template can span lines').toBe(3);
+expect("It's" === 'It\'s', 'two ways to write a quote inside quotes').toBe(true);
+expect(String.raw`a\nb`.length, 'String.raw keeps backslashes as they are').toBe(4);

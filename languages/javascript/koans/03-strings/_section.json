@@ -1,4 +1,4 @@
 {
   "title": "Strings",
-  "blurb": "Template literals, slicing, and the methods every string has."
+  "blurb": "Template literals, slicing, methods, Unicode, and regular expressions."
 }

@@ -34,8 +34,8 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/).
 |-------------------------------|-------|-----------------------------------------------------|--------------------|
 | [Raku](languages/raku/)       | 105   | [Raku++](https://github.com/ash/rakupp) (Raku.js)   | Raku's `Test`      |
 | [Python](languages/python/)   | 71    | [Pyodide](https://pyodide.org) (CPython 3.14)       | pytest-style `assert`s |
-| [JavaScript](languages/javascript/) | 30 | the browser's own engine                      | Node's `assert` API |
-| [TypeScript](languages/typescript/) | 30 | the TypeScript 6 compiler, then the browser's engine | Node's `assert` API, plus type assertions |
+| [JavaScript](languages/javascript/) | 70 | the browser's own engine                      | Vitest-style `expect` |
+| [TypeScript](languages/typescript/) | 55 | the TypeScript 6 compiler, then the browser's engine | Vitest's `expect` and `expectTypeOf` |
 | [Ruby](languages/ruby/)       | 30    | [ruby.wasm](https://github.com/ruby/ruby.wasm) (CRuby 4.0) | Minitest's assertions |
 | [Lua](languages/lua/)         | 30    | [wasmoon](https://github.com/ceifa/wasmoon) (Lua 5.4) | busted's assertions |
 | [SQL](languages/sql/)         | 30    | [sql.js](https://github.com/sql-js/sql.js) (SQLite 3.49) | expected rows in `-- expect:` comments |

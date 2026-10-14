@@ -3,10 +3,13 @@
 // this is a module worker; under Node, the build tools import makeRunner() from it
 // (languages/typescript/node.mjs), so the checker and the tests use this same code.
 //
-// Type checks become test results. assert.type<T>(value) passes when the value's type is exactly
-// T, and assert.typeEqual<A, B>() when A and B are the same type; the worker decides that before
-// the run, and the assertion reports it when the koan reaches it, in order with the others. Any
-// other type error stops the koan before it runs, with its line, like a compile error.
+// Koans are tested with Vitest's expect, and types with its expectTypeOf:
+// expectTypeOf(value).toEqualTypeOf<T>() passes when the value's type is exactly T, and
+// expectTypeOf<A>().toExtend<B>() when A is assignable to B; .returns, .parameter(n), .resolves,
+// .items and .not adjust the type first. The worker decides each check before the run, and the
+// chain reports it when the koan reaches it, in order with the other tests, described by the
+// comment that ends its line. Any other type error stops the koan before it runs, with its line,
+// like a compile error.
 //
 // Protocol:  in  { type: 'run', id, src }
 //            out { type: 'ready', version } | { type: 'loaderror', message }
@@ -16,27 +19,57 @@ import { run as runJavaScript } from '../javascript/worker.js';
 const KOAN = '/koan.ts';
 const TYPES = '/koans.d.ts';
 
-/** What every koan can use: the prelude's ___ and assert, and the few globals of a worker it needs. */
+/** What every koan can use: the prelude's ___, expect and expectTypeOf, and the few globals of a worker it needs. */
 const KOAN_TYPES = `
 declare const __blank: unique symbol;
 /** ___: a blank to fill in, as a value or as a type. */
 type ___ = { readonly [__blank]: true };
-interface KoanAssert {
-  (value: unknown, message?: string): void;
-  ok(value: unknown, message?: string): void;
-  equal(actual: unknown, expected: unknown, message?: string): void;
-  notEqual(actual: unknown, unexpected: unknown, message?: string): void;
-  deepEqual(actual: unknown, expected: unknown, message?: string): void;
-  notDeepEqual(actual: unknown, unexpected: unknown, message?: string): void;
-  match(string: unknown, regexp: unknown, message?: string): void;
-  throws(fn: () => unknown, expected?: unknown, message?: string): void;
-  rejects(promise: unknown, expected?: unknown, message?: string): Promise<void>;
-  /** Passes when the value's type is exactly T. */
-  type<T>(value: unknown, message?: string): void;
-  /** Passes when A and B are the same type. */
-  typeEqual<A, B>(message?: string): void;
+interface KoanMatchers {
+  toBe(expected: unknown): void;
+  toEqual(expected: unknown): void;
+  toStrictEqual(expected: unknown): void;
+  toBeTruthy(): void;
+  toBeFalsy(): void;
+  toBeNull(): void;
+  toBeUndefined(): void;
+  toBeDefined(): void;
+  toBeNaN(): void;
+  toBeGreaterThan(n: unknown): void;
+  toBeGreaterThanOrEqual(n: unknown): void;
+  toBeLessThan(n: unknown): void;
+  toBeLessThanOrEqual(n: unknown): void;
+  toBeCloseTo(n: unknown, digits?: number): void;
+  toContain(item: unknown): void;
+  toContainEqual(item: unknown): void;
+  toHaveLength(n: unknown): void;
+  toHaveProperty(path: unknown, value?: unknown): void;
+  toMatch(pattern: unknown): void;
+  toMatchObject(subset: unknown): void;
+  toBeInstanceOf(type: unknown): void;
+  toThrow(expected?: unknown): void;
+  readonly not: KoanMatchers;
+  readonly resolves: KoanAsyncMatchers;
+  readonly rejects: KoanAsyncMatchers;
 }
-declare var __koan: { ___: ___; assert: KoanAssert };
+type KoanAsyncMatchers = {
+  [K in keyof KoanMatchers]: KoanMatchers[K] extends (...args: infer A) => void ? (...args: A) => Promise<void> : KoanAsyncMatchers;
+};
+interface KoanTypeOf {
+  /** Passes when the type is exactly U. */
+  toEqualTypeOf<U>(value?: U): void;
+  /** Passes when the type is assignable to U. */
+  toExtend<U>(value?: U): void;
+  readonly not: KoanTypeOf;
+  /** A function's return type. */
+  readonly returns: KoanTypeOf;
+  /** What a promise resolves to. */
+  readonly resolves: KoanTypeOf;
+  /** An array's item type. */
+  readonly items: KoanTypeOf;
+  /** A function's n-th parameter type, from 0. */
+  parameter(n: number): KoanTypeOf;
+}
+declare var __koan: { ___: ___; expect(actual: unknown, message?: string): KoanMatchers; expectTypeOf<T>(value?: T): KoanTypeOf };
 declare var console: { log(...data: unknown[]): void; info(...data: unknown[]): void; warn(...data: unknown[]): void; error(...data: unknown[]): void };
 declare function setTimeout(handler: () => void, timeout?: number): number;
 declare function clearTimeout(id?: number): void;
@@ -122,27 +155,69 @@ export function makeRunner(ts, libs) {
     const show = type => checker.typeToString(type, undefined, ts.TypeFormatFlags.NoTruncation);
     const same = (a, b) => checker.isTypeAssignableTo(a, b) && checker.isTypeAssignableTo(b, a);
 
-    // The type assertions: assert.type<Expected>(value) and assert.typeEqual<Actual, Expected>().
+    // The type checks: expectTypeOf(value) or expectTypeOf<T>(), any modifiers, then a matcher.
     const checks = new Map();
     const spans = [];
+    const describe = node => {
+      const text = file.text;
+      const eol = text.indexOf('\n', node.getEnd());
+      return text.slice(node.getEnd(), eol < 0 ? text.length : eol).match(/\/\/\s*(.*?)\s*$/)?.[1];
+    };
+    const typeCheck = node => {
+      // Walk back from the matcher to expectTypeOf, collecting the modifiers in between.
+      const steps = [];
+      let at = node.expression.expression;
+      while (!(ts.isCallExpression(at) && ts.isIdentifier(at.expression) && at.expression.text === 'expectTypeOf')) {
+        if (ts.isPropertyAccessExpression(at)) {
+          steps.unshift({ name: at.name.text });
+          at = at.expression;
+        } else if (ts.isCallExpression(at) && ts.isPropertyAccessExpression(at.expression) && at.expression.name.text === 'parameter') {
+          steps.unshift({ name: 'parameter', n: Number(at.arguments[0]?.getText(file)) });
+          at = at.expression.expression;
+        } else {
+          return undefined;
+        }
+      }
+      const desc = describe(node);
+      if (/\b___\b/.test(node.getText(file))) return { blank: true, desc };
+      const fail = why => ({ ok: false, desc, diag: [why] });
+      const source = at.typeArguments?.[0] ?? at.arguments[0];
+      if (!source) return fail('expectTypeOf needs a value or a type argument');
+      let actual = ts.isTypeNode(source) ? checker.getTypeFromTypeNode(source) : checker.getTypeAtLocation(source);
+      let negate = false;
+      for (const step of steps) {
+        const signature = () => checker.getSignaturesOfType(actual, ts.SignatureKind.Call)[0];
+        if (step.name === 'not') negate = !negate;
+        else if (step.name === 'returns') actual = signature()?.getReturnType();
+        else if (step.name === 'parameter') {
+          const parameter = signature()?.getParameters()[step.n];
+          actual = parameter && checker.getTypeOfSymbolAtLocation(parameter, node);
+        } else if (step.name === 'resolves') actual = checker.getAwaitedType(actual);
+        else if (step.name === 'items') actual = checker.getIndexTypeOfType(actual, ts.IndexKind.Number);
+        else return fail(`expectTypeOf has no .${step.name} here`);
+        if (!actual) return fail(`the type has no .${step.name}`);
+      }
+      const target = node.typeArguments?.[0] ?? node.arguments[0];
+      if (!target) return fail(`${node.expression.name.text} needs a type argument`);
+      const expected = ts.isTypeNode(target) ? checker.getTypeFromTypeNode(target) : checker.getTypeAtLocation(target);
+      const extend = node.expression.name.text === 'toExtend';
+      const holds = extend
+        ? checker.isTypeAssignableTo(actual, expected)
+        : checker.isTypeAssignableTo(actual, expected) && checker.isTypeAssignableTo(expected, actual);
+      const wanted = (negate ? 'not ' : '') + (extend ? 'assignable to ' : '') + show(expected);
+      return { ok: holds !== negate, desc, expected: wanted, actual: show(actual) };
+    };
     const visit = node => {
       if (
         ts.isCallExpression(node) &&
         ts.isPropertyAccessExpression(node.expression) &&
-        node.expression.expression.getText(file) === 'assert' &&
-        ['type', 'typeEqual'].includes(node.expression.name.text)
+        ['toEqualTypeOf', 'toExtend'].includes(node.expression.name.text)
       ) {
-        spans.push([node.getStart(file), node.getEnd()]);
-        const [first, second] = node.typeArguments ?? [];
-        const [actualNode, expectedNode] = node.expression.name.text === 'type' ? [node.arguments[0], first] : [first, second];
-        if (!actualNode || !expectedNode) {
-          checks.set(lineOf(node), { ok: false, expected: '(a type argument)', actual: '(nothing)' });
-        } else if ([actualNode, expectedNode].some(n => n.getText(file) === '___')) {
-          checks.set(lineOf(node), { blank: true });
-        } else {
-          const actual = ts.isTypeNode(actualNode) ? checker.getTypeFromTypeNode(actualNode) : checker.getTypeAtLocation(actualNode);
-          const expected = checker.getTypeFromTypeNode(expectedNode);
-          checks.set(lineOf(node), { ok: same(actual, expected), expected: show(expected), actual: show(actual) });
+        const check = typeCheck(node);
+        if (check) {
+          spans.push([node.getStart(file), node.getEnd()]);
+          checks.set(lineOf(node), check);
+          return;
         }
       }
       ts.forEachChild(node, visit);

@@ -1,14 +1,12 @@
 // title: Inference
-// intro: TypeScript infers the types you don't write. A `const` keeps a literal's exact value as its type; a `let` widens it, because it may change.
-const name = 'Ada';
-assert.type<___>(name, 'a const string has its exact value as its type');
-let city = 'London';
-assert.type<___>(city, 'a let widens to string');
-const year = 1815;
-assert.type<___>(year, 'numbers too');
-const list = [1, 2, 3];
-assert.type<___>(list, 'an array of numbers');
+// intro: You rarely need to write a type: TypeScript infers one from each value, and from what a function returns.
+let total = 0;
+expectTypeOf(total).toEqualTypeOf<___>(); // inferred from the starting value
+const words = ['tea', 'cake'];
+expectTypeOf(words).toEqualTypeOf<___>(); // an array of strings
 const mixed = [1, 'two'];
-assert.type<___>(mixed, 'mixed items give an array of a union');
+expectTypeOf(mixed).toEqualTypeOf<___>(); // mixed items make a union
 const point = { x: 1, y: 2 };
-assert.type<___>(point, 'object properties widen, since they may change');
+expectTypeOf(point).toEqualTypeOf<___>(); // an object type, property by property
+const double = (n: number) => n * 2;
+expectTypeOf(double).returns.toEqualTypeOf<___>(); // .returns: what a function returns

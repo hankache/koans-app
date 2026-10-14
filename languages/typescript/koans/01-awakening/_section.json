@@ -1,4 +1,4 @@
 {
   "title": "Awakening",
-  "blurb": "Type annotations, inference, and the assertions TypeScript koans use."
+  "blurb": "How TypeScript koans test values and types, and how TypeScript works types out."
 }

@@ -1,0 +1,25 @@
+const Serializable = Base => class extends Base {
+  toJSON() {
+    return JSON.stringify({ ...this });
+  }
+};
+const Named = Base => class extends Base {
+  greet() {
+    return `I am ${this.name}`;
+  }
+};
+class Point {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+}
+class User extends Named(Serializable(Object)) {
+  constructor(name) {
+    super();
+    this.name = name;
+  }
+}
+expect(new User('Ada').greet(), 'a mixed-in method').toBe('I am Ada');
+expect(new User('Ada').toJSON(), 'and another').toBe('{"name":"Ada"}');
+expect(new (Serializable(Point))(1, 2).toJSON(), 'the same mixin on another class').toBe('{"x":1,"y":2}');

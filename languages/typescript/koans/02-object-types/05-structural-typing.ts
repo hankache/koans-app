@@ -1,16 +1,16 @@
 // title: Structural typing
-// intro: TypeScript compares types by their shape, not their names: a value fits a type when it has the properties the type asks for.
-interface Named {
-  name: string;
+// intro: TypeScript compares types by their shape, not their name: an object fits a type if it has the properties the type asks for, even with extra ones.
+interface Point {
+  x: number;
+  y: number;
 }
-interface Pet {
-  name: string;
+const point3d = { x: 1, y: 2, z: 3 };
+const flat: Point = point3d;
+expect(flat.x + flat.y, 'extra properties are fine').toBe(___);
+expectTypeOf(point3d).toExtend<___>(); // it has everything Point asks for
+interface Vector {
+  x: number;
+  y: number;
 }
-assert.typeEqual<Named, ___>('two names, one shape: the same type');
-function greet(who: Named): string {
-  return `Hello, ${who.name}`;
-}
-const dog = { name: 'Rex', breed: 'collie' };
-assert.equal(greet(dog), ___, 'extra properties are fine');
-const cat: Pet = { name: 'Tom' };
-assert.equal(greet(cat), ___, 'a Pet is a Named');
+expectTypeOf<Point>().toEqualTypeOf<___>(); // same shape, same type, whatever the name
+expectTypeOf<{ x: number }>().not.toExtend<___>(); // a missing property does not fit

@@ -1,0 +1,10 @@
+const ages = new Map([['Ada', 36]]);
+expect(ages.get('Ada'), 'get a value by its key').toBe(36);
+ages.set('Alan', 41);
+expect(ages.size, 'set adds a key, and size counts them').toBe(2);
+expect(ages.has('Grace'), 'has asks for a key').toBe(false);
+expect([...ages.keys()], 'keys come in the order they were added').toEqual(['Ada', 'Alan']);
+const key = {};
+const labels = new Map([[key, 'an object as a key']]);
+expect(labels.get(key), 'any value can be a key').toBe('an object as a key');
+expect(Object.fromEntries(ages), 'a Map turns into an object').toEqual({ Ada: 36, Alan: 41 });

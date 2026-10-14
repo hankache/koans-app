@@ -1,8 +1,7 @@
-assert.equal(7 + 3, 10, 'addition');
-assert.equal(7 - 10, -3, 'subtraction');
-assert.equal(7 * 3, 21, 'multiplication');
-assert.equal(2 ** 10, 1024, 'a power');
-assert.equal(7 / 2, 3.5, '/ divides exactly');
-assert.equal(Math.trunc(7 / 2), 3, 'Math.trunc drops the fraction');
-assert.equal(7 % 3, 1, '% is the remainder');
-assert.equal(-7 % 3, -1, 'it keeps the sign of the left side');
+expect(7 + 3, 'addition').toBe(10);
+expect(7 - 10, 'subtraction').toBe(-3);
+expect(2 ** 10, 'a power').toBe(1024);
+expect(7 / 2, '/ divides exactly').toBe(3.5);
+expect(Math.trunc(7 / 2), 'Math.trunc drops the fraction').toBe(3);
+expect(7 % 3, '% is the remainder').toBe(1);
+expect(-7 % 3, 'it keeps the sign of the left side').toBe(-1);

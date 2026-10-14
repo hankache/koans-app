@@ -1,14 +1,14 @@
-interface Named {
-  name: string;
+interface Point {
+  x: number;
+  y: number;
 }
-interface Pet {
-  name: string;
+const point3d = { x: 1, y: 2, z: 3 };
+const flat: Point = point3d;
+expect(flat.x + flat.y, 'extra properties are fine').toBe(3);
+expectTypeOf(point3d).toExtend<Point>(); // it has everything Point asks for
+interface Vector {
+  x: number;
+  y: number;
 }
-assert.typeEqual<Named, Pet>('two names, one shape: the same type');
-function greet(who: Named): string {
-  return `Hello, ${who.name}`;
-}
-const dog = { name: 'Rex', breed: 'collie' };
-assert.equal(greet(dog), 'Hello, Rex', 'extra properties are fine');
-const cat: Pet = { name: 'Tom' };
-assert.equal(greet(cat), 'Hello, Tom', 'a Pet is a Named');
+expectTypeOf<Point>().toEqualTypeOf<Vector>(); // same shape, same type, whatever the name
+expectTypeOf<{ x: number }>().not.toExtend<Point>(); // a missing property does not fit

@@ -1,34 +1,50 @@
 # TypeScript
 
-Learn TypeScript's types, from annotations to generics, through 30 koans. Its path is at
+Learn TypeScript's types, from annotations to generics, through 55 koans. Its path is at
 `#/typescript/`. The koans are type-checked with the real TypeScript compiler (6.0), in the
-browser, and then run as JavaScript.
+browser, and then run as JavaScript. They're tested the way TypeScript projects test with
+[Vitest](https://vitest.dev): `expect` for values and `expectTypeOf` for types.
 
 ## The path
 
-| # | Group                      | Koans | Covers                                                                 |
-|---|----------------------------|-------|------------------------------------------------------------------------|
-| 1 | Awakening                  | 5     | the assertions, inference, `any`/`unknown`/`never`, unions, `as const` |
-| 2 | Object types               | 5     | interfaces, optional and readonly, tuples, records, structural typing  |
-| 3 | Narrowing                  | 5     | `typeof`, truthiness and `===`, `in` and `instanceof`, discriminated unions, predicates and exhaustiveness |
-| 4 | Functions                  | 5     | parameters and results, optional and default parameters, function types, generics, overloads |
-| 5 | Generics and utility types | 5     | generic types, `keyof` and indexed access, utility types, mapped types, conditional types |
-| 6 | Classes, enums and async   | 5     | classes, `implements` and `abstract`, `satisfies`, enums, async types  |
+| #  | Group                      | Koans | Covers                                                                 |
+|----|----------------------------|-------|------------------------------------------------------------------------|
+| 1  | Awakening                  | 6     | `expect` and `expectTypeOf`, inference, literal types, `any` and `unknown`, `void` and `never`, `as const` |
+| 2  | Object types               | 6     | interfaces, type aliases and `&`, optional and readonly, index signatures and records, structural typing, methods |
+| 3  | Arrays and tuples          | 4     | arrays, readonly arrays, tuples, the types array methods return        |
+| 4  | Unions and narrowing       | 8     | unions, `typeof`, truthiness and `===`, `in` and `instanceof`, discriminated unions, type predicates, assertion functions, exhaustiveness |
+| 5  | Functions                  | 5     | parameters and results, optional/default/rest, function types, overloads, `this` parameters |
+| 6  | Generics                   | 4     | generic functions, constraints, generic types, `const` type parameters |
+| 7  | Type operators             | 7     | `keyof` and `typeof`, indexed access, conditional types, `infer`, mapped types, key remapping, template literal types |
+| 8  | Utility types              | 5     | `Partial`/`Required`/`Readonly`, `Pick`/`Omit`, `Exclude`/`Extract`/`NonNullable`, `ReturnType`/`Parameters`/`Awaited`, `Record`/`InstanceType` |
+| 9  | Classes                    | 5     | parameter properties, access modifiers, `abstract`, `implements`, static and generic classes |
+| 10 | Enums, satisfies and more  | 5     | enums, `as const` objects, `satisfies`, branded types, async types     |
 
-## The assertions
+## How the tests are written
 
-The JavaScript koans' assertions (Node's `assert` API: `assert.equal`, `assert.deepEqual`,
-`assert.throws`, …), plus two about types:
+Values are tested with the JavaScript koans' `expect` (see
+[its matchers](../javascript/README.md#how-the-tests-are-written)). Types are tested with
+`expectTypeOf`, whose description is the comment that ends its line:
 
-| Assertion                          | Passes when                                  |
-|------------------------------------|----------------------------------------------|
-| `assert.type<T>(value, msg)`       | the value's type is exactly `T`              |
-| `assert.typeEqual<A, B>(msg)`      | `A` and `B` are the same type                |
+```ts
+expectTypeOf(age).toEqualTypeOf<___>(); // a const keeps its literal type
+expectTypeOf<Pick<User, 'id'>>().toEqualTypeOf<___>(); // a type, checked directly
+expectTypeOf(load).returns.resolves.toEqualTypeOf<___>(); // what it eventually gives
+```
 
-"Exactly" means each type is assignable to the other, so `assert.type<number>(age)` fails for a
-`const age = 36`, whose type is `36`. A blank can be a value (`assert.equal(x, ___)`) or a type
-(`assert.type<___>(x)`). A type check that fails shows "Your answer" against the type TypeScript
-found, like any other failed assertion.
+| Check                                        | Passes when                                       |
+|----------------------------------------------|---------------------------------------------------|
+| `expectTypeOf(value)` or `expectTypeOf<T>()` | starts a check on a value's type, or on a type    |
+| `.toEqualTypeOf<U>()`                        | the type is exactly `U`                           |
+| `.toExtend<U>()`                             | the type is assignable to `U`                     |
+| `.returns`, `.parameter(n)`                  | move to a function's result, or its `n`th parameter (from 0) |
+| `.resolves`, `.items`                        | move to what a promise resolves to, or an array's items |
+| `.not`                                       | turns the check around                            |
+
+"Exactly" means each type is assignable to the other, so `toEqualTypeOf<number>()` fails for a
+`const age = 36`, whose type is `36`. A blank can be a value (`expect(x).toBe(___)`) or a type
+(`toEqualTypeOf<___>()`). A type check that fails shows "Your answer" against the type TypeScript
+found, like any other failed test.
 
 ## How a koan runs
 
@@ -36,14 +52,14 @@ The worker, [public/runtime/typescript/worker.js](../../public/runtime/typescrip
 three things with each koan:
 
 1. **Type-checks it** with the compiler, in strict mode, against the ES2023 library files and a
-   few declarations of its own (`___`, `assert`, `console`, `setTimeout`, `structuredClone`). It
-   works out every `assert.type` and `assert.typeEqual` here, before the run. **Any other type
+   few declarations of its own (`___`, `expect`, `expectTypeOf`, `console`, `setTimeout`,
+   `structuredClone`). It works out every `expectTypeOf` check here, before the run. **Any other type
    error stops the koan** with its line and message (`TS2322: Type 'string' is not assignable…`),
    as a compiler would.
 2. **Compiles it** to JavaScript, with a source map.
 3. **Runs it** on the JavaScript worker's code
    ([public/runtime/javascript/worker.js](../../public/runtime/javascript/worker.js)), which
-   reports each type check when the koan reaches it, in order with the other assertions. The source
+   reports each type check when the koan reaches it, in order with the other tests. The source
    map turns the lines that ran back into the koan's lines, so failures point at the right line
    even after type-only lines (interfaces, type aliases, overloads) are removed.
 
@@ -82,8 +98,10 @@ npm test
 On top of [the rules for every language](../../README.md#rules-for-blanks) and
 [JavaScript's](../javascript/README.md#rules-for-javascript-blanks):
 
-- A koan, blanks and all, must type-check: blanks go where the assertions' parameters accept
-  anything, or in the type argument of `assert.type` and `assert.typeEqual`.
+- A koan, blanks and all, must type-check: blanks go where `expect`'s matchers accept anything, or
+  in a type argument of `expectTypeOf`'s chain.
+- Put each `expectTypeOf` check on one line, ending with a `//` comment that describes it, and
+  where the koan actually reaches it: a check in a branch that never runs is never reported.
 - Never switch type checking off (`@ts-ignore`, `@ts-expect-error`, `@ts-nocheck`):
   `npm run check:koans` rejects it.
 - The koans are type-checked one at a time by the worker, not as part of the project, so an editor
@@ -92,4 +110,5 @@ On top of [the rules for every language](../../README.md#rules-for-blanks) and
 ## Known limitations
 
 - No modules: koans can't `import`, so there are no module or declaration-file koans.
-- Mutual assignability counts `any` as equal to every type, so `assert.type<any>(x)` always passes.
+- Mutual assignability counts `any` as equal to every type, so `toEqualTypeOf<any>()` always passes. (Vitest's
+  own `expectTypeOf` is stricter about `any`.)

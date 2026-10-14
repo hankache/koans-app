@@ -43,9 +43,10 @@ export default {
 
   /** Comments that switch the type checker off would hide the very thing the koans teach. */
   lint(code) {
-    return code.split('\n').flatMap((l, i) =>
-      /@ts-(ignore|nocheck|expect-error)/.test(l) ? [`line ${i + 1} switches type checking off`] : [],
-    );
+    return code.split('\n').flatMap((l, i) => [
+      ...(/@ts-(ignore|nocheck|expect-error)/.test(l) ? [`line ${i + 1} switches type checking off`] : []),
+      ...(l.includes('___') && !/\bexpect(TypeOf)?[(<]/.test(l) ? [`line ${i + 1} has a blank outside an expect(…) or expectTypeOf(…)`] : []),
+    ]);
   },
 
   /** The TypeScript compiler from its npm package, and the library files the koans need. */

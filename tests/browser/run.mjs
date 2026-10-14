@@ -28,11 +28,11 @@ const koanIds = JSON.parse(readFileSync(join(root, 'src/generated/summary.json')
 const LANGUAGES = [
   { id: 'raku', error: "is 1, 1, 'fine';\ndie 'boom';", says: /boom/, loop: 'loop { }' },
   { id: 'python', error: "assert True, 'fine'\nprint(nope)", says: /NameError/, loop: 'while True:\n    pass' },
-  { id: 'javascript', error: "assert.ok(true, 'fine');\nnope();", says: /ReferenceError/, loop: 'while (true) {}' },
+  { id: 'javascript', error: "expect(true, 'fine').toBe(true);\nnope();", says: /ReferenceError/, loop: 'while (true) {}' },
+  { id: 'typescript', error: "expect(true, 'fine').toBe(true);\nconst n: number = 'text';", says: /TS2322/, loop: 'while (true) {}' },
   { id: 'ruby', error: "assert true, 'fine'\nnope", says: /NameError/, loop: 'loop { }' },
   { id: 'lua', error: "assert(true, 'fine')\nnope()", says: /attempt to call a nil value/, loop: 'while true do end' },
   { id: 'sql', error: "SELECT 1; -- expect: 1\nINSERT INTO nowhere VALUES (1);", says: /no such table/, loop: 'WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM n) SELECT count(*) FROM n;' },
-  { id: 'typescript', error: "assert.ok(true, 'fine');\nconst n: number = 'text';", says: /TS2322/, loop: 'while (true) {}' },
 ];
 
 // --- Which browsers
@@ -92,12 +92,18 @@ function watch(page) {
 }
 
 async function setCode(page, code) {
-  await page.click('.cm-content');
-  await page.keyboard.down('Control');
-  await page.keyboard.press('a');
-  await page.keyboard.up('Control');
-  await page.keyboard.press('Backspace');
-  await page.keyboard.type(code);
+  // Typed like a learner would. A busy browser now and then drops a keystroke, so check the editor
+  // holds the code, and type it again if not.
+  for (let attempt = 0; attempt < 3; attempt++) {
+    await page.click('.cm-content');
+    await page.keyboard.down('Control');
+    await page.keyboard.press('a');
+    await page.keyboard.up('Control');
+    await page.keyboard.press('Backspace');
+    await page.keyboard.type(code);
+    const typed = await page.$eval('.cm-content', el => [...el.querySelectorAll('.cm-line')].map(l => l.textContent).join('\n'));
+    if (typed === code) return;
+  }
 }
 
 /** The result panel's text, once it matches `until` (or after a minute, whatever it says). */
@@ -168,6 +174,8 @@ async function checkSite(browser, base) {
     check(`${lang.id}: an infinite loop is stopped`, /too long/.test(await run(page, lang.loop, /too long/)));
     check(`${lang.id}: and the next run works`, /Enlightenment/.test(await run(page, solution, /Enlightenment/)));
 
+    // Typing a long solution scrolls the page: back to the top, where the sticky header is clear.
+    await page.evaluate(() => scrollTo(0, 0));
     await page.click('.crumbs a');
     await page.waitForSelector('.sections');
     check(`${lang.id}: the crumbs lead back to its path`, page.url().endsWith(`#/${lang.id}/`));
@@ -176,9 +184,9 @@ async function checkSite(browser, base) {
   // JavaScript's line numbers come from each browser's stack traces. Another koan than the solved
   // one: these runs fail on purpose, and the latest run decides a koan's status.
   for (const [what, code, want] of [
-    ['a failure after await', "await null;\nassert.equal(await Promise.resolve(1), 2, 'later');", /line 2/],
-    ['a failure inside a function', "function check() {\nassert.equal(1, 2, 'inside');\n}\ncheck();", /line 2/],
-    ['a syntax error', 'assert.ok(true);\nlet x = = 1;', /line 2[\s\S]*SyntaxError/],
+    ['a failure after await', "await null;\nexpect(await Promise.resolve(1), 'later').toBe(2);", /line 2/],
+    ['a failure inside a function', "function check() {\nexpect(1, 'inside').toBe(2);\n}\ncheck();", /line 2/],
+    ['a syntax error', 'expect(true).toBe(true);\nlet x = = 1;', /line 2[\s\S]*SyntaxError/],
   ]) {
     await page.goto(`${base}#/javascript/koan/awakening/equality`);
     await page.waitForSelector('.cm-content');
@@ -279,10 +287,10 @@ async function checkTabs(browser, base) {
     await page.bringToFront();
     await page.goto(`${base}#/javascript/koan/awakening/${koan}`);
     await page.waitForSelector('.cm-content');
-    const file = koan === 'assertions' ? '01-assertions' : '02-equality';
+    const file = koan === 'expectations' ? '01-expectations' : '02-equality';
     await run(page, readFileSync(join(root, `languages/javascript/koans/01-awakening/${file}.solution.js`), 'utf8').trimEnd(), /Enlightenment/);
   };
-  await solve(a, 'assertions');
+  await solve(a, 'expectations');
   await b.bringToFront();
   const updated = await b
     .waitForFunction(() => /1 done/.test(document.querySelector('header .meter')?.textContent ?? ''), { timeout: 10000 })

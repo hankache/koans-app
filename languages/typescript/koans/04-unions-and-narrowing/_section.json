@@ -1,0 +1,4 @@
+{
+  "title": "Unions and narrowing",
+  "blurb": "Values of several types, and how checks in the code narrow them down."
+}

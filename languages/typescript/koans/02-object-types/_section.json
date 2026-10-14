@@ -1,4 +1,4 @@
 {
   "title": "Object types",
-  "blurb": "Interfaces, optional and readonly properties, tuples, records, and types compared by shape."
+  "blurb": "Describing objects: interfaces and aliases, optional and readonly properties, index signatures, and types compared by shape."
 }

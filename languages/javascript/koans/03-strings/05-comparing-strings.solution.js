@@ -1,6 +1,6 @@
-assert.equal('apple' < 'banana', true, 'strings compare like a dictionary');
-assert.equal('Zebra' < 'apple', true, 'but capitals come before lower case');
-assert.equal('10' < '9', true, 'character by character: 1 comes before 9');
-assert.equal(10 < 9, false, 'numbers compare as numbers');
-assert.equal('a'.codePointAt(0), 97, 'the code point of a');
-assert.equal(String.fromCodePoint(65), 'A', 'and a character from a code point');
+expect('apple' < 'banana', 'strings compare like a dictionary').toBe(true);
+expect('Zebra' < 'apple', 'but capitals come before lower case').toBe(true);
+expect('10' < '9', 'character by character: 1 comes before 9').toBe(true);
+expect('a'.codePointAt(0), 'the code point of a').toBe(97);
+expect(String.fromCodePoint(65), 'a character from a code point').toBe('A');
+expect(['b', 'a', 'C'].sort((x, y) => x.localeCompare(y, 'en')), 'localeCompare sorts the way a reader would').toEqual(['a', 'b', 'C']);

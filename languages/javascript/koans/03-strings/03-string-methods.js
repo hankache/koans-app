@@ -1,9 +1,9 @@
 // title: String methods
 // intro: Strings come with methods. None of them changes the string: each returns a new one.
-assert.equal('hello'.toUpperCase(), ___, 'upper case');
-assert.equal('  pad  '.trim(), ___, 'trim removes the spaces around');
-assert.equal('banana'.indexOf('n'), ___, 'where something first appears');
-assert.equal('banana'.includes('nan'), ___, 'whether it appears at all');
-assert.equal('koan'.startsWith('ko'), ___, 'how a string begins');
-assert.equal('a-b-c'.replace('-', '+'), ___, 'replace changes the first match');
-assert.equal('a-b-c'.replaceAll('-', '+'), ___, 'replaceAll changes them all');
+expect('hello'.toUpperCase(), 'upper case').toBe(___);
+expect('  pad  '.trim(), 'trim removes the spaces around').toBe(___);
+expect('banana'.indexOf('n'), 'where something first appears').toBe(___);
+expect('banana'.lastIndexOf('n'), 'where it last appears').toBe(___);
+expect('banana', 'toContain looks for a substring').toContain(___);
+expect('a-b-c'.replace('-', '+'), 'replace changes the first match').toBe(___);
+expect('a-b-c'.replaceAll('-', '+'), 'replaceAll changes them all').toBe(___);

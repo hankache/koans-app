@@ -1,0 +1,13 @@
+const a = [1, 2, 3];
+const b = [...a];
+b.push(4);
+expect(a, 'spread copies the array').toEqual([1, 2, 3]);
+expect(a.with(0, 9), 'with returns a copy with one item changed').toEqual([9, 2, 3]);
+expect(a.toSpliced(1, 1), 'toSpliced returns a copy with items removed').toEqual([1, 3]);
+const nested = [[1], [2]];
+const shallow = [...nested];
+shallow[0].push('!');
+expect(nested[0], 'a shallow copy shares the inner arrays').toEqual([1, '!']);
+const deep = structuredClone(nested);
+deep[1].push('?');
+expect(nested[1], 'structuredClone does not').toEqual([2]);

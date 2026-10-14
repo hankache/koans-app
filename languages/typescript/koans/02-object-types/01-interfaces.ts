@@ -1,14 +1,15 @@
 // title: Interfaces
-// intro: An interface describes the shape of an object. `extends` builds on another interface, and `T['key']` reads the type of a property.
-interface Person {
+// intro: An `interface` names the shape of an object: which properties it has, and their types. Objects of that shape can be given that type.
+interface User {
   name: string;
   age: number;
 }
-const ada: Person = { name: 'Ada', age: 36 };
-assert.type<___>(ada, 'an interface is a type');
-assert.equal(ada.age, ___, 'and the object is an ordinary object');
-assert.typeEqual<Person['name'], ___>('an indexed access type reads a property type');
-interface Employee extends Person {
-  company: string;
+const ada: User = { name: 'Ada', age: 36 };
+expectTypeOf(ada.age).toEqualTypeOf<___>(); // a property's type comes from the interface
+expectTypeOf<User['name']>().toEqualTypeOf<___>(); // so does User['name']
+interface Admin extends User {
+  permissions: string[];
 }
-assert.typeEqual<keyof Employee, ___>('extends adds properties');
+const root: Admin = { name: 'root', age: 1, permissions: ['all'] };
+expectTypeOf(root).toExtend<___>(); // an Admin is a User
+expect(root.permissions, 'and it adds its own').toEqual(___);
