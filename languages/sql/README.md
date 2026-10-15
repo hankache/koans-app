@@ -1,6 +1,6 @@
 # SQL
 
-Learn SQL from `SELECT` to window functions, through 30 koans. They run on
+Learn SQL from `SELECT` to window functions, through 64 koans. They run on
 [sql.js](https://github.com/sql-js/sql.js): SQLite compiled to WebAssembly, about 0.7 MB. Its path
 is at `#/sql/`.
 
@@ -8,16 +8,22 @@ is at `#/sql/`.
 
 | # | Group                        | Koans | Covers                                                            |
 |---|------------------------------|-------|-------------------------------------------------------------------|
-| 1 | Awakening                    | 5     | first queries, tables, `WHERE`, `NULL`, `ORDER BY` and `LIMIT`    |
-| 2 | Expressions and functions    | 5     | numbers and types, strings, `LIKE` and `GLOB`, `CASE`, dates      |
-| 3 | Grouping                     | 5     | aggregates, `GROUP BY`, `HAVING`, `DISTINCT`, `group_concat`      |
-| 4 | Joins                        | 5     | inner, left, self and cross joins, set operations                 |
-| 5 | Changing data                | 5     | `INSERT`/`UPDATE`/`DELETE`, constraints, keys, upserts, transactions |
-| 6 | Subqueries, CTEs and windows | 5     | subqueries, `WITH`, recursive CTEs, window functions, JSON        |
+| 1 | Awakening                    | 7     | first queries, tables, `WHERE`, `NULL`, `ORDER BY` and `LIMIT`, `IN` and `BETWEEN`, aliases |
+| 2 | Expressions and functions    | 10    | numbers and types, strings, `LIKE` and `GLOB`, `CASE`, dates, type affinity, arithmetic functions, `coalesce` and `nullif`, more string functions, date arithmetic |
+| 3 | Grouping                     | 8     | aggregates, `GROUP BY`, `HAVING`, `DISTINCT`, `group_concat`, `FILTER`, pivoting, `NULL`s in aggregates |
+| 4 | Joins                        | 9     | inner, left, self and cross joins, set operations, joins with aggregates, semi- and anti-joins, `USING`, many to many |
+| 5 | Changing data                | 9     | `INSERT`/`UPDATE`/`DELETE`, constraints, keys, upserts, transactions, `INSERT … SELECT` and `UPDATE … FROM`, `RETURNING`, defaults and generated columns, `ALTER TABLE` |
+| 6 | Subqueries and CTEs          | 6     | subqueries, `WITH`, recursive CTEs, correlated subqueries, `EXISTS` and `IN`, hierarchies |
+| 7 | Window functions             | 5     | window functions, ranking, frames, `lag` and `lead`, partitions   |
+| 8 | SQLite features              | 5     | JSON, `json_each`, views, triggers, `STRICT` tables               |
+| 9 | Puzzles                      | 5     | top N per group, gaps and islands, duplicates, a calendar, a running balance |
 
 ## How SQL koans test
 
-SQL has no assertions, so a test is a query followed by the rows it should return, in a comment:
+SQL has no shared test framework (pgTAP, tSQLt and utPLSQL each belong to one database), so a test
+is a query followed by the rows it should return, in a comment. That's the idea of
+[sqllogictest](https://sqlite.org/sqllogictest/doc/trunk/about.wiki), the cross-engine format SQLite
+and DuckDB test themselves with, written so it reads as plain SQL:
 
 ```sql
 -- the oldest person

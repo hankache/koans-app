@@ -1,0 +1,4 @@
+{
+  "title": "Window functions",
+  "blurb": "Calculations across rows related to the current one, without grouping them away."
+}

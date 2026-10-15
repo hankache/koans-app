@@ -1,0 +1,4 @@
+{
+  "title": "Subqueries and CTEs",
+  "blurb": "Queries inside queries, correlated subqueries, EXISTS, and WITH, recursion included."
+}
