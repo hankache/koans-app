@@ -17,8 +17,16 @@ export default {
   site: { url: 'https://www.ruby-lang.org', label: 'ruby-lang.org' },
   // Said now and then when a koan passes, besides the lines every language shares.
   cheers: ['Matz is nice, so we are nice.', 'Optimized for happiness.'],
-  sample: 'expect(1 + 1).to eq(2)',
-  teaser: { before: 'expect(-7 % 3).to eq(', after: ')', choices: ['-1', '1', '2'], answer: '2', why: 'Ruby’s % takes the sign of the divisor.' },
+  // On the home page: under its name, where its path goes, its test framework, the filters it
+  // shows under, and koans to try (each checked by tests/teasers.test.ts).
+  tag: 'Made for programmer happiness',
+  journey: 'From objects and blocks to metaprogramming.',
+  framework: 'RSpec',
+  kinds: ['first', 'web', 'scripting'],
+  teasers: [
+    { before: 'expect(-7 % 3).to eq(', after: ')', choices: ['-1', '1', '2'], answer: '2', why: 'Ruby’s % takes the sign of the divisor.' },
+    { before: 'expect(nil.to_a).to eq(', after: ')', choices: ['nil', '[]', '[nil]'], answer: '[]', why: 'nil converts to an empty array.' },
+  ],
   worker: { url: 'runtime/ruby/worker.js', type: 'module' },
   errors: {
     // The worker ends an uncaught error with the koan's line: "    at koan.rb:3".

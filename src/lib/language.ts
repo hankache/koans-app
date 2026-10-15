@@ -28,6 +28,9 @@ export interface LanguageContent {
   highlight: Extension;
 }
 
+/** The home page's filters: who or what a language suits. */
+export type Kind = 'first' | 'web' | 'data' | 'scripting' | 'types';
+
 /** A one-blank koan for the home page's "try one", answered by tapping one of `choices`. */
 export interface Teaser {
   /** A line shown above the one with the blank, if the koan needs one. */
@@ -59,10 +62,16 @@ export interface LanguagePack {
   about: string;
   /** Its official site, linked from its path page. */
   site: { url: string; label: string };
-  /** A line of its koans' code, shown on its tile. */
-  sample: string;
-  /** A koan to try on the home page, for some languages. */
-  teaser?: Teaser;
+  /** What it's for, in a few words, under its name on the home page: 'Readable, and everywhere'. */
+  tag: string;
+  /** Where its path goes, one sentence, `code` in backticks: 'From `assert` to generators and dataclasses.' */
+  journey: string;
+  /** Its test framework, short, on its tile: 'pytest'. */
+  framework: string;
+  /** The home page's filters it shows under. */
+  kinds: Kind[];
+  /** Koans to try on the home page (tests/teasers.test.ts runs each through the interpreter). */
+  teasers: Teaser[];
   /** Lines of its own, added to the ones every language may show when a koan passes. */
   cheers?: string[];
   /** An emoji for the language's mascot, shown when its whole path is walked (Raku's butterfly); else its emblem. */

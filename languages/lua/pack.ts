@@ -17,7 +17,16 @@ export default {
   site: { url: 'https://www.lua.org', label: 'lua.org' },
   // Said now and then when a koan passes, besides the lines every language shares.
   cheers: ['The moon waxes.', 'Lua shines a little brighter.'],
-  sample: 'assert.are.equal(2, 1 + 1)',
+  // On the home page: under its name, where its path goes, its test framework, the filters it
+  // shows under, and koans to try (each checked by tests/teasers.test.ts).
+  tag: 'Small, fast, embeddable',
+  journey: 'From tables to metatables and coroutines.',
+  framework: 'busted',
+  kinds: ['scripting'],
+  teasers: [
+    { before: 'assert.are.equal(', after: ', #\'héllo\')', choices: ['5', '6', '4'], answer: '6', why: '# counts bytes, and é takes two.' },
+    { before: 'assert.are.equal(', after: ', 7 // 2)', choices: ['3.5', '3', '4'], answer: '3', why: '// is floor division.' },
+  ],
   worker: { url: 'runtime/lua/worker.js', type: 'module' },
   errors: {
     // The worker ends an uncaught error with the koan's line: "    at koan.lua:3".

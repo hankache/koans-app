@@ -17,7 +17,16 @@ export default {
   site: { url: 'https://www.php.net', label: 'php.net' },
   // Said now and then when a koan passes, besides the lines every language shares.
   cheers: ['The elephant remembers.', 'Another request, served.'],
-  sample: 'assertSame(2, 1 + 1);',
+  // On the home page: under its name, where its path goes, its test framework, the filters it
+  // shows under, and koans to try (each checked by tests/teasers.test.ts).
+  tag: 'What runs the web’s servers',
+  journey: 'From arrays to enums, generators and the pipe operator.',
+  framework: 'PHPUnit',
+  kinds: ['web'],
+  teasers: [
+    { before: 'assertSame(', after: ', \'5\' + \'5\');', choices: ['\'55\'', '10', '\'10\''], answer: '10', why: '+ is for numbers; strings join with a dot.' },
+    { before: 'assertSame(', after: ', 0 == \'a\');', choices: ['true', 'false', 'null'], answer: 'false', why: 'Since PHP 8, this compares them as strings.' },
+  ],
   worker: { url: 'runtime/php/worker.js', type: 'module' },
   errors: {
     // The worker ends an uncaught error with the koan's line: "    at koan.php:3".

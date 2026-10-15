@@ -17,7 +17,16 @@ export default {
   site: { url: 'https://www.r-project.org', label: 'r-project.org' },
   // Said now and then when a koan passes, besides the lines every language shares.
   cheers: ['Statistically significant progress.', 'Your confidence interval narrows.'],
-  sample: 'expect_equal(1 + 1, 2)',
+  // On the home page: under its name, where its path goes, its test framework, the filters it
+  // shows under, and koans to try (each checked by tests/teasers.test.ts).
+  tag: 'Statistics and data analysis',
+  journey: 'From vectors to data frames, the apply family and S4.',
+  framework: 'testthat',
+  kinds: ['data'],
+  teasers: [
+    { before: 'expect_equal(round(2.5), ', after: ')', choices: ['2', '3', '2.5'], answer: '2', why: 'R rounds halves to the even neighbour.' },
+    { before: 'expect_equal(c(1, 2) + 1:4, ', after: ')', choices: ['c(2, 4, 4, 6)', 'c(2, 4)', 'c(2, 4, 3, 4)'], answer: 'c(2, 4, 4, 6)', why: 'The shorter vector is recycled.' },
+  ],
   worker: { url: 'runtime/r/worker.js', type: 'module' },
   errors: {
     // The worker ends an uncaught error with the koan's line: "    at koan.R:3".

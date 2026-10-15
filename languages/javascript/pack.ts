@@ -17,8 +17,16 @@ export default {
   site: { url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript', label: 'JavaScript on MDN' },
   // Said now and then when a koan passes, besides the lines every language shares.
   cheers: ['Strictly equal, and true.', 'The event loop smiles.'],
-  sample: 'expect(1 + 1).toBe(2);',
-  teaser: { before: "expect('5' + 2).toBe(", after: ');', choices: ['7', "'52'", 'NaN'], answer: "'52'", why: 'With a string on either side, + joins strings.' },
+  // On the home page: under its name, where its path goes, its test framework, the filters it
+  // shows under, and koans to try (each checked by tests/teasers.test.ts).
+  tag: 'The language of the web',
+  journey: 'From `==` and `===` to closures, classes and async code.',
+  framework: 'Vitest',
+  kinds: ['first', 'web'],
+  teasers: [
+    { before: 'expect(\'5\' + 2).toBe(', after: ');', choices: ['7', '\'52\'', 'NaN'], answer: '\'52\'', why: 'With a string on either side, + joins strings.' },
+    { before: 'expect([] + []).toBe(', after: ');', choices: ['\'\'', '[]', '0'], answer: '\'\'', why: 'Both arrays become empty strings first.' },
+  ],
   worker: { url: 'runtime/javascript/worker.js', type: 'module' },
   errors: {
     // The worker ends an uncaught error with the koan's line: "    at koan.js:3".

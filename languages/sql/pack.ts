@@ -17,8 +17,16 @@ export default {
   site: { url: 'https://sqlite.org', label: 'sqlite.org' },
   // Said now and then when a koan passes, besides the lines every language shares.
   cheers: ['1 row affected: yours.', 'COMMIT.'],
-  sample: 'SELECT 1 + 1; -- expect: 2',
-  teaser: { context: 'SELECT NULL + 1;', before: '-- expect: ', after: '', choices: ['1', 'NULL', '0'], answer: 'NULL', why: 'Anything combined with NULL is NULL.' },
+  // On the home page: under its name, where its path goes, its test framework, the filters it
+  // shows under, and koans to try (each checked by tests/teasers.test.ts).
+  tag: 'Asking your data questions',
+  journey: 'From `SELECT` to joins, window functions and puzzles.',
+  framework: '-- expect:',
+  kinds: ['data'],
+  teasers: [
+    { context: 'SELECT NULL + 1;', before: '-- expect: ', after: '', choices: ['1', 'NULL', '0'], answer: 'NULL', why: 'Anything combined with NULL is NULL.' },
+    { context: 'SELECT 7 / 2;', before: '-- expect: ', after: '', choices: ['3.5', '3', '4'], answer: '3', why: 'An integer divided by an integer stays an integer.' },
+  ],
   worker: { url: 'runtime/sql/worker.js', type: 'module' },
   errors: {
     // The worker ends a failed statement with its line: "    at koan.sql:3".

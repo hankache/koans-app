@@ -276,7 +276,7 @@ async function checkImport(browser, base, exported, dir) {
     resumeFirst: document.querySelector('.resume').getBoundingClientRect().top < document.querySelector('.hero').getBoundingClientRect().top,
   }));
   check('on a phone: no sideways scrolling', phone.sideways <= 0, `${phone.sideways}px too wide`);
-  check('on a phone: two columns of languages', phone.columns === 2, `${phone.columns} columns`);
+  check('on a phone: one language per row', phone.columns === 1, `${phone.columns} columns`);
   check('on a phone: "continue" comes first', phone.resumeFirst);
   await context.close();
 }

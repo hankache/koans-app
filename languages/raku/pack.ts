@@ -19,7 +19,16 @@ export default {
   about:
     'Raku is an expressive, multi-paradigm language from the Perl family, with gradual typing, grammars for parsing, lazy lists, junctions and concurrency built in. It began as Perl 6 and took its own name in 2019. These koans walk from its syntax and operators to its objects, grammars and culture.',
   site: { url: 'https://raku.org', label: 'raku.org' },
-  sample: "is 1 + 1, 2, 'is compares';",
+  // On the home page: under its name, where its path goes, its test framework, the filters it
+  // shows under, and koans to try (each checked by tests/teasers.test.ts).
+  tag: 'Expressive, and made for fun',
+  journey: 'From `is` and `ok` to grammars, junctions and lazy lists.',
+  framework: 'Test',
+  kinds: ['scripting'],
+  teasers: [
+    { before: 'is 0.1 + 0.2, ', after: ', \'exact\';', choices: ['0.3', '0.30000000000000004', 'False'], answer: '0.3', why: 'Raku keeps 0.1 as an exact fraction.' },
+    { before: 'is \'ab\' x 3, ', after: ', \'repeat\';', choices: ['\'ababab\'', '\'ab3\'', '(\'ab\', \'ab\', \'ab\')'], answer: '\'ababab\'', why: 'x repeats a string; xx would make a list.' },
+  ],
   worker: { url: 'runtime/raku/worker.js', type: 'classic' },
   errors: {
     // "===SORRY!=== Parse error at line 3: …" for compile errors, "in block <unit> at web line 3"

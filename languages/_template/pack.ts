@@ -19,9 +19,14 @@ export default {
   // A few lines in the language's own voice, said now and then when a koan passes.
   cheers: ['TODO'],
   // Optional: mascot, an emoji shown when its whole path is walked; without it, its emblem.
-  sample: 'TODO',
-  // Optional: teaser, a one-blank koan for the home page's "try one" (see src/lib/language.ts).
   // Optional: art: { celebration: 'folder/' }, the layers of its "passed" animation. Without it, the gate stands in.
+  // On the home page: a few words on what it's for, where its path goes, its test framework, the
+  // filters it shows under ('first', 'web', 'data', 'scripting', 'types'), and koans to try.
+  tag: 'TODO',
+  journey: 'From TODO to TODO.',
+  framework: 'TODO',
+  kinds: [],
+  teasers: [{ before: 'TODO(', after: ')', choices: ['1', '2', '3'], answer: '2', why: 'TODO' }],
   worker: { url: 'runtime/lang-id/worker.js', type: 'module' }, // or 'classic' for importScripts()
   errors: {
     // TODO: finds the line (as the interpreter counts it, prelude included) in an uncaught error.

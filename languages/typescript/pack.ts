@@ -17,7 +17,16 @@ export default {
   site: { url: 'https://www.typescriptlang.org', label: 'typescriptlang.org' },
   // Said now and then when a koan passes, besides the lines every language shares.
   cheers: ['The compiler is satisfied.', 'Not an `any` in sight.'],
-  sample: 'expectTypeOf(age).toEqualTypeOf<36>();',
+  // On the home page: under its name, where its path goes, its test framework, the filters it
+  // shows under, and koans to try (each checked by tests/teasers.test.ts).
+  tag: 'JavaScript, with types',
+  journey: 'From the first annotation to conditional and mapped types.',
+  framework: 'Vitest',
+  kinds: ['web', 'types'],
+  teasers: [
+    { context: 'const x = 42;', before: 'expectTypeOf(x).toEqualTypeOf<', after: '>();', choices: ['number', '42', 'const'], answer: '42', why: 'A const keeps its literal type.' },
+    { context: 'let y = 42;', before: 'expectTypeOf(y).toEqualTypeOf<', after: '>();', choices: ['number', '42', 'unknown'], answer: 'number', why: 'A let can change, so it widens.' },
+  ],
   worker: { url: 'runtime/typescript/worker.js', type: 'module' },
   errors: {
     // The worker ends a type error, or an uncaught error, with the koan's line: "    at koan.js:3".

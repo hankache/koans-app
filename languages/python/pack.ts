@@ -17,8 +17,16 @@ export default {
   site: { url: 'https://www.python.org', label: 'python.org' },
   // Said now and then when a koan passes, besides the lines every language shares.
   cheers: ['Readability counts.', 'Beautiful is better than ugly.', 'Simple is better than complex.'],
-  sample: 'assert 1 + 1 == 2',
-  teaser: { before: 'assert -7 // 2 == ', after: '', choices: ['-3', '-4', '-3.5'], answer: '-4', why: '// rounds down, toward minus infinity.' },
+  // On the home page: under its name, where its path goes, its test framework, the filters it
+  // shows under, and koans to try (each checked by tests/teasers.test.ts).
+  tag: 'Readable, and everywhere',
+  journey: 'From `assert` to generators, classes and dataclasses.',
+  framework: 'pytest',
+  kinds: ['first', 'data', 'scripting'],
+  teasers: [
+    { before: 'assert -7 // 2 == ', after: '', choices: ['-3', '-4', '-3.5'], answer: '-4', why: '// rounds down, toward minus infinity.' },
+    { before: 'assert \'ab\' * 3 == ', after: '', choices: ['\'ababab\'', '\'ab3\'', 'TypeError'], answer: '\'ababab\'', why: 'Multiplying a string repeats it.' },
+  ],
   worker: { url: 'runtime/python/worker.js', type: 'module' },
   errors: {
     // A traceback names each frame's file and line; the koan is "<exec>", and its first frame is
