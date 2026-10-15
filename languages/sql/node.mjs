@@ -15,6 +15,8 @@ export default {
   dir,
   extension: '.sql',
   comment: '--',
+  // Table and column names are everyday words: only called names count as code (code-words.mjs).
+  codeNames: 'called',
 
   // No prelude: the worker itself turns queries and their -- expect: comments into tests.
   prelude: () => '',

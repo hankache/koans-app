@@ -7,6 +7,8 @@ export interface Koan {
   code: string;
   /** The answer for each blank: its line in `code` (0-based) and what replaces the ___. */
   answers: { line: number; answer: string }[];
+  /** Its code words, space-separated: a test description's words shown as code (see code-words.mjs). */
+  words: string;
 }
 
 /** An answer revealed for a line of the learner's code (1-based). */

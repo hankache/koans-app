@@ -20,6 +20,7 @@ import typescript from '../../languages/typescript/node.mjs';
  * @property {string} dir          the language's folder (absolute, ending in /)
  * @property {string} extension    of koan files: '.raku'
  * @property {string} comment      starts a koan's header lines (# title: …): '#', '//'
+ * @property {'all' | 'called'} [codeNames]  which names in its code count as code words (code-words.mjs)
  * @property {() => string} prelude  run before every koan
  * @property {string} epilogue     run after every koan
  * @property {(code: string) => string[] | Promise<string[]>} lint  problems in a koan that running it can't reveal

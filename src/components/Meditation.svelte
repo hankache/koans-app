@@ -4,7 +4,8 @@
   import type { Reveal } from '../lib/koans';
   import LogoGate from './LogoGate.svelte';
   import Emblem from './Emblem.svelte';
-  import { codeLike, inlineCode } from '../lib/inline-code';
+  import { inlineCode } from '../lib/inline-code';
+  import { markCode } from '../../scripts/lib/code-words.mjs';
   import { modKey } from '../lib/platform';
   import type { LanguagePack } from '../lib/language';
 
@@ -23,8 +24,11 @@
     hint?: Reveal | null;
     /** Put the revealed answer into the code. */
     onuse?: () => void;
+    /** The koan's code words, space-separated: shown as code in the tests' descriptions. */
+    words?: string;
   }
-  let { pack, pathHref, report, gained, running, runtimeError, nextHref, hint, onuse }: Props = $props();
+  let { pack, pathHref, report, gained, running, runtimeError, nextHref, hint, onuse, words = '' }: Props = $props();
+  const codeWords = $derived(new Set(words.split(' ')));
 
   // Which answer was revealed: a new line or a new answer hides it again.
   let revealedKey = $state('');
@@ -82,7 +86,7 @@
       {@const kind = t.ok ? 'ok' : t.blank ? 'todo' : 'bad'}
       <li class={kind} class:current={t.n === current}>
         <span class="mark" aria-hidden="true">{kind === 'ok' ? '✓' : kind === 'bad' ? '✗' : '○'}</span>
-        <span class="what">{#each codeLike(t.description || `Test ${t.n}`) as part}{#if part.code}<code>{part.text}</code>{:else}{part.text}{/if}{/each}</span>
+        <span class="what">{#each markCode(t.description || `Test ${t.n}`, codeWords) as part}{#if part.code}<code>{part.text}</code>{:else}{part.text}{/if}{/each}</span>
         <span class="sr-only">{kind === 'ok' ? 'passes' : kind === 'bad' ? 'fails' : 'not answered yet'}</span>
       </li>
     {/each}

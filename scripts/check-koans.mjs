@@ -7,6 +7,10 @@
 //   • the solution lines up with the koan: the same lines, each ___ alone on its line and
 //     replaced by its answer (the result panel's hidden answer relies on this)
 //   • the language's own lint passes (for Raku: types are compared with is-deeply)
+//
+// With --words, it also lists each test description in which the result panel shows words as
+// code (scripts/lib/code-words.mjs), with those words in [brackets], to review the rule.
+import { codeWords, markCode } from './lib/code-words.mjs';
 import { blanksOf, readKoans } from './lib/koans.mjs';
 import { chosenLanguages } from './lib/languages.mjs';
 
@@ -16,6 +20,9 @@ const passed = ({ rc, lines }) =>
 // Learner lines reported as failing: the prelude adds "at web line N" to each failure.
 const failingLines = ({ lines }, offset) =>
   new Set(lines.flatMap(l => [...l.text.matchAll(/at web line (\d+)/g)].map(m => Number(m[1]) - offset)));
+
+const showWords = process.argv.includes('--words');
+const wordReport = [];
 
 let failures = 0;
 const fail = (koan, why, lines = []) => {
@@ -47,9 +54,20 @@ for (const lang of chosenLanguages()) {
       if (!passed(solved)) { fail(koan, 'solution does not pass', solved.lines); continue; }
 
       console.log(`✓ ${koan.id}`);
+      if (showWords) {
+        const words = new Set(codeWords(`${koan.code}\n${koan.solution}`, lang.comment, { names: lang.codeNames }));
+        for (const { text } of solved.lines) {
+          const description = text.match(/^ok \d+ - (.*)$/)?.[1];
+          if (!description) continue;
+          const parts = markCode(description, words);
+          if (parts.some(p => p.code)) wordReport.push(`${lang.id}  ${parts.map(p => (p.code ? `[${p.text}]` : p.text)).join('')}`);
+        }
+      }
     }
   }
 }
+
+if (showWords) console.log(`\nTest descriptions with code in them (${wordReport.length}):\n${wordReport.join('\n')}`);
 
 if (failures) {
   console.log(`\n${failures} problem(s).`);

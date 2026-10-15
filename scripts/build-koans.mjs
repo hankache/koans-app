@@ -1,11 +1,13 @@
 // languages/<id>/koans/ → src/generated/<id>.json (the manifest the app loads when the language
 // is opened), for each language, or those named with --lang. Whole solutions stay out of the
-// bundle; each blank's answer goes in, for the result panel's hidden answer.
+// bundle; each blank's answer goes in, for the result panel's hidden answer, and so do the koan's
+// code words (scripts/lib/code-words.mjs).
 //
 // Also src/generated/summary.json: each language's koans (id, title and group), small enough for
 // the home page to show progress and where to continue without loading any language.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { codeWords } from './lib/code-words.mjs';
 import { blanksOf, readKoans } from './lib/koans.mjs';
 import { chosenLanguages } from './lib/languages.mjs';
 
@@ -17,7 +19,16 @@ const summary = existsSync(summaryPath) ? JSON.parse(readFileSync(summaryPath, '
 for (const lang of chosenLanguages()) {
   const sections = readKoans(lang).map(s => ({
     ...s,
-    koans: s.koans.map(k => ({ id: k.id, title: k.title, intro: k.intro, code: k.code, answers: blanksOf(k).blanks.map(b => ({ line: b.line, answer: b.answer })) })),
+    koans: s.koans.map(k => ({
+      id: k.id,
+      title: k.title,
+      intro: k.intro,
+      code: k.code,
+      answers: blanksOf(k).blanks.map(b => ({ line: b.line, answer: b.answer })),
+      // Its code words, from the koan and its solution (answers count): the result panel shows
+      // them as code in the tests' descriptions. Space-separated, to keep the manifest small.
+      words: codeWords(`${k.code}\n${k.solution ?? ''}`, lang.comment, { names: lang.codeNames }).join(' '),
+    })),
   }));
   const manifest = { prelude: lang.prelude(), epilogue: lang.epilogue, sections };
   writeFileSync(`${out}${lang.id}.json`, JSON.stringify(manifest, null, 2) + '\n');

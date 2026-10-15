@@ -221,7 +221,7 @@
 
     <aside class:open={sheet}>
       <button class="sheet-close" onclick={() => (sheet = false)} aria-label="Close the report">×</button>
-      <Meditation {report} {gained} {running} {hint} onuse={() => hint && editor.fillAnswer(hint)} {runtimeError} {pack} pathHref={course.href()} nextHref={nav.next ? course.href(nav.next.id) : undefined} />
+      <Meditation words={koan.words} {report} {gained} {running} {hint} onuse={() => hint && editor.fillAnswer(hint)} {runtimeError} {pack} pathHref={course.href()} nextHref={nav.next ? course.href(nav.next.id) : undefined} />
     </aside>
   </div>
 

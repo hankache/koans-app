@@ -25,6 +25,10 @@ at a time. When writing one:
   who reads it should be able to fill every blank by thinking, not by searching.
 - **Each assertion's message is the lesson**, written as a short statement: `'// rounds down'`,
   `'a set holds each value once'`. It's what the learner reads next to a passed or failed check.
+  Words in it that are code in the koan (`toEqual`, `NaN`, `.not`) are shown as code by
+  themselves; plain English words that are also keywords (`is`, `in`, `not`) stay text. Put a word
+  in backticks to force it either way, and run `npm run check:koans -- --words` to see what's
+  marked ([scripts/lib/code-words.mjs](scripts/lib/code-words.mjs) has the rules).
 - **Answers are short** and written the way the language writes values: `[1, 2, 3]`, `'text'`,
   `TypeError`.
 - **Don't depend on one interpreter's quirks**: exact error-message wording, how many digits a float
