@@ -27,6 +27,8 @@ export default {
     { context: 'SELECT NULL + 1;', before: '-- expect: ', after: '', choices: ['1', 'NULL', '0'], answer: 'NULL', why: 'Anything combined with NULL is NULL.' },
     { context: 'SELECT 7 / 2;', before: '-- expect: ', after: '', choices: ['3.5', '3', '4'], answer: '3', why: 'An integer divided by an integer stays an integer.' },
   ],
+  // The koan as a file of its test framework, named its way (sqllogictest: name.test), on the editor's bar.
+  testFile: slug => `${slug}.test`,
   worker: { url: 'runtime/sql/worker.js', type: 'module' },
   errors: {
     // The worker ends a failed statement with its line: "    at koan.sql:3".

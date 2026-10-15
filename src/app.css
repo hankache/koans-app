@@ -124,3 +124,6 @@ button:disabled { opacity: 0.55; cursor: progress; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* The app is a column the height of the window at least: header, main, footer. */
+#app { min-height: 100vh; display: flex; flex-direction: column; }

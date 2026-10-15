@@ -147,7 +147,10 @@ export function parseRun(result: RunResult, code: string, offset: number, errors
       if (m?.[1] === 'expected') failure.answer = m[2].trim();
       if (m?.[1] === 'got') failure.actual = m[2].trim();
     }
-    failure.blank = failure.line !== undefined && codeLines[failure.line - 1]?.includes('___');
+    // Every failing test: is its line still unanswered? (The report tells ○ from ✗ by it.)
+    for (const t of tests) {
+      if (!t.ok) t.blank = t.line !== undefined && codeLines[t.line - 1]?.includes('___');
+    }
     return { status: 'failed', tests, failure, output };
   }
   // A compile error or an exception outside of any test.

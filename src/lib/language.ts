@@ -70,6 +70,8 @@ export interface LanguagePack {
   framework: string;
   /** The home page's filters it shows under. */
   kinds: Kind[];
+  /** A koan's file name in the language's test convention, from the last part of its id: 'test_slicing.py'. */
+  testFile(slug: string): string;
   /** Koans to try on the home page (tests/teasers.test.ts runs each through the interpreter). */
   teasers: Teaser[];
   /** Lines of its own, added to the ones every language may show when a koan passes. */

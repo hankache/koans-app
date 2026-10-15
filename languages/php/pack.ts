@@ -27,6 +27,8 @@ export default {
     { before: 'assertSame(', after: ', \'5\' + \'5\');', choices: ['\'55\'', '10', '\'10\''], answer: '10', why: '+ is for numbers; strings join with a dot.' },
     { before: 'assertSame(', after: ', 0 == \'a\');', choices: ['true', 'false', 'null'], answer: 'false', why: 'Since PHP 8, this compares them as strings.' },
   ],
+  // The koan as a file of its test framework, named its way (PHPUnit: NameTest.php), on the editor's bar.
+  testFile: slug => `${slug.replace(/(^|-)(\w)/g, (_, __, c: string) => c.toUpperCase())}Test.php`,
   worker: { url: 'runtime/php/worker.js', type: 'module' },
   errors: {
     // The worker ends an uncaught error with the koan's line: "    at koan.php:3".

@@ -27,6 +27,8 @@ export default {
     { before: 'expect(-7 % 3).to eq(', after: ')', choices: ['-1', '1', '2'], answer: '2', why: 'Ruby’s % takes the sign of the divisor.' },
     { before: 'expect(nil.to_a).to eq(', after: ')', choices: ['nil', '[]', '[nil]'], answer: '[]', why: 'nil converts to an empty array.' },
   ],
+  // The koan as a file of its test framework, named its way (RSpec: name_spec.rb), on the editor's bar.
+  testFile: slug => `${slug.replaceAll('-', '_')}_spec.rb`,
   worker: { url: 'runtime/ruby/worker.js', type: 'module' },
   errors: {
     // The worker ends an uncaught error with the koan's line: "    at koan.rb:3".

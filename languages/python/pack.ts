@@ -27,6 +27,8 @@ export default {
     { before: 'assert -7 // 2 == ', after: '', choices: ['-3', '-4', '-3.5'], answer: '-4', why: '// rounds down, toward minus infinity.' },
     { before: 'assert \'ab\' * 3 == ', after: '', choices: ['\'ababab\'', '\'ab3\'', 'TypeError'], answer: '\'ababab\'', why: 'Multiplying a string repeats it.' },
   ],
+  // The koan as a file of its test framework, named its way (pytest: test_name.py), on the editor's bar.
+  testFile: slug => `test_${slug.replaceAll('-', '_')}.py`,
   worker: { url: 'runtime/python/worker.js', type: 'module' },
   errors: {
     // A traceback names each frame's file and line; the koan is "<exec>", and its first frame is

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { EditorView, keymap, lineNumbers, highlightActiveLine, Decoration, WidgetType, type DecorationSet } from '@codemirror/view';
-  import { EditorState, StateEffect, StateField, type Extension } from '@codemirror/state';
+  import { EditorView, keymap, lineNumbers, highlightActiveLine, Decoration, WidgetType, GutterMarker, gutter, type DecorationSet } from '@codemirror/view';
+  import { Compartment, EditorState, RangeSet, StateEffect, StateField, type Extension } from '@codemirror/state';
   import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
   import { HighlightStyle, syntaxHighlighting, bracketMatching } from '@codemirror/language';
   import type { Reveal } from '../lib/koans';
@@ -16,6 +16,8 @@
     markKind?: 'fail' | 'error';
     /** Changes on every run, so the mark is redrawn even when the same line fails again. */
     markRun?: number;
+    /** After a run: a ✓ or ✗ beside each line with an answer (1-based), whose test passed or not. */
+    checks?: { line: number; ok: boolean }[];
     /** Where each answer goes: the text around its ___ on the koan's line (0-based). */
     spots: { line: number; before: string; after: string }[];
     onchange: (code: string) => void;
@@ -23,7 +25,7 @@
     /** The line of the answer spot the cursor is on, or null when it isn't on one. */
     onspot: (line: number | null) => void;
   }
-  let { value, language, markLine, markKind = 'fail', markRun = 0, spots, onchange, onrun, onspot }: Props = $props();
+  let { value, language, markLine, markKind = 'fail', markRun = 0, checks = [], spots, onchange, onrun, onspot }: Props = $props();
 
   let host: HTMLDivElement;
   let view: EditorView;
@@ -102,6 +104,48 @@
       ),
   });
 
+  // The ✓ and ✗ beside answer lines after a run. Like the flagged line, each stays with its line
+  // while the learner edits, until the next run.
+  const setChecks = StateEffect.define<{ line: number; ok: boolean }[]>();
+  const checkField = StateField.define<{ pos: number; ok: boolean }[]>({
+    create: () => [],
+    update(all, tr) {
+      for (const e of tr.effects) {
+        if (e.is(setChecks)) {
+          return e.value.filter(c => c.line <= tr.state.doc.lines).map(c => ({ pos: tr.state.doc.line(c.line).from, ok: c.ok }));
+        }
+      }
+      return tr.docChanged ? all.map(c => ({ ...c, pos: tr.changes.mapPos(c.pos, 1) })) : all;
+    },
+  });
+  class CheckMark extends GutterMarker {
+    ok: boolean;
+    constructor(ok: boolean) {
+      super();
+      this.ok = ok;
+    }
+    eq(other: CheckMark) {
+      return other.ok === this.ok;
+    }
+    toDOM() {
+      const mark = document.createElement('span');
+      mark.className = this.ok ? 'cm-check-ok' : 'cm-check-bad';
+      mark.textContent = this.ok ? '✓' : '✗';
+      mark.setAttribute('aria-label', this.ok ? 'passes' : 'fails');
+      return mark;
+    }
+  }
+  const checkGutter = gutter({
+    class: 'cm-checks',
+    markers: v => RangeSet.of(v.state.field(checkField).map(c => new CheckMark(c.ok).range(c.pos)), true),
+    initialSpacer: () => new CheckMark(true),
+  });
+
+  // Long lines wrap on wide screens; on a phone they scroll sideways, so code keeps its shape.
+  const wrapping = new Compartment();
+  const narrow = matchMedia('(max-width: 640px)');
+  const wrapFor = (isNarrow: boolean) => (isNarrow ? [] : EditorView.lineWrapping);
+
   /** Puts a revealed answer in its place (the result panel's "Use it"), then moves to the line's end. */
   export function fillAnswer(r: Reveal) {
     if (!view || r.line > view.state.doc.lines) return;
@@ -130,6 +174,8 @@
       state: EditorState.create({
         doc: value,
         extensions: [
+          checkField,
+          checkGutter,
           lineNumbers(),
           history(),
           highlightActiveLine(),
@@ -161,7 +207,7 @@
             if (u.docChanged) onchange(u.state.doc.toString());
             if (u.docChanged || u.selectionSet) onspot(spotAt(u.state, u.state.selection.main.head)?.line ?? null);
           }),
-          EditorView.lineWrapping,
+          wrapping.of(wrapFor(narrow.matches)),
           // Tab indents inside the editor, so tell keyboard and screen-reader users how to get out.
           EditorView.contentAttributes.of({
             'aria-label':
@@ -170,7 +216,12 @@
         ],
       }),
     });
-    return () => view.destroy();
+    const rewrap = (e: MediaQueryListEvent) => view.dispatch({ effects: wrapping.reconfigure(wrapFor(e.matches)) });
+    narrow.addEventListener('change', rewrap);
+    return () => {
+      narrow.removeEventListener('change', rewrap);
+      view.destroy();
+    };
   });
 
   // Replace the document when the koan changes (or is reset) from outside.
@@ -182,7 +233,7 @@
 
   $effect(() => {
     void markRun; // redraw after every run, even for the same line
-    view?.dispatch({ effects: setMark.of({ line: markLine, kind: markKind }) });
+    view?.dispatch({ effects: [setMark.of({ line: markLine, kind: markKind }), setChecks.of(checks)] });
   });
 </script>
 
@@ -216,6 +267,9 @@
     background: color-mix(in srgb, var(--syn-blank) 16%, transparent);
     font-weight: 600;
   }
+  .editor :global(.cm-checks) { min-width: 1.4em; text-align: center; font-family: var(--font-body); font-weight: 700; font-size: 0.85em; }
+  .editor :global(.cm-check-ok) { color: var(--pass); }
+  .editor :global(.cm-check-bad) { color: var(--fail); }
   .editor :global(.cm-mark-fail) { background: color-mix(in srgb, var(--fail) 12%, transparent); box-shadow: inset 3px 0 var(--fail); }
   .editor :global(.cm-mark-error) { background: color-mix(in srgb, var(--fail) 18%, transparent); box-shadow: inset 3px 0 var(--fail); }
 

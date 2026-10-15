@@ -27,6 +27,8 @@ export default {
   framework: 'TODO',
   kinds: [],
   teasers: [{ before: 'TODO(', after: ')', choices: ['1', '2', '3'], answer: '2', why: 'TODO' }],
+  // The koan's file name in its test framework's convention, shown above the editor: 'test_slicing.py'.
+  testFile: slug => `TODO_${slug}`,
   worker: { url: 'runtime/lang-id/worker.js', type: 'module' }, // or 'classic' for importScripts()
   errors: {
     // TODO: finds the line (as the interpreter counts it, prelude included) in an uncaught error.

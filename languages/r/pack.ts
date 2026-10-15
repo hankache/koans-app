@@ -27,6 +27,8 @@ export default {
     { before: 'expect_equal(round(2.5), ', after: ')', choices: ['2', '3', '2.5'], answer: '2', why: 'R rounds halves to the even neighbour.' },
     { before: 'expect_equal(c(1, 2) + 1:4, ', after: ')', choices: ['c(2, 4, 4, 6)', 'c(2, 4)', 'c(2, 4, 3, 4)'], answer: 'c(2, 4, 4, 6)', why: 'The shorter vector is recycled.' },
   ],
+  // The koan as a file of its test framework, named its way (testthat: test-name.R), on the editor's bar.
+  testFile: slug => `test-${slug}.R`,
   worker: { url: 'runtime/r/worker.js', type: 'module' },
   errors: {
     // The worker ends an uncaught error with the koan's line: "    at koan.R:3".

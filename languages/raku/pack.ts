@@ -29,6 +29,8 @@ export default {
     { before: 'is 0.1 + 0.2, ', after: ', \'exact\';', choices: ['0.3', '0.30000000000000004', 'False'], answer: '0.3', why: 'Raku keeps 0.1 as an exact fraction.' },
     { before: 'is \'ab\' x 3, ', after: ', \'repeat\';', choices: ['\'ababab\'', '\'ab3\'', '(\'ab\', \'ab\', \'ab\')'], answer: '\'ababab\'', why: 'x repeats a string; xx would make a list.' },
   ],
+  // The koan as a file of its test framework, named its way (Raku: name.rakutest), on the editor's bar.
+  testFile: slug => `${slug}.rakutest`,
   worker: { url: 'runtime/raku/worker.js', type: 'classic' },
   errors: {
     // "===SORRY!=== Parse error at line 3: …" for compile errors, "in block <unit> at web line 3"

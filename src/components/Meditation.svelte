@@ -3,8 +3,8 @@
   import type { Report } from '../lib/tap';
   import type { Reveal } from '../lib/koans';
   import LogoGate from './LogoGate.svelte';
-  import GateMark from './GateMark.svelte';
-  import { inlineCode } from '../lib/inline-code';
+  import Emblem from './Emblem.svelte';
+  import { codeLike, inlineCode } from '../lib/inline-code';
   import { modKey } from '../lib/platform';
   import type { LanguagePack } from '../lib/language';
 
@@ -76,7 +76,28 @@
   {/if}
 {/snippet}
 
+{#snippet tests(list: Report['tests'], current?: number)}
+  <ol class="steps" aria-label="{list.filter(t => t.ok).length} of {list.length} passing">
+    {#each list as t (t.n)}
+      {@const kind = t.ok ? 'ok' : t.blank ? 'todo' : 'bad'}
+      <li class={kind} class:current={t.n === current}>
+        <span class="mark" aria-hidden="true">{kind === 'ok' ? '✓' : kind === 'bad' ? '✗' : '○'}</span>
+        <span class="what">{#each codeLike(t.description || `Test ${t.n}`) as part}{#if part.code}<code>{part.text}</code>{:else}{part.text}{/if}{/each}</span>
+        <span class="sr-only">{kind === 'ok' ? 'passes' : kind === 'bad' ? 'fails' : 'not answered yet'}</span>
+      </li>
+    {/each}
+  </ol>
+{/snippet}
+
 <div class="panel {report?.status ?? 'idle'}" aria-live="polite">
+  {#if !running && report && report.status !== 'error' && report.tests.length}
+    {@const passing = report.tests.filter(t => t.ok).length}
+    <div class="tally">
+      <span class="tally-label">Tests</span>
+      <span>{passing} of {report.tests.length} passing</span>
+      <span class="tally-bar"><span style:width="{Math.round((passing / report.tests.length) * 100)}%"></span></span>
+    </div>
+  {/if}
   {#if running}
     <p class="lead muted">Meditating…</p>
   {:else if !report}
@@ -85,13 +106,14 @@
     {@render answer()}
   {:else if report.status === 'passed'}
     <div class="celebrate">
-      {#key report}{#if pack.art}<LogoGate size={112} art={pack.art} />{:else}<div class="arrive"><GateMark size={96} /></div>{/if}{/key}
+      {#key report}{#if pack.art}<LogoGate size={112} art={pack.art} />{:else}<Emblem {pack} size={104} celebrate />{/if}{/key}
       <div>
         <p class="lead">Enlightenment!</p>
         <p class="small">{report.tests.length === 1 ? 'The assertion holds.' : `All ${report.tests.length} assertions hold.`}</p>
       </div>
     </div>
     {#if nextHref}<a class="next" href={nextHref}>Next koan →</a>{:else}<a class="next" href={pathHref}>Back to the path</a>{/if}
+    {@render tests(report.tests)}
   {:else if report.status === 'failed'}
     {@const f = report.failure}
     {#if gained > 0}
@@ -109,14 +131,7 @@
     {:else if !f.blank && f.diag.length}
       <pre class="diag">{f.diag.join('\n')}</pre>
     {/if}
-    <ol class="steps" aria-label="{f.n - 1} of {report.tests.length} assertions passed">
-      {#each report.tests as t (t.n)}
-        <li class:ok={t.ok && t.n < f.n} class:current={t.n === f.n}>
-          <span class="mark" aria-hidden="true">{t.ok && t.n < f.n ? '✓' : t.n === f.n ? '→' : ''}</span>
-          {t.description || `Assertion ${t.n}`}
-        </li>
-      {/each}
-    </ol>
+    {@render tests(report.tests, f.n)}
   {:else}
     <p class="lead">Your code has not yet found its form{#if report.line}<span class="line">— line {report.line}</span>{/if}</p>
     <pre class="diag">{report.message}</pre>
@@ -209,12 +224,22 @@
   }
   @keyframes pop { from { transform: scale(0.85); opacity: 0; } }
   .blank { color: var(--syn-blank); background: color-mix(in srgb, var(--syn-blank) 14%, transparent); padding: 0 0.3em; }
-  .steps { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: 0.3rem; font-size: 0.88rem; }
-  .steps li { display: flex; gap: 0.5rem; color: var(--ink-faint); }
-  .steps li.ok { color: var(--pass); }
-  .steps li.current { color: var(--ink); font-weight: 600; }
-  .mark { width: 1em; flex: none; text-align: center; }
-  .current .mark { color: var(--fail); }
+  .steps { list-style: none; padding: 0.8rem 0 0; margin: 1rem 0 0; display: grid; gap: 0.35rem; font-size: 0.88rem; border-top: 1px solid color-mix(in srgb, var(--ink) 10%, transparent); }
+  .steps li { display: flex; gap: 0.55rem; color: var(--ink-soft); }
+  .steps li.ok { color: var(--ink); }
+  .steps li.current { font-weight: 600; color: var(--ink); }
+  .mark { width: 1em; flex: none; text-align: center; font-weight: 700; }
+  .ok .mark { color: var(--pass); }
+  .bad .mark { color: var(--fail); }
+  .todo .mark { color: var(--ink-faint); }
+  .what code { font-family: var(--font-mono); font-size: 0.92em; padding: 0 0.25em; background: color-mix(in srgb, var(--ink) 7%, transparent); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  /* How many tests pass, after a run. */
+  .tally { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 0.35rem 0.8rem; margin-bottom: 1rem; font-size: 0.82rem; color: var(--ink-soft); }
+  .tally-label { font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+  .tally-bar { grid-column: 1 / -1; height: 6px; background: color-mix(in srgb, var(--ink) 10%, transparent); }
+  .tally-bar > span { display: block; height: 6px; background: var(--pass); transition: width 0.5s; }
   .celebrate { display: flex; gap: 1rem; align-items: center; }
   .next {
     display: inline-block;
@@ -227,12 +252,6 @@
   }
   details { margin-top: 1rem; }
   summary { cursor: pointer; font-size: 0.85rem; color: var(--ink-soft); }
-  /* The gateless gate, for languages without their own artwork: it settles into place. */
-  .arrive { flex: none; animation: arrive 0.9s cubic-bezier(0.3, 1.4, 0.5, 1) both; }
-  @keyframes arrive {
-    from { transform: scale(0.6) rotate(-6deg); opacity: 0; }
-    to { transform: none; opacity: 1; }
-  }
   kbd {
     font-family: var(--font-mono);
     font-size: 0.8em;

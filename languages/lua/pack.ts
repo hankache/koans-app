@@ -27,6 +27,8 @@ export default {
     { before: 'assert.are.equal(', after: ', #\'héllo\')', choices: ['5', '6', '4'], answer: '6', why: '# counts bytes, and é takes two.' },
     { before: 'assert.are.equal(', after: ', 7 // 2)', choices: ['3.5', '3', '4'], answer: '3', why: '// is floor division.' },
   ],
+  // The koan as a file of its test framework, named its way (busted: name_spec.lua), on the editor's bar.
+  testFile: slug => `${slug.replaceAll('-', '_')}_spec.lua`,
   worker: { url: 'runtime/lua/worker.js', type: 'module' },
   errors: {
     // The worker ends an uncaught error with the koan's line: "    at koan.lua:3".

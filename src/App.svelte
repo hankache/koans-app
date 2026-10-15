@@ -129,7 +129,8 @@
   .meter { flex: 1; min-width: 0; max-width: 360px; margin-left: auto; }
   .spacer { flex: 1; }
   .status { color: var(--ink-soft); padding: 3rem 0; }
-  main { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  /* main takes the spare height, so the footer sits at the bottom even on a short page. */
+  main { flex: 1 0 auto; width: 100%; box-sizing: border-box; max-width: 1120px; margin: 0 auto; padding: 0 16px; }
   footer { text-align: center; color: var(--ink-faint); font-size: 0.8rem; padding: 3rem 16px 2rem; }
   footer a { color: var(--ink-soft); }
   .build { display: block; margin-top: 0.4rem; font-size: 0.72rem; opacity: 0.8; }

@@ -27,6 +27,8 @@ export default {
     { context: 'const x = 42;', before: 'expectTypeOf(x).toEqualTypeOf<', after: '>();', choices: ['number', '42', 'const'], answer: '42', why: 'A const keeps its literal type.' },
     { context: 'let y = 42;', before: 'expectTypeOf(y).toEqualTypeOf<', after: '>();', choices: ['number', '42', 'unknown'], answer: 'number', why: 'A let can change, so it widens.' },
   ],
+  // The koan as a file of its test framework, named its way (Vitest: name.test.ts), on the editor's bar.
+  testFile: slug => `${slug}.test.ts`,
   worker: { url: 'runtime/typescript/worker.js', type: 'module' },
   errors: {
     // The worker ends a type error, or an uncaught error, with the koan's line: "    at koan.js:3".

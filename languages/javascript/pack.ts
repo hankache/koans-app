@@ -27,6 +27,8 @@ export default {
     { before: 'expect(\'5\' + 2).toBe(', after: ');', choices: ['7', '\'52\'', 'NaN'], answer: '\'52\'', why: 'With a string on either side, + joins strings.' },
     { before: 'expect([] + []).toBe(', after: ');', choices: ['\'\'', '[]', '0'], answer: '\'\'', why: 'Both arrays become empty strings first.' },
   ],
+  // The koan as a file of its test framework, named its way (Vitest: name.test.js), on the editor's bar.
+  testFile: slug => `${slug}.test.js`,
   worker: { url: 'runtime/javascript/worker.js', type: 'module' },
   errors: {
     // The worker ends an uncaught error with the koan's line: "    at koan.js:3".
