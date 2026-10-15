@@ -5,7 +5,7 @@ export default {
   id: 'r',
   name: 'R',
   tagline: 'Learn R from its vectors to its data frames',
-  testedWith: 'testthat’s `test_that` and `expect_equal`',
+  testedWith: { name: 'testthat', url: 'https://testthat.r-lib.org' },
   // Its emblem's symbol, drawn in the gate's doorway (src/components/Emblem.svelte): {F} solid, {C} cut out.
   look: {
     accent: { light: '#2b5f9e', dark: '#8db5e6' },

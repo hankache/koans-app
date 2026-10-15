@@ -33,7 +33,7 @@
     <h1>{pack.name}</h1>
     <p>{#each inlineCode(pack.about) as part}{#if part.code}<code>{part.text}</code>{:else}{part.text}{/if}{/each}</p>
     <p>
-      Test-driven from the start: fix failing tests written with {#each inlineCode(pack.testedWith) as part}{#if part.code}<code>{part.text}</code>{:else}{part.text}{/if}{/each} to
+      Test-driven from the start: fix failing tests written with <a class="framework" href={pack.testedWith.url} target="_blank" rel="noopener">{pack.testedWith.name}</a> to
       master both the language and testing.
     </p>
     <p class="site"><a href={pack.site.url} target="_blank" rel="noopener">{pack.site.label} ↗</a></p>
@@ -120,6 +120,8 @@
   }
   .hero h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); letter-spacing: -0.02em; margin: 0; }
   .hero .eyebrow + h1 + p { margin-top: 0.6rem; }
+  .framework { color: inherit; text-decoration-color: var(--ink-faint); text-underline-offset: 3px; }
+  .framework:hover { color: var(--ink); }
   .site a { color: var(--ink-soft); font-weight: 600; text-decoration-color: var(--ink-faint); text-underline-offset: 3px; }
   .site a:hover { color: var(--ink); }
   .hero p { color: var(--ink-soft); max-width: 38rem; margin: 0.8rem 0 0; }

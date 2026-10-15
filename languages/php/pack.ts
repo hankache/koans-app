@@ -5,7 +5,7 @@ export default {
   id: 'php',
   name: 'PHP',
   tagline: 'Learn modern PHP from its arrays to its enums',
-  testedWith: 'PHPUnit’s assertions, like `assertSame`',
+  testedWith: { name: 'PHPUnit', url: 'https://phpunit.de' },
   // Its emblem's symbol, drawn in the gate's doorway (src/components/Emblem.svelte): {F} solid, {C} cut out.
   look: {
     accent: { light: '#5b5a9a', dark: '#a9a8e8' },

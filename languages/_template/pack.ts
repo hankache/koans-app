@@ -7,8 +7,8 @@ export default {
   name: 'LANGUAGE',
   // Shown on the home page: "<tagline>, in N koans." and "<tagline> through N browser-based koans."
   tagline: 'Learn LANGUAGE from TODO to TODO',
-  // Finishes "fix failing tests written with …"; `code` in backticks.
-  testedWith: 'TODO',
+  // Finishes "fix failing tests written with …": its test framework, linked to its site.
+  testedWith: { name: 'TODO', url: 'https://TODO' },
   // Its look: an accent for each theme (with 4.5:1 contrast on the page's light and dark
   // backgrounds), and its emblem's symbol, drawn in the gate's doorway of a 64-unit box (about x
   // 19–45, y 30–57), solid parts in {F} and cut-outs in {C} (see src/components/Emblem.svelte).

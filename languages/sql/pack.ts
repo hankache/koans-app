@@ -5,7 +5,7 @@ export default {
   id: 'sql',
   name: 'SQL',
   tagline: 'Learn SQL from SELECT to window functions',
-  testedWith: 'the rows each query should return, in `-- expect:` comments',
+  testedWith: { name: 'sqllogictest-style expectations', url: 'https://sqlite.org/sqllogictest/doc/trunk/about.wiki' },
   // Its emblem's symbol, drawn in the gate's doorway (src/components/Emblem.svelte): {F} solid, {C} cut out.
   look: {
     accent: { light: '#5f5c3a', dark: '#b8b27f' },

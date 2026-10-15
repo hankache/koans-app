@@ -5,7 +5,7 @@ export default {
   id: 'ruby',
   name: 'Ruby',
   tagline: 'Learn Ruby from its objects to its blocks',
-  testedWith: 'RSpec-style `expect(…).to eq(…)`',
+  testedWith: { name: 'RSpec', url: 'https://rspec.info' },
   // Its emblem's symbol, drawn in the gate's doorway (src/components/Emblem.svelte): {F} solid, {C} cut out.
   look: {
     accent: { light: '#9a6535', dark: '#d49a66' },

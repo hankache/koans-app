@@ -5,7 +5,7 @@ export default {
   id: 'typescript',
   name: 'TypeScript',
   tagline: 'Learn TypeScript’s types, from annotations to generics',
-  testedWith: 'Vitest’s `expect` and `expectTypeOf`',
+  testedWith: { name: 'Vitest', url: 'https://vitest.dev' },
   // Its emblem's symbol, drawn in the gate's doorway (src/components/Emblem.svelte): {F} solid, {C} cut out.
   look: {
     accent: { light: '#173f4d', dark: '#7fb0c4' },

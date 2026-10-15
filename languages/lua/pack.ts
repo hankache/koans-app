@@ -5,7 +5,7 @@ export default {
   id: 'lua',
   name: 'Lua',
   tagline: 'Learn Lua from its tables to its metatables',
-  testedWith: 'busted’s assertions, like `assert.are.equal`',
+  testedWith: { name: 'busted', url: 'https://lunarmodules.github.io/busted/' },
   // Its emblem's symbol, drawn in the gate's doorway (src/components/Emblem.svelte): {F} solid, {C} cut out.
   look: {
     accent: { light: '#4e606a', dark: '#9fb2bd' },

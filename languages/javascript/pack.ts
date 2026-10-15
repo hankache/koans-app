@@ -5,7 +5,7 @@ export default {
   id: 'javascript',
   name: 'JavaScript',
   tagline: 'Learn modern JavaScript from its values to async functions',
-  testedWith: 'Vitest-style `expect` (same API as Jest)',
+  testedWith: { name: 'Vitest', url: 'https://vitest.dev' },
   // Its emblem's symbol, drawn in the gate's doorway (src/components/Emblem.svelte): {F} solid, {C} cut out.
   look: {
     accent: { light: '#8a6a1f', dark: '#e2bf72' },

@@ -5,7 +5,7 @@ export default {
   id: 'python',
   name: 'Python',
   tagline: 'Learn Python from the first assertion to its built-in collections',
-  testedWith: 'pytest-style `assert` statements',
+  testedWith: { name: 'pytest', url: 'https://pytest.org' },
   // Its emblem's symbol, drawn in the gate's doorway (src/components/Emblem.svelte): {F} solid, {C} cut out.
   look: {
     accent: { light: '#3f7f78', dark: '#7fbfb5' },
