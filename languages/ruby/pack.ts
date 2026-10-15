@@ -19,7 +19,7 @@ export default {
   cheers: ['Matz is nice, so we are nice.', 'Optimized for happiness.'],
   // On the home page: under its name, where its path goes, its test framework, the filters it
   // shows under, and koans to try (each checked by tests/teasers.test.ts).
-  tag: 'Designed for programmer happiness',
+  tag: 'Made for programmer happiness',
   journey: 'From blocks and objects to modules and metaprogramming.',
   framework: 'RSpec',
   kinds: ['start', 'web', 'automate'],
