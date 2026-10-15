@@ -1,0 +1,8 @@
+expect([1, 2] + [2, 3]).to eq([1, 2, 2, 3]), '+ joins'
+expect([1, 2, 2, 3] - [2]).to eq([1, 3]), '- removes every match'
+expect([1, 2, 3] & [2, 3, 4]).to eq([2, 3]), '& is in both'
+expect([1, 2] | [2, 3]).to eq([1, 2, 3]), '| is in either, once'
+expect([0] * 3).to eq([0, 0, 0]), '* repeats'
+expect([1, 2, 3] * '-').to eq('1-2-3'), '* with a string joins'
+expect([[1, 2], [3]].flatten).to eq([1, 2, 3]), 'flatten'
+expect([3, 1, 3, 2, 1].uniq).to eq([3, 1, 2]), 'uniq keeps the first of each'

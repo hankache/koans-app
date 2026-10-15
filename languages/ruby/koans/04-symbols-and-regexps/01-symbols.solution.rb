@@ -1,0 +1,7 @@
+expect(:koan.class).to eq(Symbol), 'a symbol'
+expect(:koan.object_id == :koan.object_id).to eq(true), 'every :koan is the same object'
+expect(:koan.to_s).to eq('koan'), 'to and from strings'
+expect('koan'.to_sym).to eq(:koan), 'to_sym'
+expect(:"two words".to_s).to eq('two words'), 'quotes allow any name'
+expect(%i[a b c]).to eq([:a, :b, :c]), '%i makes an array of symbols'
+expect(5.respond_to?(:even?)).to eq(true), 'methods are named by symbols'

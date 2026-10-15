@@ -1,7 +1,0 @@
-assert_equal 3, 7 / 2, 'integer division drops the fraction'
-assert_equal -4, -7 / 2, 'it rounds down, toward minus infinity'
-assert_equal 1, 7 % 3, '% is the remainder'
-assert_equal 2, -7 % 3, 'with the sign of the divisor'
-assert_equal 3.5, 7.fdiv(2), 'fdiv divides exactly'
-assert_equal [3, 1], 10.divmod(3), 'divmod gives both'
-assert_equal 1024, 2**10, '** is a power'

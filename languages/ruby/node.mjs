@@ -26,11 +26,15 @@ export default {
   },
   epilogue: '\n',
 
-  /** ruby.wasm is built without the standard library, so require finds nothing to load. */
+  /**
+   * ruby.wasm is built without the standard library, so require finds nothing to load. A blank
+   * belongs to an expectation: on a line with its .to, .not_to or .to_not.
+   */
   lint(code) {
-    return code.split('\n').flatMap((l, i) =>
-      /^\s*require\b/.test(l) ? [`line ${i + 1} requires a library; the browser's Ruby has none`] : [],
-    );
+    return code.split('\n').flatMap((l, i) => [
+      ...(/^\s*require\b/.test(l) ? [`line ${i + 1} requires a library; the browser's Ruby has none`] : []),
+      ...(l.includes('___') && !/\.(to|not_to|to_not)\b/.test(l) ? [`line ${i + 1} has a blank outside an expectation`] : []),
+    ]);
   },
 
   /** Ruby 4.0 from the ruby.wasm project's npm package (100 MB with all its builds: not installed). */

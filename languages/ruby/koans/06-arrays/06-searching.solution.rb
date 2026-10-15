@@ -1,0 +1,10 @@
+nums = [4, 7, 10, 13]
+expect(nums.find(&:odd?)).to eq(7), 'the first odd number'
+expect(nums.select(&:even?)).to eq([4, 10]), 'select keeps'
+expect(nums.reject(&:even?)).to eq([7, 13]), 'reject drops'
+expect(nums.partition { |n| n > 8 }).to eq([[10, 13], [4, 7]]), 'partition: matches, then the rest'
+expect(nums.any? { |n| n > 12 }).to eq(true), 'any?'
+expect(nums.all?(Integer)).to eq(true), 'all? with a pattern'
+expect(nums.count(&:even?)).to eq(2), 'count'
+expect(nums.index(10)).to eq(2), 'index'
+expect(nums).to all(be_positive), 'RSpec checks every item with all'

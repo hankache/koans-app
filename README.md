@@ -36,7 +36,7 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/).
 | [Python](languages/python/)   | 71    | [Pyodide](https://pyodide.org) (CPython 3.14)       | pytest-style `assert`s |
 | [JavaScript](languages/javascript/) | 70 | the browser's own engine                      | Vitest-style `expect` |
 | [TypeScript](languages/typescript/) | 55 | the TypeScript 6 compiler, then the browser's engine | Vitest's `expect` and `expectTypeOf` |
-| [Ruby](languages/ruby/)       | 30    | [ruby.wasm](https://github.com/ruby/ruby.wasm) (CRuby 4.0) | Minitest's assertions |
+| [Ruby](languages/ruby/)       | 77    | [ruby.wasm](https://github.com/ruby/ruby.wasm) (CRuby 4.0) | RSpec-style `expect` |
 | [Lua](languages/lua/)         | 30    | [wasmoon](https://github.com/ceifa/wasmoon) (Lua 5.4) | busted's assertions |
 | [SQL](languages/sql/)         | 30    | [sql.js](https://github.com/sql-js/sql.js) (SQLite 3.49) | expected rows in `-- expect:` comments |
 

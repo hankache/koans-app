@@ -1,6 +1,0 @@
-assert_equal Symbol, :ruby.class, 'a symbol'
-assert_equal true, :a.equal?(:a), 'each symbol exists once'
-assert_equal false, 'a'.equal?('a'), 'unlike strings'
-assert_equal :name, 'name'.to_sym, 'a string can become a symbol'
-assert_equal 'name', :name.to_s, 'and back'
-assert_equal [:a, :b], %i[a b], '%i makes an array of symbols'

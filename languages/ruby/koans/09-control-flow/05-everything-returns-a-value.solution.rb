@@ -1,0 +1,6 @@
+expect(x = 5).to eq(5), 'an assignment returns the value'
+expect(def koan_method = 1).to eq(:koan_method), 'def returns the method name'
+expect(puts('')).to eq(nil), 'puts returns nil'
+expect([1, 2].each { }).to eq([1, 2]), 'each returns what it iterated over'
+expect(begin; 1; 2; end).to eq(2), 'a block of code returns its last value'
+expect { puts 'hello' }.to output("hello\n").to_stdout, 'output checks what puts writes'

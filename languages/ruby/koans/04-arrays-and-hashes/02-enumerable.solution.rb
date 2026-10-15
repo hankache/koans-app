@@ -1,7 +1,0 @@
-assert_equal [2, 4, 6], [1, 2, 3].map { |n| n * 2 }, 'map transforms each item'
-assert_equal [2, 4], [1, 2, 3, 4].select(&:even?), 'select keeps some'
-assert_equal [1, 3], [1, 2, 3, 4].reject(&:even?), 'reject leaves some out'
-assert_equal 10, [1, 2, 3, 4].reduce(:+), 'reduce combines them'
-assert_equal ['fig', 'pear', 'apple'], %w[pear fig apple].sort_by(&:length), 'sort_by sorts by what the block gives'
-assert_equal [1, 2], [1, 1, 2].uniq, 'uniq drops duplicates'
-assert_equal [[1, 3], [2, 4]], [1, 2].zip([3, 4]), 'zip pairs items up'

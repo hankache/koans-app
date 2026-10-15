@@ -1,0 +1,7 @@
+expect((1..5).to_a).to eq([1, 2, 3, 4, 5]), 'two dots include the end'
+expect((1...5).to_a).to eq([1, 2, 3, 4]), 'three dots exclude it'
+expect((1..10).include?(10)).to eq(true), 'membership'
+expect((1..100).sum).to eq(5050), 'sum without a loop'
+expect(('a'..'e').to_a.join).to eq('abcde'), 'letters make ranges too'
+expect((1.0..2.0).include?(1.5)).to eq(true), 'and floats, for membership'
+expect((1..10).step(3).to_a).to eq([1, 4, 7, 10]), 'step through a range'

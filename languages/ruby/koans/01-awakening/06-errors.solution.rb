@@ -1,0 +1,7 @@
+expect { 1 / 0 }.to raise_error(ZeroDivisionError), 'dividing an integer by zero'
+expect { Integer('ten') }.to raise_error(ArgumentError), 'a string that is not a number'
+expect { nil + 1 }.to raise_error(NoMethodError), 'nil has no +'
+expect { 1 + 'one' }.to raise_error(TypeError), 'numbers and strings do not add'
+expect { raise 'stop' }.to raise_error(RuntimeError), 'raise with a message raises a RuntimeError'
+expect { raise ArgumentError, 'too big' }.to raise_error(ArgumentError, 'too big'), 'and the message'
+expect { [1, 2].fetch(5) }.to raise_error(IndexError, /index 5/), 'a pattern matches part of a message'

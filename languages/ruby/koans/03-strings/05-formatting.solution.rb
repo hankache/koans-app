@@ -1,0 +1,7 @@
+expect(format('%05.1f', 3.14159)).to eq('003.1'), 'width, zero padding, precision'
+expect('%s has %d koans' % ['Ruby', 70]).to eq('Ruby has 70 koans'), '% with an array'
+expect(format('%-6s|', 'ab')).to eq('ab    |'), 'a minus aligns left'
+expect(format('%x', 255)).to eq('ff'), 'hexadecimal'
+expect('7'.rjust(3, '0')).to eq('007'), 'rjust pads on the left'
+expect('mid'.center(7, '*')).to eq('**mid**'), 'center pads both sides'
+expect(1234567.to_s.reverse.scan(/\d{1,3}/).join(',').reverse).to eq('1,234,567'), 'thousands separators, by hand'

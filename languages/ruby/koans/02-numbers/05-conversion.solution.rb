@@ -1,0 +1,7 @@
+expect('42'.to_i).to eq(42), 'to_i reads a number'
+expect('42 apples'.to_i).to eq(42), 'as far as it can'
+expect('apples'.to_i).to eq(0), 'and gives 0 when it cannot'
+expect { Integer('42 apples') }.to raise_error(ArgumentError), 'Integer() wants the whole string'
+expect(Integer('0x1f', 16)).to eq(31), 'Integer() also takes a base'
+expect(3.99.to_i).to eq(3), 'to_i on a float truncates'
+expect(Float('1e3')).to eq(1000.0), 'scientific notation'

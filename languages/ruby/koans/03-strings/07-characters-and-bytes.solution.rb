@@ -1,0 +1,8 @@
+word = 'café'
+expect(word.length).to eq(4), 'four characters'
+expect(word.bytesize).to eq(5), 'but five bytes: é takes two'
+expect(word.chars.last).to eq('é'), 'chars splits into characters'
+expect('A'.ord).to eq(65), 'ord gives the code point'
+expect(97.chr).to eq('a'), 'chr goes back'
+expect('abc'.each_char.map(&:upcase)).to eq(['A', 'B', 'C']), 'each_char'
+expect(word.encoding.to_s).to eq('UTF-8'), 'the encoding'

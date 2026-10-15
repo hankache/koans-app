@@ -1,7 +1,7 @@
-assert_equal NilClass, nil.class, 'nil is the only NilClass'
-assert_equal true, nil.nil?, 'nil? asks whether it is nil'
-assert_equal '', nil.to_s, 'it turns into an empty string'
-assert_equal [], nil.to_a, 'and into an empty array'
-name = nil
-assert_equal nil, name&.upcase, '&. stops at nil instead of raising'
-assert_raises(NoMethodError) { name.upcase }
+expect(nil).to be_nil, 'be_nil checks for nil'
+expect(nil.class).to eq(NilClass), 'nil has a class'
+expect(nil.to_a).to eq([]), 'it converts to an empty array'
+expect(nil.to_s).to eq(''), 'and an empty string'
+expect([1, 2][5]).to eq(nil), 'reading past the end of an array gives nil'
+expect(nil&.length).to eq(nil), '&. calls a method only when there is an object'
+expect { nil.length }.to raise_error(NoMethodError), 'without &. it is an error'

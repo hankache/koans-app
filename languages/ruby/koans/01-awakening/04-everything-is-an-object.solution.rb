@@ -1,0 +1,8 @@
+expect(42.class).to eq(Integer), 'a number is an object'
+expect(42.even?).to eq(true), 'with methods'
+expect(-5.abs).to eq(5), 'even a negative one'
+expect(String.class).to eq(Class), 'classes are objects too'
+expect(3.14).to be_a(Float), 'be_a checks the class'
+expect(1.0).to be_a(Numeric), 'or one of its ancestors'
+expect(7.respond_to?(:+)).to eq(true), 'operators are methods: 7.+(1)'
+expect(7.+(1)).to eq(8), 'called the long way'

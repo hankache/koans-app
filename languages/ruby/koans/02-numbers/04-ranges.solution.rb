@@ -1,6 +1,0 @@
-assert_equal [1, 2, 3, 4, 5], (1..5).to_a, 'two dots include the end'
-assert_equal [1, 2, 3, 4], (1...5).to_a, 'three dots leave it out'
-assert_equal true, (1..10).include?(10), 'include? asks about a value'
-assert_equal [1, 4, 7, 10], (1..10).step(3).to_a, 'step skips along'
-assert_equal 5050, (1..100).sum, 'ranges have sum, like arrays'
-assert_equal 'abcde', ('a'..'e').to_a.join, 'letters make ranges too'

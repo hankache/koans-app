@@ -1,0 +1,7 @@
+expect([1, 2, 3].map { |n| n * 10 }).to eq([10, 20, 30]), 'map'
+expect(%w[a b].map(&:upcase)).to eq(['A', 'B']), '&:name is a short block'
+expect([1, 2].flat_map { |n| [n, -n] }).to eq([1, -1, 2, -2]), 'flat_map'
+expect([1, 2, 3].zip(%w[a b c])).to eq([[1, 'a'], [2, 'b'], [3, 'c']]), 'zip pairs them'
+expect((1..7).each_slice(3).to_a).to eq([[1, 2, 3], [4, 5, 6], [7]]), 'each_slice'
+expect([[1, 2], [3, 4]].transpose).to eq([[1, 3], [2, 4]]), 'transpose swaps rows and columns'
+expect([1, 2, 3].filter_map { |n| n * 2 if n.odd? }).to eq([2, 6]), 'filter_map keeps the truthy results'

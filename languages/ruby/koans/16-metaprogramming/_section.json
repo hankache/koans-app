@@ -1,0 +1,4 @@
+{
+  "title": "Metaprogramming",
+  "blurb": "Code that inspects and writes code: sending messages, defining methods, and reopening classes."
+}

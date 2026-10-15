@@ -1,0 +1,6 @@
+expect('a1b22c333'.scan(/\d+/)).to eq(['1', '22', '333']), 'scan finds them all'
+expect('k=v; x=y'.scan(/(\w)=(\w)/)).to eq([['k', 'v'], ['x', 'y']]), 'with groups, arrays of groups'
+expect('hello world'.gsub(/o/, '0')).to eq('hell0 w0rld'), 'gsub with a string'
+expect('cat hat'.gsub(/[ch]/, 'c' => 'b', 'h' => 'm')).to eq('bat mat'), 'with a hash'
+expect('3 apples, 5 pears'.gsub(/\d+/) { |n| (n.to_i * 2).to_s }).to eq('6 apples, 10 pears'), 'with a block'
+expect('John Smith'.sub(/(\w+) (\w+)/, '\\2, \\1')).to eq('Smith, John'), 'groups in the replacement'

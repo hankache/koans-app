@@ -1,0 +1,8 @@
+s = 'enlightenment'
+expect(s[0]).to eq('e'), 'the first character'
+expect(s[-1]).to eq('t'), 'the last'
+expect(s[2, 5]).to eq('light'), 'a start and a length'
+expect(s[2..6]).to eq('light'), 'or a range'
+expect(s[-4..]).to eq('ment'), 'an endless range goes to the end'
+expect(s[100]).to eq(nil), 'past the end'
+expect(s['light']).to eq('light'), 'a string index finds a substring'

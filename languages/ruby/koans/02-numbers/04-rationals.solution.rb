@@ -1,0 +1,6 @@
+expect(1/3r + 1/6r).to eq(1/2r), 'exact fractions'
+expect(Rational(6, 8)).to eq(Rational(3, 4)), 'kept in lowest terms'
+expect((1/3r).to_f).to be_within(0.001).of(0.333), 'converted to a float'
+expect(0.75.to_r).to eq(3/4r), 'and back from one'
+expect((3/4r).numerator).to eq(3), 'the top'
+expect(1/3r * 3).to eq(1), 'a third, three times, is exactly one'

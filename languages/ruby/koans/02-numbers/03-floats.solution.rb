@@ -1,0 +1,8 @@
+expect(0.1 + 0.2).not_to eq(0.3), 'floats are approximate'
+expect(0.1 + 0.2).to be_within(0.0001).of(0.3), 'so compare them within a margin'
+expect(3.7.floor).to eq(3), 'floor rounds down'
+expect(3.2.ceil).to eq(4), 'ceil rounds up'
+expect(2.5.round).to eq(3), 'round takes halves away from zero'
+expect(3.14159.round(2)).to eq(3.14), 'round to some places'
+expect(1.0 / 0).to eq(Float::INFINITY), 'a float divided by zero'
+expect((0.0 / 0).nan?).to eq(true), 'and 0.0 / 0 is not a number'

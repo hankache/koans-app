@@ -1,0 +1,7 @@
+expect(2 ** 100).to eq(1267650600228229401496703205376), 'no overflow'
+expect(1_000_000).to eq(1000000), 'underscores are just for reading'
+expect((2 ** 64).digits.size).to eq(20), 'digits lists the digits, last first'
+expect(1234.digits).to eq([4, 3, 2, 1]), 'like this'
+expect(0b1010).to eq(10), '0b is binary'
+expect(0xff).to eq(255), '0x is hexadecimal'
+expect(255.to_s(2)).to eq('11111111'), 'to_s takes a base'

@@ -1,6 +1,0 @@
-name = 'Ada'
-assert_equal 'Hello, Ada!', "Hello, #{name}!", 'double quotes interpolate'
-assert_equal 6, 'a#{1}b'.length, 'single quotes do not'
-assert_equal 8, "tab\tchar".length, '\\t is one tab character in double quotes'
-assert_equal 9, 'tab\tchar'.length, 'and two characters in single quotes'
-assert_equal 'ababab', 'ab' * 3, '* repeats a string'

@@ -1,0 +1,5 @@
+expect(1 + 1).to eq(2), 'eq compares values'
+expect('Ru' + 'by').to eq('Ruby'), 'strings join with +'
+expect(10 - 4).not_to eq(5), 'not_to turns an expectation around'
+expect(3 > 2).to be(true), 'a comparison gives true or false'
+expect([1, 2, 3]).to include(2), 'include looks inside a collection'

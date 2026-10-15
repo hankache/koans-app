@@ -1,0 +1,7 @@
+lang = 'Ruby'
+expect("I like #{lang}").to eq('I like Ruby'), 'double quotes interpolate'
+expect('I like #{lang}').to eq('I like #' + '{lang}'), 'single quotes do not'
+expect("#{1 + 2}").to eq('3'), 'any expression goes in #{}'
+expect("a\tb".length).to eq(3), '\\t is one tab character'
+expect('a\tb'.length).to eq(4), 'single quotes keep the backslash'
+expect(%q(it's "quoted")).to eq("it's \"quoted\""), '%q() quotes without escaping'

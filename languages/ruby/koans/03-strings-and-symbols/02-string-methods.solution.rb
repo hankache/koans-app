@@ -1,7 +1,0 @@
-assert_equal 'HELLO', 'hello'.upcase, 'upper case'
-assert_equal 'Hello world', 'hello world'.capitalize, 'a capital at the start'
-assert_equal 'desserts', 'stressed'.reverse, 'reversed'
-assert_equal true, 'koan'.include?('oa'), 'include? looks for a substring'
-assert_equal 'a+b-c', 'a-b-c'.sub('-', '+'), 'sub replaces the first match'
-assert_equal 'a+b+c', 'a-b-c'.gsub('-', '+'), 'gsub replaces them all'
-assert_equal 'pad', '  pad  '.strip, 'strip removes the spaces around'

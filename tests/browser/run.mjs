@@ -30,7 +30,7 @@ const LANGUAGES = [
   { id: 'python', error: "assert True, 'fine'\nprint(nope)", says: /NameError/, loop: 'while True:\n    pass' },
   { id: 'javascript', error: "expect(true, 'fine').toBe(true);\nnope();", says: /ReferenceError/, loop: 'while (true) {}' },
   { id: 'typescript', error: "expect(true, 'fine').toBe(true);\nconst n: number = 'text';", says: /TS2322/, loop: 'while (true) {}' },
-  { id: 'ruby', error: "assert true, 'fine'\nnope", says: /NameError/, loop: 'loop { }' },
+  { id: 'ruby', error: "expect(true).to be(true), 'fine'\nnope", says: /NameError/, loop: 'loop { }' },
   { id: 'lua', error: "assert(true, 'fine')\nnope()", says: /attempt to call a nil value/, loop: 'while true do end' },
   { id: 'sql', error: "SELECT 1; -- expect: 1\nINSERT INTO nowhere VALUES (1);", says: /no such table/, loop: 'WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM n) SELECT count(*) FROM n;' },
 ];
