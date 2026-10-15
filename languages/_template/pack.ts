@@ -9,12 +9,16 @@ export default {
   tagline: 'Learn LANGUAGE from TODO to TODO',
   // Finishes "fix failing tests written with …"; `code` in backticks.
   testedWith: 'TODO',
-  // Its tile on the home page: a short monogram, an accent for each theme (with 4.5:1 contrast on
-  // the page's light and dark backgrounds), and a line of its koans' code.
-  look: { monogram: 'TODO', accent: { light: '#000000', dark: '#ffffff' } },
+  // Its look: an accent for each theme (with 4.5:1 contrast on the page's light and dark
+  // backgrounds), and its emblem's symbol, SVG drawn in currentColor in the doorway of a 64-unit box
+  // (see src/components/Emblem.svelte and the other packs).
+  look: { accent: { light: '#000000', dark: '#ffffff' }, emblem: '<circle cx="32" cy="44" r="8" fill="currentColor"/>' },
+  // Two or three sentences on the language, ending with what its koans cover; and its official site.
+  about: 'TODO',
+  site: { url: 'https://TODO', label: 'TODO' },
   sample: 'TODO',
   // Optional: teaser, a one-blank koan for the home page's "try one" (see src/lib/language.ts).
-  // Optional: art: { logo: { src, alt }, celebration: 'folder/' }. Without it, the gateless gate stands in.
+  // Optional: art: { celebration: 'folder/' }, the layers of its "passed" animation. Without it, the gate stands in.
   worker: { url: 'runtime/lang-id/worker.js', type: 'module' }, // or 'classic' for importScripts()
   errors: {
     // TODO: finds the line (as the interpreter counts it, prelude included) in an uncaught error.

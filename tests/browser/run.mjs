@@ -179,6 +179,9 @@ async function checkSite(browser, base) {
     await page.click('.crumbs a');
     await page.waitForSelector('.sections');
     check(`${lang.id}: the crumbs lead back to its path`, page.url().endsWith(`#/${lang.id}/`));
+    const name = toolLanguages.find(l => l.id === lang.id).name;
+    check(`${lang.id}: its path is titled with its name, with its emblem and site`,
+      (await text(page, '.hero h1')) === name && !!(await page.$('.hero svg.emblem')) && !!(await page.$('.hero .site a[href^="https://"]')));
   }
 
   // JavaScript's line numbers come from each browser's stack traces. Another koan than the solved

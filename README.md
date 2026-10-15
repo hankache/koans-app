@@ -199,7 +199,7 @@ the build tools and one for the app, plus the files they point to:
 | File                                  | What it is                                                                 |
 |---------------------------------------|----------------------------------------------------------------------------|
 | `languages/<id>/node.mjs`             | For the tools: koan extension and comment style, prelude, epilogue, lint, where the interpreter is released, how to run it under Node. The type is in [scripts/lib/languages.mjs](scripts/lib/languages.mjs) |
-| `languages/<id>/pack.ts`              | For the app: name and wording, its home-page tile (monogram, accent colours, a line of code) and optional koan to try, artwork, worker, highlighting, error formats. The type is in [src/lib/language.ts](src/lib/language.ts) |
+| `languages/<id>/pack.ts`              | For the app: name and wording, its look (accent colours and emblem), its path page's description and site link, a line of code for its tile and an optional koan to try, artwork, worker, highlighting, error formats. The type is in [src/lib/language.ts](src/lib/language.ts) |
 | `languages/<id>/prelude.*`            | Run before every koan                                                      |
 | `languages/<id>/runtime.lock.json`    | The pinned interpreter release, written by `fetch-runtime --update`        |
 | `languages/<id>/koans/`               | The koans                                                                  |

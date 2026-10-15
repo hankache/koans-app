@@ -10,6 +10,7 @@
   import { href } from '../lib/route';
   import { exportName, makeExport, readImport } from '../lib/transfer';
   import { site } from '../site';
+  import Emblem from './Emblem.svelte';
 
   // Each language's koans, from the build: enough for progress and "continue" without loading any language.
   interface KoanInfo {
@@ -172,7 +173,7 @@
   {#if resume}
     <a class="resume" href={href(resume.l.pack.id, resume.koan.id)}>
       <span class="mark" style:--accent-light={resume.l.pack.look.accent.light} style:--accent-dark={resume.l.pack.look.accent.dark}>
-        {resume.l.pack.look.monogram}
+        <Emblem pack={resume.l.pack} size={40} />
       </span>
       <span class="resume-text">
         <span class="small">Continue where you left off</span>
@@ -199,11 +200,7 @@
         <li>
           <a class="tile" href={href(l.pack.id)} style:--accent-light={l.pack.look.accent.light} style:--accent-dark={l.pack.look.accent.dark}>
             <span class="tile-top">
-              {#if l.pack.art}
-                <img src="{import.meta.env.BASE_URL}{l.pack.art.logo.src}" alt="" width="44" height="44" />
-              {:else}
-                <span class="mark">{l.pack.look.monogram}</span>
-              {/if}
+              <span class="mark"><Emblem pack={l.pack} size={36} /></span>
               <span>
                 <span class="name">{l.pack.name}</span>
                 <span class="small">{koans(l.koans.length)}</span>
@@ -393,9 +390,7 @@
     height: 48px;
     display: grid;
     place-items: center;
-    background: color-mix(in srgb, var(--accent) 14%, transparent);
-    color: var(--accent);
-    font: 600 16px var(--font-mono);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
   }
   .bar-row { display: flex; align-items: center; gap: 10px; }
   .bar { flex: 0 1 240px; height: 5px; background: var(--bg-sunken); }
@@ -423,8 +418,7 @@
   .tile:hover { transform: translateY(-2px); border-color: var(--ink-faint); border-top-color: var(--accent); }
   .tile-top { display: flex; align-items: center; gap: 12px; }
   .tile-top > span:last-child { display: flex; flex-direction: column; min-width: 0; }
-  .tile img { width: 44px; height: 44px; object-fit: cover; flex: none; }
-  .tile .mark { width: 44px; height: 44px; font-size: 15px; }
+  .tile .mark { width: 44px; height: 44px; }
   .name { font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.2; }
   .sample {
     display: block;
@@ -507,7 +501,7 @@
     .tile { padding: 14px; min-height: 164px; gap: 10px; }
     /* The mark above the name, so a long name like TypeScript gets the tile's whole width. */
     .tile-top { flex-direction: column; align-items: flex-start; gap: 10px; }
-    .tile .mark, .tile img { width: 40px; height: 40px; font-size: 14px; }
+    .tile .mark { width: 40px; height: 40px; }
     .name { font-size: 18px; }
     .sample { display: none; }
     .how { margin-top: 48px; padding: 36px 0; }

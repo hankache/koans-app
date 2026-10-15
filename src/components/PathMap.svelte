@@ -3,7 +3,7 @@
   import type { Course } from '../lib/course';
   import { site } from '../site';
   import { inlineCode } from '../lib/inline-code';
-  import GateMark from './GateMark.svelte';
+  import Emblem from './Emblem.svelte';
 
   let { course }: { course: Course } = $props();
   // App keys this component by language, so the course never changes under it.
@@ -25,20 +25,18 @@
 <svelte:head><title>{pack.name} Koans · {site.name}</title></svelte:head>
 
 <section class="hero">
-  {#if pack.art}
-    <img class="logo" src="{import.meta.env.BASE_URL}{pack.art.logo.src}" alt={pack.art.logo.alt} width="200" height="200" />
-  {:else}
-    <div class="logo mark"><GateMark size={150} /></div>
-  {/if}
+  <div class="logo" style:--accent-light={pack.look.accent.light} style:--accent-dark={pack.look.accent.dark}>
+    <Emblem {pack} size={150} label />
+  </div>
   <div>
-    <h1>The path to enlightenment</h1>
-    <p>
-      {pack.tagline} through {allKoans.length} browser-based koans.
-    </p>
+    <p class="eyebrow">The path to enlightenment</p>
+    <h1>{pack.name}</h1>
+    <p>{pack.about}</p>
     <p>
       Test-driven from the start: fix failing tests written with {#each inlineCode(pack.testedWith) as part}{#if part.code}<code>{part.text}</code>{:else}{part.text}{/if}{/each} to
       master both the language and testing.
     </p>
+    <p class="site"><a href={pack.site.url} target="_blank" rel="noopener">{pack.site.label} ↗</a></p>
     <div class="actions">
       {#if next}
         <a class="cta" href={course.href(next.id)}>{started ? 'Continue' : 'Begin'}: {next.title} →</a>
@@ -98,9 +96,29 @@
     align-items: flex-start;
     padding: 2.5rem 0 2rem;
   }
-  .logo { flex: none; width: 200px; height: 200px; box-shadow: var(--shadow); }
-  .logo.mark { display: grid; place-items: center; background: var(--bg-raised); color: var(--ink); }
-  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.02em; }
+  .logo {
+    flex: none;
+    width: 200px;
+    height: 200px;
+    display: grid;
+    place-items: center;
+    --accent: var(--accent-light);
+    background: color-mix(in srgb, var(--accent) 12%, var(--bg-raised));
+    box-shadow: var(--shadow);
+  }
+  :global([data-theme='dark']) .logo { --accent: var(--accent-dark); }
+  .hero .eyebrow {
+    margin: 0 0 0.3rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .hero h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); letter-spacing: -0.02em; margin: 0; }
+  .hero .eyebrow + h1 + p { margin-top: 0.6rem; }
+  .site a { color: var(--ink-soft); font-weight: 600; text-decoration-color: var(--ink-faint); text-underline-offset: 3px; }
+  .site a:hover { color: var(--ink); }
   .hero p { color: var(--ink-soft); max-width: 38rem; margin: 0.8rem 0 0; }
   .hero p + p { margin-top: 0.6rem; }
   .hero .actions { margin-top: 1.4rem; }
@@ -198,7 +216,8 @@
 
   @media (max-width: 600px) {
     .hero { flex-direction: column; gap: 1rem; padding-top: 1.5rem; }
-    .logo { width: 140px; height: 140px; }
+    .logo { width: 120px; height: 120px; }
+    .logo :global(.emblem) { width: 92px; height: 92px; }
     .section { padding: 1rem; }
     .stones li { width: 5.6rem; }
   }

@@ -50,15 +50,21 @@ export interface LanguagePack {
   tagline: string;
   /** Finishes "fix failing tests written with …", with `code` in backticks: 'Raku’s `Test` module'. */
   testedWith: string;
-  /** How its tile on the home page looks: a short monogram, and an accent colour for each theme. */
-  look: { monogram: string; accent: { light: string; dark: string } };
+  /**
+   * How it looks: an accent colour for each theme, and its emblem's symbol: SVG drawn in
+   * currentColor in the gate's doorway, in a 64-unit box (see Emblem.svelte).
+   */
+  look: { accent: { light: string; dark: string }; emblem: string };
+  /** Two or three sentences on the language, ending with what its koans cover: its path page says it. */
+  about: string;
+  /** Its official site, linked from its path page. */
+  site: { url: string; label: string };
   /** A line of its koans' code, shown on its tile. */
   sample: string;
   /** A koan to try on the home page, for some languages. */
   teaser?: Teaser;
   /** The language's artwork, relative to the site root. Without it, the gateless gate stands in. */
   art?: {
-    logo: { src: string; alt: string };
     /** Folder with the gate.webp, door.webp and butterfly.webp layers of the "passed" animation. */
     celebration: string;
   };
