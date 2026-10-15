@@ -63,6 +63,10 @@ export interface LanguagePack {
   sample: string;
   /** A koan to try on the home page, for some languages. */
   teaser?: Teaser;
+  /** Lines of its own, added to the ones every language may show when a koan passes. */
+  cheers?: string[];
+  /** An emoji for the language's mascot, shown when its whole path is walked (Raku's butterfly); else its emblem. */
+  mascot?: string;
   /** The language's artwork, relative to the site root. Without it, the gateless gate stands in. */
   art?: {
     /** Folder with the gate.webp, door.webp and butterfly.webp layers of the "passed" animation. */

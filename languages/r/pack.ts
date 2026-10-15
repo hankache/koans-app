@@ -15,6 +15,8 @@ export default {
   about:
     'R is the language of statistics and data analysis: vectors are its basic values, missing data is built in, and data frames hold tables. Statisticians, scientists and analysts use it to explore, model and plot data. These koans cover vectors, factors, lists, data frames, functions and the apply family, and R’s own ideas about objects.',
   site: { url: 'https://www.r-project.org', label: 'r-project.org' },
+  // Said now and then when a koan passes, besides the lines every language shares.
+  cheers: ['Statistically significant progress.', 'Your confidence interval narrows.'],
   sample: 'expect_equal(1 + 1, 2)',
   worker: { url: 'runtime/r/worker.js', type: 'module' },
   errors: {

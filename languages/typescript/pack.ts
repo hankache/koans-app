@@ -15,6 +15,8 @@ export default {
   about:
     'TypeScript is JavaScript with static types, checked by a compiler before the code runs and then erased. Its type system describes JavaScript as it\'s really written, with unions, narrowing, generics and types computed from other types. These koans cover all of that, from the first annotation to conditional and mapped types.',
   site: { url: 'https://www.typescriptlang.org', label: 'typescriptlang.org' },
+  // Said now and then when a koan passes, besides the lines every language shares.
+  cheers: ['The compiler is satisfied.', 'Not an `any` in sight.'],
   sample: 'expectTypeOf(age).toEqualTypeOf<36>();',
   worker: { url: 'runtime/typescript/worker.js', type: 'module' },
   errors: {

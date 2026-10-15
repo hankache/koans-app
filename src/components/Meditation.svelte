@@ -4,6 +4,7 @@
   import type { Reveal } from '../lib/koans';
   import LogoGate from './LogoGate.svelte';
   import GateMark from './GateMark.svelte';
+  import { inlineCode } from '../lib/inline-code';
   import { modKey } from '../lib/platform';
   import type { LanguagePack } from '../lib/language';
 
@@ -41,18 +42,19 @@
     'One more truth revealed.',
     'The path unfolds beneath your feet.',
     'Good. Keep walking.',
-    'Camelia approves.',
     'A small step, and a real one.',
   ];
+  // Plus the language's own, in its voice: Camelia for Raku, the Zen of Python for Python, …
+  const cheers = $derived([...CHEERS, ...(pack.cheers ?? [])]);
   // Re-picked for every new report, never the same line twice in a row.
   let lastCheer = -1;
   const cheer = $derived.by(() => {
     if (!report) return '';
     let i;
-    do i = Math.floor(Math.random() * CHEERS.length);
+    do i = Math.floor(Math.random() * cheers.length);
     while (i === lastCheer);
     lastCheer = i;
-    return CHEERS[i];
+    return cheers[i];
   });
 </script>
 
@@ -93,7 +95,7 @@
   {:else if report.status === 'failed'}
     {@const f = report.failure}
     {#if gained > 0}
-      <p class="cheer">✓ {gained === 1 ? 'Assertion passed' : `${gained} assertions passed`}. {cheer}</p>
+      <p class="cheer">✓ {gained === 1 ? 'Assertion passed' : `${gained} assertions passed`}. {#each inlineCode(cheer) as part}{#if part.code}<code>{part.text}</code>{:else}{part.text}{/if}{/each}</p>
     {/if}
     <p class="lead">
       {#if f.blank}Meditate on {f.line ? `line ${f.line}` : 'this'}{:else}Not quite{#if f.line}<span class="line">— line {f.line}</span>{/if}{/if}

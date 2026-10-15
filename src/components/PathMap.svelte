@@ -41,7 +41,10 @@
       {#if next}
         <a class="cta" href={course.href(next.id)}>{started ? 'Continue' : 'Begin'}: {next.title} →</a>
       {:else}
-        <span class="done">You have walked the whole path. 🦋</span>
+        <span class="done">
+          You have walked the whole path.
+          {#if pack.mascot}{pack.mascot}{:else}<span class="done-mark"><Emblem {pack} size={28} /></span>{/if}
+        </span>
       {/if}
       {#if anySaved && !confirming}
         <button class="start-over" onclick={() => (confirming = true)}>Start over…</button>
@@ -133,7 +136,7 @@
     transition: transform 0.15s;
   }
   .cta:hover { transform: translateX(3px); }
-  .done { font-weight: 600; }
+  .done { font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; }
   .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem; }
   .start-over { padding: 0.7rem 1.2rem; color: var(--ink-soft); background: transparent; }
   .confirm {

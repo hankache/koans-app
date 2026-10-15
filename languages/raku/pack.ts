@@ -7,6 +7,9 @@ export default {
   tagline: 'Learn Raku from syntax to culture',
   testedWith: 'Raku’s `Test` module',
   art: { celebration: 'anim/' },
+  // Camelia, Raku's butterfly, belongs to the Raku path alone; -Ofun is Raku's motto.
+  cheers: ['Camelia approves.', 'Optimized for fun.'],
+  mascot: '🦋',
   // Its emblem: a symbol drawn under the gate (src/components/Emblem.svelte), in a 64-unit box.
   look: {
     accent: { light: '#b8327a', dark: '#f07cb6' },

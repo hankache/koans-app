@@ -15,6 +15,8 @@ export default {
   about:
     'Ruby is a dynamic, object-oriented language designed for programmer happiness, where everything is an object and blocks are everywhere. It\'s best known for Ruby on Rails and for expressive, readable code. These koans cover its objects, collections, blocks, classes and modules, up to metaprogramming.',
   site: { url: 'https://www.ruby-lang.org', label: 'ruby-lang.org' },
+  // Said now and then when a koan passes, besides the lines every language shares.
+  cheers: ['Matz is nice, so we are nice.', 'Optimized for happiness.'],
   sample: 'expect(1 + 1).to eq(2)',
   teaser: { before: 'expect(-7 % 3).to eq(', after: ')', choices: ['-1', '1', '2'], answer: '2', why: 'Ruby’s % takes the sign of the divisor.' },
   worker: { url: 'runtime/ruby/worker.js', type: 'module' },

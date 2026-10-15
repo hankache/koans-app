@@ -16,6 +16,9 @@ export default {
   // Two or three sentences on the language, ending with what its koans cover; and its official site.
   about: 'TODO',
   site: { url: 'https://TODO', label: 'TODO' },
+  // A few lines in the language's own voice, said now and then when a koan passes.
+  cheers: ['TODO'],
+  // Optional: mascot, an emoji shown when its whole path is walked; without it, its emblem.
   sample: 'TODO',
   // Optional: teaser, a one-blank koan for the home page's "try one" (see src/lib/language.ts).
   // Optional: art: { celebration: 'folder/' }, the layers of its "passed" animation. Without it, the gate stands in.

@@ -15,6 +15,8 @@ export default {
   about:
     'Python is a general-purpose language known for readable code and a large standard library, used for everything from scripts and websites to data science and machine learning. These koans cover its values and collections, functions, generators, classes, exceptions and standard library.',
   site: { url: 'https://www.python.org', label: 'python.org' },
+  // Said now and then when a koan passes, besides the lines every language shares.
+  cheers: ['Readability counts.', 'Beautiful is better than ugly.', 'Simple is better than complex.'],
   sample: 'assert 1 + 1 == 2',
   teaser: { before: 'assert -7 // 2 == ', after: '', choices: ['-3', '-4', '-3.5'], answer: '-4', why: '// rounds down, toward minus infinity.' },
   worker: { url: 'runtime/python/worker.js', type: 'module' },

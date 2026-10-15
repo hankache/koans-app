@@ -15,6 +15,8 @@ export default {
   about:
     'SQL is the language of relational databases: you describe the rows you want, and the database works out how to find them. These koans run on SQLite, the most widely deployed database engine, and cover queries, grouping, joins, changing data, subqueries, window functions and a few classic puzzles.',
   site: { url: 'https://sqlite.org', label: 'sqlite.org' },
+  // Said now and then when a koan passes, besides the lines every language shares.
+  cheers: ['1 row affected: yours.', 'COMMIT.'],
   sample: 'SELECT 1 + 1; -- expect: 2',
   teaser: { context: 'SELECT NULL + 1;', before: '-- expect: ', after: '', choices: ['1', 'NULL', '0'], answer: 'NULL', why: 'Anything combined with NULL is NULL.' },
   worker: { url: 'runtime/sql/worker.js', type: 'module' },

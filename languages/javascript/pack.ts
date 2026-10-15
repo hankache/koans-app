@@ -15,6 +15,8 @@ export default {
   about:
     'JavaScript is the language of the web: every browser runs it, and runtimes like Node.js run it on servers. It\'s dynamic and built on objects, with first-class functions and asynchronous code at its heart. These koans cover its values and quirks, arrays and objects, functions and classes, iterators and async code.',
   site: { url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript', label: 'JavaScript on MDN' },
+  // Said now and then when a koan passes, besides the lines every language shares.
+  cheers: ['Strictly equal, and true.', 'The event loop smiles.'],
   sample: 'expect(1 + 1).toBe(2);',
   teaser: { before: "expect('5' + 2).toBe(", after: ');', choices: ['7', "'52'", 'NaN'], answer: "'52'", why: 'With a string on either side, + joins strings.' },
   worker: { url: 'runtime/javascript/worker.js', type: 'module' },

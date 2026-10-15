@@ -15,6 +15,8 @@ export default {
   about:
     'PHP is the language of the web’s servers: it runs WordPress, Wikipedia and frameworks like Laravel and Symfony. Modern PHP has types, classes, enums, closures and match expressions, a long way from its templating roots. These koans cover its values and strings, arrays, functions, classes and interfaces, enums, generators and errors.',
   site: { url: 'https://www.php.net', label: 'php.net' },
+  // Said now and then when a koan passes, besides the lines every language shares.
+  cheers: ['The elephant remembers.', 'Another request, served.'],
   sample: 'assertSame(2, 1 + 1);',
   worker: { url: 'runtime/php/worker.js', type: 'module' },
   errors: {

@@ -15,6 +15,8 @@ export default {
   about:
     'Lua is a small, fast scripting language made to be embedded in other programs: games, editors like Neovim, network software. One data structure, the table, does the work of arrays, records, objects and modules. These koans cover tables, functions and closures, metatables, coroutines and the standard library.',
   site: { url: 'https://www.lua.org', label: 'lua.org' },
+  // Said now and then when a koan passes, besides the lines every language shares.
+  cheers: ['The moon waxes.', 'Lua shines a little brighter.'],
   sample: 'assert.are.equal(2, 1 + 1)',
   worker: { url: 'runtime/lua/worker.js', type: 'module' },
   errors: {
