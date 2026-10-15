@@ -6,11 +6,11 @@ export default {
   name: 'Lua',
   tagline: 'Learn Lua from its tables to its metatables',
   testedWith: 'busted’s assertions, like `assert.are.equal`',
-  // Its emblem: a symbol drawn under the gate (src/components/Emblem.svelte), in a 64-unit box.
+  // Its emblem's symbol, drawn in the gate's doorway (src/components/Emblem.svelte): {F} solid, {C} cut out.
   look: {
     accent: { light: '#4e606a', dark: '#9fb2bd' },
     emblem:
-      '<path d="M30.38 36.02 A9 9 0 1 0 39.55 47.81 A7.5 7.5 0 0 1 30.38 36.02 Z" fill="currentColor"/><circle cx="39.2" cy="35.4" r="2.1" fill="currentColor"/>',
+      '<circle cx="31" cy="45.5" r="11" fill="{F}"/><circle cx="37.5" cy="40" r="9" fill="{C}"/><circle cx="43.5" cy="33" r="2.8" fill="{F}"/>',
   },
   about:
     'Lua is a small, fast scripting language made to be embedded in other programs: games, editors like Neovim, network software. One data structure, the table, does the work of arrays, records, objects and modules. These koans cover tables, functions and closures, metatables, coroutines and the standard library.',

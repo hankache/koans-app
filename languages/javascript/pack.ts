@@ -6,11 +6,11 @@ export default {
   name: 'JavaScript',
   tagline: 'Learn modern JavaScript from its values to async functions',
   testedWith: 'Vitest-style `expect` (same API as Jest)',
-  // Its emblem: a symbol drawn under the gate (src/components/Emblem.svelte), in a 64-unit box.
+  // Its emblem's symbol, drawn in the gate's doorway (src/components/Emblem.svelte): {F} solid, {C} cut out.
   look: {
     accent: { light: '#8a6a1f', dark: '#e2bf72' },
     emblem:
-      '<g fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M28.6 34 C25.6 34 25.8 36.2 25.8 38.8 C25.8 41.8 25.4 44.2 23.2 44.6 C25.4 45 25.8 47.4 25.8 50.4 C25.8 53 25.6 55.2 28.6 55.2"/><path d="M35.4 34 C38.4 34 38.2 36.2 38.2 38.8 C38.2 41.8 38.6 44.2 40.8 44.6 C38.6 45 38.2 47.4 38.2 50.4 C38.2 53 38.4 55.2 35.4 55.2"/></g><circle cx="32" cy="44.6" r="1.9" fill="currentColor"/>',
+      '<g fill="none" stroke="{F}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M27 32.5 C23 32.5 23.5 35.5 23.5 38.5 C23.5 41.5 23 43.5 20 44 C23 44.5 23.5 46.5 23.5 49.5 C23.5 52.5 23 55.5 27 55.5"/><path d="M37 32.5 C41 32.5 40.5 35.5 40.5 38.5 C40.5 41.5 41 43.5 44 44 C41 44.5 40.5 46.5 40.5 49.5 C40.5 52.5 41 55.5 37 55.5"/></g><circle cx="32" cy="44" r="2.6" fill="{F}"/>',
   },
   about:
     'JavaScript is the language of the web: every browser runs it, and runtimes like Node.js run it on servers. It\'s dynamic and built on objects, with first-class functions and asynchronous code at its heart. These koans cover its values and quirks, arrays and objects, functions and classes, iterators and async code.',

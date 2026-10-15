@@ -54,8 +54,8 @@ export interface LanguagePack {
   /** Finishes "fix failing tests written with …", with `code` in backticks: 'Raku’s `Test` module'. */
   testedWith: string;
   /**
-   * How it looks: an accent colour for each theme, and its emblem's symbol: SVG drawn in
-   * currentColor in the gate's doorway, in a 64-unit box (see Emblem.svelte).
+   * How it looks: an accent colour for each theme, and its emblem's symbol: SVG drawn in the
+   * gate's doorway of a 64-unit box, its solid parts in {F} and its cut-outs in {C} (see Emblem.svelte).
    */
   look: { accent: { light: string; dark: string }; emblem: string };
   /** Two or three sentences on the language, ending with what its koans cover: its path page says it. */

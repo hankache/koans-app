@@ -10,9 +10,9 @@ export default {
   // Finishes "fix failing tests written with …"; `code` in backticks.
   testedWith: 'TODO',
   // Its look: an accent for each theme (with 4.5:1 contrast on the page's light and dark
-  // backgrounds), and its emblem's symbol, SVG drawn in currentColor in the doorway of a 64-unit box
-  // (see src/components/Emblem.svelte and the other packs).
-  look: { accent: { light: '#000000', dark: '#ffffff' }, emblem: '<circle cx="32" cy="44" r="8" fill="currentColor"/>' },
+  // backgrounds), and its emblem's symbol, drawn in the gate's doorway of a 64-unit box (about x
+  // 19–45, y 30–57), solid parts in {F} and cut-outs in {C} (see src/components/Emblem.svelte).
+  look: { accent: { light: '#000000', dark: '#ffffff' }, emblem: '<circle cx="32" cy="44" r="10" fill="{F}"/>' },
   // Two or three sentences on the language, ending with what its koans cover; and its official site.
   about: 'TODO',
   site: { url: 'https://TODO', label: 'TODO' },

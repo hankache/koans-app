@@ -6,11 +6,11 @@ export default {
   name: 'Python',
   tagline: 'Learn Python from the first assertion to its built-in collections',
   testedWith: 'pytest-style `assert` statements',
-  // Its emblem: a symbol drawn under the gate (src/components/Emblem.svelte), in a 64-unit box.
+  // Its emblem's symbol, drawn in the gate's doorway (src/components/Emblem.svelte): {F} solid, {C} cut out.
   look: {
     accent: { light: '#3f7f78', dark: '#7fbfb5' },
     emblem:
-      '<path d="M35.6 35.2 C29.6 34 25.8 37.4 28.4 41 C30.6 43.8 36.8 43.6 37.2 48.2 C37.6 52.8 31.6 56 25.8 53.4" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/><circle cx="37.4" cy="35.6" r="2.9" fill="currentColor"/>',
+      '<g transform="translate(-1.4 0)"><path d="M40 33.5 C31 30.5 22.5 34 25.5 39.5 C28 44 38.5 42 39.5 48 C40.5 54 31 57 22.5 53.5" fill="none" stroke="{F}" stroke-width="5" stroke-linecap="round"/><circle cx="41.5" cy="33.8" r="4.4" fill="{F}"/><circle cx="42.8" cy="32.6" r="1.1" fill="{C}"/><path d="M45.6 34.6 L48.6 33.4 M45.6 34.6 L48.4 36.4" fill="none" stroke="{F}" stroke-width="1.3" stroke-linecap="round"/></g>',
   },
   about:
     'Python is a general-purpose language known for readable code and a large standard library, used for everything from scripts and websites to data science and machine learning. These koans cover its values and collections, functions, generators, classes, exceptions and standard library.',
