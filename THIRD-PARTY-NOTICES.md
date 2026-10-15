@@ -2332,6 +2332,125 @@ SOFTWARE.
 ```
 ```
 
+## php-wasm (PHP)
+
+The interpreter the PHP koans run on: `public/runtime/php/` (PHP 8.5 compiled to WebAssembly,
+its JavaScript loader and php-wasm's runtime wrapper), downloaded by `npm run fetch-runtime` from
+the `php-wasm` npm package (the version pinned in `languages/php/runtime.lock.json`),
+https://github.com/seanmorris/php-wasm. php-wasm is dual licensed under the Apache License 2.0
+(see "Apache License 2.0" below), which this project uses, and the GNU GPL version 2. Its notice:
+
+```
+php-wasm
+
+Copyright 2024 Sean Morris
+
+Dual licensed under the Apache License, Version 2.0 and the GNU General
+Public License Version 2. You may obtain a copy of the Licenses at:
+
+http://www.apache.org/licenses/LICENSE-2.0
+https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+You should have received a copy of the GNU General Public License
+and/or the Apache License, Version 2.0 along with this program.
+
+WeakerMap
+
+Copyright 2023-2024 Sean Morris
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
+PHP itself, https://www.php.net, is under the PHP License, version 3.01; the libraries built into
+it (PCRE2, timelib, lexbor and others) are under their own licenses, listed in PHP's source.
+
+```
+--------------------------------------------------------------------
+                  The PHP License, version 3.01
+Copyright (c) 1999 - 2024 The PHP Group. All rights reserved.
+--------------------------------------------------------------------
+
+Redistribution and use in source and binary forms, with or without
+modification, is permitted provided that the following conditions
+are met:
+
+  1. Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+
+  2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the
+     distribution.
+
+  3. The name "PHP" must not be used to endorse or promote products
+     derived from this software without prior written permission. For
+     written permission, please contact group@php.net.
+
+  4. Products derived from this software may not be called "PHP", nor
+     may "PHP" appear in their name, without prior written permission
+     from group@php.net.  You may indicate that your software works in
+     conjunction with PHP by saying "Foo for PHP" instead of calling
+     it "PHP Foo" or "phpfoo"
+
+  5. The PHP Group may publish revised and/or new versions of the
+     license from time to time. Each version will be given a
+     distinguishing version number.
+     Once covered code has been published under a particular version
+     of the license, you may always continue to use it under the terms
+     of that version. You may also choose to use such covered code
+     under the terms of any subsequent version of the license
+     published by the PHP Group. No one other than the PHP Group has
+     the right to modify the terms applicable to covered code created
+     under this License.
+
+  6. Redistributions of any form whatsoever must retain the following
+     acknowledgment:
+     "This product includes PHP software, freely available from
+     <http://www.php.net/software/>".
+
+THIS SOFTWARE IS PROVIDED BY THE PHP DEVELOPMENT TEAM ``AS IS'' AND
+ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE PHP
+DEVELOPMENT TEAM OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+
+--------------------------------------------------------------------
+
+This software consists of voluntary contributions made by many
+individuals on behalf of the PHP Group.
+
+The PHP Group can be contacted via Email at group@php.net.
+
+For more information on the PHP Group and the PHP project,
+please see <http://www.php.net>.
+
+PHP includes the Zend Engine, freely available at
+<http://www.zend.com>.
+```
+
 ## wasmoon (Lua)
 
 The interpreter the Lua koans run on: `public/runtime/lua/index.js` and `glue.wasm` (Lua 5.4
@@ -2449,11 +2568,14 @@ distributed with the site. All three are under the SIL Open Font License 1.1.
 
 ## JavaScript packages
 
-### @codemirror/autocomplete 6.20.3, @codemirror/commands 6.11.1, @codemirror/lang-javascript 6.2.5, @codemirror/lang-python 6.2.1, @codemirror/lang-sql 6.10.0, @codemirror/language 6.12.4, @codemirror/legacy-modes 6.5.4, @codemirror/lint 6.9.7, @codemirror/state 6.7.6, @codemirror/view 6.43.13
+### @codemirror/autocomplete 6.20.3, @codemirror/commands 6.11.1, @codemirror/lang-css 6.3.1, @codemirror/lang-html 6.4.12, @codemirror/lang-javascript 6.2.5, @codemirror/lang-php 6.0.2, @codemirror/lang-python 6.2.1, @codemirror/lang-sql 6.10.0, @codemirror/language 6.12.4, @codemirror/legacy-modes 6.5.4, @codemirror/lint 6.9.7, @codemirror/state 6.7.6, @codemirror/view 6.43.13
 
 - @codemirror/autocomplete 6.20.3 (MIT)
 - @codemirror/commands 6.11.1 (MIT)
+- @codemirror/lang-css 6.3.1 (MIT)
+- @codemirror/lang-html 6.4.12 (MIT)
 - @codemirror/lang-javascript 6.2.5 (MIT)
+- @codemirror/lang-php 6.0.2 (MIT)
 - @codemirror/lang-python 6.2.1 (MIT)
 - @codemirror/lang-sql 6.10.0 (MIT)
 - @codemirror/language 6.12.4 (MIT)
@@ -2486,12 +2608,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### @lezer/common 1.5.3, @lezer/highlight 1.2.4, @lezer/javascript 1.5.6, @lezer/lr 1.4.10
+### @lezer/common 1.5.3, @lezer/css 1.3.9, @lezer/highlight 1.2.4, @lezer/html 1.3.13, @lezer/javascript 1.5.6, @lezer/lr 1.4.10, @lezer/php 1.0.6
 
 - @lezer/common 1.5.3 (MIT)
+- @lezer/css 1.3.9 (MIT)
 - @lezer/highlight 1.2.4 (MIT)
+- @lezer/html 1.3.13 (MIT)
 - @lezer/javascript 1.5.6 (MIT)
 - @lezer/lr 1.4.10 (MIT)
+- @lezer/php 1.0.6 (MIT)
 
 ```
 MIT License

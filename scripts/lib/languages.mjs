@@ -2,6 +2,7 @@
 // describes it; adding a language means adding it here.
 import javascript from '../../languages/javascript/node.mjs';
 import lua from '../../languages/lua/node.mjs';
+import php from '../../languages/php/node.mjs';
 import python from '../../languages/python/node.mjs';
 import raku from '../../languages/raku/node.mjs';
 import ruby from '../../languages/ruby/node.mjs';
@@ -37,7 +38,7 @@ import typescript from '../../languages/typescript/node.mjs';
  */
 
 /** @type {Language[]} */
-export const languages = [raku, python, javascript, typescript, ruby, lua, sql];
+export const languages = [raku, python, javascript, typescript, ruby, php, lua, sql];
 
 /**
  * The languages named with --lang (repeat it, or separate names with commas), or else all of

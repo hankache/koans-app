@@ -105,6 +105,25 @@ And its notices, for Ruby itself and the libraries built into it:
 ${readFileSync(new URL('./licenses/ruby.wasm-NOTICE.txt', import.meta.url), 'utf8').trim()}
 \`\`\`
 
+## php-wasm (PHP)
+
+The interpreter the PHP koans run on: \`public/runtime/php/\` (PHP 8.5 compiled to WebAssembly,
+its JavaScript loader and php-wasm's runtime wrapper), downloaded by \`npm run fetch-runtime\` from
+the \`php-wasm\` npm package (the version pinned in \`languages/php/runtime.lock.json\`),
+https://github.com/seanmorris/php-wasm. php-wasm is dual licensed under the Apache License 2.0
+(see "Apache License 2.0" below), which this project uses, and the GNU GPL version 2. Its notice:
+
+\`\`\`
+${readFileSync(new URL('./licenses/php-wasm-NOTICE.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
+PHP itself, https://www.php.net, is under the PHP License, version 3.01; the libraries built into
+it (PCRE2, timelib, lexbor and others) are under their own licenses, listed in PHP's source.
+
+\`\`\`
+${readFileSync(new URL('./licenses/PHP-LICENSE.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
 ## wasmoon (Lua)
 
 The interpreter the Lua koans run on: \`public/runtime/lua/index.js\` and \`glue.wasm\` (Lua 5.4

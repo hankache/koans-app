@@ -4,13 +4,14 @@
 import type { LanguagePack } from '../src/lib/language';
 import javascript from './javascript/pack';
 import lua from './lua/pack';
+import php from './php/pack';
 import python from './python/pack';
 import raku from './raku/pack';
 import ruby from './ruby/pack';
 import sql from './sql/pack';
 import typescript from './typescript/pack';
 
-export const packs: LanguagePack[] = [raku, python, javascript, typescript, ruby, lua, sql];
+export const packs: LanguagePack[] = [raku, python, javascript, typescript, ruby, php, lua, sql];
 
 export const packById = new Map(packs.map(p => [p.id, p]));
 

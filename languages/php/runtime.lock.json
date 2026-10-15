@@ -1,0 +1,17 @@
+{
+  "source": "https://www.npmjs.com/package/php-wasm/v/0.2.0",
+  "tag": "0.2.0",
+  "version": "PHP 8.5.2 (php-wasm)",
+  "archive": "c8f15b8dca23da7de3effd40db713efc4abcf8bac7647f1aeaba6943d512b6e2",
+  "files": {
+    "PhpBase.mjs": "2edb5379b4ebafe7e450021cd651cd92cb3022857d6be81de4a6e4f52fb96dc1",
+    "OutputBuffer.mjs": "fdf73a3e360c715bdc8f745b5aa148dbfdf2a9c5808c18cf2e422ecf97061785",
+    "_Event.mjs": "bbfd97aa6bfd6820733a2be211db73c8e7075ea5e2dbaa1ae29fba3d7a328d00",
+    "fsOps.mjs": "bcc046e37c3d6cf1d39756b47c7d0dc31eec1f9dd7c901e160735bcb9b21b501",
+    "resolveDependencies.mjs": "f70c7f469d6d47ee268421e976e0f3e536f418f6b1bc8988b0c77d1c912ed08b",
+    "php8.5-web.mjs": "65cec03c7796dcf86e8731ca03b18029e4586f6d6e976bbbda0779f1a23005db",
+    "680a122bfdab5d7d3e949a54f8e97cc99bc7b305.wasm": "e1a416ef223923fc0b472e7967adec01e639cc1be8940f0fda70c2a8ffc05eb4",
+    "LICENSE": "becde03a3c8b9b2e3d58c7b65ca7ffd9e18e98162396cc374052983c1faaa47c",
+    "NOTICE": "8bfd3338b7e408a48fa53f74a13a3bf71a553a70ada869c090e1a7d7070d32f8"
+  }
+}

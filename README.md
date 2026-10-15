@@ -37,6 +37,7 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/).
 | [JavaScript](languages/javascript/) | 70 | the browser's own engine                      | Vitest-style `expect` |
 | [TypeScript](languages/typescript/) | 55 | the TypeScript 6 compiler, then the browser's engine | Vitest's `expect` and `expectTypeOf` |
 | [Ruby](languages/ruby/)       | 77    | [ruby.wasm](https://github.com/ruby/ruby.wasm) (CRuby 4.0) | RSpec-style `expect` |
+| [PHP](languages/php/)         | 68    | [php-wasm](https://github.com/seanmorris/php-wasm) (PHP 8.5) | PHPUnit's assertions |
 | [Lua](languages/lua/)         | 63    | [wasmoon](https://github.com/ceifa/wasmoon) (Lua 5.4) | busted's assertions |
 | [SQL](languages/sql/)         | 64    | [sql.js](https://github.com/sql-js/sql.js) (SQLite 3.49) | expected rows in `-- expect:` comments |
 
@@ -242,7 +243,7 @@ differs. It comes from one of two kinds of source, set in the language's `node.m
 - **An npm package** (Python's Pyodide, JavaScript's Acorn parser, the TypeScript compiler): installed by `npm install`,
   which checks it against `package-lock.json`, then copied.
 - **An npm package not worth installing** (Ruby's ruby.wasm, too big; Lua's wasmoon, with
-  dependencies of its own; SQL's sql.js, with many builds): its tarball is downloaded from the npm registry and checked against the
+  dependencies of its own; SQL's sql.js and PHP's php-wasm, with many builds): its tarball is downloaded from the npm registry and checked against the
   integrity hash the registry publishes.
 
 The interpreter files aren't committed: the build fetches them.

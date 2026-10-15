@@ -31,6 +31,7 @@ const LANGUAGES = [
   { id: 'javascript', error: "expect(true, 'fine').toBe(true);\nnope();", says: /ReferenceError/, loop: 'while (true) {}' },
   { id: 'typescript', error: "expect(true, 'fine').toBe(true);\nconst n: number = 'text';", says: /TS2322/, loop: 'while (true) {}' },
   { id: 'ruby', error: "expect(true).to be(true), 'fine'\nnope", says: /NameError/, loop: 'loop { }' },
+  { id: 'php', error: "<?php\nnope();", says: /undefined function nope/, loop: '<?php\nwhile (true) {}' },
   { id: 'lua', error: "assert(true, 'fine')\nnope()", says: /attempt to call a nil value/, loop: 'while true do end' },
   { id: 'sql', error: "SELECT 1; -- expect: 1\nINSERT INTO nowhere VALUES (1);", says: /no such table/, loop: 'WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM n) SELECT count(*) FROM n;' },
 ];
@@ -83,7 +84,8 @@ function watch(page) {
   const seen = { problems: [], loaded: [] };
   page.on('console', m => m.type() === 'error' && seen.problems.push(`console: ${m.text()}`));
   page.on('pageerror', e => seen.problems.push(`page: ${e.message}`));
-  page.on('requestfailed', r => seen.problems.push(`failed: ${r.url()}`));
+  // php-wasm points the optional libxml2.so it skips at an empty data: URL; that never reaches the network.
+  page.on('requestfailed', r => r.url().startsWith('data:') || seen.problems.push(`failed: ${r.url()}`));
   page.on('response', r => {
     if (r.status() >= 400) seen.problems.push(`HTTP ${r.status()}: ${r.url()}`);
     if (/assets\/content-[^/]*\.js$|runtime\/\w+\/worker\.js$/.test(r.url())) seen.loaded.push(r.url());
