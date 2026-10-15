@@ -13,7 +13,7 @@ export default {
       '<circle cx="31" cy="45.5" r="11" fill="{F}"/><circle cx="37.5" cy="40" r="9" fill="{C}"/><circle cx="43.5" cy="33" r="2.8" fill="{F}"/>',
   },
   about:
-    'Lua is a small, fast scripting language made to be embedded in other programs: games, editors like Neovim, network software. One data structure, the table, does the work of arrays, records, objects and modules. These koans cover tables, functions and closures, metatables, coroutines and the standard library.',
+    'Lua is a small, fast language designed to live inside other programs. Games, text editors, databases and network tools use it to let people script and extend them. It keeps things simple: a handful of ideas, and one data structure, the table, that serves as array, dictionary, object and module. These koans cover tables, functions and closures, metatables for building your own objects, coroutines, and the standard library.',
   site: { url: 'https://www.lua.org', label: 'lua.org' },
   // Said now and then when a koan passes, besides the lines every language shares.
   cheers: ['The moon waxes.', 'Lua shines a little brighter.'],

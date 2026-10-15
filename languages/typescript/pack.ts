@@ -13,7 +13,7 @@ export default {
       '<path d="M21.5 34.5 H38 L45 44 L38 53.5 H21.5 Z" fill="{F}" stroke="{F}" stroke-width="3" stroke-linejoin="round"/><circle cx="38.6" cy="44" r="2.1" fill="{C}"/><rect x="23.6" y="38" width="10.4" height="3" fill="{C}"/><rect x="27.3" y="38" width="3" height="12" fill="{C}"/>',
   },
   about:
-    'TypeScript is JavaScript with static types, checked by a compiler before the code runs and then erased. Its type system describes JavaScript as it\'s really written, with unions, narrowing, generics and types computed from other types. These koans cover all of that, from the first annotation to conditional and mapped types.',
+    'TypeScript is JavaScript with types. You describe the shape of your data, and the compiler checks your code before it runs, catching mistakes and powering your editor’s suggestions; then the types disappear and plain JavaScript runs. Many large JavaScript projects are written in it. These koans explore its unusually rich type system: unions and narrowing, generics, and types computed from other types.',
   site: { url: 'https://www.typescriptlang.org', label: 'typescriptlang.org' },
   // Said now and then when a koan passes, besides the lines every language shares.
   cheers: ['The compiler is satisfied.', 'Not an `any` in sight.'],

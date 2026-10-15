@@ -13,7 +13,7 @@ export default {
       '<path d="M20 35.5 A12 4.5 0 0 1 44 35.5 V51.5 A12 4.5 0 0 1 20 51.5 Z" fill="{F}"/><g fill="none" stroke="{C}" stroke-width="1.6"><path d="M20.8 35.5 A11.2 4 0 0 0 43.2 35.5"/><path d="M20 41.5 A12 4.5 0 0 0 44 41.5"/><path d="M20 46.8 A12 4.5 0 0 0 44 46.8"/></g>',
   },
   about:
-    'SQL is the language of relational databases: you describe the rows you want, and the database works out how to find them. These koans run on SQLite, the most widely deployed database engine, and cover queries, grouping, joins, changing data, subqueries, window functions and a few classic puzzles.',
+    'SQL is how you ask a database questions. You describe the rows you want, and the database works out how to find them, whether there are ten or ten million. Nearly every application keeps its data in a SQL database, so it’s useful to developers, analysts and anyone who works with data. These koans run on SQLite, a small database engine built into countless apps, and cover queries, grouping, joins, changing data, subqueries, window functions and a few classic puzzles.',
   site: { url: 'https://sqlite.org', label: 'sqlite.org' },
   // Said now and then when a koan passes, besides the lines every language shares.
   cheers: ['1 row affected: yours.', 'COMMIT.'],

@@ -13,7 +13,7 @@ export default {
       '<path d="M24 34 H40 L46.5 41.5 L32 56 L17.5 41.5 Z" fill="{F}" stroke="{F}" stroke-width="1.5" stroke-linejoin="round"/><g fill="none" stroke="{C}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M18.5 41.5 H45.5"/><path d="M24 34.5 L27.5 41.5 L32 54.5 L36.5 41.5 L40 34.5"/><path d="M27.5 41.5 L32 34.5 L36.5 41.5"/></g>',
   },
   about:
-    'Ruby is a dynamic, object-oriented language designed for programmer happiness, where everything is an object and blocks are everywhere. It\'s best known for Ruby on Rails and for expressive, readable code. These koans cover its objects, collections, blocks, classes and modules, up to metaprogramming.',
+    'Ruby was designed to make programmers happy: its code reads naturally, and everything in it, even a number, is an object. It powers many web applications through its popular web framework, and it’s loved for scripts and tools too. Blocks, small pieces of code handed to methods, are everywhere. These koans cover objects, strings and collections, blocks and procs, classes and modules, and metaprogramming.',
   site: { url: 'https://www.ruby-lang.org', label: 'ruby-lang.org' },
   // Said now and then when a koan passes, besides the lines every language shares.
   cheers: ['Matz is nice, so we are nice.', 'Optimized for happiness.'],

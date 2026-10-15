@@ -58,7 +58,7 @@ export interface LanguagePack {
    * gate's doorway of a 64-unit box, its solid parts in {F} and its cut-outs in {C} (see Emblem.svelte).
    */
   look: { accent: { light: string; dark: string }; emblem: string };
-  /** Two or three sentences on the language, ending with what its koans cover: its path page says it. */
+  /** A few sentences on the language, ending with what its koans cover, `code` in backticks: its path page says it. */
   about: string;
   /** Its official site, linked from its path page. */
   site: { url: string; label: string };

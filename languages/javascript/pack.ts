@@ -13,7 +13,7 @@ export default {
       '<g fill="none" stroke="{F}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M27 32.5 C23 32.5 23.5 35.5 23.5 38.5 C23.5 41.5 23 43.5 20 44 C23 44.5 23.5 46.5 23.5 49.5 C23.5 52.5 23 55.5 27 55.5"/><path d="M37 32.5 C41 32.5 40.5 35.5 40.5 38.5 C40.5 41.5 41 43.5 44 44 C41 44.5 40.5 46.5 40.5 49.5 C40.5 52.5 41 55.5 37 55.5"/></g><circle cx="32" cy="44" r="2.6" fill="{F}"/>',
   },
   about:
-    'JavaScript is the language of the web: every browser runs it, and runtimes like Node.js run it on servers. It\'s dynamic and built on objects, with first-class functions and asynchronous code at its heart. These koans cover its values and quirks, arrays and objects, functions and classes, iterators and async code.',
+    'JavaScript is the language every web browser understands. It makes pages interactive, and it runs on servers and in tools and apps too. It’s flexible and forgiving: functions are values, objects are everywhere, and much of its power is in handling things that happen later, like clicks and network replies. These koans start with its values and famous quirks, and go on to arrays and objects, closures, classes, iterators and async code.',
   site: { url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript', label: 'JavaScript on MDN' },
   // Said now and then when a koan passes, besides the lines every language shares.
   cheers: ['Strictly equal, and true.', 'The event loop smiles.'],

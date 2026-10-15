@@ -31,7 +31,7 @@
   <div>
     <p class="eyebrow">The path to enlightenment</p>
     <h1>{pack.name}</h1>
-    <p>{pack.about}</p>
+    <p>{#each inlineCode(pack.about) as part}{#if part.code}<code>{part.text}</code>{:else}{part.text}{/if}{/each}</p>
     <p>
       Test-driven from the start: fix failing tests written with {#each inlineCode(pack.testedWith) as part}{#if part.code}<code>{part.text}</code>{:else}{part.text}{/if}{/each} to
       master both the language and testing.

@@ -13,7 +13,7 @@ export default {
       '<path d="M19.5 32.5 V55.5 H46" fill="none" stroke="{F}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><g fill="{F}"><circle cx="25" cy="49.5" r="2.5"/><circle cx="29.5" cy="45" r="2.5"/><circle cx="34" cy="46.8" r="2.5"/><circle cx="37.5" cy="40" r="2.5"/><circle cx="42.5" cy="37.5" r="2.5"/></g><path d="M22.5 51.5 L45 35" fill="none" stroke="{F}" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="0.1 3.6"/>',
   },
   about:
-    'R is the language of statistics and data analysis: vectors are its basic values, missing data is built in, and data frames hold tables. Statisticians, scientists and analysts use it to explore, model and plot data. These koans cover vectors, factors, lists, data frames, functions and the apply family, and R’s own ideas about objects.',
+    'R is a language made by statisticians for working with data. Every value is a vector, missing data is built in, and a data frame holds a table you can filter, group and summarize in a line or two. Scientists, analysts and researchers use it to clean data, run statistics and draw charts. These koans cover vectors, factors, lists and data frames, functions and the apply family, and R’s own object systems, S3 and S4.',
   site: { url: 'https://www.r-project.org', label: 'r-project.org' },
   // Said now and then when a koan passes, besides the lines every language shares.
   cheers: ['Statistically significant progress.', 'Your confidence interval narrows.'],
