@@ -1,19 +1,24 @@
 # Lua
 
-Learn Lua from its tables to its metatables, through 30 koans. They run on
+Learn Lua from its tables to its coroutines, through 63 koans written with the assertions of
+[busted](https://lunarmodules.github.io/busted/), Lua's most used test framework. They run on
 [wasmoon](https://github.com/ceifa/wasmoon): Lua 5.4 compiled to WebAssembly, under half a
 megabyte. Its path is at `#/lua/`.
 
 ## The path
 
-| # | Group                  | Koans | Covers                                                               |
-|---|------------------------|-------|----------------------------------------------------------------------|
-| 1 | Awakening              | 5     | the assertions, truthiness, types, equality, errors and `pcall`      |
-| 2 | Numbers                | 5     | `/` and `//`, integers and floats, conversion, `math`, formatting    |
-| 3 | Strings                | 5     | strings, string methods, patterns, splitting and joining, UTF-8      |
-| 4 | Tables                 | 5     | arrays, dictionaries, iteration, table functions, references         |
-| 5 | Functions              | 5     | multiple results, varargs, closures, higher-order functions, methods |
-| 6 | Metatables and objects | 5     | metatables, operators, classes, inheritance, coroutines              |
+| #  | Group                  | Koans | Covers                                                               |
+|----|------------------------|-------|----------------------------------------------------------------------|
+| 1  | Awakening              | 7     | the assertions, truthiness, types, equality, errors and `pcall`, locals and globals, multiple assignment |
+| 2  | Numbers                | 7     | `/` and `//`, integers and floats, conversion, `math`, formatting, bitwise operators, comparing floats |
+| 3  | Control flow           | 4     | `if` and `elseif`, the numeric `for`, `while` and `repeat`, `break` and `goto` |
+| 4  | Strings                | 9     | strings, methods, patterns, splitting and joining, UTF-8, pattern classes, `gsub` with functions, building strings, long strings |
+| 5  | Tables                 | 9     | arrays, dictionaries, iteration, table functions, references, length and holes, insert and move, sets, sorting records |
+| 6  | Functions              | 9     | multiple results, varargs, closures, higher-order functions, methods, recursion, memoization, named arguments, iterators |
+| 7  | Metatables and objects | 7     | metatables, operators, classes, inheritance, more metamethods, `__newindex` and proxies, modules |
+| 8  | Coroutines             | 5     | coroutines, passing values, generators, pipelines, errors            |
+| 9  | Errors                 | 3     | error values, error levels, `xpcall`                                 |
+| 10 | The standard library   | 3     | dates and times, `select` and `unpack`, `load` and environments      |
 
 ## The assertions
 
@@ -29,6 +34,11 @@ value you expect **first**:
 | `assert.is_true` / `is_false` / `is_nil(v, msg)`  | `v` is `true`, `false` or `nil`, exactly       |
 | `assert.has_error(fn, msg)`                       | calling `fn` raises an error                   |
 | `assert.error_matches(fn, pattern, msg)`          | it raises one whose message matches the pattern |
+| `assert.has_no.errors(fn, msg)`                   | calling `fn` raises nothing                    |
+| `assert.are.near(expected, actual, tolerance, msg)` | the numbers are within `tolerance`           |
+| `assert.matches(pattern, s, msg)`                 | the Lua pattern matches the string             |
+| `assert.are_not.same`, `assert.is_not_nil`        | the opposites                                  |
+| `assert.is_number` / `is_string` / `is_table` / `is_function` / `is_boolean` | the value has that type |
 
 Like Raku's `Test` module, a failing assertion prints a TAP line and the koan carries on, so every
 blank can be checked. Tables in "your answer" and "Lua says" are written the way you'd write them:
@@ -77,6 +87,10 @@ npm test
 On top of [the rules for every language](../../README.md#rules-for-blanks):
 
 - Put the expected value first, as busted does: `assert.are.equal(___, value)`.
+- A blank goes on a line that calls `assert`; `npm run check:koans` rejects one anywhere else.
+- Keep an assertion that holds a blank on one line: the test is reported where it's called.
+- The koan runs inside a coroutine (wasmoon's way of running code), so
+  `coroutine.isyieldable()` is true even at the top level.
 - A call with several results as the **last** argument passes all of them on. Give the assertion a
   message, or wrap the call in parentheses to keep only its first result.
 - The prelude is folded onto one line: it must never have a `--` comment at the end of a code line.

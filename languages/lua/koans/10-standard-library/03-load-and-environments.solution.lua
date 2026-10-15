@@ -1,0 +1,12 @@
+local add = load('return 2 + 3')
+assert.are.equal(5, add(), 'load returns a function')
+local f, err = load('return +')
+assert.is_nil(f, 'a syntax error gives nil')
+assert.matches('unexpected symbol', err, 'and a message')
+local sandbox = {x = 10}
+local chunk = load('y = x * 2', 'chunk', 't', sandbox)
+chunk()
+assert.are.equal(20, sandbox.y, 'globals of the chunk live in the sandbox')
+assert.is_nil(_G.y, 'not in ours')
+local args = load('local a, b = ...; return a .. b')
+assert.are.equal('ab', args('a', 'b'), 'a chunk receives arguments as ...')

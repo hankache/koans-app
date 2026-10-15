@@ -1,0 +1,6 @@
+assert.are.same({'c', 'd'}, {select(3, 'a', 'b', 'c', 'd')}, 'from the third on')
+assert.are.equal('d', select(-1, 'a', 'b', 'c', 'd'), 'the last one')
+assert.are.equal(4, select('#', 1, nil, nil, 4), 'counting includes nils')
+assert.are.same({20, 30}, {table.unpack({10, 20, 30, 40}, 2, 3)}, 'unpack a range')
+assert.are.equal(5, math.max(table.unpack({3, 5, 1})), 'spread a list into arguments')
+assert.are.same({1, 'x'}, {(function(...) return ... end)(1, 'x')}, '... passes all arguments on')

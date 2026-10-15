@@ -1,0 +1,7 @@
+assert.are.equal(8, 12 & 10, '& keeps the bits set in both')
+assert.are.equal(14, 12 | 10, '| keeps the bits set in either')
+assert.are.equal(6, 12 ~ 10, '~ between two numbers is exclusive or')
+assert.are.equal(-1, ~0, '~ alone flips every bit')
+assert.are.equal(16, 1 << 4, '<< shifts left')
+assert.are.equal(3, 13 >> 2, '>> shifts right')
+assert.are.equal(true, (0x0f & 0x3c) == 0x0c, 'hexadecimal makes masks readable')

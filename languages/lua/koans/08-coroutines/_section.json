@@ -1,0 +1,4 @@
+{
+  "title": "Coroutines",
+  "blurb": "Functions that pause and resume: generators, pipelines, and their life cycle."
+}

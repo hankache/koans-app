@@ -29,9 +29,11 @@ export default {
   },
   epilogue: '\n',
 
-  /** Nothing to check beyond what running the koan shows: the prelude replaces Lua's assert with busted's. */
-  lint() {
-    return [];
+  /** A blank belongs to an assertion: on a line that calls assert. */
+  lint(code) {
+    return code.split('\n').flatMap((l, i) =>
+      l.includes('___') && !/\bassert\b/.test(l) ? [`line ${i + 1} has a blank outside an assertion`] : [],
+    );
   },
 
   /** wasmoon from the npm registry (small, but it would bring dependencies of its own to install). */

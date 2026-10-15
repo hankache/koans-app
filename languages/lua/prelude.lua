@@ -138,8 +138,50 @@ function checks.error_matches(fn, pattern, msg)
   return compare(text:find(pattern) ~= nil, pattern, text, msg)
 end
 
+-- Passes when calling fn raises no error.
+function checks.no_error(fn, msg)
+  if blank(fn) then return report(false, msg) end
+  local ok, err = pcall(fn)
+  return report(ok, msg, { "expected: no error", "     got: " .. tostring(err) })
+end
+
+-- Passes when the numbers are within tolerance of each other.
+function checks.near(expected, actual, tolerance, msg)
+  if blank(expected, actual, tolerance) then return report(false, msg) end
+  return compare(math.abs(expected - actual) <= tolerance, expected, actual, msg)
+end
+
+-- Passes when the Lua pattern matches the string.
+function checks.matches(pattern, s, msg)
+  if blank(pattern, s) then return report(false, msg) end
+  return compare(type(s) == "string" and s:find(pattern) ~= nil, pattern, s, msg)
+end
+
+-- Passes when the tables differ somewhere; when the value isn't nil.
+function checks.not_same(unexpected, actual, msg)
+  if blank(unexpected, actual) then return report(false, msg) end
+  return report(not same(unexpected, actual), msg, { "didn't want: " .. show(unexpected) })
+end
+function checks.is_not_nil(v, msg)
+  if blank(v) then return report(false, msg) end
+  return report(v ~= nil, msg, { "expected: a value", "     got: nil" })
+end
+
+-- Passes when the value has that type: is_number, is_string, is_table, is_function, is_boolean.
+for _, kind in ipairs({ "number", "string", "table", "function", "boolean" }) do
+  checks["is_" .. kind] = function(v, msg)
+    if blank(v) then return report(false, msg) end
+    return compare(type(v) == kind, kind, type(v), msg)
+  end
+end
+
 -- assert is a table of checks, and also callable, like busted's: assert(v, msg) wants a true value.
-assert = setmetatable({ are = { equal = checks.equal, same = checks.same }, are_not = { equal = checks.not_equal } }, {
+assert = setmetatable({
+  are = { equal = checks.equal, same = checks.same, near = checks.near },
+  are_not = { equal = checks.not_equal, same = checks.not_same },
+  is = { near = checks.near },
+  has_no = { error = checks.no_error, errors = checks.no_error },
+}, {
   __call = function(_, v, msg) return checks.truthy(v, msg) end,
 })
 for name, check in pairs(checks) do assert[name] = check end

@@ -1,0 +1,6 @@
+assert.are.near(0.3, 0.1 + 0.2, 1e-9, 'near allows a small difference')
+assert.are.near(1.414, math.sqrt(2), 0.001, 'to whatever tolerance you choose')
+assert.are.equal(true, 0 == -0.0, 'zero and negative zero are equal')
+assert.are.equal('-inf', tostring(1 / -0.0), 'but dividing by them is not the same')
+assert.are.equal(true, (0 / 0) ~= (0 / 0), 'not a number is not equal to itself')
+assert.are.equal(-1, math.fmod(-7, 3), 'fmod keeps the sign of the number divided, unlike %')

@@ -1,0 +1,6 @@
+assert.are.equal('2026', ('in 2026'):match('%d+'), '%d+ is one or more digits')
+assert.are.equal('<b>', ('<b>bold</b>'):match('<.->'), '- is the shortest match')
+assert.are.equal('<b>bold</b>', ('<b>bold</b>'):match('<.*>'), '* is the longest')
+assert.are.equal(nil, ('abc123'):match('^%d+'), '^ anchors to the start')
+assert.are.equal('trim', ('  trim  '):match('^%s*(.-)%s*$'), 'trimming with a capture')
+assert.matches('%.lua$', 'koan.lua', 'assert.matches; %. is a literal dot')
