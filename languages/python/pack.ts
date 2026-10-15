@@ -10,7 +10,7 @@ export default {
   look: {
     accent: { light: '#3f7f78', dark: '#7fbfb5' },
     emblem:
-      '<g transform="translate(-1.4 0)"><path d="M40 33.5 C31 30.5 22.5 34 25.5 39.5 C28 44 38.5 42 39.5 48 C40.5 54 31 57 22.5 53.5" fill="none" stroke="{F}" stroke-width="5" stroke-linecap="round"/><circle cx="41.5" cy="33.8" r="4.4" fill="{F}"/><circle cx="42.8" cy="32.6" r="1.1" fill="{C}"/><path d="M45.6 34.6 L48.6 33.4 M45.6 34.6 L48.4 36.4" fill="none" stroke="{F}" stroke-width="1.3" stroke-linecap="round"/></g>',
+      '<ellipse cx="32" cy="52.2" rx="11.2" ry="3.6" fill="none" stroke="{F}" stroke-width="3.6"/><ellipse cx="32" cy="47.6" rx="8.4" ry="3" fill="none" stroke="{F}" stroke-width="3.4"/><path d="M33.5 45.6 C37.5 42.5 29.5 40 31.5 36.6" fill="none" stroke="{F}" stroke-width="3.4" stroke-linecap="round"/><path d="M28.6 35.8 C29.2 33 32.6 31.8 36.4 33 C38 33.5 38.4 34.6 37.4 35.4 C35.4 37 30.8 37.6 28.6 35.8 Z" fill="{F}"/><circle cx="33.4" cy="34.1" r="0.85" fill="{C}"/><path d="M37.6 34.8 L40.2 34 M37.6 34.8 L40 36.2" fill="none" stroke="{F}" stroke-width="1.1" stroke-linecap="round"/>',
   },
   about:
     'Python is a general-purpose language known for readable code and a large standard library, used for everything from scripts and websites to data science and machine learning. These koans cover its values and collections, functions, generators, classes, exceptions and standard library.',
