@@ -22,7 +22,7 @@ export default {
   tag: 'Readable, and everywhere',
   journey: 'From `assert` to generators, classes and dataclasses.',
   framework: 'pytest',
-  kinds: ['first', 'data', 'scripting'],
+  kinds: ['start', 'data', 'automate'],
   teasers: [
     { before: 'assert -7 // 2 == ', after: '', choices: ['-3', '-4', '-3.5'], answer: '-4', why: '// rounds down, toward minus infinity.' },
     { before: 'assert \'ab\' * 3 == ', after: '', choices: ['\'ababab\'', '\'ab3\'', 'TypeError'], answer: '\'ababab\'', why: 'Multiplying a string repeats it.' },

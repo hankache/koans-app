@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: How to contribute
+    url: https://github.com/hankache/koans-app/blob/main/CONTRIBUTING.md
+    about: Fixing koans, writing new ones, adding a language, improving the site.

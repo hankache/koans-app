@@ -63,14 +63,14 @@
     picked = null;
   }
 
-  // Which paths suit what: the filters fade the others out.
+  // What each path suits: the filters fade the others out.
   const FILTERS: { id: Kind | 'all'; label: string }[] = [
     { id: 'all', label: 'All' },
-    { id: 'first', label: 'A first language' },
-    { id: 'web', label: 'The web' },
-    { id: 'data', label: 'Data' },
-    { id: 'scripting', label: 'Scripting' },
-    { id: 'types', label: 'Types' },
+    { id: 'start', label: 'Start programming' },
+    { id: 'web', label: 'Build for the web' },
+    { id: 'data', label: 'Work with data' },
+    { id: 'automate', label: 'Automate tasks' },
+    { id: 'think', label: 'Think differently' },
   ];
   let filter = $state<Kind | 'all'>('all');
   const matches = (l: Language) => filter === 'all' || l.pack.kinds.includes(filter);
@@ -231,7 +231,8 @@
       <h2>Choose your path</h2>
       <p>Each starts with the first test and ends deep in the language.</p>
     </div>
-    <div class="filters" role="group" aria-label="Show paths for">
+    <div class="filters" role="group" aria-labelledby="filters-label">
+      <span id="filters-label" class="filters-label">What do you want to do?</span>
       {#each FILTERS as f (f.id)}
         <button aria-pressed={filter === f.id} class:on={filter === f.id} onclick={() => (filter = f.id)}>{f.label}</button>
       {/each}
@@ -274,13 +275,12 @@
       <h2>What is a koan?</h2>
       <div class="about">
         <p>
-          In Zen, a koan is a short puzzle you think about until it makes sense. Here, a koan is a few
-          lines of code with tests that fail, and a blank, <code class="blank">___</code>, where the
-          answer goes.
+          In Zen, a koan is a puzzle you sit with until it clicks. Here, it's a few lines of code, a
+          test that fails, and a blank, <code class="blank">___</code>, waiting for your answer.
         </p>
         <p>
-          <strong>It's test-driven.</strong> In test-driven development (TDD), you write a failing test
-          first, then make it pass: red, then green. A koan gives you the failing test; you turn it green.
+          <strong>Test-driven.</strong> Write the test first, watch it fail, then make it pass: red,
+          then green. Every koan begins red. Your answer turns it green.
         </p>
       </div>
       <ol class="steps">
@@ -313,7 +313,7 @@
       <p>koans.app began as Raku Koans and grew to many languages. The koans and the site are open source.</p>
     </div>
     <div class="story-actions">
-      <a class="action" href="{site.repo}/issues" target="_blank" rel="noopener">Suggest a language</a>
+      <a class="action" href="{site.repo}/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contribute</a>
       <button class="action keep-toggle" aria-expanded={keeping} onclick={() => (keeping = !keeping)}>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M5 21h14" /></svg>
         Export or import your progress
@@ -448,7 +448,8 @@
   .paths { order: 3; padding-top: 72px; }
   .heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 24px; margin-bottom: 18px; }
   .heading p { margin: 0; color: var(--ink-soft); }
-  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 24px; }
+  .filters-label { margin-right: 6px; font-size: 14px; color: var(--ink-soft); }
   .filters button { flex: none; min-height: 40px; padding: 0 16px; font-weight: 500; font-size: 14px; white-space: nowrap; }
   .filters button.on { background: var(--ink); border-color: var(--ink); color: var(--bg); }
   .tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
@@ -584,6 +585,7 @@
     .paths { padding-top: 48px; }
     /* The filters scroll sideways rather than wrap. */
     .filters { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px 16px; padding: 0 16px; }
+    .filters-label { display: none; }
     /* One language per row: emblem, name and what it's for, its framework, an arrow. */
     .tiles { grid-template-columns: minmax(0, 1fr); gap: 8px; }
     .tile { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4px 14px; min-height: 0; padding: 12px 12px 12px 10px; border-top-width: 1px; border-left: 4px solid var(--accent); }

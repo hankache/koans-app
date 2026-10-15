@@ -1,0 +1,30 @@
+# Opened from a koan's "Report a problem with this koan" link, which fills in language, koan and address.
+name: Report a problem
+description: A koan with a typo, a wrong answer, an unclear intro, or something that doesn't work.
+labels: [problem]
+body:
+  - type: input
+    id: language
+    attributes:
+      label: Language
+      placeholder: Python
+    validations:
+      required: true
+  - type: input
+    id: koan
+    attributes:
+      label: Koan
+      description: Its group and title, as the page shows them.
+      placeholder: Strings · Slicing
+  - type: input
+    id: address
+    attributes:
+      label: Address
+      placeholder: https://koans.app/#/python/koan/strings/slicing
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's wrong?
+      description: What you expected, what happened, and the code you ran if it matters.
+    validations:
+      required: true

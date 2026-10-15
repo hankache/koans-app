@@ -21,7 +21,7 @@ export default {
   // Optional: mascot, an emoji shown when its whole path is walked; without it, its emblem.
   // Optional: art: { celebration: 'folder/' }, the layers of its "passed" animation. Without it, the gate stands in.
   // On the home page: a few words on what it's for, where its path goes, its test framework, the
-  // filters it shows under ('first', 'web', 'data', 'scripting', 'types'), and koans to try.
+  // filters it shows under ('start', 'web', 'data', 'automate', 'think'), and koans to try.
   tag: 'TODO',
   journey: 'From TODO to TODO.',
   framework: 'TODO',

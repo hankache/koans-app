@@ -26,15 +26,15 @@ const koanIds = JSON.parse(readFileSync(join(root, 'src/generated/summary.json')
  * must stop with an error on line 2 matching `says`, and `loop` must never end.
  */
 const LANGUAGES = [
-  { id: 'raku', error: "is 1, 1, 'fine';\ndie 'boom';", says: /boom/, loop: 'loop { }' },
-  { id: 'python', error: "assert True, 'fine'\nprint(nope)", says: /NameError/, loop: 'while True:\n    pass' },
   { id: 'javascript', error: "expect(true, 'fine').toBe(true);\nnope();", says: /ReferenceError/, loop: 'while (true) {}' },
-  { id: 'typescript', error: "expect(true, 'fine').toBe(true);\nconst n: number = 'text';", says: /TS2322/, loop: 'while (true) {}' },
-  { id: 'ruby', error: "expect(true).to be(true), 'fine'\nnope", says: /NameError/, loop: 'loop { }' },
-  { id: 'php', error: "<?php\nnope();", says: /undefined function nope/, loop: '<?php\nwhile (true) {}' },
-  { id: 'r', error: 'x <- 1\nnope()', says: /could not find function/, loop: 'repeat {}' },
   { id: 'lua', error: "assert(true, 'fine')\nnope()", says: /attempt to call a nil value/, loop: 'while true do end' },
+  { id: 'php', error: "<?php\nnope();", says: /undefined function nope/, loop: '<?php\nwhile (true) {}' },
+  { id: 'python', error: "assert True, 'fine'\nprint(nope)", says: /NameError/, loop: 'while True:\n    pass' },
+  { id: 'r', error: 'x <- 1\nnope()', says: /could not find function/, loop: 'repeat {}' },
+  { id: 'raku', error: "is 1, 1, 'fine';\ndie 'boom';", says: /boom/, loop: 'loop { }' },
+  { id: 'ruby', error: "expect(true).to be(true), 'fine'\nnope", says: /NameError/, loop: 'loop { }' },
   { id: 'sql', error: "SELECT 1; -- expect: 1\nINSERT INTO nowhere VALUES (1);", says: /no such table/, loop: 'WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM n) SELECT count(*) FROM n;' },
+  { id: 'typescript', error: "expect(true, 'fine').toBe(true);\nconst n: number = 'text';", says: /TS2322/, loop: 'while (true) {}' },
 ];
 
 // --- Which browsers
@@ -140,6 +140,7 @@ async function checkSite(browser, base) {
   check('the home page lists every language', names.length === LANGUAGES.length, names.join(', '));
   check('the home page loads no language', seen.loaded.length === 0, seen.loaded.join(' '));
   check('a first visit shows no "continue"', !(await page.$('.resume')));
+  check('a first visit opens in the dark theme', (await page.evaluate(() => document.documentElement.dataset.theme)) === 'dark');
 
   // Its koan to try: a wrong answer, then the right one (JavaScript's, shown first).
   const choose = async answer => {
@@ -163,6 +164,8 @@ async function checkSite(browser, base) {
     await page.goto(`${base}#/${lang.id}/koan/${first.id}`);
     await page.waitForSelector('.cm-content');
     await page.click('button.primary');
+    const report = await page.$eval('.report a', a => a.href).catch(() => '');
+    check(`${lang.id}: the koan links to a filled-in problem report`, report.includes('template=report-a-problem.yml') && report.includes(encodeURIComponent(first.id)), report.slice(0, 120));
     check(`${lang.id}: the unsolved koan points at its first blank`, new RegExp(`Meditate on line ${blankLine}\\b`).test(await panel(page, /Meditate/)));
 
     const solution = first.solution.trimEnd();

@@ -40,7 +40,7 @@ import typescript from '../../languages/typescript/node.mjs';
  */
 
 /** @type {Language[]} */
-export const languages = [raku, python, javascript, typescript, ruby, php, r, lua, sql];
+export const languages = [javascript, lua, php, python, r, raku, ruby, sql, typescript];
 
 /**
  * The languages named with --lang (repeat it, or separate names with commas), or else all of

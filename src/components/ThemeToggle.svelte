@@ -1,11 +1,8 @@
 <!--
-  Switches between the light and dark themes. The page starts from the system setting (see the
-  script in index.html); clicking here saves an explicit choice, remembered in this browser.
-  Until then, the page keeps following the system setting as it changes.
+  Switches between the light and dark themes. The page starts dark (see the script in
+  index.html); clicking here saves the visitor's choice, remembered in this browser.
 -->
 <script lang="ts">
-  import { onMount } from 'svelte';
-
   const KEY = 'koans:theme';
   let theme = $state(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
 
@@ -23,19 +20,6 @@
       // Storage unavailable: the choice lasts for this visit only.
     }
   }
-
-  onMount(() => {
-    const system = matchMedia('(prefers-color-scheme: dark)');
-    const follow = (e: MediaQueryListEvent) => {
-      let saved = null;
-      try {
-        saved = localStorage.getItem(KEY);
-      } catch {}
-      if (!saved) apply(e.matches ? 'dark' : 'light');
-    };
-    system.addEventListener('change', follow);
-    return () => system.removeEventListener('change', follow);
-  });
 
   const label = $derived(theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
 </script>

@@ -32,15 +32,15 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/).
 
 | Language                      | Koans | Interpreter                                         | Tests written with |
 |-------------------------------|-------|-----------------------------------------------------|--------------------|
-| [Raku](languages/raku/)       | 105   | [Raku++](https://github.com/ash/rakupp) (Raku.js)   | Raku's `Test`      |
-| [Python](languages/python/)   | 71    | [Pyodide](https://pyodide.org) (CPython 3.14)       | pytest-style `assert`s |
 | [JavaScript](languages/javascript/) | 70 | the browser's own engine                      | Vitest-style `expect` |
-| [TypeScript](languages/typescript/) | 55 | the TypeScript 6 compiler, then the browser's engine | Vitest's `expect` and `expectTypeOf` |
-| [Ruby](languages/ruby/)       | 77    | [ruby.wasm](https://github.com/ruby/ruby.wasm) (CRuby 4.0) | RSpec-style `expect` |
-| [PHP](languages/php/)         | 68    | [php-wasm](https://github.com/seanmorris/php-wasm) (PHP 8.5) | PHPUnit's assertions |
-| [R](languages/r/)             | 63    | [webR](https://docs.r-wasm.org/webr/latest/) (R 4.6) | testthat's expectations |
 | [Lua](languages/lua/)         | 63    | [wasmoon](https://github.com/ceifa/wasmoon) (Lua 5.4) | busted's assertions |
+| [PHP](languages/php/)         | 68    | [php-wasm](https://github.com/seanmorris/php-wasm) (PHP 8.5) | PHPUnit's assertions |
+| [Python](languages/python/)   | 71    | [Pyodide](https://pyodide.org) (CPython 3.14)       | pytest-style `assert`s |
+| [R](languages/r/)             | 63    | [webR](https://docs.r-wasm.org/webr/latest/) (R 4.6) | testthat's expectations |
+| [Raku](languages/raku/)       | 105   | [Raku++](https://github.com/ash/rakupp) (Raku.js)   | Raku's `Test`      |
+| [Ruby](languages/ruby/)       | 77    | [ruby.wasm](https://github.com/ruby/ruby.wasm) (CRuby 4.0) | RSpec-style `expect` |
 | [SQL](languages/sql/)         | 64    | [sql.js](https://github.com/sql-js/sql.js) (SQLite 3.49) | expected rows in `-- expect:` comments |
+| [TypeScript](languages/typescript/) | 55 | the TypeScript 6 compiler, then the browser's engine | Vitest's `expect` and `expectTypeOf` |
 
 ## Running it locally
 

@@ -7,11 +7,11 @@
     <title>koans.app</title>
     <script>
       // Choose the theme before anything is drawn, so the page never flashes the wrong one:
-      // the visitor's saved choice, or else the system setting.
+      // the visitor's saved choice, or else dark, the site's own look.
       (function () {
         var saved = null;
         try { saved = localStorage.getItem('koans:theme'); } catch (e) {}
-        var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        var dark = saved ? saved === 'dark' : true;
         document.documentElement.dataset.theme = dark ? 'dark' : 'light';
       })();
     </script>

@@ -1,0 +1,26 @@
+name: Suggest a language
+description: A language you'd like koans for.
+labels: [language]
+body:
+  - type: input
+    id: language
+    attributes:
+      label: Language
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why this language?
+      description: Who would learn it here, and what its koans should cover.
+  - type: textarea
+    id: runtime
+    attributes:
+      label: Can it run in a browser?
+      description: Koans run entirely in the browser, so the language needs an interpreter compiled to WebAssembly or JavaScript. Do you know of one?
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Helping
+      options:
+        - label: I'd like to help write its koans.

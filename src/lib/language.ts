@@ -28,8 +28,8 @@ export interface LanguageContent {
   highlight: Extension;
 }
 
-/** The home page's filters: who or what a language suits. */
-export type Kind = 'first' | 'web' | 'data' | 'scripting' | 'types';
+/** The home page's filters, answering "What do you want to do?". */
+export type Kind = 'start' | 'web' | 'data' | 'automate' | 'think';
 
 /** A one-blank koan for the home page's "try one", answered by tapping one of `choices`. */
 export interface Teaser {

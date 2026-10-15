@@ -9,6 +9,10 @@ Thank you for helping. There are four kinds of contribution, from smallest to la
 
 The [README](README.md) explains how to run the site locally and how a koan is put together.
 
+Not ready to change things yourself? [Open an issue](https://github.com/hankache/koans-app/issues/new/choose)
+to report a problem with a koan, suggest a language, or propose a koan: each has a short form. Every
+koan's page also has a "Report a problem with this koan" link, which fills in which koan it is.
+
 ## Writing a good koan
 
 A koan teaches **one idea**, through a handful of small failing tests that the learner fixes one

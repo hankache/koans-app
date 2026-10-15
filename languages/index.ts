@@ -1,4 +1,4 @@
-// The languages the site offers, in the order the home page lists them. Each is a folder here;
+// The languages the site offers, in the order the home page lists them: alphabetical. Each is a folder here;
 // its pack.ts describes it to the app, and its node.mjs to the build tools (listed in
 // scripts/lib/languages.mjs).
 import type { LanguagePack } from '../src/lib/language';
@@ -12,7 +12,7 @@ import ruby from './ruby/pack';
 import sql from './sql/pack';
 import typescript from './typescript/pack';
 
-export const packs: LanguagePack[] = [raku, python, javascript, typescript, ruby, php, r, lua, sql];
+export const packs: LanguagePack[] = [javascript, lua, php, python, r, raku, ruby, sql, typescript];
 
 export const packById = new Map(packs.map(p => [p.id, p]));
 

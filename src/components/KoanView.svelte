@@ -7,6 +7,7 @@
   import { modKey, modPressed } from '../lib/platform';
   import Editor from './Editor.svelte';
   import Meditation from './Meditation.svelte';
+  import { site } from '../site';
 
   let { course, id }: { course: Course; id: string } = $props();
 
@@ -15,6 +16,17 @@
   const section = $derived(course.sectionOf(id));
   const nav = $derived(course.neighbours(id));
   const index = $derived(section.koans.indexOf(koan) + 1);
+  // A GitHub issue about this koan, its form filled in (.github/ISSUE_TEMPLATE/report-a-problem.yml).
+  const reportHref = $derived(
+    `${site.repo}/issues/new?` +
+      new URLSearchParams({
+        template: 'report-a-problem.yml',
+        title: `${pack.name}: ${koan.title}`,
+        language: pack.name,
+        koan: `${section.title} · ${koan.title}`,
+        address: new URL(course.href(id), location.href).href,
+      }),
+  );
 
   // App keys this component by language and koan, and opens the course (saved progress
   // included) first, so reading it once here is enough (and must not re-run after each save).
@@ -145,6 +157,7 @@
         {#if nav.prev}<a href={course.href(nav.prev.id)} class="nav">← {nav.prev.title}</a>{/if}
         {#if nav.next}<a href={course.href(nav.next.id)} class="nav">{nav.next.title} →</a>{/if}
       </div>
+      <p class="report"><a href={reportHref} target="_blank" rel="noopener">Report a problem with this koan</a></p>
     </div>
 
     <aside>
@@ -183,6 +196,9 @@
   .spacer { flex: 1; }
   .nav { font-size: 0.88rem; color: var(--ink-soft); text-decoration: none; }
   .nav:hover { color: var(--ink); }
+  .report { margin: 1.4rem 0 0; font-size: 0.82rem; }
+  .report a { color: var(--ink-soft); }
+  .report a:hover { color: var(--ink); }
 
   @media (max-width: 860px) {
     .layout { grid-template-columns: minmax(0, 1fr); }

@@ -85,7 +85,7 @@
   © 2026 Naoum Hankache ·
   Code: <a href="https://opensource.org/license/artistic-2-0">Artistic License 2.0</a> ·
   Koans and artwork: <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> ·
-  <a href={site.repo}>GitHub</a>
+  <a href={site.repo}>Source on GitHub</a>
   <span class="build">
     {#if __BUILD__}
       Version <a href="{site.repo}/commit/{__BUILD__.commit}">{__BUILD__.short}</a> · {__BUILD__.date}

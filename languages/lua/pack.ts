@@ -22,7 +22,7 @@ export default {
   tag: 'Small, fast, embeddable',
   journey: 'From tables to metatables and coroutines.',
   framework: 'busted',
-  kinds: ['scripting'],
+  kinds: ['start', 'automate', 'think'],
   teasers: [
     { before: 'assert.are.equal(', after: ', #\'héllo\')', choices: ['5', '6', '4'], answer: '6', why: '# counts bytes, and é takes two.' },
     { before: 'assert.are.equal(', after: ', 7 // 2)', choices: ['3.5', '3', '4'], answer: '3', why: '// is floor division.' },

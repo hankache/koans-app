@@ -22,7 +22,7 @@ export default {
   tag: 'The language of the web',
   journey: 'From `==` and `===` to closures, classes and async code.',
   framework: 'Vitest',
-  kinds: ['first', 'web'],
+  kinds: ['start', 'web'],
   teasers: [
     { before: 'expect(\'5\' + 2).toBe(', after: ');', choices: ['7', '\'52\'', 'NaN'], answer: '\'52\'', why: 'With a string on either side, + joins strings.' },
     { before: 'expect([] + []).toBe(', after: ');', choices: ['\'\'', '[]', '0'], answer: '\'\'', why: 'Both arrays become empty strings first.' },

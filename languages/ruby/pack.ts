@@ -22,7 +22,7 @@ export default {
   tag: 'Made for programmer happiness',
   journey: 'From objects and blocks to metaprogramming.',
   framework: 'RSpec',
-  kinds: ['first', 'web', 'scripting'],
+  kinds: ['start', 'web', 'automate'],
   teasers: [
     { before: 'expect(-7 % 3).to eq(', after: ')', choices: ['-1', '1', '2'], answer: '2', why: 'Ruby’s % takes the sign of the divisor.' },
     { before: 'expect(nil.to_a).to eq(', after: ')', choices: ['nil', '[]', '[nil]'], answer: '[]', why: 'nil converts to an empty array.' },

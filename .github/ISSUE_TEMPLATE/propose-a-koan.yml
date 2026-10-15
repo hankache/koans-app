@@ -1,0 +1,17 @@
+name: Propose a koan
+description: An idea for a koan, or a topic a path is missing.
+labels: [koan]
+body:
+  - type: input
+    id: language
+    attributes:
+      label: Language
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: What it should teach, and where in the path it belongs. A draft with its blanks is welcome.
+    validations:
+      required: true

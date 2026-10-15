@@ -22,7 +22,7 @@ export default {
   tag: 'JavaScript, with types',
   journey: 'From the first annotation to conditional and mapped types.',
   framework: 'Vitest',
-  kinds: ['web', 'types'],
+  kinds: ['web', 'think'],
   teasers: [
     { context: 'const x = 42;', before: 'expectTypeOf(x).toEqualTypeOf<', after: '>();', choices: ['number', '42', 'const'], answer: '42', why: 'A const keeps its literal type.' },
     { context: 'let y = 42;', before: 'expectTypeOf(y).toEqualTypeOf<', after: '>();', choices: ['number', '42', 'unknown'], answer: 'number', why: 'A let can change, so it widens.' },
