@@ -19,8 +19,8 @@ export default {
   cheers: ['The elephant remembers.', 'Another request, served.'],
   // On the home page: under its name, where its path goes, its test framework, the filters it
   // shows under, and koans to try (each checked by tests/teasers.test.ts).
-  tag: 'What runs the web’s servers',
-  journey: 'From arrays to enums, generators and the pipe operator.',
+  tag: 'The engine behind much of the web',
+  journey: 'From arrays to enums, generators and the new pipe operator.',
   framework: 'PHPUnit',
   kinds: ['web'],
   teasers: [

@@ -19,8 +19,8 @@ export default {
   cheers: ['Statistically significant progress.', 'Your confidence interval narrows.'],
   // On the home page: under its name, where its path goes, its test framework, the filters it
   // shows under, and koans to try (each checked by tests/teasers.test.ts).
-  tag: 'Statistics and data analysis',
-  journey: 'From vectors to data frames, the apply family and S4.',
+  tag: 'Made for statistics and data',
+  journey: 'From vectors to data frames, the apply family and S4 objects.',
   framework: 'testthat',
   kinds: ['data'],
   teasers: [

@@ -19,8 +19,8 @@ export default {
   cheers: ['The compiler is satisfied.', 'Not an `any` in sight.'],
   // On the home page: under its name, where its path goes, its test framework, the filters it
   // shows under, and koans to try (each checked by tests/teasers.test.ts).
-  tag: 'JavaScript, with types',
-  journey: 'From the first annotation to conditional and mapped types.',
+  tag: 'JavaScript, with a type system',
+  journey: 'From the first annotation to types built from other types.',
   framework: 'Vitest',
   kinds: ['web', 'think'],
   teasers: [

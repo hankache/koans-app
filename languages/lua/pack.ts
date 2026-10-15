@@ -19,8 +19,8 @@ export default {
   cheers: ['The moon waxes.', 'Lua shines a little brighter.'],
   // On the home page: under its name, where its path goes, its test framework, the filters it
   // shows under, and koans to try (each checked by tests/teasers.test.ts).
-  tag: 'Small, fast, embeddable',
-  journey: 'From tables to metatables and coroutines.',
+  tag: 'Tiny, fast, made to embed',
+  journey: 'From tables, its one data structure, to metatables and coroutines.',
   framework: 'busted',
   kinds: ['start', 'automate', 'think'],
   teasers: [

@@ -19,8 +19,8 @@ export default {
   cheers: ['Strictly equal, and true.', 'The event loop smiles.'],
   // On the home page: under its name, where its path goes, its test framework, the filters it
   // shows under, and koans to try (each checked by tests/teasers.test.ts).
-  tag: 'The language of the web',
-  journey: 'From `==` and `===` to closures, classes and async code.',
+  tag: 'The browser’s own language',
+  journey: 'From its famous quirks to closures, classes and `async`/`await`.',
   framework: 'Vitest',
   kinds: ['start', 'web'],
   teasers: [

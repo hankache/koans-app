@@ -19,8 +19,8 @@ export default {
   cheers: ['1 row affected: yours.', 'COMMIT.'],
   // On the home page: under its name, where its path goes, its test framework, the filters it
   // shows under, and koans to try (each checked by tests/teasers.test.ts).
-  tag: 'Asking your data questions',
-  journey: 'From `SELECT` to joins, window functions and puzzles.',
+  tag: 'Ask your data questions',
+  journey: 'From `SELECT` to joins, window functions and classic puzzles.',
   framework: '-- expect:',
   kinds: ['data'],
   teasers: [

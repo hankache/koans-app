@@ -19,8 +19,8 @@ export default {
   cheers: ['Readability counts.', 'Beautiful is better than ugly.', 'Simple is better than complex.'],
   // On the home page: under its name, where its path goes, its test framework, the filters it
   // shows under, and koans to try (each checked by tests/teasers.test.ts).
-  tag: 'Readable, and everywhere',
-  journey: 'From `assert` to generators, classes and dataclasses.',
+  tag: 'Readable by design',
+  journey: 'From `assert` to generators, classes and the standard library.',
   framework: 'pytest',
   kinds: ['start', 'data', 'automate'],
   teasers: [

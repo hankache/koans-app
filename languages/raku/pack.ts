@@ -21,8 +21,8 @@ export default {
   site: { url: 'https://raku.org', label: 'raku.org' },
   // On the home page: under its name, where its path goes, its test framework, the filters it
   // shows under, and koans to try (each checked by tests/teasers.test.ts).
-  tag: 'Expressive, and made for fun',
-  journey: 'From `is` and `ok` to grammars, junctions and lazy lists.',
+  tag: 'Expressive and optimized for fun',
+  journey: 'From sigils and junctions to lazy lists and grammars.',
   framework: 'Test',
   kinds: ['start', 'automate', 'think'],
   teasers: [
