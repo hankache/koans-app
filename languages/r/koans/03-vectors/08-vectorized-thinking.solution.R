@@ -1,0 +1,8 @@
+prices <- c(10, 25, 40)
+quantities <- c(3, 1, 2)
+test_that("a total without a loop", expect_equal(sum(prices * quantities), 135))
+test_that("a discount on the expensive ones", expect_equal(ifelse(prices > 20, prices * 0.9, prices), c(10, 22.5, 36)))
+scores <- c(55, 72, 91, 38)
+test_that("count the passes", expect_equal(sum(scores >= 50), 3))
+test_that("the share that passed", expect_equal(mean(scores >= 50), 0.75))
+test_that("pmax compares in pairs", expect_equal(pmax(c(1, 5), c(4, 2)), c(4, 5)))

@@ -1,0 +1,6 @@
+test_that("dividing by zero", expect_equal(1 / 0, Inf))
+test_that("from the other side", expect_equal(-1 / 0, -Inf))
+test_that("0 / 0 is not a number", expect_true(is.nan(0 / 0)))
+test_that("NaN counts as missing", expect_true(is.na(NaN)))
+test_that("but NA is not NaN", expect_false(is.nan(NA)))
+test_that("is.finite rules them all out", expect_equal(is.finite(c(1, Inf, NA, NaN)), c(TRUE, FALSE, FALSE, FALSE)))

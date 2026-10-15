@@ -1,0 +1,6 @@
+test_that("grepl asks", expect_equal(grepl("^a", c("apple", "banana")), c(TRUE, FALSE)))
+test_that("sub replaces the first", expect_equal(sub("o", "0", "foo"), "f0o"))
+test_that("gsub replaces all", expect_equal(gsub("o", "0", "foo"), "f00"))
+test_that("groups in the replacement", expect_equal(sub("(\\w+) (\\w+)", "\\2, \\1", "Ada Lovelace"), "Lovelace, Ada"))
+test_that("regmatches extracts", expect_equal(regmatches("a1b22c333", gregexpr("[0-9]+", "a1b22c333"))[[1]], c("1", "22", "333")))
+test_that("expect_match", expect_match("2026-10-15", "^\\d{4}-"))

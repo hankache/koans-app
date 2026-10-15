@@ -1,0 +1,10 @@
+x <- c(4, 8, 15, 16, 23, 42)
+test_that("sum and mean", {
+  expect_equal(sum(x), 108)
+  expect_equal(mean(x), 18)
+})
+test_that("median", expect_equal(median(x), 15.5))
+test_that("range gives both ends", expect_equal(range(x), c(4, 42)))
+test_that("cumsum keeps a running total", expect_equal(cumsum(1:4), c(1L, 3L, 6L, 10L)))
+test_that("diff gives the steps", expect_equal(diff(c(1, 4, 9, 16)), c(3, 5, 7)))
+test_that("which.max gives where", expect_equal(which.max(x), 6L))

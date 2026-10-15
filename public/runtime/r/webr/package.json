@@ -1,0 +1,4 @@
+{
+  "//": "webR's files, from npm run fetch-runtime. webr-worker.js is CommonJS: this tells Node so, as the project's own package.json says ES modules.",
+  "type": "commonjs"
+}

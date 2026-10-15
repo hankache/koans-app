@@ -8,6 +8,9 @@ src/generated/
 # each language's worker.js is ours and committed
 public/runtime/*/*
 !public/runtime/*/worker.js
+!public/runtime/r/webr/
+public/runtime/r/webr/*
+!public/runtime/r/webr/package.json
 
 # Copied from THIRD-PARTY-NOTICES.md at build time, so the deployed site carries it
 public/third-party-notices.txt

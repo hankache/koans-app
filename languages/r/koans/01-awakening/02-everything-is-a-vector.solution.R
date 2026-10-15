@@ -1,0 +1,5 @@
+test_that("a number is a vector of length 1", expect_length(5, 1))
+test_that("c() combines", expect_equal(c(1, 2, 3), 1:3))
+test_that("c() flattens vectors into one", expect_equal(length(c(c(1, 2), c(3, 4, 5))), 5))
+test_that("arithmetic works element by element", expect_equal(c(1, 2, 3) * 10, c(10, 20, 30)))
+test_that("1:5 is a sequence", expect_equal(sum(1:5), 15))

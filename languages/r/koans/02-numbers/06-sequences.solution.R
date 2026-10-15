@@ -1,0 +1,6 @@
+test_that("seq with a step", expect_equal(seq(0, 10, by = 5), c(0, 5, 10)))
+test_that("seq with a length", expect_equal(seq(0, 1, length.out = 3), c(0, 0.5, 1)))
+test_that("rep repeats", expect_equal(rep(c("a", "b"), times = 2), c("a", "b", "a", "b")))
+test_that("or repeats each", expect_equal(rep(c("a", "b"), each = 2), c("a", "a", "b", "b")))
+test_that("1:0 counts down, a trap in loops", expect_equal(1:0, c(1L, 0L)))
+test_that("seq_len(0) is empty, as it should be", expect_length(seq_len(0), 0))

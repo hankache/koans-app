@@ -1,0 +1,7 @@
+m <- matrix(1:6, nrow = 2)
+test_that("dimensions", expect_equal(dim(m), c(2L, 3L)))
+test_that("filled by column", expect_equal(m[, 2], c(3L, 4L)))
+test_that("one element", expect_equal(m[2, 3], 6L))
+b <- matrix(1:6, nrow = 2, byrow = TRUE)
+test_that("or by row", expect_equal(b[1, ], c(1L, 2L, 3L)))
+test_that("still a vector underneath", expect_equal(length(m), 6L))

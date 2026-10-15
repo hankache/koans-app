@@ -1,0 +1,7 @@
+person <- list(name = "Ada", born = 1815, languages = c("English", "French"))
+test_that("$ takes an element", expect_equal(person$name, "Ada"))
+test_that("[[ by name", expect_equal(person[["born"]], 1815))
+test_that("[ returns a list", expect_type(person["born"], "list"))
+test_that("[[ returns the element itself", expect_type(person[["born"]], "double"))
+test_that("elements can be vectors", expect_length(person$languages, 2))
+test_that("names", expect_named(person, c("name", "born", "languages")))

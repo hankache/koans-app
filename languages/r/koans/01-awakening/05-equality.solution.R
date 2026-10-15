@@ -1,0 +1,5 @@
+test_that("== compares element by element", expect_equal(c(1, 2, 3) == c(1, 5, 3), c(TRUE, FALSE, TRUE)))
+test_that("floating point is approximate", expect_false(0.1 + 0.2 == 0.3))
+test_that("expect_equal allows for it", expect_equal(0.1 + 0.2, 0.3))
+test_that("identical is exact, type included", expect_false(identical(1L, 1)))
+test_that("isTRUE(all.equal()) is the tolerant test", expect_true(isTRUE(all.equal(0.1 + 0.2, 0.3))))

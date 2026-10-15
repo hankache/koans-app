@@ -124,6 +124,19 @@ it (PCRE2, timelib, lexbor and others) are under their own licenses, listed in P
 ${readFileSync(new URL('./licenses/PHP-LICENSE.txt', import.meta.url), 'utf8').trim()}
 \`\`\`
 
+## webR (R)
+
+The interpreter the R koans run on: \`public/runtime/r/webr/\` (R compiled to WebAssembly, with
+BLAS, LAPACK and webR's JavaScript), downloaded by \`npm run fetch-runtime\` from the \`webr\` npm
+package (the version pinned in \`languages/r/runtime.lock.json\`), https://github.com/r-wasm/webr.
+R is free software under the GNU GPL; webR's binaries are distributed under the GNU GPL version 3,
+and are served here unmodified, as webR publishes them. Their source: https://github.com/r-wasm/webr
+and https://www.r-project.org. webR's licensing, with the full licence texts:
+
+\`\`\`
+${readFileSync(new URL('./licenses/webR-LICENSE.md', import.meta.url), 'utf8').trim()}
+\`\`\`
+
 ## wasmoon (Lua)
 
 The interpreter the Lua koans run on: \`public/runtime/lua/index.js\` and \`glue.wasm\` (Lua 5.4

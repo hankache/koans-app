@@ -1,0 +1,6 @@
+test_that("numbers are doubles by default", expect_type(3, "double"))
+test_that("L makes an integer", expect_type(3L, "integer"))
+test_that("quotes make characters", expect_type("3", "character"))
+test_that("TRUE and FALSE are logical", expect_type(TRUE, "logical"))
+test_that("mixing numbers and text gives text", expect_equal(c(1, "a"), c("1", "a")))
+test_that("TRUE counts as 1", expect_equal(c(TRUE, 2), c(1, 2)))

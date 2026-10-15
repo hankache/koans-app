@@ -1,0 +1,6 @@
+test_that("a sequence with : is integer", expect_type(1:3, "integer"))
+test_that("but doubles are the default", expect_type(c(1, 2, 3), "double"))
+test_that("integers are 32-bit", expect_equal(.Machine$integer.max, 2147483647L))
+test_that("going past it gives NA", expect_warning(.Machine$integer.max + 1L, "NA"))
+test_that("a double has room", expect_equal(.Machine$integer.max + 1, 2147483648))
+test_that("is.integer asks", expect_false(is.integer(5)))

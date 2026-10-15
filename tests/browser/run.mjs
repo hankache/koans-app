@@ -32,6 +32,7 @@ const LANGUAGES = [
   { id: 'typescript', error: "expect(true, 'fine').toBe(true);\nconst n: number = 'text';", says: /TS2322/, loop: 'while (true) {}' },
   { id: 'ruby', error: "expect(true).to be(true), 'fine'\nnope", says: /NameError/, loop: 'loop { }' },
   { id: 'php', error: "<?php\nnope();", says: /undefined function nope/, loop: '<?php\nwhile (true) {}' },
+  { id: 'r', error: 'x <- 1\nnope()', says: /could not find function/, loop: 'repeat {}' },
   { id: 'lua', error: "assert(true, 'fine')\nnope()", says: /attempt to call a nil value/, loop: 'while true do end' },
   { id: 'sql', error: "SELECT 1; -- expect: 1\nINSERT INTO nowhere VALUES (1);", says: /no such table/, loop: 'WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM n) SELECT count(*) FROM n;' },
 ];

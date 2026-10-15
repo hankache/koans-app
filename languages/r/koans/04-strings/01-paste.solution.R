@@ -1,0 +1,5 @@
+test_that("paste puts a space between", expect_equal(paste("a", "b"), "a b"))
+test_that("sep chooses another", expect_equal(paste("a", "b", sep = "-"), "a-b"))
+test_that("paste0 puts nothing", expect_equal(paste0("x", 1:3), c("x1", "x2", "x3")))
+test_that("collapse joins a vector", expect_equal(paste(c("a", "b", "c"), collapse = ", "), "a, b, c"))
+test_that("toupper and tolower", expect_equal(toupper("koan"), "KOAN"))

@@ -1,0 +1,6 @@
+test_that("nchar counts characters", expect_equal(nchar("café"), 4))
+test_that("element by element", expect_equal(nchar(c("a", "bb", "")), c(1L, 2L, 0L)))
+test_that("substr from and to", expect_equal(substr("enlightenment", 3, 7), "light"))
+test_that("trimws", expect_equal(trimws("  calm  "), "calm"))
+test_that("startsWith", expect_true(startsWith("koans.app", "koans")))
+test_that("rev of the characters, by hand", expect_equal(paste(rev(strsplit("abc", "")[[1]]), collapse = ""), "cba"))

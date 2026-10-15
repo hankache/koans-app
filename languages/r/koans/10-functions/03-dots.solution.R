@@ -1,0 +1,7 @@
+count_args <- function(...) ...length()
+test_that("...length counts", expect_equal(count_args(1, "a", NULL), 3L))
+my_paste <- function(...) paste(..., sep = "_")
+test_that("pass them on", expect_equal(my_paste("a", "b"), "a_b"))
+named <- function(...) names(list(...))
+test_that("names of the dots", expect_equal(named(x = 1, y = 2), c("x", "y")))
+test_that("sum takes dots too", expect_equal(sum(1, 2, 3:4), 10))

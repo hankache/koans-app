@@ -1,0 +1,33 @@
+{
+  "source": "https://www.npmjs.com/package/webr/v/0.6.0",
+  "tag": "0.6.0",
+  "version": "R 4.6.0 (webR)",
+  "archive": "5821c8bd87484add59064fa13fa62a65f686032f3f64dacf4b0aa34c4325e959",
+  "files": {
+    "dist/webr.mjs": "09e640176e49ef4ae084f83fee18979c6700eb32d4dfb2cafb5f189a903ada75",
+    "dist/webr.js": "4c04d3240de6cd3e7f59e081756168faa8566f8a8b97251400770939815c344a",
+    "dist/webr-worker.js": "c64282f5e15b51ef473e26548203313f868208c8988b2c7bdfc22c5730de418b",
+    "dist/R.js": "162adb529111d739b37ef1b9f889eb7afbe4fb3288f8a58166cd6d0b04fd7376",
+    "dist/R.wasm": "5df459fb222d332e358cf08e4019c0e114398579ed8c62242bfcceeda81222ba",
+    "dist/libRblas.so": "d831496cc1d1e2748519439a0ea509ba966b56db10d13132db52331a270aac74",
+    "dist/libRlapack.so": "df8ca333754f0dd95715df437f6e6d633e4ffbff0176bcb11c15fe3e5dd4e387",
+    "dist/vfs/etc/fonts/fonts.conf": "a93efbf9eec83d72a463f1d52f54043a8afa6ae7cc05609deda73232525e7bc0",
+    "dist/vfs/etc/ssl/cert.pem": "86a1f3366afac7c6f8ae9f3c779ac221129328c43f0ab2b8817eb2f362a5025c",
+    "dist/vfs/usr/lib/R/library/translations/DESCRIPTION": "ba7da3ac60466f5f466c4f706f50bcafbb924f94b0888d333bb410451b41afd2",
+    "dist/vfs/usr/lib/R/share.data.gz": "79258e504395be06aefa3d9ed482bcd9c26efb27791a243f851ead183ac28d41",
+    "dist/vfs/usr/lib/R/share.js.metadata": "3ccaab3b787ae8e377bb56fad19764772e6f1ddf90d47f10fbaef58921c7e9e2",
+    "dist/vfs/usr/share/fonts/NotoSans-Regular.ttf": "f3961a9cde016d41a4879aecda1474d3a36d6bf54fa0e4643de029cc2248b0e8",
+    "dist/vfs/usr/share/fonts/NotoSans-Bold.ttf": "87cb2d84472a7d66da659ee47b6cdb9552326e8c128245231f191b6ac72529d9",
+    "dist/vfs/usr/share/fonts/NotoSans-Italic.ttf": "678288f868807d4d64a6f3b51466871d117d915780381ce9d0ed4b3bcbd06d37",
+    "dist/vfs/usr/share/fonts/NotoSans-BoldItalic.ttf": "3d367743f371f28671d2764e911a53d7c20ec9b6aa8791d059e7090389fc52a5",
+    "dist/vfs/usr/share/fonts/NotoSerif-Regular.ttf": "a15cfbbc1539d707115111d672d590a3d70d4f74b4c0a315956da20ae19a14e1",
+    "dist/vfs/usr/share/fonts/NotoSerif-Bold.ttf": "24ad531e6b05ddad8c3d89572d2c93eb86a6b74e652ce7ee3c3e171de68e84c3",
+    "dist/vfs/usr/share/fonts/NotoSerif-Italic.ttf": "c4b3c971741ecdb40f5a443bce754e8fe91efe761b6ea10c92be7c3597cdadc4",
+    "dist/vfs/usr/share/fonts/NotoSerif-BoldItalic.ttf": "1bc4f86502eaa368718f6192bee022ea9a703d5af1c18b7d291212657b63074a",
+    "dist/vfs/usr/share/fonts/NotoSansMono-Regular.ttf": "87f8ce0522a6c99b743ee5fc75b4073cfdd575639119672828b7b9944b65b4f4",
+    "dist/vfs/usr/share/fonts/NotoSansMono-Bold.ttf": "1100772b2f79c102402a1011df5e2226517d0f40ac553a25fb12fdbad8c11b85",
+    "dist/vfs/var/cache/fontconfig/3830d5c3ddfd5cd38a049b759396e72e-le32d8.cache-9": "48cd35d8c3d7a4456f05bbf3c10bac83de082d354b2ec02c8a80e325ac3f0839",
+    "dist/vfs/var/cache/fontconfig/CACHEDIR.TAG": "05e7633fb31bf1f6f8d89020c16b9f24587fdf7638e951c9745b192f5fc3b682",
+    "LICENSE.md": "0ac1bff20e1329e244669e318269e6b40f327aecc78c3f18376ac59e923dde23"
+  }
+}

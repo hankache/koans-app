@@ -1,0 +1,7 @@
+pets <- c("cat", "dog", "cat", "fish", "cat")
+counts <- table(pets)
+test_that("counts by value", expect_equal(as.vector(counts), c(3L, 1L, 1L)))
+test_that("names are the values", expect_equal(names(counts), c("cat", "dog", "fish")))
+test_that("the most common", expect_equal(names(which.max(counts)), "cat"))
+test_that("a factor's unused levels count zero", expect_equal(as.vector(table(factor("a", levels = c("a", "b")))), c(1L, 0L)))
+test_that("cross-tabulation", expect_equal(dim(table(c("x", "y", "x"), c(1, 1, 2))), c(2L, 2L)))

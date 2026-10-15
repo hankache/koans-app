@@ -1,0 +1,8 @@
+x <- c(10, 20, 30, 40)
+test_that("the first element is 1", expect_equal(x[1], 10))
+test_that("several at once", expect_equal(x[c(1, 3)], c(10, 30)))
+test_that("negative leaves out", expect_equal(x[-1], c(20, 30, 40)))
+test_that("a logical index", expect_equal(x[x > 15], c(20, 30, 40)))
+test_that("past the end is NA", expect_equal(x[10], NA_real_))
+ages <- c(ada = 36, alan = 41)
+test_that("by name", expect_equal(ages[["alan"]], 41))

@@ -1,0 +1,6 @@
+m <- matrix(1:6, nrow = 2)
+test_that("rowSums", expect_equal(rowSums(m), c(9, 12)))
+test_that("colMeans", expect_equal(colMeans(m), c(1.5, 3.5, 5.5)))
+test_that("apply over rows", expect_equal(apply(m, 1, max), c(5L, 6L)))
+test_that("apply over columns", expect_equal(apply(m, 2, function(col) col[2] - col[1]), c(1L, 1L, 1L)))
+test_that("cbind adds a column", expect_equal(ncol(cbind(m, 7:8)), 4L))

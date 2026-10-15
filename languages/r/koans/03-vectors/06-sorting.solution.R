@@ -1,0 +1,8 @@
+x <- c(30, 10, 20)
+test_that("sort", expect_equal(sort(x), c(10, 20, 30)))
+test_that("descending", expect_equal(sort(x, decreasing = TRUE), c(30, 20, 10)))
+test_that("order gives positions", expect_equal(order(x), c(2L, 3L, 1L)))
+names <- c("cy", "al", "bo")
+test_that("sort one vector by another", expect_equal(names[order(x)], c("al", "bo", "cy")))
+test_that("rank", expect_equal(rank(x), c(3, 1, 2)))
+test_that("rev", expect_equal(rev(1:3), c(3L, 2L, 1L)))

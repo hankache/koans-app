@@ -1,0 +1,6 @@
+parts <- strsplit("a,b,c", ",")
+test_that("strsplit returns a list", expect_type(parts, "list"))
+test_that("its first element is a vector", expect_equal(parts[[1]], c("a", "b", "c")))
+test_that("one result per string", expect_length(strsplit(c("a b", "c d e"), " "), 2))
+test_that("split into characters", expect_equal(strsplit("hey", "")[[1]], c("h", "e", "y")))
+test_that("the pattern is a regular expression", expect_equal(strsplit("a1b22c", "[0-9]+")[[1]], c("a", "b", "c")))

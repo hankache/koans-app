@@ -1,0 +1,6 @@
+test_that("NA spreads", expect_equal(NA + 1, NA_real_))
+test_that("is.na asks, element by element", expect_equal(is.na(c(1, NA, 3)), c(FALSE, TRUE, FALSE)))
+test_that("na.rm leaves the missing out", expect_equal(sum(c(1, NA, 3), na.rm = TRUE), 4))
+test_that("NULL has no length", expect_length(NULL, 0))
+test_that("c() ignores NULL", expect_equal(c(1, NULL, 2), c(1, 2)))
+test_that("is.null asks for NULL", expect_true(is.null(NULL)))

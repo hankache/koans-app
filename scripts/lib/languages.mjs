@@ -3,6 +3,7 @@
 import javascript from '../../languages/javascript/node.mjs';
 import lua from '../../languages/lua/node.mjs';
 import php from '../../languages/php/node.mjs';
+import r from '../../languages/r/node.mjs';
 import python from '../../languages/python/node.mjs';
 import raku from '../../languages/raku/node.mjs';
 import ruby from '../../languages/ruby/node.mjs';
@@ -32,13 +33,14 @@ import typescript from '../../languages/typescript/node.mjs';
  * @typedef {{ kind: 'npm', package: string, files: string[], out: string }} NpmPackage
  *   an npm package in package.json, pinned by package-lock.json; `files` are paths in it, served
  *   under their base names
- * @typedef {{ kind: 'npm-tarball', package: string, files: string[], out: string }} NpmTarball
+ * @typedef {{ kind: 'npm-tarball', package: string, files: string[], out: string, strip?: string }} NpmTarball
  *   an npm package downloaded from the registry, not installed: for packages too big for
- *   node_modules. `files` as for NpmPackage
+ *   node_modules. `files` as for NpmPackage, except that files under `strip` keep their folders
+ *   below it
  */
 
 /** @type {Language[]} */
-export const languages = [raku, python, javascript, typescript, ruby, php, lua, sql];
+export const languages = [raku, python, javascript, typescript, ruby, php, r, lua, sql];
 
 /**
  * The languages named with --lang (repeat it, or separate names with commas), or else all of

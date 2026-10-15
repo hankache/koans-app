@@ -1,0 +1,6 @@
+test_that("sprintf", expect_equal(sprintf("%s is %d", "Ada", 36L), "Ada is 36"))
+test_that("decimals", expect_equal(sprintf("%.2f", pi), "3.14"))
+test_that("padding", expect_equal(sprintf("%05d", 42L), "00042"))
+test_that("vectorized", expect_equal(sprintf("item %d", 1:2), c("item 1", "item 2")))
+test_that("a thousands separator", expect_equal(format(1234567, big.mark = ","), "1,234,567"))
+test_that("formatC widths", expect_equal(formatC(3.14159, digits = 3, format = "f"), "3.142"))

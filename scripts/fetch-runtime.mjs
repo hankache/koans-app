@@ -150,8 +150,12 @@ for (const lang of langs) {
   for (const file of FILES) {
     hashes[file] = sha256(got.files[file]);
     if (!update && hashes[file] !== lock.files[file]) die(`${file} differs from ${lang.id}/runtime.lock.json`);
-    // Flat: a package's dist/acorn.mjs is served as acorn.mjs.
-    writeFileSync(out + basename(file), got.files[file]);
+    // Flat: a package's dist/acorn.mjs is served as acorn.mjs. With `strip`, files under that
+    // prefix keep their folders (webR's dist/vfs/etc/… is served as vfs/etc/…).
+    const strip = lang.runtime.strip;
+    const target = out + (strip && file.startsWith(strip) ? file.slice(strip.length) : basename(file));
+    mkdirSync(dirname(target), { recursive: true });
+    writeFileSync(target, got.files[file]);
     console.log(`✓ ${file}  ${(got.files[file].length / 1e6).toFixed(1)} MB`);
   }
 

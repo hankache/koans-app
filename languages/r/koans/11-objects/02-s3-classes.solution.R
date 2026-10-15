@@ -1,0 +1,8 @@
+new_money <- function(amount, currency) structure(list(amount = amount, currency = currency), class = "money")
+format.money <- function(x, ...) sprintf("%.2f %s", x$amount, x$currency)
+print.money <- function(x, ...) cat(format(x), "\n")
+price <- new_money(9.5, "EUR")
+test_that("a class attribute", expect_s3_class(price, "money"))
+test_that("format.money is used for format()", expect_equal(format(price), "9.50 EUR"))
+test_that("and print.money for print()", expect_output(print(price), "9.50 EUR"))
+test_that("underneath, still a list", expect_equal(unclass(price)$amount, 9.5))

@@ -1,0 +1,7 @@
+test_that("lapply returns a list", expect_type(lapply(1:3, function(x) x^2), "list"))
+test_that("sapply simplifies", expect_equal(sapply(1:3, function(x) x^2), c(1, 4, 9)))
+test_that("vapply declares the type", expect_equal(vapply(list(1:3, 4:9), length, integer(1)), c(3L, 6L)))
+test_that("mapply walks two vectors", expect_equal(mapply(function(a, b) a * b, 1:3, 4:6), c(4L, 10L, 18L)))
+test_that("Filter keeps", expect_equal(Filter(function(x) x %% 2 == 0, 1:6), c(2L, 4L, 6L)))
+test_that("Reduce combines", expect_equal(Reduce(`*`, 1:5), 120L))
+test_that("Reduce can accumulate", expect_equal(Reduce(`+`, 1:4, accumulate = TRUE), c(1L, 3L, 6L, 10L)))

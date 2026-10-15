@@ -1,0 +1,6 @@
+d <- as.Date("2026-10-15")
+test_that("the day of the week", expect_equal(format(d, "%A"), "Thursday"))
+test_that("add days", expect_equal(d + 17, as.Date("2026-11-01")))
+test_that("days between", expect_equal(as.numeric(as.Date("2026-12-25") - d), 71))
+test_that("a date is a number of days", expect_equal(as.numeric(as.Date("1970-01-11")), 10))
+test_that("seq by month", expect_equal(format(seq(d, by = "month", length.out = 3), "%b"), c("Oct", "Nov", "Dec")))

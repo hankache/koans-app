@@ -1,0 +1,6 @@
+test_that("text to a number", expect_equal(as.numeric("3.5"), 3.5))
+test_that("a number that isn't", expect_warning(as.numeric("three"), "NAs introduced"))
+test_that("and the result is NA", expect_equal(suppressWarnings(as.numeric("three")), NA_real_))
+test_that("as.integer truncates", expect_equal(as.integer(3.9), 3L))
+test_that("logical to number", expect_equal(as.numeric(c(TRUE, FALSE)), c(1, 0)))
+test_that("number to text", expect_equal(as.character(1e6), "1e+06"))

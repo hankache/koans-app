@@ -1,0 +1,8 @@
+sizes <- factor(c("small", "large", "small", "medium"))
+test_that("levels, sorted", expect_equal(levels(sizes), c("large", "medium", "small")))
+test_that("stored as integer codes", expect_equal(as.integer(sizes), c(3L, 1L, 3L, 2L)))
+test_that("nlevels", expect_equal(nlevels(sizes), 3L))
+test_that("a factor has its own class", expect_s3_class(sizes, "factor"))
+ordered_sizes <- factor(c("small", "large"), levels = c("small", "medium", "large"))
+test_that("levels in your own order", expect_equal(as.integer(ordered_sizes), c(1L, 3L)))
+test_that("an unknown value is NA", expect_true(is.na(factor("huge", levels = levels(sizes)))))
