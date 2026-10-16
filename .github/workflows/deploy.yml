@@ -19,29 +19,11 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Every check (checks.yml), then the built site uploaded for Pages.
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      # Downloads each language's interpreter, pinned in languages/<id>/runtime.lock.json and verified.
-      - run: npm run fetch-runtime
-      # Every blank must fail while unfilled and every solution must pass.
-      - run: npm run check:koans
-      # The result panel's reading of real runs, and answer hints for every koan.
-      - run: npm test
-      - run: npm run build:koans && npm run check
-      - run: npm run build
-      # The built site in Chrome and Firefox (both come with GitHub's Ubuntu runners).
-      - run: node tests/browser/run.mjs
-      - uses: actions/configure-pages@v6
-      - uses: actions/upload-pages-artifact@v5
-        with:
-          path: dist
+    uses: ./.github/workflows/checks.yml
+    with:
+      pages: true
 
   deploy:
     needs: build

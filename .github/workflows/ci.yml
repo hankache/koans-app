@@ -1,30 +1,12 @@
 name: CI
 
 # Checks pull requests and pushes to other branches. Pushes to main are checked (and then
-# published) by deploy.yml.
+# published) by deploy.yml. The checks themselves are in checks.yml.
 on:
   push:
     branches-ignore: [main]
   pull_request:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      # Downloads each language's interpreter, pinned in languages/<id>/runtime.lock.json. Fails if
-      # it doesn't match the checksum published with the release, or the checksums in the lock.
-      - run: npm run fetch-runtime
-      # Every blank must fail while unfilled and every solution must pass, on the same engine as the browser.
-      - run: npm run check:koans
-      # The result panel's reading of real runs, and answer hints for every koan.
-      - run: npm test
-      - run: npm run build:koans && npm run check
-      - run: npm run build
-      # The built site in Chrome and Firefox (both come with GitHub's Ubuntu runners).
-      - run: node tests/browser/run.mjs
+  checks:
+    uses: ./.github/workflows/checks.yml
