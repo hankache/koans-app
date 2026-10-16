@@ -1,0 +1,11 @@
+const metadata = new WeakMap();
+const user = { name: 'Ada' };
+metadata.set(user, { visits: 3 });
+expect(metadata.get(user), 'a WeakMap attaches data to an object').toEqual({ visits: 3 });
+expect(() => metadata.set('name', 1), 'keys must be objects').toThrow(TypeError);
+expect(metadata.size, 'it has no size').toBe(undefined);
+const seen = new WeakSet([user]);
+expect(seen.has(user), 'a WeakSet remembers objects').toBe(true);
+expect(seen.has({ name: 'Ada' }), 'by identity, not by contents').toBe(false);
+const ref = new WeakRef(user);
+expect(ref.deref(), 'a WeakRef gives the object back while it lives').toBe(user);

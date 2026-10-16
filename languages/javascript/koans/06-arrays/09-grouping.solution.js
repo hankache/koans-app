@@ -1,0 +1,10 @@
+const words = ['apple', 'avocado', 'banana', 'blueberry', 'cherry'];
+const byLetter = Object.groupBy(words, w => w[0]);
+expect(byLetter.a, 'each key gets an array').toEqual(['apple', 'avocado']);
+expect(Object.keys(byLetter), 'keys in the order they first appear').toEqual(['a', 'b', 'c']);
+const nums = [1, 2, 3, 4, 5];
+const parity = Object.groupBy(nums, n => (n % 2 ? 'odd' : 'even'));
+expect(parity.even, 'any key you like').toEqual([2, 4]);
+const bySize = Map.groupBy(nums, n => n > 3);
+expect(bySize.get(true), 'Map.groupBy keys can be booleans').toEqual([4, 5]);
+expect(Object.getPrototypeOf(byLetter), 'the object has no prototype').toBe(null);

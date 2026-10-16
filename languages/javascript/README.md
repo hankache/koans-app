@@ -1,6 +1,6 @@
 # JavaScript
 
-Learn modern JavaScript from its values to async functions, through 70 koans written the way most
+Learn modern JavaScript from its values to async functions, through 89 koans written the way most
 JavaScript is tested: with [Vitest](https://vitest.dev)'s `expect` (the same API as Jest's). They
 run on the browser's own JavaScript engine, so there's no interpreter to download. Its path is at
 `#/javascript/`.
@@ -10,18 +10,21 @@ run on the browser's own JavaScript engine, so there's no interpreter to downloa
 | #  | Group                        | Koans | Covers                                                              |
 |----|------------------------------|-------|---------------------------------------------------------------------|
 | 1  | Awakening                    | 6     | `expect`, `==` and `===`, `typeof`, truthiness, `null` and `undefined`, errors |
-| 2  | Numbers                      | 6     | arithmetic, floating point, `NaN` and `Infinity`, conversion, `Math`, `BigInt` |
+| 2  | Numbers                      | 7     | arithmetic, floating point, `NaN` and `Infinity`, conversion, `Math`, `BigInt`, typed arrays |
 | 3  | Strings                      | 7     | template literals, slicing, methods, split/join/pad, comparing, Unicode, regular expressions |
 | 4  | Variables and scope          | 4     | `let` and `const`, block scope, hoisting, destructuring             |
-| 5  | Arrays                       | 8     | arrays, `slice` and `splice`, `map`/`filter`/`reduce`, searching, sorting, copies, iterating, building |
-| 6  | Objects                      | 7     | objects, shorthand and computed keys, spread and rest, `Object.*`, getters and setters, freezing, `?.` and `??` |
-| 7  | Maps, sets and symbols       | 4     | `Map`, `Set`, set operations, `Symbol`                              |
-| 8  | Functions                    | 7     | declarations, arrows, parameters, closures, higher-order functions, `this`, recursion |
-| 9  | Classes and prototypes       | 6     | classes, inheritance, private and static members, accessors, prototypes, mixins |
-| 10 | Iterators and generators     | 4     | the iteration protocol, generators, `yield*`, custom iterables      |
-| 11 | Async                        | 5     | promises, `async`/`await`, combinators, async errors, the event loop |
-| 12 | Errors                       | 3     | `try`/`catch`/`finally`, custom errors, causes                      |
-| 13 | JSON, dates and Intl         | 3     | `JSON`, `Date`, `Intl`                                              |
+| 5  | Control flow                 | 6     | `if` and the ternary, `switch`, loops, `for…in`, `break` and `continue` with labels, `&&`, `\|\|`, `??` and their assignments |
+| 6  | Arrays                       | 9     | arrays, `slice` and `splice`, `map`/`filter`/`reduce`, searching, sorting, copies, iterating, building, grouping |
+| 7  | Objects                      | 7     | objects, shorthand and computed keys, spread and rest, `Object.*`, getters and setters, freezing, `?.` and `??` |
+| 8  | Maps, sets and symbols       | 5     | `Map`, `Set`, set operations, `Symbol`, `WeakMap`, `WeakSet` and `WeakRef` |
+| 9  | Functions                    | 7     | declarations, arrows, parameters, closures, higher-order functions, `this`, recursion |
+| 10 | Classes and prototypes       | 6     | classes, inheritance, private and static members, accessors, prototypes, mixins |
+| 11 | Iterators and generators     | 6     | the iteration protocol, generators, `yield*`, custom iterables, iterator helpers, `for await` |
+| 12 | Async                        | 5     | promises, `async`/`await`, combinators, async errors, the event loop |
+| 13 | Errors                       | 3     | `try`/`catch`/`finally`, custom errors, causes                      |
+| 14 | JSON, dates and Intl         | 3     | `JSON`, `Date`, `Intl`                                              |
+| 15 | Metaprogramming              | 3     | `Proxy`, `Reflect`, tagged templates                                |
+| 16 | Puzzles                      | 5     | FizzBuzz, word count, run-length encoding, Roman numerals, matrices |
 
 ## How the tests are written
 

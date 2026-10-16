@@ -32,7 +32,7 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/).
 
 | Language                      | Koans | Interpreter                                         | Tests written with |
 |-------------------------------|-------|-----------------------------------------------------|--------------------|
-| [JavaScript](languages/javascript/) | 70 | the browser's own engine                      | Vitest's `expect` |
+| [JavaScript](languages/javascript/) | 89 | the browser's own engine                      | Vitest's `expect` |
 | [Lua](languages/lua/)         | 63    | [wasmoon](https://github.com/ceifa/wasmoon) (Lua 5.4) | busted's assertions |
 | [PHP](languages/php/)         | 68    | [php-wasm](https://github.com/seanmorris/php-wasm) (PHP 8.5) | PHPUnit's assertions |
 | [Python](languages/python/)   | 71    | [Pyodide](https://pyodide.org) (CPython 3.14)       | pytest's plain `assert`s |

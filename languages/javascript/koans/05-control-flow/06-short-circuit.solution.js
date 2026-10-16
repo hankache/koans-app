@@ -1,0 +1,13 @@
+expect('cat' && 'dog', '&& gives the last operand when all are truthy').toBe('dog');
+expect(0 && 'dog', 'or the first falsy one').toBe(0);
+expect('' || 'default', '|| gives the first truthy one').toBe('default');
+expect(0 ?? 'default', '?? keeps 0').toBe(0);
+let calls = 0;
+const touch = () => ++calls;
+false && touch();
+true || touch();
+expect(calls, 'the right side may never run').toBe(0);
+const settings = { theme: '' };
+settings.theme ||= 'dark';
+settings.size ??= 12;
+expect(settings, '||= and ??= assign only when needed').toEqual({ theme: 'dark', size: 12 });

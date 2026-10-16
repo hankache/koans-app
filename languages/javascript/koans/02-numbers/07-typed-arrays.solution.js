@@ -1,0 +1,12 @@
+const bytes = new Uint8Array(3);
+expect([...bytes], 'a typed array starts zeroed').toEqual([0, 0, 0]);
+bytes[0] = 256;
+bytes[1] = -1;
+expect(bytes[0], 'a byte wraps around past 255').toBe(0);
+expect(bytes[1], 'and below 0').toBe(255);
+const capped = new Uint8ClampedArray([300, -5]);
+expect([...capped], 'a clamped array clamps instead').toEqual([255, 0]);
+expect(new Float32Array([0.1])[0] === 0.1, 'a 32-bit float loses precision').toBe(false);
+const shared = new ArrayBuffer(2);
+new Uint8Array(shared).set([1, 1]);
+expect(new Uint16Array(shared)[0], 'two views share one buffer').toBe(257);
