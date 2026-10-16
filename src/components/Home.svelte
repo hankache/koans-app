@@ -143,7 +143,7 @@
     <div class="pitch">
       <p class="eyebrow">Programming koans</p>
       <h1>Learn a language, one&nbsp;koan at a&nbsp;time.</h1>
-      <p class="lead">Read the code, fill the blank, watch the test turn green. The language itself is your teacher.</p>
+      <p class="lead">Read the code, fill the blank, watch the test turn green. Your&nbsp;sensei? The language itself.</p>
       <ul class="facts">
         <li>Test-driven</li>
         <li>In your browser</li>
@@ -229,7 +229,7 @@
   <section id="languages" class="paths">
     <div class="heading">
       <h2>Choose your path</h2>
-      <p>Each starts with the first test and ends deep in the language.</p>
+      <p>Same zen. Different syntax.</p>
     </div>
     <div class="filters" role="group" aria-labelledby="filters-label">
       <span id="filters-label" class="filters-label">What do you want to do?</span>
@@ -275,12 +275,13 @@
       <h2>What is a koan?</h2>
       <div class="about">
         <p>
-          In Zen, a koan is a puzzle you sit with until it clicks. Here, it's a few lines of code, a
-          test that fails, and a blank, <code class="blank">___</code>, waiting for your answer.
+          In Zen, a koan is a paradox meant to short-circuit logic and wake you up. Here, logic is
+          allowed: a few lines of code, a test that fails, and a blank, <code class="blank">___</code>,
+          waiting for your answer.
         </p>
         <p>
-          <strong>Test-driven.</strong> Write the test first, watch it fail, then make it pass: red,
-          then green. Every koan begins red. Your answer turns it green.
+          <strong>Test-driven.</strong> Every koan comes with its tests already written, and already
+          failing. Your answer turns them from red to green.
         </p>
       </div>
       <ol class="steps">
