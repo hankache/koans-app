@@ -1,7 +1,7 @@
 # JavaScript
 
 Learn modern JavaScript from its values to async functions, through 70 koans written the way most
-JavaScript is tested: with [Vitest](https://vitest.dev)-style `expect` (the same API as Jest). They
+JavaScript is tested: with [Vitest](https://vitest.dev)'s `expect` (the same API as Jest's). They
 run on the browser's own JavaScript engine, so there's no interpreter to download. Its path is at
 `#/javascript/`.
 
