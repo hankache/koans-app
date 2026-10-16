@@ -1,0 +1,4 @@
+{
+  "title": "Type hints",
+  "blurb": "Annotations, unions, protocols, typed dicts and generics: what they say, and what Python does with them when it runs."
+}

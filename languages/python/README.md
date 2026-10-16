@@ -1,6 +1,6 @@
 # Python
 
-Learn Python through 71 koans, from the first `assert` to classes, generators and the standard
+Learn Python through 86 koans, from the first `assert` to classes, generators and the standard
 library, written the way most Python developers write tests: with [pytest](https://pytest.org)'s
 plain `assert` statements. The koans run on [Pyodide](https://pyodide.org): CPython 3.14 compiled
 to WebAssembly. Its path is at `#/python/`.
@@ -17,9 +17,11 @@ to WebAssembly. Its path is at `#/python/`.
 | 6  | Control flow               | 5     | `if`, `for`, `while` and loop `else`, `match`, the walrus                     |
 | 7  | Functions                  | 9     | defaults, `*args`/`**kwargs`, keyword- and positional-only, lambdas, closures, scope, decorators, recursion |
 | 8  | Iterators and generators   | 5     | the iterator protocol, generators, generator expressions, `itertools`, built-ins |
-| 9  | Classes                    | 8     | classes, attributes, properties, special methods, inheritance, class and static methods, dataclasses, ABCs |
-| 10 | Exceptions                 | 4     | `try`/`except`/`else`/`finally`, raising, chaining, context managers          |
-| 11 | The standard library       | 6     | `functools`, `operator`, `datetime`, `json`, `re`, `enum`                     |
+| 9  | Classes                    | 11    | classes, attributes, properties, special methods, inheritance, class and static methods, dataclasses, ABCs, `__slots__`, descriptors, `__init_subclass__` and metaclasses |
+| 10 | Exceptions                 | 5     | `try`/`except`/`else`/`finally`, raising, chaining, context managers, exception groups and `except*` |
+| 11 | The standard library       | 8     | `functools`, `operator`, `datetime`, `json`, `re`, `enum`, `heapq` and `bisect`, `statistics` and `random` |
+| 12 | Type hints                 | 4     | annotations, unions and `Optional`, `Protocol` and `TypedDict`, generics and `type` aliases |
+| 13 | Puzzles                    | 5     | FizzBuzz, word frequencies, anagrams, run-length encoding, the sieve of Eratosthenes |
 
 ## How the tests are written
 
