@@ -40,7 +40,7 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/).
 | [Raku](languages/raku/)       | 105   | [Raku++](https://github.com/ash/rakupp) (Raku.js)   | Raku's `Test`      |
 | [Ruby](languages/ruby/)       | 77    | [ruby.wasm](https://github.com/ruby/ruby.wasm) (CRuby 4.0) | RSpec's `expect` |
 | [SQL](languages/sql/)         | 64    | [sql.js](https://github.com/sql-js/sql.js) (SQLite 3.49) | expected rows in `-- expect:` comments |
-| [TypeScript](languages/typescript/) | 55 | the TypeScript 6 compiler, then the browser's engine | Vitest's `expect` and `expectTypeOf` |
+| [TypeScript](languages/typescript/) | 65 | the TypeScript 6 compiler, then the browser's engine | Vitest's `expect` and `expectTypeOf` |
 
 ## Running it locally
 

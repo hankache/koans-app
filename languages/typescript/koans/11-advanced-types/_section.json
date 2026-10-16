@@ -1,0 +1,4 @@
+{
+  "title": "Advanced types",
+  "blurb": "Types that refer to themselves, distribution and how to stop it, defaults, merging declarations, constructor types and decorators."
+}

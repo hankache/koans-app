@@ -1,6 +1,6 @@
 # TypeScript
 
-Learn TypeScript's types, from annotations to generics, through 55 koans. Its path is at
+Learn TypeScript's types, from annotations to generics, through 65 koans. Its path is at
 `#/typescript/`. The koans are type-checked with the real TypeScript compiler (6.0), in the
 browser, and then run as JavaScript. They're tested the way TypeScript projects test with
 [Vitest](https://vitest.dev): `expect` for values and `expectTypeOf` for types.
@@ -19,6 +19,8 @@ browser, and then run as JavaScript. They're tested the way TypeScript projects 
 | 8  | Utility types              | 5     | `Partial`/`Required`/`Readonly`, `Pick`/`Omit`, `Exclude`/`Extract`/`NonNullable`, `ReturnType`/`Parameters`/`Awaited`, `Record`/`InstanceType` |
 | 9  | Classes                    | 5     | parameter properties, access modifiers, `abstract`, `implements`, static and generic classes |
 | 10 | Enums, satisfies and more  | 5     | enums, `as const` objects, `satisfies`, branded types, async types     |
+| 11 | Advanced types             | 6     | recursive types, distribution and `[T]`, defaults, `const` and `NoInfer`, declaration merging, constructor types, decorators |
+| 12 | Type puzzles               | 4     | tuple tricks, string types, type arithmetic, typed events             |
 
 ## How the tests are written
 
