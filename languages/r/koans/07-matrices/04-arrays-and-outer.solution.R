@@ -1,0 +1,8 @@
+products <- outer(1:3, 1:4)
+test_that("outer makes every product", expect_equal(products[3, 4], 12))
+test_that("one row per item of the first vector", expect_equal(dim(products), c(3L, 4L)))
+test_that("outer takes any function", expect_equal(outer(1:2, 1:3, "+")[2, ], c(3, 4, 5)))
+cube <- array(1:24, dim = c(2, 3, 4))
+test_that("an array can have three dimensions", expect_equal(cube[2, 3, 4], 24L))
+test_that("filled first index first", expect_equal(cube[2, 1, 1], 2L))
+test_that("apply along the third dimension", expect_equal(apply(cube, 3, sum)[1], 21L))

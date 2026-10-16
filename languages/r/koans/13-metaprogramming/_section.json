@@ -1,0 +1,4 @@
+{
+  "title": "Metaprogramming",
+  "blurb": "Code as data: quoting, substitute, building calls, environments, and evaluating code in a data frame."
+}

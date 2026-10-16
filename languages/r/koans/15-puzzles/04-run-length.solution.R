@@ -1,0 +1,6 @@
+r <- rle(strsplit("aaabcc", "")[[1]])
+test_that("rle finds how long each run is", expect_equal(r$lengths, c(3L, 1L, 2L)))
+test_that("and their values", expect_equal(r$values, c("a", "b", "c")))
+test_that("pasted together", expect_equal(paste0(r$lengths, r$values, collapse = ""), "3a1b2c"))
+test_that("inverse.rle undoes it", expect_equal(paste(inverse.rle(r), collapse = ""), "aaabcc"))
+test_that("the longest run of ones", expect_equal(max(rle(c(1, 1, 0, 1, 1, 1, 0))$lengths), 3L))

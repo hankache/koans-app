@@ -36,7 +36,7 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/).
 | [Lua](languages/lua/)         | 63    | [wasmoon](https://github.com/ceifa/wasmoon) (Lua 5.4) | busted's assertions |
 | [PHP](languages/php/)         | 79    | [php-wasm](https://github.com/seanmorris/php-wasm) (PHP 8.5) | PHPUnit's assertions |
 | [Python](languages/python/)   | 86    | [Pyodide](https://pyodide.org) (CPython 3.14)       | pytest's plain `assert`s |
-| [R](languages/r/)             | 63    | [webR](https://docs.r-wasm.org/webr/latest/) (R 4.6) | testthat's expectations |
+| [R](languages/r/)             | 78    | [webR](https://docs.r-wasm.org/webr/latest/) (R 4.6) | testthat's expectations |
 | [Raku](languages/raku/)       | 105   | [Raku++](https://github.com/ash/rakupp) (Raku.js)   | Raku's `Test`      |
 | [Ruby](languages/ruby/)       | 90    | [ruby.wasm](https://github.com/ruby/ruby.wasm) (CRuby 4.0) | RSpec's `expect` |
 | [SQL](languages/sql/)         | 64    | [sql.js](https://github.com/sql-js/sql.js) (SQLite 3.49) | expected rows in `-- expect:` comments |

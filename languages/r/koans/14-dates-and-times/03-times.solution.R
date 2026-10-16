@@ -1,0 +1,8 @@
+t <- as.POSIXct("2026-10-16 14:30:00", tz = "UTC")
+test_that("format writes the time", expect_equal(format(t, "%H:%M"), "14:30"))
+test_that("a time is seconds since 1970", expect_equal(as.numeric(as.POSIXct("1970-01-01 00:01:00", tz = "UTC")), 60))
+test_that("adding a number adds seconds", expect_equal(format(t + 90, "%H:%M:%S"), "14:31:30"))
+later <- as.POSIXct("2026-10-16 18:00:00", tz = "UTC")
+test_that("difftime in hours", expect_equal(as.numeric(difftime(later, t, units = "hours")), 3.5))
+test_that("trunc rounds down to the hour", expect_equal(format(trunc(t, "hours"), "%H:%M"), "14:00"))
+test_that("as.Date keeps the day", expect_equal(as.Date(t), as.Date("2026-10-16")))

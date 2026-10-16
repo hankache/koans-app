@@ -1,6 +1,6 @@
 # R
 
-Learn R from its vectors to its data frames, through 63 koans written the way R packages are
+Learn R from its vectors to its data frames, through 78 koans written the way R packages are
 tested: with [testthat](https://testthat.r-lib.org)'s `test_that` and `expect_*`. They run on
 [webR](https://docs.r-wasm.org/webr/latest/): R 4.6 compiled to WebAssembly. Its path is at `#/r/`.
 
@@ -14,12 +14,15 @@ tested: with [testthat](https://testthat.r-lib.org)'s `test_that` and `expect_*`
 | 4  | Strings                | 6     | `paste`, measuring and cutting, formatting, splitting, regular expressions, dates |
 | 5  | Factors                | 3     | factors, `table`, `cut` and ordered factors                           |
 | 6  | Lists                  | 5     | lists, changing them, nesting, flattening, names and stacking         |
-| 7  | Matrices               | 3     | matrices, matrix arithmetic, rows and columns                         |
+| 7  | Matrices               | 4     | matrices, matrix arithmetic, rows and columns, arrays and `outer`     |
 | 8  | Data frames            | 7     | data frames, selecting, adding columns, sorting, grouping, merging, built-in data |
 | 9  | Control flow           | 4     | `if` and `ifelse`, loops, `switch`, vectorizing instead               |
-| 10 | Functions              | 7     | functions, defaults and `missing`, `...`, lazy evaluation, closures, the apply family, pipes |
+| 10 | Functions              | 8     | functions, defaults and `missing`, `...`, lazy evaluation, closures, the apply family, pipes, `Map`/`Filter`/`Reduce` |
 | 11 | Objects                | 4     | attributes, S3 classes, generics and inheritance, S4                  |
 | 12 | Conditions             | 4     | warnings and messages, `tryCatch`, custom conditions, `on.exit`       |
+| 13 | Metaprogramming        | 5     | `quote` and `eval`, `substitute`, `bquote` and `call`, environments, evaluating in data |
+| 14 | Dates and times        | 3     | date parts and `POSIXlt`, `difftime`, `seq` and `cut`, `POSIXct` times |
+| 15 | Puzzles                | 5     | FizzBuzz, word frequencies, anagrams, run-length encoding, the sieve of Eratosthenes |
 
 ## How the tests are written
 
