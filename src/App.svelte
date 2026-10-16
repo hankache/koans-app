@@ -46,6 +46,12 @@
     );
   });
 
+  // The header's height, for what sticks below it (the koan page's result panel).
+  let barHeight = $state(0);
+  $effect(() => {
+    document.documentElement.style.setProperty('--bar-height', `${barHeight}px`);
+  });
+
   onMount(() => {
     const onHash = () => {
       hash = location.hash;
@@ -56,7 +62,7 @@
   });
 </script>
 
-<header class="bar">
+<header class="bar" bind:offsetHeight={barHeight}>
   <a class="brand" href="#/"><GateMark size={32} /> <span>{site.name}</span></a>
   {#if shown}
     <a class="lang" href={shown.href()}>{shown.pack.name}</a>

@@ -40,6 +40,7 @@ describe('markCode', () => {
     ['+ joins strings', '[+] joins strings'],
     ['is_a? asks the class', '[is_a?] asks the class'],
     ['toBe, then toEqual.', '[toBe], then [toEqual].'],
+    ['.not.toBe wants a difference', '[.not.toBe] wants a difference'],
   ])('%s', (text, want) => {
     expect(show(markCode(text, words))).toBe(want);
   });

@@ -249,7 +249,13 @@
   .crumbs a { color: var(--ink-soft); }
   .crumbs span { margin: 0 0.1rem; }
   .layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 1.75rem; align-items: start; }
-  aside { position: sticky; top: 1rem; }
+  /* Sticks below the site's header, and scrolls inside rather than run past the window. */
+  aside {
+    position: sticky;
+    top: calc(var(--bar-height, 0px) + 1rem);
+    max-height: calc(100vh - var(--bar-height, 0px) - 2rem);
+    overflow-y: auto;
+  }
   .title-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem 1rem; }
   h1 { font-size: clamp(1.7rem, 4vw, 2.4rem); display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; }
   .badge {
@@ -323,7 +329,7 @@
 
   @media (max-width: 860px) {
     .layout { grid-template-columns: minmax(0, 1fr); }
-    aside { position: static; }
+    aside { position: static; max-height: none; overflow: visible; }
   }
   @media (max-width: 640px) {
     article { padding-bottom: 6rem; }

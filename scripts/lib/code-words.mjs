@@ -68,12 +68,16 @@ export function codeWords(code, comment, { names = 'all' } = {}) {
     if (sigil) words.add(token.slice(1));
     for (let i = 0; i < parts.length; i++) {
       words.add(parts[i]);
-      if (i > 0) words.add(`.${parts[i]}`);
       if (i > 0) words.add(parts.slice(0, i + 1).join('.'));
+      // A chain's later links, on their own: .toBe, .not.toBe.
+      for (let j = i + 1; i > 0 && j <= parts.length; j++) words.add(`.${parts.slice(i, j).join('.')}`);
     }
   }
-  // A method or attribute after a closing bracket: ).not, ].length.
-  for (const [, name] of plain.matchAll(/[)\]]\.([A-Za-z_]\w*[?!]?)/g)) words.add(`.${name}`);
+  // Methods and attributes after a closing bracket, and their chains: ).not, ].length, ).not.toThrow.
+  for (const [, chain] of plain.matchAll(/[)\]]((?:\.[A-Za-z_]\w*[?!]?)+)/g)) {
+    const names = chain.slice(1).split('.');
+    for (let i = 0; i < names.length; i++) words.add(`.${names.slice(0, i + 1).join('.')}`);
+  }
   // Operators, two characters or more, or one that reads clearly on its own.
   for (const [op] of plain.matchAll(/[+\-*/%=<>!&|^~?.:]+/g)) {
     if (op.length > 1 || '+*/%<>!&|^~?'.includes(op)) words.add(op);
