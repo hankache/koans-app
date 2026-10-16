@@ -39,7 +39,7 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/).
 | [R](languages/r/)             | 78    | [webR](https://docs.r-wasm.org/webr/latest/) (R 4.6) | testthat's expectations |
 | [Raku](languages/raku/)       | 105   | [Raku++](https://github.com/ash/rakupp) (Raku.js)   | Raku's `Test`      |
 | [Ruby](languages/ruby/)       | 90    | [ruby.wasm](https://github.com/ruby/ruby.wasm) (CRuby 4.0) | RSpec's `expect` |
-| [SQL](languages/sql/)         | 64    | [sql.js](https://github.com/sql-js/sql.js) (SQLite 3.49) | expected rows in `-- expect:` comments |
+| [SQL](languages/sql/)         | 72    | [sql.js](https://github.com/sql-js/sql.js) (SQLite 3.49) | expected rows in `-- expect:` comments |
 | [TypeScript](languages/typescript/) | 65 | the TypeScript 6 compiler, then the browser's engine | Vitest's `expect` and `expectTypeOf` |
 
 ## Running it locally

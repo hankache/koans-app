@@ -1,6 +1,6 @@
 # SQL
 
-Learn SQL from `SELECT` to window functions, through 64 koans. They run on
+Learn SQL from `SELECT` to window functions, through 72 koans. They run on
 [sql.js](https://github.com/sql-js/sql.js): SQLite compiled to WebAssembly, about 0.7 MB. Its path
 is at `#/sql/`.
 
@@ -8,15 +8,15 @@ is at `#/sql/`.
 
 | # | Group                        | Koans | Covers                                                            |
 |---|------------------------------|-------|-------------------------------------------------------------------|
-| 1 | Awakening                    | 7     | first queries, tables, `WHERE`, `NULL`, `ORDER BY` and `LIMIT`, `IN` and `BETWEEN`, aliases |
-| 2 | Expressions and functions    | 10    | numbers and types, strings, `LIKE` and `GLOB`, `CASE`, dates, type affinity, arithmetic functions, `coalesce` and `nullif`, more string functions, date arithmetic |
+| 1 | Awakening                    | 8     | first queries, tables, `WHERE`, `NULL`, `ORDER BY` and `LIMIT`, `IN` and `BETWEEN`, aliases, sorting `NULL`s |
+| 2 | Expressions and functions    | 12    | numbers and types, strings, `LIKE` and `GLOB`, `CASE`, dates, type affinity, arithmetic functions, `coalesce` and `nullif`, more string functions, date arithmetic, collation, math functions |
 | 3 | Grouping                     | 8     | aggregates, `GROUP BY`, `HAVING`, `DISTINCT`, `group_concat`, `FILTER`, pivoting, `NULL`s in aggregates |
 | 4 | Joins                        | 9     | inner, left, self and cross joins, set operations, joins with aggregates, semi- and anti-joins, `USING`, many to many |
-| 5 | Changing data                | 9     | `INSERT`/`UPDATE`/`DELETE`, constraints, keys, upserts, transactions, `INSERT … SELECT` and `UPDATE … FROM`, `RETURNING`, defaults and generated columns, `ALTER TABLE` |
+| 5 | Changing data                | 10    | `INSERT`/`UPDATE`/`DELETE`, constraints, keys, upserts, transactions, `INSERT … SELECT` and `UPDATE … FROM`, `RETURNING`, defaults and generated columns, `ALTER TABLE`, indexes |
 | 6 | Subqueries and CTEs          | 6     | subqueries, `WITH`, recursive CTEs, correlated subqueries, `EXISTS` and `IN`, hierarchies |
-| 7 | Window functions             | 5     | window functions, ranking, frames, `lag` and `lead`, partitions   |
+| 7 | Window functions             | 7     | window functions, ranking, frames, `lag` and `lead`, partitions, value functions, `ROWS`/`GROUPS`/`RANGE` and `EXCLUDE` |
 | 8 | SQLite features              | 5     | JSON, `json_each`, views, triggers, `STRICT` tables               |
-| 9 | Puzzles                      | 5     | top N per group, gaps and islands, duplicates, a calendar, a running balance |
+| 9 | Puzzles                      | 7     | top N per group, gaps and islands, duplicates, a calendar, a running balance, the second highest, the median |
 
 ## How SQL koans test
 
