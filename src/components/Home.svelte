@@ -309,8 +309,8 @@
 
   <section class="story">
     <div class="story-text">
-      <h2>Grown from Raku Koans</h2>
-      <p>koans.app began as Raku Koans and grew to many languages. The koans and the site are open source.</p>
+      <h2>No test ever fails in the wrong place.</h2>
+      <p>Red is where you are. Green is where you're going. Walk on.</p>
     </div>
     <div class="story-actions">
       <a class="action" href="{site.repo}/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contribute</a>
@@ -547,8 +547,8 @@
     gap: 16px 40px;
     align-items: center;
   }
-  .story h2 { font-size: 24px; margin-bottom: 6px; }
-  .story-text p { margin: 0; color: var(--ink-soft); }
+  .story h2 { font-size: 24px; margin-bottom: 6px; text-wrap: balance; }
+  .story-text p { margin: 0; color: var(--ink-soft); text-wrap: pretty; }
   .story-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
   .action { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 1px solid var(--line); background: var(--bg-raised); text-decoration: none; font-weight: 500; }
   .action svg { width: 16px; height: 16px; }
