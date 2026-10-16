@@ -7,7 +7,6 @@
   import ThemeToggle from './components/ThemeToggle.svelte';
   import Home from './components/Home.svelte';
   import PathMap from './components/PathMap.svelte';
-  import KoanView from './components/KoanView.svelte';
   import Meter from './components/Meter.svelte';
   import { site } from './site';
 
@@ -28,9 +27,15 @@
     if (route.page === 'redirect') location.replace(route.to);
   });
 
+  // The koan page brings the editor, most of the site's code: it loads only once a language is
+  // opened, so the home page and the paths stay light. Starting then, it's ready by the first koan.
+  let koanPage: Promise<typeof import('./components/KoanView.svelte')> | undefined;
+  const loadKoanPage = () => (koanPage ??= import('./components/KoanView.svelte'));
+
   $effect(() => {
     const id = lang;
     loadError = '';
+    if (id) loadKoanPage();
     if (!id || untrack(() => course)?.pack.id === id) return;
     const pack = packById.get(id)!;
     openCourse(pack).then(
@@ -81,7 +86,11 @@
   {:else if lang && !shown}
     <p class="status" aria-busy="true">Opening {packById.get(lang)?.name}…</p>
   {:else if shown && route.page === 'koan' && shown.koanById.has(route.id)}
-    {#key `${lang}/${route.id}`}<KoanView course={shown} id={route.id} />{/key}
+    {#await loadKoanPage() then { default: KoanView }}
+      {#key `${lang}/${route.id}`}<KoanView course={shown} id={route.id} />{/key}
+    {:catch}
+      <p class="status">Could not load the koan page. Check your connection and reload the page.</p>
+    {/await}
   {:else if shown}
     {#key lang}<PathMap course={shown} />{/key}
   {/if}
