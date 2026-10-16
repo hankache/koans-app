@@ -1,0 +1,7 @@
+assert.are.equal(9223372036854775807, math.maxinteger, 'the largest integer, 2^63 - 1')
+assert.are.equal(math.mininteger, math.maxinteger + 1, 'one more wraps around')
+assert.are.equal(true, math.ult(1, -1), 'math.ult compares as unsigned, where -1 is the largest')
+assert.has_error(function() return 1 // 0 end, 'integer division by zero is an error')
+assert.are.equal(math.huge, 1.0 // 0, 'float division by zero is infinity')
+assert.are.equal(3, math.tointeger(3.0), 'tointeger turns a whole float into an integer')
+assert.are.equal(nil, math.tointeger(3.5), 'and gives nil for the rest')

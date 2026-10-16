@@ -1,0 +1,8 @@
+local packed = string.pack('>I2', 258)
+assert.are.equal(2, #packed, 'two bytes')
+assert.are.same({1, 2}, {packed:byte(1, -1)}, '> puts the big end first')
+assert.are.same({2, 1}, {string.pack('<I2', 258):byte(1, -1)}, '< puts it last')
+assert.are.equal(258, (string.unpack('>I2', packed)), 'unpack reads it back')
+assert.are.equal(3, select(2, string.unpack('>I2', packed)), 'and says where the next value starts')
+assert.are.equal(8, string.packsize('i4i4'), 'packsize: the size of a format')
+assert.are.equal('hi', (string.unpack('s1', string.pack('s1', 'hi'))), 's1: text after a one-byte length')

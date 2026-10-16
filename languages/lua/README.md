@@ -1,6 +1,6 @@
 # Lua
 
-Learn Lua from its tables to its coroutines, through 63 koans written with the assertions of
+Learn Lua from its tables to its coroutines, through 73 koans written with the assertions of
 [busted](https://lunarmodules.github.io/busted/), Lua's most used test framework. They run on
 [wasmoon](https://github.com/ceifa/wasmoon): Lua 5.4 compiled to WebAssembly, under half a
 megabyte. Its path is at `#/lua/`.
@@ -9,16 +9,17 @@ megabyte. Its path is at `#/lua/`.
 
 | #  | Group                  | Koans | Covers                                                               |
 |----|------------------------|-------|----------------------------------------------------------------------|
-| 1  | Awakening              | 7     | the assertions, truthiness, types, equality, errors and `pcall`, locals and globals, multiple assignment |
-| 2  | Numbers                | 7     | `/` and `//`, integers and floats, conversion, `math`, formatting, bitwise operators, comparing floats |
+| 1  | Awakening              | 8     | the assertions, truthiness, types, equality, errors and `pcall`, locals and globals, multiple assignment, `<const>` |
+| 2  | Numbers                | 8     | `/` and `//`, integers and floats, conversion, `math`, formatting, bitwise operators, comparing floats, integer limits |
 | 3  | Control flow           | 4     | `if` and `elseif`, the numeric `for`, `while` and `repeat`, `break` and `goto` |
 | 4  | Strings                | 9     | strings, methods, patterns, splitting and joining, UTF-8, pattern classes, `gsub` with functions, building strings, long strings |
-| 5  | Tables                 | 9     | arrays, dictionaries, iteration, table functions, references, length and holes, insert and move, sets, sorting records |
+| 5  | Tables                 | 10    | arrays, dictionaries, iteration, table functions, references, length and holes, insert and move, sets, sorting records, weak tables |
 | 6  | Functions              | 9     | multiple results, varargs, closures, higher-order functions, methods, recursion, memoization, named arguments, iterators |
 | 7  | Metatables and objects | 7     | metatables, operators, classes, inheritance, more metamethods, `__newindex` and proxies, modules |
 | 8  | Coroutines             | 5     | coroutines, passing values, generators, pipelines, errors            |
-| 9  | Errors                 | 3     | error values, error levels, `xpcall`                                 |
-| 10 | The standard library   | 3     | dates and times, `select` and `unpack`, `load` and environments      |
+| 9  | Errors                 | 4     | error values, error levels, `xpcall`, `<close>` variables            |
+| 10 | The standard library   | 4     | dates and times, `select` and `unpack`, `load` and environments, `string.pack` |
+| 11 | Puzzles                | 5     | FizzBuzz, word frequencies, anagrams, run-length encoding, Roman numerals |
 
 ## The assertions
 
