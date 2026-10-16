@@ -1,6 +1,6 @@
 # PHP
 
-Learn modern PHP from its arrays to its enums, through 68 koans written with the assertions of
+Learn modern PHP from its arrays to its enums, through 79 koans written with the assertions of
 [PHPUnit](https://phpunit.de), the test framework most PHP projects use. They run on
 [php-wasm](https://github.com/seanmorris/php-wasm): PHP 8.5 compiled to WebAssembly. Its path is
 at `#/php/`.
@@ -14,12 +14,13 @@ at `#/php/`.
 | 3  | Strings                | 8     | quotes and interpolation, heredoc and nowdoc, string functions, searching, splitting and replacing, `sprintf`, bytes and characters, regular expressions |
 | 4  | Arrays                 | 9     | lists, associative arrays, adding and removing, searching, map/filter/reduce, sorting, slicing and merging, destructuring, more array functions |
 | 5  | Control flow           | 5     | conditions, `??` and `??=`, `match`, `switch`, loops                   |
-| 6  | Functions              | 9     | types, defaults and nullable types, named arguments, variadics, references, closures, callables, the pipe operator, recursion |
-| 7  | Classes                | 9     | classes and objects, constructors and `readonly`, visibility, static members, inheritance, abstract classes and interfaces, traits, magic methods, property hooks |
-| 8  | Enums and types        | 5     | enums, backed enums, `?->`, built-in interfaces, comparing objects     |
-| 9  | Generators             | 4     | generators, keys and `yield from`, `send`, lazy pipelines              |
+| 6  | Functions              | 10    | types, defaults and nullable types, named arguments, variadics, references, closures, callables, the pipe operator, recursion, static variables |
+| 7  | Classes                | 10    | classes and objects, constructors and `readonly`, visibility, static members, inheritance, abstract classes and interfaces, traits, magic methods, property hooks, `static::` |
+| 8  | Enums and types        | 7     | enums, backed enums, `?->`, built-in interfaces, comparing objects, attributes, type juggling |
+| 9  | Generators and fibers  | 5     | generators, keys and `yield from`, `send`, lazy pipelines, fibers      |
 | 10 | Errors                 | 3     | `try`/`catch`/`finally`, the `Throwable` hierarchy, custom exceptions  |
-| 11 | The standard library   | 4     | JSON, dates, SPL data structures, `bcmath`                             |
+| 11 | The standard library   | 5     | JSON, dates, SPL data structures, `bcmath`, `WeakMap` and `WeakReference` |
+| 12 | Puzzles                | 5     | FizzBuzz, word frequencies, anagrams, run-length encoding, Roman numerals |
 
 The koans teach PHP as it is now, 8.4 and 8.5 included: property hooks, asymmetric visibility,
 `array_find`, `array_first`, `clone` with new values and the pipe operator, `|>`.

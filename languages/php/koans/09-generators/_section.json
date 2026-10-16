@@ -1,4 +1,4 @@
 {
-  "title": "Generators",
-  "blurb": "Functions that yield values one at a time."
+  "title": "Generators and fibers",
+  "blurb": "Functions that yield values one at a time, and functions that pause and resume."
 }
