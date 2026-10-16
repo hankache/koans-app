@@ -1,6 +1,6 @@
 # Ruby
 
-Learn Ruby from its objects to its metaprogramming, through 77 koans written the way most Ruby is
+Learn Ruby from its objects to its metaprogramming, through 90 koans written the way most Ruby is
 tested: with [RSpec](https://rspec.info)'s `expect`. They run on
 [ruby.wasm](https://github.com/ruby/ruby.wasm): CRuby 4.0 compiled to WebAssembly. Its path is at
 `#/ruby/`.
@@ -15,19 +15,20 @@ project, have a license that can't be combined with this one, so nothing here is
 | 1  | Awakening                        | 6     | `expect`, truth, `nil`, objects, equality, errors                 |
 | 2  | Numbers                          | 6     | integer arithmetic, big integers, floats, rationals, conversion, numeric methods |
 | 3  | Strings                          | 7     | quotes and interpolation, methods, slicing, mutation and freezing, formatting, heredocs, characters |
-| 4  | Symbols and regular expressions  | 3     | symbols, regexp basics, `scan` and `gsub`                         |
-| 5  | Ranges                           | 2     | ranges, endless ranges and `case`                                 |
+| 4  | Symbols and regular expressions  | 4     | symbols, regexp basics, `scan` and `gsub`, named captures         |
+| 5  | Ranges                           | 3     | ranges, endless ranges and `case`, slicing and `clamp`, `cover?`  |
 | 6  | Arrays                           | 7     | arrays, adding and removing, combining, sorting, transforming, searching, destructuring |
 | 7  | Hashes                           | 5     | hashes, defaults, iterating and transforming, grouping, merging   |
 | 8  | Enumerable                       | 5     | `reduce`, neighbours, enumerators, `lazy`, your own `Enumerable`  |
-| 9  | Control flow                     | 5     | conditions, `case`/`when`, pattern matching, loops, values        |
+| 9  | Control flow                     | 8     | conditions, `case`/`when`, pattern matching, loops, values, `===`, `catch`/`throw`, fibers |
 | 10 | Methods                          | 5     | defining, keyword arguments, splats, method objects, naming conventions |
 | 11 | Blocks, procs and lambdas        | 5     | `yield`, explicit blocks, procs and lambdas, closures, composition |
-| 12 | Classes                          | 7     | instances, accessors, class methods, inheritance, visibility, `to_s` and `==`, `Comparable` |
+| 12 | Classes                          | 9     | instances, accessors, class methods, inheritance, visibility, `to_s` and `==`, `Comparable`, operators, copies |
 | 13 | Modules                          | 4     | mixins, `prepend` and `extend`, namespaces, module functions      |
 | 14 | Structs and data                 | 2     | `Struct`, `Data`                                                  |
 | 15 | Exceptions                       | 4     | `rescue`/`else`/`ensure`, the hierarchy, custom exceptions, `retry` and causes |
-| 16 | Metaprogramming                  | 4     | sending messages, `define_method`, `method_missing`, open classes and refinements |
+| 16 | Metaprogramming                  | 5     | sending messages, `define_method`, `method_missing`, open classes and refinements, introspection |
+| 17 | Puzzles                          | 5     | FizzBuzz, word frequencies, anagrams, run-length encoding, Roman numerals |
 
 ## How the tests are written
 
