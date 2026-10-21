@@ -20,6 +20,8 @@
     gained: number;
     running: boolean;
     runtimeError?: string;
+    /** What the interpreter is doing while it loads, and how far its download has got (0 to 1). */
+    loading?: { text: string; detail?: string; fraction?: number } | null;
     nextHref?: string;
     /** The answer on offer, hidden until the learner reveals it. */
     hint?: Reveal | null;
@@ -28,7 +30,7 @@
     /** The koan's code words, space-separated: shown as code in the tests' descriptions. */
     words?: string;
   }
-  let { pack, pathHref, report, gained, running, runtimeError, nextHref, hint, onuse, words = '' }: Props = $props();
+  let { pack, pathHref, report, gained, running, runtimeError, loading, nextHref, hint, onuse, words = '' }: Props = $props();
   const codeWords = $derived(new Set(words.split(' ')));
 
   // Which answer was revealed: a new line or a new answer hides it again.
@@ -107,12 +109,23 @@
   {#if f.blank}Meditate on {f.line ? `line ${f.line}` : 'this'}{:else}Not quite{#if f.line}<span class="line">— line {f.line}</span>{/if}{/if}
 {/snippet}
 
+<!-- The figures change ten times a second: hidden from screen readers, which hear the words. -->
+{#snippet preparing()}
+  {#if loading}
+    <p class="small muted">{loading.text}{#if loading.detail}<span class="detail" aria-hidden="true">{loading.detail}</span>{/if}</p>
+  {/if}
+{/snippet}
+
 <div class="panel" aria-live="polite">
+  {#if (running || !report) && loading?.fraction !== undefined}
+    <div class="edge loading" aria-hidden="true"><span style:width="{loading.fraction * 100}%"></span></div>
+  {/if}
   {#if running}
-    <div class="body"><p class="lead muted">Meditating…</p></div>
+    <div class="body"><p class="lead muted">Meditating…</p>{@render preparing()}</div>
   {:else if !report}
     <div class="body">
       <p class="lead muted">Replace each <code class="blank">___</code>, then press <kbd>Run</kbd> or <kbd>{modKey}</kbd>+<kbd>Enter</kbd>.</p>
+      {@render preparing()}
       {#if runtimeError}<p class="small error-note">{runtimeError}</p>{/if}
       {@render answer()}
     </div>
@@ -188,6 +201,9 @@
   /* How many tests pass: a line along the top edge. */
   .edge { height: 4px; background: var(--bg-sunken); }
   .edge > span { display: block; height: 4px; background: var(--pass); transition: width 0.5s; }
+  /* Or, while the interpreter downloads, how much of it has arrived. */
+  .edge.loading > span { background: var(--lang, var(--ink-soft)); transition: width 0.15s; }
+  .detail { margin-left: 0.5em; font-variant-numeric: tabular-nums; }
   .strip {
     display: flex;
     align-items: baseline;

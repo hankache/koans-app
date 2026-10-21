@@ -5,6 +5,7 @@
   import type { Report } from '../lib/tap';
   import { inlineCode } from '../lib/inline-code';
   import { modKey, modPressed } from '../lib/platform';
+  import { watchDownload, type Download } from '../lib/offline';
   import Editor from './Editor.svelte';
   import Meditation from './Meditation.svelte';
   import Emblem from './Emblem.svelte';
@@ -47,9 +48,40 @@
   // Only surfaced if the interpreter fails to load.
   const LOAD_ERROR = `Could not load the ${pack.name} interpreter. Check your connection and reload the page.`;
   let runtimeError = $state<string | undefined>();
-  untrack(() => course).getRuntime().ready.catch(e => {
-    console.error(e);
-    runtimeError = LOAD_ERROR;
+  let ready = $state(false);
+  untrack(() => course).getRuntime().ready.then(
+    () => (ready = true),
+    e => {
+      console.error(e);
+      runtimeError = LOAD_ERROR;
+    },
+  );
+
+  // While the interpreter loads: what it's doing, after a moment (a saved one is often ready by
+  // then). Its download's progress comes from the service worker, when there is one.
+  let waited = $state(false);
+  let download = $state<Download | null>(null);
+  $effect(() => {
+    const timer = setTimeout(() => (waited = true), 300);
+    const stop = watchDownload(pack.worker.url.split('/')[1], d => (download = d));
+    return () => {
+      clearTimeout(timer);
+      stop();
+    };
+  });
+  const loading = $derived.by(() => {
+    if (ready || runtimeError || !waited) return null;
+    if (!download) return { text: `Preparing ${pack.name}…` };
+    if (download.received < download.total) {
+      // Received rounded down: "13.5 of 13.5 MB" only once it's all there.
+      const mb = (n: number, round = Math.round) => (round(n / 1e5) / 10).toFixed(1);
+      return {
+        text: `Downloading ${pack.name}…`,
+        detail: `${mb(download.received, Math.floor)} of ${mb(download.total)} MB`,
+        fraction: download.received / download.total,
+      };
+    }
+    return { text: `Starting ${pack.name}…` };
   });
 
   async function run() {
@@ -130,6 +162,7 @@
   // On a phone: a bar with Run and a one-line result; the full report opens as a sheet.
   let sheet = $state(false);
   const summary = $derived.by(() => {
+    if (loading) return loading.detail ? `${loading.text} ${loading.detail}` : loading.text;
     if (running) return 'Meditating…';
     if (!report) return runtimeError ?? 'Replace each ___, then Run';
     if (report.status === 'passed') return '✓ Enlightenment!';
@@ -221,7 +254,7 @@
 
     <aside class:open={sheet}>
       <button class="sheet-close" onclick={() => (sheet = false)} aria-label="Close the report">×</button>
-      <Meditation words={koan.words} {report} {gained} {running} {hint} onuse={() => hint && editor.fillAnswer(hint)} {runtimeError} {pack} pathHref={course.href()} nextHref={nav.next ? course.href(nav.next.id) : undefined} />
+      <Meditation words={koan.words} {report} {gained} {running} {loading} {hint} onuse={() => hint && editor.fillAnswer(hint)} {runtimeError} {pack} pathHref={course.href()} nextHref={nav.next ? course.href(nav.next.id) : undefined} />
     </aside>
   </div>
 
@@ -229,7 +262,9 @@
   <div class="bar">
     <button class="summary" class:bad={report && report.status !== 'passed'} class:good={report?.status === 'passed'} onclick={() => (sheet = true)} aria-label="Show the test report: {summary}">
       <span>{summary}</span>
-      {#if report && report.status !== 'error' && report.tests.length}
+      {#if loading?.fraction !== undefined}
+        <span class="bar-track loading"><span style:width="{Math.round(loading.fraction * 100)}%"></span></span>
+      {:else if report && report.status !== 'error' && report.tests.length}
         <span class="bar-track"><span style:width="{Math.round((passing / report.tests.length) * 100)}%"></span></span>
       {/if}
     </button>
@@ -391,6 +426,7 @@
     .summary.good { color: var(--pass); }
     .bar-track { display: block; width: 100%; height: 4px; background: var(--bg-sunken); }
     .bar-track > span { display: block; height: 4px; background: var(--pass); }
+    .bar-track.loading > span { background: var(--lang); }
     .bar-run { flex: none; min-width: 6rem; min-height: 52px; background: var(--lang); border-color: var(--lang); color: var(--on-lang); font-weight: 700; font-size: 1rem; }
   }
 </style>

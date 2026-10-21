@@ -1,6 +1,6 @@
 // Checks the built site in real browsers: the home page (its koan to try, where to continue, and its
 // phone layout), what each page downloads, every language's koan flow, old addresses, progress
-// across tabs, export/import, and working offline.
+// across tabs, export/import, working offline, and the message while an interpreter downloads.
 //
 //   npm run test:browser                      Chrome and Firefox (builds the site first)
 //   npm run test:browser -- --browser chrome  one of them
@@ -367,6 +367,46 @@ async function checkOffline(browser) {
   }
 }
 
+/**
+ * A first visit on a slow connection (about 3 MB/s) says how far the interpreter's download has got,
+ * then that it's starting, then nothing once it's ready. Chrome only: the slowing down goes through
+ * Chrome's DevTools protocol, for the page, its workers and the service worker alike.
+ */
+async function checkLoading(browser, base) {
+  const slow = { offline: false, latency: 50, downloadThroughput: 3e6, uploadThroughput: 1e6 };
+  const throttle = async target => {
+    if (!['page', 'worker', 'service_worker'].includes(target.type())) return;
+    const session = await target.createCDPSession().catch(() => null);
+    await session?.send('Network.enable').catch(() => {});
+    await session?.send('Network.emulateNetworkConditions', slow).catch(() => {});
+  };
+  const context = await browser.createBrowserContext();
+  // The browser's event, not the context's: a service worker's target only shows up there.
+  browser.on('targetcreated', throttle);
+  try {
+    const page = await context.newPage();
+    await throttle(page.target());
+    await page.goto(`${base}#/python/koan/${koanIds.python[0].id}`);
+    await page.waitForSelector('.cm-content');
+    const said = [];
+    const deadline = Date.now() + 60000;
+    while (Date.now() < deadline) {
+      const now = await text(page, 'aside .panel').catch(() => '');
+      const what = now.match(/(Preparing|Downloading|Starting) Python…\s?([\d.]+ of [\d.]+ MB)?/)?.[0].trim() ?? 'ready';
+      if (said.at(-1) !== what) said.push(what);
+      if (what === 'ready' && said.length > 1) break;
+      await new Promise(r => setTimeout(r, 100));
+    }
+    const downloading = said.filter(s => s.startsWith('Downloading'));
+    const totals = new Set(downloading.map(s => s.split(' of ')[1]));
+    check('a slow first visit counts the download up, in MB', downloading.length >= 3 && totals.size === 1, said.join(' → '));
+    check('then says the interpreter is starting, then nothing', said.at(-2) === 'Starting Python…' && said.at(-1) === 'ready', said.slice(-3).join(' → '));
+  } finally {
+    browser.off('targetcreated', throttle);
+    await context.close();
+  }
+}
+
 // --- Run
 
 const server = await preview({ root, logLevel: 'silent', preview: { port: 0, strictPort: false, open: false } });
@@ -393,6 +433,7 @@ try {
       if (exported) await checkImport(browser, base, exported, dir);
       await checkTabs(browser, base);
       await checkOffline(browser);
+      if (name === 'chrome') await checkLoading(browser, base);
     } finally {
       await browser.close();
     }

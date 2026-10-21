@@ -42,6 +42,7 @@ export default {
     files: ['dist/acorn.mjs'],
     out: runtimeDir,
   },
+  onDemand: ['acorn.mjs'],
 
   async load() {
     let run;

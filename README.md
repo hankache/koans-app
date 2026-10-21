@@ -146,6 +146,11 @@ languages/<id>/koans/ ──build-koans──► src/generated/<id>.json ──�
   opened is downloaded again in the background. On a first visit the interpreter waits for the
   service worker (up to 3 seconds), so that its files are saved too. The site can be installed as
   an app (`manifest.webmanifest`). The dev server doesn't use the service worker.
+- **While an interpreter loads**, the koan page says so: "Downloading Python… 6.1 of 13.5 MB",
+  then "Starting Python…". The service worker reports each file's progress as it streams in; the
+  total is the interpreter's folder, less source maps, licences and what the language's `node.mjs`
+  lists as `onDemand` (files the browser loads only when needed). Without a service worker (the
+  dev server, or a first visit where it was slow to take over) it just says "Preparing Python…".
 
 ## Writing koans
 
@@ -238,7 +243,8 @@ Then list it in [scripts/lib/languages.mjs](scripts/lib/languages.mjs) and
 `npm run test:browser` builds the site, serves it, and drives the Chrome and Firefox installed on
 the machine through every language's koan flow: a failing koan, its solution, an error, an
 infinite loop. It also checks what each page downloads, old addresses, export and import, two
-tabs sharing progress, and every language working offline once opened (with its server stopped).
+tabs sharing progress, every language working offline once opened (with its server stopped), and
+(in Chrome) the download message on a slowed-down first visit.
 It takes a few minutes.
 
 `-- --browser chrome` (or `firefox`) runs one browser. Set `CHROME_PATH` or `FIREFOX_PATH` if a

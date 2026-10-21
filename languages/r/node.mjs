@@ -30,6 +30,9 @@ export default {
     );
   },
 
+  // Node's copy of webR, and R's files that webR reads only when R asks for them (none, for koans).
+  onDemand: ['webr/webr.mjs', 'webr/vfs/'],
+
   /**
    * webR from its npm package (49 MB unpacked, with dependencies for its own demo app), so it
    * isn't installed. Paths under dist/ keep their folders: webR finds R's library by them.

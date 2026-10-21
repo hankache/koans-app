@@ -25,6 +25,9 @@ import typescript from '../../languages/typescript/node.mjs';
  * @property {string} epilogue     run after every koan
  * @property {(code: string) => string[] | Promise<string[]>} lint  problems in a koan that running it can't reveal
  * @property {GithubZip | NpmPackage | NpmTarball} runtime  where the interpreter comes from; its `files` go into `out`
+ * @property {string[]} [onDemand]  files (or folders, ending in /) in public/runtime/<id>/ that the
+ *   browser loads only when needed, if ever: left out of the size the loading bar counts to. Source
+ *   maps, licences and package.json files are left out anyway
  * @property {() => Promise<Engine>} load  the interpreter, under Node
  */
 

@@ -1,10 +1,11 @@
 /// <reference types="vitest/config" />
 import { execSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { readdirSync, readFileSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { defineConfig, type Plugin } from 'vite';
 import { configDefaults } from 'vitest/config';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
+import { languages } from './scripts/lib/languages.mjs';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -46,9 +47,22 @@ function hash(dir: string, files: string[]): string {
 }
 
 /**
+ * What the browser downloads to start a language's interpreter, in bytes: its folder, less what
+ * it loads only on demand (the language's `onDemand`), source maps and licences.
+ */
+function startSize(dir: string, files: string[]): number {
+  const onDemand = languages.find(l => l.id === dir)?.onDemand ?? [];
+  return files
+    .filter(f => !/\.map$|(^|\/)(LICENSE|NOTICE)[^/]*$|(^|\/)package\.json$/.test(f))
+    .filter(f => !onDemand.some(d => (d.endsWith('/') ? f.startsWith(d) : f === d)))
+    .reduce((sum, f) => sum + statSync(`public/runtime/${dir}/${f}`).size, 0);
+}
+
+/**
  * Writes the service worker (src/sw.js) into the build as sw.js, with what it needs to know: the
- * files every page needs, the app's code files, and a version for each language's interpreter (a
- * hash of its folder in public/runtime, worker included, so any change gets a new version).
+ * files every page needs, the app's code files, and for each language's interpreter a version (a
+ * hash of its folder in public/runtime, worker included, so any change gets a new version) and
+ * its download size (for the loading bar).
  */
 function offline(): Plugin {
   return {
@@ -76,7 +90,7 @@ function offline(): Plugin {
       const runtimes = Object.fromEntries(
         readdirSync('public/runtime').map(dir => {
           const files = filesIn(`public/runtime/${dir}`);
-          return [dir, { hash: hash(`public/runtime/${dir}`, files), files }];
+          return [dir, { hash: hash(`public/runtime/${dir}`, files), files, bytes: startSize(dir, files) }];
         }),
       );
       const shell = createHash('sha256')

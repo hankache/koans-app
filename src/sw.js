@@ -5,7 +5,8 @@
 //   core      the files every page needs, saved when the service worker installs
 //   assets    every file of the app's code; the rest are saved when first used
 //   shell     a hash of the build, naming the cache of the site's own files
-//   runtimes  { <folder of public/runtime>: { hash, files } }, a version for each interpreter
+//   runtimes  { <folder of public/runtime>: { hash, files, bytes } }: each interpreter's version,
+//             its files, and what the browser downloads to start it
 // The app registers it in production only (src/lib/offline.ts).
 const OFFLINE = __OFFLINE__;
 
@@ -18,12 +19,17 @@ const current = new Set([SHELL, FONTS, ...Object.keys(OFFLINE.runtimes).map(runt
 const PAGE = new URL('index.html', scope).href;
 const at = path => new URL(path, scope).href;
 
+/** The interpreter folder a URL is in (python for runtime/python/…), if any. */
+function runtimeOf(url) {
+  return url.pathname.slice(scope.pathname.length).match(/^runtime\/([^/]+)\//)?.[1];
+}
+
 /** The cache a request's response belongs in, or null to leave it to the network. */
 function cacheFor(url) {
   if (url.origin === 'https://fonts.googleapis.com' || url.origin === 'https://fonts.gstatic.com') return FONTS;
   if (!url.href.startsWith(scope.href)) return null;
-  const runtime = url.pathname.slice(scope.pathname.length).match(/^runtime\/([^/]+)\//);
-  if (runtime) return OFFLINE.runtimes[runtime[1]] ? runtimeCache(runtime[1]) : null;
+  const dir = runtimeOf(url);
+  if (dir) return OFFLINE.runtimes[dir] ? runtimeCache(dir) : null;
   return SHELL;
 }
 
@@ -144,8 +150,36 @@ async function saved(event, name) {
   if (hit) return hit;
   const response = await fetch(request);
   // 200 only: not a part of a file (206), nor a redirect.
-  if (response.status === 200 && response.type === 'basic') event.waitUntil(cache.put(request, response.clone()));
+  if (response.status === 200 && response.type === 'basic') {
+    event.waitUntil(cache.put(request, response.clone()));
+    const dir = runtimeOf(new URL(request.url));
+    if (dir) event.waitUntil(report(dir, request.url, response.clone()));
+  }
   return response;
+}
+
+/**
+ * Tells the open pages how far an interpreter file's download has got, about ten times a second:
+ * { type: 'download', dir, file, received, total }, where total is what the whole interpreter
+ * downloads to start. The koan page adds up its files for its loading bar (src/lib/offline.ts).
+ */
+async function report(dir, url, response) {
+  const file = url.slice(at(`runtime/${dir}/`).length);
+  const reader = response.body.getReader();
+  let received = 0;
+  let last = 0;
+  const post = async () => {
+    last = Date.now();
+    const message = { type: 'download', dir, file, received, total: OFFLINE.runtimes[dir].bytes };
+    for (const client of await self.clients.matchAll({ type: 'window', includeUncontrolled: true })) client.postMessage(message);
+  };
+  for (;;) {
+    const { done, value } = await reader.read().catch(() => ({ done: true }));
+    if (done) break;
+    received += value.byteLength;
+    if (Date.now() - last > 100) void post();
+  }
+  await post();
 }
 
 /** Google's fonts: the saved copy at once, updated in the background for next time. */
