@@ -5,6 +5,7 @@ import type { Extension } from '@codemirror/state';
 import type { Koan, Section } from './koans';
 import type { LanguageContent, LanguagePack } from './language';
 import { progressFor, type Progress } from './progress.svelte';
+import { whenControlled } from './offline';
 import { href } from './route';
 import { WasmRuntime } from './runtime/wasm-runtime';
 import { parseRun, type Report } from './tap';
@@ -46,7 +47,8 @@ export class Course {
   /** Created lazily, but call early (e.g. when the path opens) to start downloading the interpreter. */
   getRuntime(): WasmRuntime {
     const { url, type } = this.pack.worker;
-    return (this.runtime ??= new WasmRuntime(`${import.meta.env.BASE_URL}${url}`, type));
+    // On a first visit, after the service worker takes over, so the interpreter is saved for offline use.
+    return (this.runtime ??= new WasmRuntime(`${import.meta.env.BASE_URL}${url}`, type, whenControlled()));
   }
 
   async runKoan(code: string): Promise<Report> {

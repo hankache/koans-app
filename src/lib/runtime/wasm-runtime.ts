@@ -25,17 +25,19 @@ export class WasmRuntime {
   private nextId = 1;
   private pending = new Map<number, (r: RunResult) => void>();
 
+  /** The interpreter starts once `after` resolves. */
   constructor(
     private workerUrl: string,
     private workerType: WorkerType = 'classic',
+    after: Promise<unknown> = Promise.resolve(),
     private timeoutMs = 8000,
   ) {
-    this.spawn();
+    this.ready = after.then(() => this.spawn());
   }
 
-  private spawn() {
+  private spawn(): Promise<string> {
     this.worker = new Worker(this.workerUrl, { type: this.workerType });
-    this.ready = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       this.worker.onmessage = ({ data }) => {
         switch (data.type) {
           case 'ready':
@@ -68,7 +70,7 @@ export class WasmRuntime {
         // The interpreter is synchronous: the only way to stop it is to kill the worker.
         this.worker.terminate();
         this.pending.clear();
-        this.spawn();
+        this.ready = this.spawn();
         resolve({ rc: -1, lines: [], aborted: 'timeout' });
       }, this.timeoutMs);
       this.pending.set(id, r => {

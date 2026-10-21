@@ -87,7 +87,8 @@ languages/        one folder per language: its koans, prelude, highlighting and 
 src/              the app (Svelte 5 + TypeScript)
   components/       the home page, the path, the koan page, the editor, the result panel, the logo animation
   lib/              addresses, opened languages (course.ts), running koans, reading their results,
-                    progress and its export, the language-pack interface
+                    progress and its export, the language-pack interface, offline mode (offline.ts)
+  sw.js             the service worker, filled in by the build (vite.config.ts)
 public/           static files: favicons, artwork, each language's interpreter worker
   runtime/<id>/     a language's worker.js, with its interpreter beside it (downloaded)
 scripts/          build and check tools: koan lists, koan checker, interpreter download, notices
@@ -136,6 +137,15 @@ languages/<id>/koans/ ──build-koans──► src/generated/<id>.json ──�
 - **Export and import** ([transfer.ts](src/lib/transfer.ts)): the home page saves everyone's
   progress to a JSON file (`"format": "koans.app/progress"`) and reads one back, keeping the newer
   entry for each koan. Damaged entries and unknown languages are left out.
+- **Offline** ([sw.js](src/sw.js), [offline.ts](src/lib/offline.ts)): in a built site, a service
+  worker keeps the page and the code it starts with, then each language's koans and interpreter
+  the first time it's opened. A language opened once then works offline, and isn't downloaded
+  again. The page itself comes from the network when it can (within 4 seconds), so a new version
+  shows at once. The build names each interpreter's cache after a hash of its folder in
+  `public/runtime/`, so an updated interpreter or worker replaces the old one; one the learner had
+  opened is downloaded again in the background. On a first visit the interpreter waits for the
+  service worker (up to 3 seconds), so that its files are saved too. The site can be installed as
+  an app (`manifest.webmanifest`). The dev server doesn't use the service worker.
 
 ## Writing koans
 
@@ -227,8 +237,9 @@ Then list it in [scripts/lib/languages.mjs](scripts/lib/languages.mjs) and
 
 `npm run test:browser` builds the site, serves it, and drives the Chrome and Firefox installed on
 the machine through every language's koan flow: a failing koan, its solution, an error, an
-infinite loop. It also checks what each page downloads, old addresses, export and import, and two
-tabs sharing progress. It takes a couple of minutes.
+infinite loop. It also checks what each page downloads, old addresses, export and import, two
+tabs sharing progress, and every language working offline once opened (with its server stopped).
+It takes a few minutes.
 
 `-- --browser chrome` (or `firefox`) runs one browser. Set `CHROME_PATH` or `FIREFOX_PATH` if a
 browser isn't where it's usually installed; one that isn't found is skipped with a warning. CI
@@ -283,13 +294,14 @@ node tests/browser/run.mjs   # then publish dist/
   (`user.github.io/koans-app/`): its links are relative (`base: './'` in
   [vite.config.ts](vite.config.ts)).
 - Make sure `.wasm` files are served as `application/wasm`. The main hosts do this already.
+- Offline mode needs HTTPS (or `localhost`): browsers only run service workers there.
 
 ## Logos
 
 - **The gateless gate** (header, favicon, this README): vector art in
   [GateMark.svelte](src/components/GateMark.svelte) and [public/favicon.svg](public/favicon.svg),
   which switches to a light gate on dark browser tabs. After changing the SVG, regenerate the PNG
-  icons with `design/build-favicons.sh` (needs ImageMagick).
+  icons (the installed app's too) with `design/build-favicons.sh` (needs ImageMagick).
 - **The Raku Koans logo** (the Raku home page and its solved-koan animation):
   [design/logo.jpg](design/logo.jpg) is the source. `python3 design/build-logo-assets.py` (needs
   numpy, scipy and Pillow) builds `public/logo.webp` and the animation layers in `public/anim/`.

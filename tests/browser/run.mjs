@@ -1,6 +1,6 @@
 // Checks the built site in real browsers: the home page (its koan to try, where to continue, and its
 // phone layout), what each page downloads, every language's koan flow, old addresses, progress
-// across tabs, and export/import.
+// across tabs, export/import, and working offline.
 //
 //   npm run test:browser                      Chrome and Firefox (builds the site first)
 //   npm run test:browser -- --browser chrome  one of them
@@ -314,6 +314,59 @@ async function checkTabs(browser, base) {
   await context.close();
 }
 
+/**
+ * Offline: a first visit, straight to a koan in each language, saves the site and the interpreters,
+ * which then work with the server gone. On a server of its own, to stop it.
+ */
+async function checkOffline(browser) {
+  const server = await preview({ root, logLevel: 'silent', preview: { port: 0, strictPort: false, open: false } });
+  const base = server.resolvedUrls.local[0];
+  const context = await browser.createBrowserContext();
+  const page = await context.newPage();
+  const seen = watch(page);
+  const koans = LANGUAGES.map(({ id }) => {
+    const first = readKoans(toolLanguages.find(l => l.id === id))[0].koans[0];
+    return { id, href: `${base}#/${id}/koan/${first.id}`, solution: first.solution.trimEnd() };
+  });
+  let closed = false;
+  try {
+    for (const koan of koans) {
+      await page.goto(koan.href);
+      await page.waitForSelector('.cm-content');
+      await run(page, koan.solution, /Enlightenment/);
+    }
+    // Saving the files goes on in the background: wait for every language's.
+    const ids = LANGUAGES.map(l => l.id);
+    await page
+      .waitForFunction(async ids => {
+        const names = await caches.keys();
+        return ids.every(id => names.some(n => n.startsWith(`runtime-${id}-`)));
+      }, { timeout: 30000 }, ids)
+      .catch(() => {});
+    const names = await page.evaluate(() => caches.keys());
+    const missing = ids.filter(id => !names.some(n => n.startsWith(`runtime-${id}-`)));
+    check('offline: every interpreter opened is saved', missing.length === 0, `not saved: ${missing.join(', ')}`);
+
+    await server.close();
+    closed = true;
+    await page.goto(`${base}#/`);
+    await page.waitForSelector('.tile');
+    check('offline: the home page opens', true);
+    for (const koan of koans) {
+      await page.goto(koan.href);
+      await page.waitForSelector('.cm-content');
+      const out = await run(page, koan.solution, /Enlightenment/);
+      check(`offline: ${koan.id} runs its koan`, /Enlightenment/.test(out), out.slice(0, 100));
+    }
+    // Losing the server shows as failed requests (the service worker's checks for a new version).
+    const other = seen.problems.filter(p => !/failed: |Failed to fetch|ERR_CONNECTION_REFUSED|NetworkError/.test(p));
+    check('offline: no errors', other.length === 0, other.join(' | '));
+  } finally {
+    if (!closed) await server.close();
+    await context.close();
+  }
+}
+
 // --- Run
 
 const server = await preview({ root, logLevel: 'silent', preview: { port: 0, strictPort: false, open: false } });
@@ -339,6 +392,7 @@ try {
       const exported = await checkSite(browser, base);
       if (exported) await checkImport(browser, base, exported, dir);
       await checkTabs(browser, base);
+      await checkOffline(browser);
     } finally {
       await browser.close();
     }

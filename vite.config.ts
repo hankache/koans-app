@@ -1,6 +1,8 @@
 /// <reference types="vitest/config" />
 import { execSync } from 'node:child_process';
-import { defineConfig } from 'vite';
+import { createHash } from 'node:crypto';
+import { readdirSync, readFileSync } from 'node:fs';
+import { defineConfig, type Plugin } from 'vite';
 import { configDefaults } from 'vitest/config';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 
@@ -29,6 +31,68 @@ function buildInfo(command: string) {
   }
 }
 
+/** Every file under dir, as paths relative to it. */
+function filesIn(dir: string): string[] {
+  return readdirSync(dir, { recursive: true, withFileTypes: true })
+    .filter(e => e.isFile())
+    .map(e => `${e.parentPath}/${e.name}`.slice(dir.length + 1))
+    .sort();
+}
+
+function hash(dir: string, files: string[]): string {
+  const h = createHash('sha256');
+  for (const f of files) h.update(`${f}\0`).update(readFileSync(`${dir}/${f}`));
+  return h.digest('hex').slice(0, 12);
+}
+
+/**
+ * Writes the service worker (src/sw.js) into the build as sw.js, with what it needs to know: the
+ * files every page needs, the app's code files, and a version for each language's interpreter (a
+ * hash of its folder in public/runtime, worker included, so any change gets a new version).
+ */
+function offline(): Plugin {
+  return {
+    name: 'koans-offline',
+    apply: 'build',
+    enforce: 'post',
+    generateBundle(_, bundle) {
+      // The page, the code it starts with (the entry and what it imports), and the small public
+      // files: icons, logo and animations. Not the interpreters, nor the long licence notices.
+      const core = new Set(['index.html']);
+      const add = (name: string) => {
+        const file = bundle[name];
+        if (core.has(name) || !file) return;
+        core.add(name);
+        if (file.type === 'chunk') {
+          file.imports.forEach(add);
+          file.viteMetadata?.importedCss.forEach(add);
+        }
+      };
+      for (const file of Object.values(bundle)) if (file.type === 'chunk' && file.isEntry) add(file.fileName);
+      const publicFiles = filesIn('public').filter(f => !f.startsWith('runtime/') && f !== 'third-party-notices.txt');
+      publicFiles.forEach(f => core.add(f));
+
+      const assets = Object.keys(bundle).filter(f => f.startsWith('assets/')).sort();
+      const runtimes = Object.fromEntries(
+        readdirSync('public/runtime').map(dir => {
+          const files = filesIn(`public/runtime/${dir}`);
+          return [dir, { hash: hash(`public/runtime/${dir}`, files), files }];
+        }),
+      );
+      const shell = createHash('sha256')
+        .update(JSON.stringify(assets))
+        .update(hash('public', publicFiles))
+        .digest('hex')
+        .slice(0, 12);
+
+      const source = readFileSync('src/sw.js', 'utf8');
+      if (!source.includes('__OFFLINE__')) this.error('src/sw.js has lost its __OFFLINE__ placeholder');
+      const filled = source.replace('__OFFLINE__', JSON.stringify({ core: [...core], assets, shell, runtimes }));
+      this.emitFile({ type: 'asset', fileName: 'sw.js', source: filled });
+    },
+  };
+}
+
 export default defineConfig(({ command }) => ({
   // Relative links, so one build works at a domain's root or in a sub-folder
   // (e.g. user.github.io/koans-app/). Safe because the app is a single page:
@@ -37,7 +101,19 @@ export default defineConfig(({ command }) => ({
   define: {
     __BUILD__: JSON.stringify(buildInfo(command)),
   },
-  plugins: [svelte()],
+  plugins: [svelte(), offline()],
+  build: {
+    rolldownOptions: {
+      output: {
+        // Each language's koans named after it (content-python-….js), so the service worker can
+        // tell them apart across versions.
+        chunkFileNames: chunk => {
+          const lang = chunk.facadeModuleId?.match(/languages\/([^/]+)\/content\.ts$/)?.[1];
+          return lang ? `assets/content-${lang}-[hash].js` : 'assets/[name]-[hash].js';
+        },
+      },
+    },
+  },
   // languages/_template is a starting point for new languages, not a language.
   test: { exclude: [...configDefaults.exclude, 'languages/_template/**'] },
 }));

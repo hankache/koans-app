@@ -8,10 +8,13 @@ tmp=$(mktemp --suffix=.svg)
 sed 's|    .gate { fill: #221d2b; }|    .gate { fill: #221d2b; stroke: #f6f2e9; stroke-width: 3; paint-order: stroke; stroke-linejoin: round; }|' \
   public/favicon.svg > "$tmp"
 grep -q paint-order "$tmp" || { echo "favicon.svg changed: update the .gate rule this script patches" >&2; exit 1; }
-for s in 32 192; do
+for s in 32 192 512; do
   convert -background none -density 1200 "$tmp" -resize ${s}x$s public/favicon-$s.png
 done
 # The home-screen icon must be opaque: the gate on cream.
 convert -background '#f6f2e9' -density 1200 public/favicon.svg -resize 144x144 -gravity center -extent 180x180 -flatten public/apple-touch-icon.png
+# The installed app's icon, which phones crop to their own shape (a circle, a squircle…): opaque,
+# with the gate inside the middle 80%, the part every shape keeps.
+convert -background '#f6f2e9' -density 1200 public/favicon.svg -resize 300x300 -gravity center -extent 512x512 -flatten public/icon-maskable-512.png
 rm "$tmp"
-echo "✓ favicon-32.png, favicon-192.png, apple-touch-icon.png"
+echo "✓ favicon-32.png, favicon-192.png, favicon-512.png, apple-touch-icon.png, icon-maskable-512.png"
