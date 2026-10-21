@@ -1,6 +1,7 @@
 // Checks the built site in real browsers: the home page (its koan to try, where to continue, and its
 // phone layout), what each page downloads, every language's koan flow, old addresses, progress
-// across tabs, export/import, working offline, and the message while an interpreter downloads.
+// across tabs, export/import, working offline, the message while an interpreter downloads, and the
+// pages for search engines.
 //
 //   npm run test:browser                      Chrome and Firefox (builds the site first)
 //   npm run test:browser -- --browser chrome  one of them
@@ -315,6 +316,43 @@ async function checkTabs(browser, base) {
 }
 
 /**
+ * The pages for search engines and shared links (scripts/lib/pages.ts): each language's own page,
+ * its plain HTML, and the app opening its path there, at the site's own address; and the sitemap.
+ */
+async function checkPages(browser, base) {
+  const context = await browser.createBrowserContext();
+  const page = await context.newPage();
+  const seen = watch(page);
+  try {
+    const sitemap = await (await fetch(`${base}sitemap.xml`)).text();
+    check('the sitemap lists the home page and every language', LANGUAGES.every(l => sitemap.includes(`/${l.id}/</loc>`)), sitemap.slice(0, 200));
+    for (const { id } of LANGUAGES) {
+      const html = await (await fetch(`${base}${id}/`)).text();
+      const name = toolLanguages.find(l => l.id === id).name;
+      const first = koanIds[id][0];
+      check(`${id}: its page has its title, preview and koans as HTML`,
+        html.includes(`<title>${name} Koans · koans.app</title>`) && html.includes(`og:image" content="https://koans.app/social/${id}.png"`) &&
+        html.includes(`<link rel="canonical" href="https://koans.app/${id}/"`) && html.includes(`href="../#/${id}/koan/${first.id}"`));
+    }
+    await page.goto(`${base}ruby/`);
+    await page.waitForSelector('.hero h1');
+    check("a language's page opens its path, at the site's address", page.url() === `${base}#/ruby/` && (await text(page, '.hero h1')) === 'Ruby', page.url());
+    check('and its plain HTML gives way to the app', !(await page.$('.prerendered')));
+    await page.click(`a[href="#/ruby/koan/${koanIds.ruby[0].id}"]`).catch(() => {});
+    await page.waitForSelector('.cm-content', { timeout: 10000 }).catch(() => {});
+    check('and its koans open as usual', page.url() === `${base}#/ruby/koan/${koanIds.ruby[0].id}`, page.url());
+    // Leaving mid-download would cut off the fonts (as a failed request): let the page settle first.
+    await page.waitForNetworkIdle({ idleTime: 500 }).catch(() => {});
+    await page.goto(`${base}python/#/lua/`);
+    await page.waitForSelector('.hero h1');
+    check('a route after the # comes first', page.url() === `${base}#/lua/` && (await text(page, '.hero h1')) === 'Lua', page.url());
+    check('no console errors, failed requests or HTTP errors', seen.problems.length === 0, seen.problems.join(' | '));
+  } finally {
+    await context.close();
+  }
+}
+
+/**
  * Offline: a first visit, straight to a koan in each language, saves the site and the interpreters,
  * which then work with the server gone. On a server of its own, to stop it.
  */
@@ -335,6 +373,9 @@ async function checkOffline(browser) {
       await page.waitForSelector('.cm-content');
       await run(page, koan.solution, /Enlightenment/);
     }
+    // A language's own page, opened once, opens offline too.
+    await page.goto(`${base}sql/`);
+    await page.waitForSelector('.hero h1');
     // Saving the files goes on in the background: wait for every language's.
     const ids = LANGUAGES.map(l => l.id);
     await page
@@ -352,7 +393,12 @@ async function checkOffline(browser) {
     await page.goto(`${base}#/`);
     await page.waitForSelector('.tile');
     check('offline: the home page opens', true);
+    await page.goto(`${base}sql/`);
+    const sql = await page.waitForSelector('.hero h1', { timeout: 10000 }).then(() => text(page, '.hero h1'), () => '');
+    check("offline: a language's page opened before opens", sql === 'SQL', sql);
     for (const koan of koans) {
+      // A fresh page each time, not just a new route: everything comes from what was saved.
+      await page.goto('about:blank');
       await page.goto(koan.href);
       await page.waitForSelector('.cm-content');
       const out = await run(page, koan.solution, /Enlightenment/);
@@ -432,6 +478,7 @@ try {
       const exported = await checkSite(browser, base);
       if (exported) await checkImport(browser, base, exported, dir);
       await checkTabs(browser, base);
+      await checkPages(browser, base);
       await checkOffline(browser);
       if (name === 'chrome') await checkLoading(browser, base);
     } finally {

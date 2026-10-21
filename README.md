@@ -93,6 +93,7 @@ public/           static files: favicons, artwork, each language's interpreter w
   runtime/<id>/     a language's worker.js, with its interpreter beside it (downloaded)
 scripts/          build and check tools: koan lists, koan checker, interpreter download, notices
   lib/languages.mjs the languages the tools know about
+  lib/pages.ts      the pages for search engines and shared links, added to the build
 tests/            tests for the app's own logic, run on real interpreter output
 design/           the logos' source image and the scripts that build the site's images from it
 ```
@@ -151,6 +152,14 @@ languages/<id>/koans/ ──build-koans──► src/generated/<id>.json ──�
   total is the interpreter's folder, less source maps, licences and what the language's `node.mjs`
   lists as `onDemand` (files the browser loads only when needed). Without a service worker (the
   dev server, or a first visit where it was slow to take over) it just says "Preparing Python…".
+- **Pages for search engines and shared links** ([pages.ts](scripts/lib/pages.ts)). Search
+  engines don't read what comes after the #, so the build gives each language a page of its own
+  (`python/`, `ruby/`, …) with its title, description, canonical address and a preview image for
+  shared links (`public/social/`), and its path (groups and koan titles) as plain HTML. The home
+  page gets the same, listing the languages, plus `sitemap.xml` and `robots.txt`. The app is the
+  same on every page: on a language's page it opens that language's path and changes the address
+  to the site's own (`#/python/`), so everything after works as before. The plain HTML is hidden
+  while scripts run (the app replaces it), and shown without them.
 
 ## Writing koans
 
@@ -243,8 +252,9 @@ Then list it in [scripts/lib/languages.mjs](scripts/lib/languages.mjs) and
 `npm run test:browser` builds the site, serves it, and drives the Chrome and Firefox installed on
 the machine through every language's koan flow: a failing koan, its solution, an error, an
 infinite loop. It also checks what each page downloads, old addresses, export and import, two
-tabs sharing progress, every language working offline once opened (with its server stopped), and
-(in Chrome) the download message on a slowed-down first visit.
+tabs sharing progress, every language working offline once opened (with its server stopped, in a
+freshly loaded page), the languages' own pages and the sitemap, and (in Chrome) the download
+message on a slowed-down first visit.
 It takes a few minutes.
 
 `-- --browser chrome` (or `firefox`) runs one browser. Set `CHROME_PATH` or `FIREFOX_PATH` if a
@@ -301,6 +311,8 @@ node tests/browser/run.mjs   # then publish dist/
   [vite.config.ts](vite.config.ts)).
 - Make sure `.wasm` files are served as `application/wasm`. The main hosts do this already.
 - Offline mode needs HTTPS (or `localhost`): browsers only run service workers there.
+- The pages' canonical addresses, sitemap and preview images use `site.url` in
+  [src/site.ts](src/site.ts) (`https://koans.app/`): change it if the site is published elsewhere.
 
 ## Logos
 
@@ -308,6 +320,9 @@ node tests/browser/run.mjs   # then publish dist/
   [GateMark.svelte](src/components/GateMark.svelte) and [public/favicon.svg](public/favicon.svg),
   which switches to a light gate on dark browser tabs. After changing the SVG, regenerate the PNG
   icons (the installed app's too) with `design/build-favicons.sh` (needs ImageMagick).
+- **Preview images for shared links** (`public/social/`, 1200 × 630): drawn from each language's
+  name, tagline, colours and emblem by `node design/build-social-images.mjs`, in the installed
+  Chrome. Run it again after changing any of those, or adding a language.
 - **The Raku Koans logo** (the Raku home page and its solved-koan animation):
   [design/logo.jpg](design/logo.jpg) is the source. `python3 design/build-logo-assets.py` (needs
   numpy, scipy and Pillow) builds `public/logo.webp` and the animation layers in `public/anim/`.

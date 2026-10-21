@@ -6,6 +6,7 @@ import { defineConfig, type Plugin } from 'vite';
 import { configDefaults } from 'vitest/config';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { languages } from './scripts/lib/languages.mjs';
+import { pagePaths, pages } from './scripts/lib/pages';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -71,7 +72,8 @@ function offline(): Plugin {
     enforce: 'post',
     generateBundle(_, bundle) {
       // The page, the code it starts with (the entry and what it imports), and the small public
-      // files: icons, logo and animations. Not the interpreters, nor the long licence notices.
+      // files: icons, logo and animations. Not the interpreters, the long licence notices, or the
+      // images for link previews.
       const core = new Set(['index.html']);
       const add = (name: string) => {
         const file = bundle[name];
@@ -83,7 +85,7 @@ function offline(): Plugin {
         }
       };
       for (const file of Object.values(bundle)) if (file.type === 'chunk' && file.isEntry) add(file.fileName);
-      const publicFiles = filesIn('public').filter(f => !f.startsWith('runtime/') && f !== 'third-party-notices.txt');
+      const publicFiles = filesIn('public').filter(f => !/^(runtime|social)\//.test(f) && f !== 'third-party-notices.txt');
       publicFiles.forEach(f => core.add(f));
 
       const assets = Object.keys(bundle).filter(f => f.startsWith('assets/')).sort();
@@ -101,7 +103,7 @@ function offline(): Plugin {
 
       const source = readFileSync('src/sw.js', 'utf8');
       if (!source.includes('__OFFLINE__')) this.error('src/sw.js has lost its __OFFLINE__ placeholder');
-      const filled = source.replace('__OFFLINE__', JSON.stringify({ core: [...core], assets, shell, runtimes }));
+      const filled = source.replace('__OFFLINE__', JSON.stringify({ core: [...core], assets, shell, runtimes, pages: pagePaths() }));
       this.emitFile({ type: 'asset', fileName: 'sw.js', source: filled });
     },
   };
@@ -115,7 +117,7 @@ export default defineConfig(({ command }) => ({
   define: {
     __BUILD__: JSON.stringify(buildInfo(command)),
   },
-  plugins: [svelte(), offline()],
+  plugins: [svelte(), pages(), offline()],
   build: {
     rolldownOptions: {
       output: {

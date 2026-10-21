@@ -136,7 +136,7 @@
   }
 </script>
 
-<svelte:head><title>{site.name}</title></svelte:head>
+<svelte:head><title>{site.name} · {site.tagline}</title></svelte:head>
 
 <div class="home">
   <section class="hero">

@@ -127,3 +127,8 @@ button:disabled { opacity: 0.55; cursor: progress; }
 
 /* The app is a column the height of the window at least: header, main, footer. */
 #app { min-height: 100vh; display: flex; flex-direction: column; }
+
+/* The built pages' plain HTML (scripts/lib/pages.ts): what search engines and link previews read,
+   and what a visitor without scripts sees. */
+.js .prerendered { display: none; }
+.prerendered { max-width: 1120px; margin: 0 auto; padding: 2rem 16px; line-height: 1.6; }

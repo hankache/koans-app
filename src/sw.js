@@ -7,6 +7,7 @@
 //   shell     a hash of the build, naming the cache of the site's own files
 //   runtimes  { <folder of public/runtime>: { hash, files, bytes } }: each interpreter's version,
 //             its files, and what the browser downloads to start it
+//   pages     the languages' own pages (python/, …), made for search engines (scripts/lib/pages.ts)
 // The app registers it in production only (src/lib/offline.ts).
 const OFFLINE = __OFFLINE__;
 
@@ -15,9 +16,21 @@ const SHELL = `shell-${OFFLINE.shell}`;
 const FONTS = 'fonts';
 const runtimeCache = dir => `runtime-${dir}-${OFFLINE.runtimes[dir].hash}`;
 const current = new Set([SHELL, FONTS, ...Object.keys(OFFLINE.runtimes).map(runtimeCache)]);
-// The page itself, whatever the address: the routes are all after the #.
-const PAGE = new URL('index.html', scope).href;
 const at = path => new URL(path, scope).href;
+// Every lookup ignores the responses' Vary header. A saved file's name says which version it is,
+// and a server that varies by Origin (as Vite's does) would otherwise hide what the service worker
+// saved itself (no Origin) from the page's own requests (with one).
+const ANY = { ignoreVary: true };
+
+/**
+ * The page saved for a navigation to url, if it's one of the site's: index.html (whatever comes
+ * after the #, which holds the routes), or a language's own (python/…).
+ */
+function pageFor(url) {
+  const address = (url.origin + url.pathname).replace(/index\.html$/, '');
+  for (const path of ['', ...OFFLINE.pages]) if (address === at(path)) return at(`${path}index.html`);
+  return null;
+}
 
 /** The interpreter folder a URL is in (python for runtime/python/…), if any. */
 function runtimeOf(url) {
@@ -35,7 +48,7 @@ function cacheFor(url) {
 
 /** Fetches url into a cache, unless it's there already. Best effort: a failure leaves it out. */
 async function keep(cache, url) {
-  if (await cache.match(url)) return;
+  if (await cache.match(url, ANY)) return;
   const response = await fetch(url, { cache: 'no-cache' }).catch(() => null);
   if (response?.ok) await cache.put(url, response);
 }
@@ -68,7 +81,7 @@ async function carryOver(shell) {
   const code = OFFLINE.assets.map(at).filter(url => had.has(stem(url)));
   await Promise.all(
     code.map(async url => {
-      const old = await caches.match(url);
+      const old = await caches.match(url, ANY);
       if (old) await shell.put(url, old);
       else await keep(shell, url);
     }),
@@ -107,11 +120,11 @@ self.addEventListener('message', event => {
 
 self.addEventListener('fetch', event => {
   const { request } = event;
-  if (request.method !== 'GET') return;
+  if (request.method !== 'GET' && request.method !== 'HEAD') return;
   const url = new URL(request.url);
-  if (request.mode === 'navigate') {
-    const address = url.origin + url.pathname;
-    if (address === scope.href || address === PAGE) event.respondWith(page(event));
+  if (request.mode === 'navigate' && request.method === 'GET') {
+    const saved = pageFor(url);
+    if (saved) event.respondWith(page(event, saved));
     return;
   }
   const name = cacheFor(url);
@@ -123,10 +136,10 @@ self.addEventListener('fetch', event => {
  * The page: from the network, so a new version shows at once, and saved for when there is no
  * network, or it takes longer than 4 seconds to answer.
  */
-async function page(event) {
+async function page(event, saved) {
   const shell = await caches.open(SHELL);
   const network = fetch(event.request).then(response => {
-    if (response.ok) event.waitUntil(shell.put(PAGE, response.clone()));
+    if (response.ok && !response.redirected) event.waitUntil(shell.put(saved, response.clone()));
     return response;
   });
   const slow = new Promise(resolve => setTimeout(resolve, 4000));
@@ -136,7 +149,7 @@ async function page(event) {
   } catch {
     // Offline: the saved page, below.
   }
-  return (await shell.match(PAGE)) ?? network;
+  return (await shell.match(saved, ANY)) ?? network;
 }
 
 /**
@@ -146,16 +159,36 @@ async function page(event) {
 async function saved(event, name) {
   const { request } = event;
   const cache = await caches.open(name);
-  const hit = await cache.match(request);
-  if (hit) return hit;
-  const response = await fetch(request);
-  // 200 only: not a part of a file (206), nor a redirect.
-  if (response.status === 200 && response.type === 'basic') {
-    event.waitUntil(cache.put(request, response.clone()));
+  // The whole file, under a plain GET. HEAD and range requests are answered from it: Emscripten's
+  // lazy files (as webR reads some of R's) ask for a file's size, then for parts of it.
+  const whole = request.method === 'GET' && !request.headers.has('range') ? request : new Request(request.url);
+  let response = await cache.match(whole, ANY);
+  if (!response) {
+    response = await fetch(whole);
+    // 200 only: not a redirect, nor an error.
+    if (response.status !== 200 || response.type !== 'basic') return whole === request ? response : fetch(request);
+    event.waitUntil(cache.put(whole, response.clone()));
     const dir = runtimeOf(new URL(request.url));
     if (dir) event.waitUntil(report(dir, request.url, response.clone()));
   }
-  return response;
+  return partOf(response, request);
+}
+
+/** What a request asks of a whole file's response: all of it, its headers only (HEAD), or a range. */
+async function partOf(response, request) {
+  if (request.method === 'HEAD') return new Response(null, { status: 200, headers: response.headers });
+  const range = request.headers.get('range')?.match(/^bytes=(\d*)-(\d*)$/);
+  if (!range || (range[1] === '' && range[2] === '')) return response;
+  const body = await response.blob();
+  const size = body.size;
+  // bytes=10-19, bytes=10- (to the end), or bytes=-10 (the last ten)
+  const start = range[1] === '' ? Math.max(0, size - Number(range[2])) : Number(range[1]);
+  const end = range[1] === '' || range[2] === '' ? size - 1 : Math.min(Number(range[2]), size - 1);
+  if (start > end) return new Response(null, { status: 416, headers: { 'Content-Range': `bytes */${size}` } });
+  const headers = new Headers(response.headers);
+  headers.set('Content-Range', `bytes ${start}-${end}/${size}`);
+  headers.set('Content-Length', String(end - start + 1));
+  return new Response(body.slice(start, end + 1), { status: 206, statusText: 'Partial Content', headers });
 }
 
 /**
@@ -185,7 +218,7 @@ async function report(dir, url, response) {
 /** Google's fonts: the saved copy at once, updated in the background for next time. */
 async function font(event) {
   const cache = await caches.open(FONTS);
-  const hit = await cache.match(event.request);
+  const hit = await cache.match(event.request, ANY);
   const update = fetch(event.request).then(response => {
     if (response.ok || response.type === 'opaque') event.waitUntil(cache.put(event.request, response.clone()));
     return response;

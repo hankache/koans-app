@@ -13,6 +13,9 @@
         try { saved = localStorage.getItem('koans:theme'); } catch (e) {}
         var dark = saved ? saved === 'dark' : true;
         document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+        // The built pages' plain HTML is for search engines and link previews: with scripts on,
+        // the app takes its place (src/main.ts), so it stays hidden rather than flash by.
+        document.documentElement.classList.add('js');
       })();
     </script>
     <!-- PNG first, SVG last: Firefox takes the last icon, and the SVG adapts to dark tabs.
