@@ -44,7 +44,7 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/).
 
 ## Running it locally
 
-You need [Node.js](https://nodejs.org) 22 or newer.
+You need [Node.js](https://nodejs.org) 22.18 or newer (the build reads TypeScript with Node itself).
 
 ```sh
 npm install

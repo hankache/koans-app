@@ -10,11 +10,21 @@
 //
 // The plain HTML is what search engines and link previews read; the app replaces it as it starts.
 // Preview images are in public/social/, drawn by design/build-social-images.mjs.
+//
+// It imports nothing of the app's but src/site.ts, which imports nothing itself: the build config
+// stays loadable by Node's own rules (Vite's coming default). The language packs, which import
+// the app's modules, are loaded when the pages are made, by Node, which reads TypeScript.
 import { readFileSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
 import type { Plugin } from 'vite';
-import { packs } from '../../languages';
-import type { LanguagePack, Manifest } from '../../src/lib/language';
-import { site } from '../../src/site';
+import type { LanguagePack, Manifest } from '../../src/lib/language.ts';
+import { site } from '../../src/site.ts';
+import { languages } from './languages.mjs';
+
+/** The language packs (languages/<id>/pack.ts), in the order the build tools list them, the site's. */
+function loadPacks(): Promise<LanguagePack[]> {
+  return Promise.all(languages.map(async ({ id }) => (await import(pathToFileURL(`languages/${id}/pack.ts`).href)).default));
+}
 
 const escape = (text: string) =>
   text.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
@@ -60,7 +70,7 @@ function head({ title, description, path, image, imageAlt }: Head): string {
   ].join('\n    ');
 }
 
-function homePage(html: string): string {
+function homePage(html: string, packs: LanguagePack[]): string {
   const names = list(packs.map(p => p.name));
   const body = `<main class="prerendered">
       <h1>${escape(site.name)}</h1>
@@ -126,11 +136,12 @@ export function pages(): Plugin {
     name: 'koans-pages',
     apply: 'build',
     enforce: 'post',
-    generateBundle(_, bundle) {
+    async generateBundle(_, bundle) {
+      const packs = await loadPacks();
       const index = bundle['index.html'];
       if (index?.type !== 'asset') return this.error('no index.html in the build');
       const html = String(index.source);
-      index.source = homePage(html);
+      index.source = homePage(html, packs);
       for (const pack of packs) this.emitFile({ type: 'asset', fileName: `${pack.id}/index.html`, source: languagePage(html, pack) });
 
       const urls = ['', ...packs.map(p => `${p.id}/`)].map(path => `  <url><loc>${site.url}${path}</loc></url>`);
@@ -145,4 +156,4 @@ export function pages(): Plugin {
 }
 
 /** The language pages' folders, for the service worker. */
-export const pagePaths = () => packs.map(p => `${p.id}/`);
+export const pagePaths = () => languages.map(l => `${l.id}/`);

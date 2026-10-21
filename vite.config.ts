@@ -6,7 +6,7 @@ import { defineConfig, type Plugin } from 'vite';
 import { configDefaults } from 'vitest/config';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { languages } from './scripts/lib/languages.mjs';
-import { pagePaths, pages } from './scripts/lib/pages';
+import { pagePaths, pages } from './scripts/lib/pages.ts';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
