@@ -168,8 +168,8 @@ It contains SQLite, https://sqlite.org, which is in the public domain.
 
 ## Fonts
 
-Fraunces, Inter and JetBrains Mono are loaded from Google Fonts at run time and are not
-distributed with the site. All three are under the SIL Open Font License 1.1.
+Fraunces, Inter and JetBrains Mono are served with the site, from the @fontsource-variable
+packages listed below with their licence, the SIL Open Font License 1.1.
 
 ## JavaScript packages
 `;

@@ -1,12 +1,13 @@
 // Draws the images shown with links to the site (1200 × 630, for Open Graph and X/Twitter cards):
 // public/social/home.png for the home page and public/social/<id>.png for each language's page
-// (scripts/lib/pages.ts). Rendered in the installed Chrome, with the site's fonts and dark theme.
+// (scripts/lib/pages.ts). Rendered in the installed Chrome, with the site's fonts and dark theme
+// (after npm install, which brings the fonts).
 //
 //   node design/build-social-images.mjs
 //
 // Run it again after changing a language's name, tagline, test framework, colours or emblem, or
 // adding one. (No koan counts: they'd go out of date with every new koan. The pages give them.)
-import { mkdirSync, readdirSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync } from 'node:fs';
 import { computeSystemExecutablePath } from '@puppeteer/browsers';
 import puppeteer from 'puppeteer-core';
 
@@ -39,11 +40,18 @@ const emblem = (pack, size) => `<svg width="${size}" height="${size}" viewBox="0
   <rect x="6" y="23.5" width="52" height="4"/><path d="M10.5 18 H16.5 L17.5 59 H9.5 Z"/><path d="M47.5 18 H53.5 L54.5 59 H46.5 Z"/></g>
   <rect width="64" height="64" fill="currentColor" mask="url(#m-${pack.id})"/></svg>`;
 
+// The site's own fonts (src/fonts.css), embedded: Latin is all the images need.
+const font = (family, file) => {
+  const data = readFileSync(`node_modules/@fontsource-variable/${file}`).toString('base64');
+  return `@font-face { font-family: '${family}'; font-weight: 100 900; src: url(data:font/woff2;base64,${data}) format('woff2'); }`;
+};
+const fonts = [font('Fraunces', 'fraunces/files/fraunces-latin-opsz-normal.woff2'), font('Inter', 'inter/files/inter-latin-wght-normal.woff2')].join('\n');
+
 const escape = text => text.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
 
 const page = (body, accent = amber) => `<!doctype html><html><head><meta charset="utf-8">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Inter:wght@400&display=block" rel="stylesheet">
 <style>
+  ${fonts}
   * { margin: 0; box-sizing: border-box; }
   body { width: 1200px; height: 630px; background: ${bg}; color: ${ink}; font-family: Inter, sans-serif; overflow: hidden;
     display: flex; flex-direction: column; justify-content: space-between; padding: 64px 80px; border-top: 10px solid ${accent}; }
@@ -90,7 +98,7 @@ try {
     // The fonts must be in before the picture: stop if they aren't.
     const loaded = await tab.evaluate(async () => {
       await document.fonts.ready;
-      // With text: Google splits each font by script, and only the Latin part is used.
+      // With text: the fonts cover Latin only.
       return ['700 10px Fraunces', '400 10px Inter'].every(f => document.fonts.check(f, 'Koans'));
     });
     if (!loaded) throw new Error(`the fonts did not load for ${file}`);

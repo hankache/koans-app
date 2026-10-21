@@ -1,6 +1,7 @@
 import { mount } from 'svelte';
 import { packById } from '../languages';
 import App from './App.svelte';
+import './fonts.css';
 import './app.css';
 import { startOffline } from './lib/offline';
 

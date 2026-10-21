@@ -81,9 +81,10 @@ const check = (name, ok, detail = '') => {
 };
 const text = (page, selector) => page.$eval(selector, e => e.textContent.replace(/\s+/g, ' ').trim());
 
-/** Records problems (console errors, failed requests) and which language files a page loads. */
+/** Records problems (console errors, failed requests), which language files a page loads, and every request. */
 function watch(page) {
-  const seen = { problems: [], loaded: [] };
+  const seen = { problems: [], loaded: [], requests: [] };
+  page.on('request', r => seen.requests.push(r.url()));
   page.on('console', m => m.type() === 'error' && seen.problems.push(`console: ${m.text()}`));
   page.on('pageerror', e => seen.problems.push(`page: ${e.message}`));
   // php-wasm points the optional libxml2.so it skips at an empty data: URL; that never reaches the network.
@@ -233,6 +234,9 @@ async function checkSite(browser, base) {
   check('export saves a dated file with every language', /koans-app-progress-\d{4}-\d\d-\d\d\.json/.test(note) &&
     LANGUAGES.every(l => Object.keys(file?.languages?.[l.id] ?? {}).length > 0), note);
   check('no console errors, failed requests or HTTP errors', seen.problems.length === 0, seen.problems.join(' | '));
+  // Fonts and interpreters included: everything comes from the site.
+  const elsewhere = [...new Set(seen.requests.filter(u => !u.startsWith(base) && !/^(data|blob):/.test(u)))];
+  check('nothing is requested from anywhere but the site', elsewhere.length === 0, elsewhere.join(' | '));
   await page.close();
   return exported;
 }

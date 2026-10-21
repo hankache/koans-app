@@ -13,9 +13,8 @@ const OFFLINE = __OFFLINE__;
 
 const scope = new URL(self.registration.scope);
 const SHELL = `shell-${OFFLINE.shell}`;
-const FONTS = 'fonts';
 const runtimeCache = dir => `runtime-${dir}-${OFFLINE.runtimes[dir].hash}`;
-const current = new Set([SHELL, FONTS, ...Object.keys(OFFLINE.runtimes).map(runtimeCache)]);
+const current = new Set([SHELL, ...Object.keys(OFFLINE.runtimes).map(runtimeCache)]);
 const at = path => new URL(path, scope).href;
 // Every lookup ignores the responses' Vary header. A saved file's name says which version it is,
 // and a server that varies by Origin (as Vite's does) would otherwise hide what the service worker
@@ -39,7 +38,6 @@ function runtimeOf(url) {
 
 /** The cache a request's response belongs in, or null to leave it to the network. */
 function cacheFor(url) {
-  if (url.origin === 'https://fonts.googleapis.com' || url.origin === 'https://fonts.gstatic.com') return FONTS;
   if (!url.href.startsWith(scope.href)) return null;
   const dir = runtimeOf(url);
   if (dir) return OFFLINE.runtimes[dir] ? runtimeCache(dir) : null;
@@ -128,8 +126,7 @@ self.addEventListener('fetch', event => {
     return;
   }
   const name = cacheFor(url);
-  if (name === FONTS) event.respondWith(font(event));
-  else if (name) event.respondWith(saved(event, name));
+  if (name) event.respondWith(saved(event, name));
 });
 
 /**
@@ -213,17 +210,4 @@ async function report(dir, url, response) {
     if (Date.now() - last > 100) void post();
   }
   await post();
-}
-
-/** Google's fonts: the saved copy at once, updated in the background for next time. */
-async function font(event) {
-  const cache = await caches.open(FONTS);
-  const hit = await cache.match(event.request, ANY);
-  const update = fetch(event.request).then(response => {
-    if (response.ok || response.type === 'opaque') event.waitUntil(cache.put(event.request, response.clone()));
-    return response;
-  });
-  if (!hit) return update;
-  event.waitUntil(update.catch(() => {}));
-  return hit;
 }

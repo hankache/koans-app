@@ -71,7 +71,7 @@ function offline(): Plugin {
     apply: 'build',
     enforce: 'post',
     generateBundle(_, bundle) {
-      // The page, the code it starts with (the entry and what it imports), and the small public
+      // The page, the code it starts with (the entry and what it imports), its fonts, and the small public
       // files: icons, logo and animations. Not the interpreters, the long licence notices, or the
       // images for link previews.
       const core = new Set(['index.html']);
@@ -85,6 +85,8 @@ function offline(): Plugin {
         }
       };
       for (const file of Object.values(bundle)) if (file.type === 'chunk' && file.isEntry) add(file.fileName);
+      // The fonts' Latin files, which every page uses (src/fonts.css), but not Latin Extended's.
+      for (const name of Object.keys(bundle)) if (/-latin-\w+-normal-[\w-]+\.woff2$/.test(name)) core.add(name);
       const publicFiles = filesIn('public').filter(f => !/^(runtime|social)\//.test(f) && f !== 'third-party-notices.txt');
       publicFiles.forEach(f => core.add(f));
 

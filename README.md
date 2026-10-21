@@ -139,7 +139,7 @@ languages/<id>/koans/ ──build-koans──► src/generated/<id>.json ──�
   progress to a JSON file (`"format": "koans.app/progress"`) and reads one back, keeping the newer
   entry for each koan. Damaged entries and unknown languages are left out.
 - **Offline** ([sw.js](src/sw.js), [offline.ts](src/lib/offline.ts)): in a built site, a service
-  worker keeps the page and the code it starts with, then each language's koans and interpreter
+  worker keeps the page, the code it starts with and its fonts, then each language's koans and interpreter
   the first time it's opened. A language opened once then works offline, and isn't downloaded
   again. The page itself comes from the network when it can (within 4 seconds), so a new version
   shows at once. The build names each interpreter's cache after a hash of its folder in
@@ -251,7 +251,8 @@ Then list it in [scripts/lib/languages.mjs](scripts/lib/languages.mjs) and
 
 `npm run test:browser` builds the site, serves it, and drives the Chrome and Firefox installed on
 the machine through every language's koan flow: a failing koan, its solution, an error, an
-infinite loop. It also checks what each page downloads, old addresses, export and import, two
+infinite loop. It also checks what each page downloads (and that nothing comes from anywhere but
+the site), old addresses, export and import, two
 tabs sharing progress, every language working offline once opened (with its server stopped, in a
 freshly loaded page), the languages' own pages and the sitemap, and (in Chrome) the download
 message on a slowed-down first visit.
@@ -304,8 +305,9 @@ npm run build
 node tests/browser/run.mjs   # then publish dist/
 ```
 
-- The site serves its own copy of each interpreter, so once published it doesn't depend on GitHub
-  or anyone else. A changed interpreter can only affect a *new* build, and the lock stops that.
+- The site serves its own copy of each interpreter, and its fonts (from the `@fontsource-variable`
+  packages, in [src/fonts.css](src/fonts.css)), so once published it doesn't depend on GitHub,
+  Google or anyone else, and a visit sends no request anywhere but to the site. A changed interpreter can only affect a *new* build, and the lock stops that.
 - The same build works at the root of a domain (`koans.app`) or in a sub-folder
   (`user.github.io/koans-app/`): its links are relative (`base: './'` in
   [vite.config.ts](vite.config.ts)).
