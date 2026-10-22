@@ -1,7 +1,8 @@
 // Checks the built site in real browsers: the home page (its koan to try, where to continue, and its
 // phone layout), what each page downloads, every language's koan flow, old addresses, progress
 // across tabs, export/import, working offline, the message while an interpreter downloads, the
-// pages for search engines, and accessibility (axe, in both themes, on a desktop and a phone).
+// pages for search engines, accessibility (axe, in both themes, on a desktop and a phone), and
+// sharing a koan with your code in its link.
 //
 //   npm run test:browser                      Chrome and Firefox (builds the site first)
 //   npm run test:browser -- --browser chrome  one of them
@@ -381,6 +382,68 @@ async function checkAccessibility(browser, base) {
 }
 
 /**
+ * Sharing a koan: Share copies a link with the code in it (the clipboard is a stand-in that keeps
+ * what it's given); opening it shows that code and a note, leaving the learner's own code saved;
+ * "Back to your own code" brings theirs back; running the shared code makes it theirs; and a
+ * damaged link says so.
+ */
+async function checkShare(browser, base) {
+  const koan = readKoans(toolLanguages.find(l => l.id === 'javascript'))[0].koans[0];
+  const href = `${base}#/javascript/koan/${koan.id}`;
+  const editorText = page => page.$eval('.cm-content', el => [...el.querySelectorAll('.cm-line')].map(l => l.textContent).join('\n'));
+  const context = await browser.createBrowserContext();
+  const page = await context.newPage();
+  const seen = watch(page);
+  try {
+    await page.evaluateOnNewDocument(() => {
+      Object.defineProperty(navigator, 'clipboard', { value: { writeText: text => ((window.__copied = text), Promise.resolve()) } });
+    });
+    // Someone shares their solution.
+    const theirs = koan.solution.trimEnd();
+    await page.goto(href);
+    await page.waitForSelector('.cm-content');
+    await setCode(page, theirs);
+    await page.click('.share-button');
+    await page.waitForSelector('.actions .share-note');
+    const link = await page.evaluate(() => window.__copied);
+    check('Share copies a link to the koan with the code in it, and says so',
+      link?.startsWith(`${href}?code=`) && /Link copied/.test(await text(page, '.actions .share-note')), link);
+
+    // The learner who opens it has code of their own, run once (so it's saved).
+    const mine = `// mine\n${koan.code.trimEnd()}`;
+    await page.goto('about:blank');
+    await page.goto(href);
+    await page.waitForSelector('.cm-content');
+    await run(page, mine, /Meditate/);
+    await page.goto(link);
+    await page.waitForSelector('.shared');
+    check('a shared link opens the koan with its code, and a note', (await editorText(page)) === theirs && /Shared code/.test(await text(page, '.shared')));
+    check('which is not saved yet', /Nothing is saved until you run/.test(await text(page, 'aside .panel')));
+    await audit(page, 'a koan opened from a shared link');
+    await page.click('.shared button');
+    check('"Back to your own code" brings the saved code back, and the link leaves the address',
+      (await editorText(page)) === mine && !(await page.$('.shared')) && page.url() === href, page.url());
+
+    await page.goto(link);
+    await page.waitForSelector('.shared');
+    await page.click('button.primary');
+    await panel(page, /Enlightenment/);
+    check('running shared code makes it the learner\'s attempt', !(await page.$('.shared')) && page.url() === href, page.url());
+    await page.goto('about:blank');
+    await page.goto(href);
+    await page.waitForSelector('.cm-content');
+    check('and it is saved', (await editorText(page)) === theirs);
+
+    await page.goto(`${href}?code=${link.split('?code=')[1].slice(0, 12)}`);
+    await page.waitForSelector('.shared');
+    check("a damaged link says so and keeps the learner's code", /couldn't be read/.test(await text(page, '.shared')) && (await editorText(page)) === theirs);
+    check('no console errors, failed requests or HTTP errors', seen.problems.length === 0, seen.problems.join(' | '));
+  } finally {
+    await context.close();
+  }
+}
+
+/**
  * The pages for search engines and shared links (scripts/lib/pages.ts): each language's own page,
  * its plain HTML, and the app opening its path there, at the site's own address; and the sitemap.
  */
@@ -545,6 +608,7 @@ try {
       await checkTabs(browser, base);
       await checkPages(browser, base);
       await checkAccessibility(browser, base);
+      await checkShare(browser, base);
       await checkOffline(browser);
       if (name === 'chrome') await checkLoading(browser, base);
     } finally {

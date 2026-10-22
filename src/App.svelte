@@ -58,9 +58,11 @@
   });
 
   onMount(() => {
+    // A new page starts at the top; shared code coming or going (?code=…) is the same page.
+    const page = (h: string) => h.split('?')[0];
     const onHash = () => {
+      if (page(location.hash) !== page(hash)) window.scrollTo(0, 0);
       hash = location.hash;
-      window.scrollTo(0, 0);
     };
     addEventListener('hashchange', onHash);
     return () => removeEventListener('hashchange', onHash);
@@ -88,7 +90,7 @@
     <p class="status" aria-busy="true">Opening {packById.get(lang)?.name}…</p>
   {:else if shown && route.page === 'koan' && shown.koanById.has(route.id)}
     {#await loadKoanPage() then { default: KoanView }}
-      {#key `${lang}/${route.id}`}<KoanView course={shown} id={route.id} />{/key}
+      {#key `${lang}/${route.id}`}<KoanView course={shown} id={route.id} shared={route.shared} />{/key}
     {:catch}
       <p class="status">Could not load the koan page. Check your connection and reload the page.</p>
     {/await}

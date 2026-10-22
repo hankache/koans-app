@@ -32,3 +32,9 @@ test('href makes the addresses parseRoute reads', () => {
   expect(route(href('python'))).toEqual({ page: 'path', lang: 'python' });
   expect(route(href('raku', 'numbers/division'))).toEqual({ page: 'koan', lang: 'raku', id: 'numbers/division' });
 });
+
+test('a koan with shared code: the code is read from after the ?', () => {
+  expect(route('#/python/koan/numbers/division?code=abc-_1')).toEqual({ page: 'koan', lang: 'python', id: 'numbers/division', shared: 'abc-_1' });
+  expect(route('#/python/koan/numbers/division?code=')).toEqual({ page: 'koan', lang: 'python', id: 'numbers/division' });
+  expect(route('#/python/?code=abc')).toEqual({ page: 'path', lang: 'python' });
+});

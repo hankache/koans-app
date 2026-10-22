@@ -6,12 +6,14 @@
   import { inlineCode } from '../lib/inline-code';
   import { modKey, modPressed } from '../lib/platform';
   import { watchDownload, type Download } from '../lib/offline';
+  import { decodeCode, MAX_SHARED, shareLink } from '../lib/share';
   import Editor from './Editor.svelte';
   import Meditation from './Meditation.svelte';
   import Emblem from './Emblem.svelte';
   import { site } from '../site';
 
-  let { course, id }: { course: Course; id: string } = $props();
+  // shared: someone's code, from a link (lib/share.ts), still encoded.
+  let { course, id, shared }: { course: Course; id: string; shared?: string } = $props();
 
   const { pack, progress } = untrack(() => course);
   const koan = $derived(course.koanById.get(id)!);
@@ -35,6 +37,76 @@
   let code = $state(untrack(() => progress.get(id)?.code ?? course.koanById.get(id)!.code));
   let report = $state<Report | null>(null);
   let editor: Editor;
+
+  // Someone's code from a shared link takes the editor's place, while the learner's own stays
+  // saved as it was: until they run the shared code, which then becomes their attempt, or go back
+  // to their own. 'damaged': the link's code couldn't be read, so their own code stays.
+  let sharing = $state<'no' | 'reading' | 'yes' | 'damaged'>(untrack(() => (shared ? 'reading' : 'no')));
+  // The shared code on show, still encoded: a link opened while on this koan replaces it.
+  let opened: string | undefined;
+  $effect(() => {
+    const s = shared;
+    untrack(() => {
+      if (s === opened) return;
+      opened = s;
+      if (!s) return sharing !== 'no' && ownCode(); // the address lost it (the Back button)
+      sharing = 'reading';
+      void decodeCode(s).then(c => {
+        if (opened !== s) return; // another link came meanwhile
+        if (c === null) return (sharing = 'damaged');
+        code = c;
+        report = null;
+        reached = gained = 0;
+        sharing = 'yes';
+      });
+    });
+  });
+  /** Back to the learner's own code, as saved. */
+  function ownCode() {
+    code = progress.get(id)?.code ?? koan.code;
+    report = null;
+    reached = gained = 0;
+    sharing = 'no';
+  }
+  /** Leaves the shared code: the address loses it too, so a reload brings back the learner's own. */
+  function leaveShared(restore: boolean) {
+    if (restore) ownCode();
+    sharing = 'no';
+    opened = undefined;
+    history.replaceState(history.state, '', course.href(id));
+    // The app reads the address on hashchange: it has to see the code go, or opening the same
+    // link again would look like no change.
+    dispatchEvent(new HashChangeEvent('hashchange'));
+  }
+
+  // Share: the link to this koan with the code as it is in the editor. On a phone, the phone's
+  // own share sheet; elsewhere (or without one) the link is copied, and a note says so.
+  let shareNote = $state<{ link?: string; tooLong?: boolean } | null>(null);
+  let noteTimer: ReturnType<typeof setTimeout> | undefined;
+  function note(n: typeof shareNote, ms: number) {
+    clearTimeout(noteTimer);
+    shareNote = n;
+    noteTimer = setTimeout(() => (shareNote = null), ms);
+  }
+  async function share() {
+    if (code.length > MAX_SHARED) return note({ tooLong: true }, 5000);
+    const link = await shareLink(course.href(id), code);
+    if (matchMedia('(pointer: coarse)').matches && navigator.share) {
+      try {
+        await navigator.share({ title: `${koan.title} · ${pack.name} Koans`, url: link });
+        return;
+      } catch (e) {
+        if ((e as Error).name === 'AbortError') return; // the learner closed the share sheet
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(link);
+      note({}, 4000);
+    } catch {
+      // No clipboard (an old browser, or permission refused): the link to copy by hand.
+      note({ link }, 30000);
+    }
+  }
   // How far into the koan the last run got (assertions passed before the first failure),
   // and how many more this run got past: drives the encouragement line.
   let reached = 0;
@@ -109,6 +181,8 @@
       reached = now;
     }
     progress.record(id, code, r.status === 'passed');
+    // Run, shared code is the learner's attempt now.
+    if (sharing === 'yes') leaveShared(false);
     // Back to the code: the start of the failing line (red stripe), or where you were.
     // A pass leaves you alone, for the "Next koan" button.
     if (r.status === 'failed') editor.focusLine(r.failure.line);
@@ -164,7 +238,7 @@
   const summary = $derived.by(() => {
     if (loading) return loading.detail ? `${loading.text} ${loading.detail}` : loading.text;
     if (running) return 'Meditating…';
-    if (!report) return runtimeError ?? 'Replace each ___, then Run';
+    if (!report) return runtimeError ?? (sharing === 'yes' ? 'Read it, then Run' : 'Replace each ___, then Run');
     if (report.status === 'passed') return '✓ Enlightenment!';
     if (report.status === 'error') return `✗ Error${report.line ? ` on line ${report.line}` : ''}`;
     const f = report.failure;
@@ -181,6 +255,25 @@
 
 <svelte:head><title>{koan.title} · {pack.name} Koans</title></svelte:head>
 <svelte:window {onkeydown} />
+
+{#snippet shareIcon()}
+  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" /></svg>
+{/snippet}
+
+<!-- What Share did: shown by the Share button (one in the actions, one in the phone's bar). -->
+{#snippet sharedNote()}
+  {#if shareNote}
+    <p class="share-note" role="status">
+      {#if shareNote.tooLong}
+        Too much code to share in a link.
+      {:else if shareNote.link}
+        <label>Copy this link: <input readonly value={shareNote.link} onfocus={e => e.currentTarget.select()} /></label>
+      {:else}
+        <strong>✓ Link copied,</strong> with your code in it.
+      {/if}
+    </p>
+  {/if}
+{/snippet}
 
 <article style:--lang-light={pack.look.accent.light} style:--lang-dark={pack.look.accent.dark}>
   <nav class="crumbs" aria-label="Breadcrumb">
@@ -214,6 +307,19 @@
         </p>
       {/if}
 
+      {#if sharing === 'yes' || sharing === 'damaged'}
+        <div class="shared" role="note">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7" /><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7" /></svg>
+          {#if sharing === 'yes'}
+            <p><strong>Shared code</strong> Someone sent you their attempt at this koan. Read it before you press Run. Your own code is kept.</p>
+            <button onclick={() => leaveShared(true)}>Back to your own code</button>
+          {:else}
+            <p><strong>This link's code couldn't be read</strong> It may have been cut short when it was copied. Here is your own code.</p>
+            <button onclick={() => leaveShared(false)}>OK</button>
+          {/if}
+        </div>
+      {/if}
+
       <div class="frame">
         <div class="file-bar">
           <span class="file">{fileName}</span>
@@ -245,6 +351,10 @@
           {running ? 'Running…' : 'Run'}<kbd>{modKey} ⏎</kbd>
         </button>
         <button onclick={reset} title="Restore the original koan">Reset</button>
+        <span class="share">
+          <button class="share-button" onclick={share} title="A link to this koan with your code in it">{@render shareIcon()} Share</button>
+          {@render sharedNote()}
+        </span>
         <span class="spacer"></span>
         {#if nav.prev}<a href={course.href(nav.prev.id)} class="nav-button"><span class="soft">←</span> {nav.prev.title}</a>{/if}
         {#if nav.next}<a href={course.href(nav.next.id)} class="nav-button"><span class="soft">Next:</span> <strong>{nav.next.title}</strong> →</a>{/if}
@@ -254,7 +364,7 @@
 
     <aside class:open={sheet}>
       <button class="sheet-close" onclick={() => (sheet = false)} aria-label="Close the report">×</button>
-      <Meditation words={koan.words} {report} {gained} {running} {loading} {hint} onuse={() => hint && editor.fillAnswer(hint)} {runtimeError} {pack} pathHref={course.href()} nextHref={nav.next ? course.href(nav.next.id) : undefined} />
+      <Meditation words={koan.words} shared={sharing === 'yes'} {report} {gained} {running} {loading} {hint} onuse={() => hint && editor.fillAnswer(hint)} {runtimeError} {pack} pathHref={course.href()} nextHref={nav.next ? course.href(nav.next.id) : undefined} />
     </aside>
   </div>
 
@@ -268,6 +378,10 @@
         <span class="bar-track"><span style:width="{Math.round((passing / report.tests.length) * 100)}%"></span></span>
       {/if}
     </button>
+    <span class="share">
+      <button class="bar-share" onclick={share} aria-label="Share your code">{@render shareIcon()}</button>
+      {@render sharedNote()}
+    </span>
     <button class="bar-run" onclick={run} disabled={running}>{running ? '…' : 'Run'}</button>
   </div>
   {#if sheet}<button class="backdrop" onclick={() => (sheet = false)} aria-label="Close the report"></button>{/if}
@@ -362,6 +476,32 @@
   .report a { color: var(--ink-soft); }
   .report a:hover { color: var(--ink); }
 
+  /* Someone's code from a shared link: a note above the editor, in gold (a caution, not an error). */
+  .shared { display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem 0.9rem; padding: 0.75rem 1rem; margin-bottom: 1rem; background: var(--bg-raised); border: 1px solid var(--gold); }
+  .shared svg { width: 22px; height: 22px; flex: none; fill: none; stroke: var(--gold); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .shared p { flex: 1 1 16rem; margin: 0; color: var(--ink-soft); font-size: 0.92rem; line-height: 1.5; }
+  .shared strong { display: block; color: var(--ink); }
+  .shared button { min-height: 44px; }
+
+  /* Share, with a note of what it did just above it. */
+  .share { position: relative; display: inline-flex; }
+  .share-button { display: inline-flex; align-items: center; gap: 0.45rem; }
+  .share svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .share-note {
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 0.5rem);
+    z-index: 5;
+    margin: 0;
+    padding: 0.6rem 0.85rem;
+    background: var(--ink);
+    color: var(--bg);
+    font-size: 0.88rem;
+    white-space: nowrap;
+    box-shadow: var(--shadow);
+  }
+  .share-note input { margin-left: 0.4rem; width: 16rem; font: inherit; }
+
   .bar, .backdrop, .sheet-close { display: none; }
 
   @media (max-width: 860px) {
@@ -370,7 +510,7 @@
   }
   @media (max-width: 640px) {
     article { padding-bottom: 6rem; }
-    .run { display: none; }
+    .run, .actions .share { display: none; }
     .nav-button { padding: 0 0.8rem; }
     /* The report is a sheet, opened from the bar. */
     aside {
@@ -429,6 +569,10 @@
     .bar-track { display: block; width: 100%; height: 4px; background: var(--bg-sunken); }
     .bar-track > span { display: block; height: 4px; background: var(--pass); }
     .bar-track.loading > span { background: var(--lang); }
+    .bar-share { flex: none; width: 52px; min-height: 52px; display: grid; place-items: center; padding: 0; }
+    .bar-share svg { width: 22px; height: 22px; }
+    .bar .share-note { left: auto; right: 0; }
+    .share-note input { width: 11rem; }
     .bar-run { flex: none; min-width: 6rem; min-height: 52px; background: var(--lang); border-color: var(--lang); color: var(--on-lang); font-weight: 700; font-size: 1rem; }
   }
 </style>

@@ -152,6 +152,13 @@ languages/<id>/koans/ ──build-koans──► src/generated/<id>.json ──�
   total is the interpreter's folder, less source maps, licences and what the language's `node.mjs`
   lists as `onDemand` (files the browser loads only when needed). Without a service worker (the
   dev server, or a first visit where it was slow to take over) it just says "Preparing Python…".
+- **Sharing a koan** ([share.ts](src/lib/share.ts)): Share puts the editor's code in a link,
+  compressed, after the `#` (`#/python/koan/numbers/division?code=…`), so it never reaches the
+  server and nothing is stored: whoever has the link has the code. On a phone it opens the
+  phone's share sheet; elsewhere it copies the link. Opening one shows that code with a note to
+  read it before running it; the learner's own code stays saved until they run the shared code
+  (which then becomes their attempt), and "Back to your own code" brings theirs back. A link
+  whose code can't be read says so.
 - **Pages for search engines and shared links** ([pages.ts](scripts/lib/pages.ts)). Search
   engines don't read what comes after the #, so the build gives each language a page of its own
   (`python/`, `ruby/`, …) with its title, description, canonical address and a preview image for
@@ -255,7 +262,7 @@ infinite loop. It also checks what each page downloads (and that nothing comes f
 the site), old addresses, export and import, two
 tabs sharing progress, every language working offline once opened (with its server stopped, in a
 freshly loaded page), the languages' own pages and the sitemap, (in Chrome) the download
-message on a slowed-down first visit, and accessibility: [axe](https://github.com/dequelabs/axe-core)
+message on a slowed-down first visit, sharing a koan with its code (a link's round trip), and accessibility: [axe](https://github.com/dequelabs/axe-core)
 checks each kind of page against WCAG 2.2 A and AA, in both themes, on a desktop and a phone, and
 any finding fails.
 It takes several minutes per browser.

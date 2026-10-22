@@ -29,8 +29,10 @@
     onuse?: () => void;
     /** The koan's code words, space-separated: shown as code in the tests' descriptions. */
     words?: string;
+    /** The editor holds someone's code, from a shared link, not yet run. */
+    shared?: boolean;
   }
-  let { pack, pathHref, report, gained, running, runtimeError, loading, nextHref, hint, onuse, words = '' }: Props = $props();
+  let { pack, pathHref, report, gained, running, runtimeError, loading, nextHref, hint, onuse, words = '', shared = false }: Props = $props();
   const codeWords = $derived(new Set(words.split(' ')));
 
   // Which answer was revealed: a new line or a new answer hides it again.
@@ -126,6 +128,7 @@
     <div class="body">
       <p class="lead muted">Replace each <code class="blank">___</code>, then press <kbd>Run</kbd> or <kbd>{modKey}</kbd>+<kbd>Enter</kbd>.</p>
       {@render preparing()}
+      {#if shared}<p class="small muted">Nothing is saved until you run this code. Then it becomes your attempt.</p>{/if}
       {#if runtimeError}<p class="small error-note">{runtimeError}</p>{/if}
       {@render answer()}
     </div>
