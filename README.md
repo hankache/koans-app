@@ -5,28 +5,40 @@
 <h1 align="center">koans.app</h1>
 
 <p align="center">
-  Learn a programming language by fixing failing tests, right in your browser.
+  <strong>Learn a programming language by fixing failing tests, right in your browser.</strong>
+</p>
+
+<p align="center">
+  <a href="https://koans.app"><strong>Try it at koans.app →</strong></a>
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/code-Artistic--2.0-blue" alt="Code licence: Artistic License 2.0"></a>
   <a href="LICENSE-CONTENT"><img src="https://img.shields.io/badge/koans-CC%20BY--SA%204.0-lightgrey" alt="Koans licence: CC BY-SA 4.0"></a>
-  <a href="LICENSE-ARTWORK"><img src="https://img.shields.io/badge/artwork-CC%20BY--SA%204.0-lightgrey" alt="Artwork licence: CC BY-SA 4.0"></a>
 </p>
 
-Each koan is a small program whose tests fail. Replace every `___` until they pass, and the
-language tells you whether you've got it right or shows you what it expected.
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/readme/koan-dark.png">
+    <img src=".github/readme/koan-light.png" width="860" alt="A Python koan on division. The first three tests pass; the fourth fails on line 4, where the learner wrote -3 and Python says -4. Three blanks are still to fill.">
+  </picture>
+</p>
 
-It's test-driven from the start. The koans are written with each language's own testing tools,
-so you learn the language and how to test it at the same time.
+**737 koans in nine languages:** JavaScript, Lua, PHP, Python, R, Raku, Ruby, SQL and TypeScript.
 
-Everything runs in your browser, on each language's interpreter compiled to WebAssembly. There's
-nothing to install and no need for accounts and log-ins. Progress is saved locally in the browser.
+Each koan is a small program whose tests fail. Replace every `___` until they pass. When an
+answer is wrong, the language shows you what it expected.
 
-The idea comes from [Ruby Koans](https://www.rubykoans.com/).
+- **Nothing to install, no account.** Each language's real interpreter runs in your browser,
+  compiled to WebAssembly. Your progress is saved there too.
+- **Test-driven from the start.** The koans use each language's own testing tools (pytest, RSpec,
+  PHPUnit, testthat…), so you learn the language and how to test it at the same time.
+- **Works offline** once you've opened a language, and installs as an app on a phone or desktop.
+- **Stuck?** Each blank can reveal its answer. Share a link to your attempt to ask for help.
+- **Free and open:** the code is under the Artistic License 2.0, and the koans under CC BY-SA 4.0.
 
-> **Work in progress.** koans.app grows out of [Raku Koans](https://hankache.github.io/raku-koans/),
-> and isn't published yet. [PLAN.md](PLAN.md) has the plan.
+The idea comes from [Ruby Koans](https://www.rubykoans.com/). koans.app grows out of
+[Raku Koans](https://hankache.github.io/raku-koans/).
 
 ## Languages
 
@@ -42,327 +54,34 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/).
 | [SQL](languages/sql/)         | 72    | [sql.js](https://github.com/sql-js/sql.js) (SQLite 3.49) | expected rows in `-- expect:` comments |
 | [TypeScript](languages/typescript/) | 65 | the TypeScript 6 compiler, then the browser's engine | Vitest's `expect` and `expectTypeOf` |
 
+## Contributing
+
+Found a mistake in a koan? Every koan has a **Report a problem** link that opens a filled-in
+issue. To write koans, improve one, or add a language, see [CONTRIBUTING.md](CONTRIBUTING.md);
+[PLAN.md](PLAN.md) has what's done and what's next.
+
 ## Running it locally
 
-You need [Node.js](https://nodejs.org) 22.18 or newer (the build reads TypeScript with Node itself).
+You need [Node.js](https://nodejs.org) 22.18 or newer.
 
 ```sh
 npm install
-npm run fetch-runtime   # downloads each language's interpreter (see "Interpreters" below)
+npm run fetch-runtime   # downloads each language's interpreter
 npm run dev             # http://localhost:5173
 ```
 
-| Command                   | What it does                                                            |
-|---------------------------|-------------------------------------------------------------------------|
-| `npm run dev`             | Development server that reloads the page when code changes              |
-| `npm run build`           | Builds the site into `dist/`                                            |
-| `npm run preview`         | Serves the built site at http://localhost:4173                          |
-| `npm run check:koans`     | Runs every koan and its solution on its interpreter (see below)         |
-| `npm test`                | Tests how the app reads results, reveals answers and saves progress     |
-| `npm run test:browser`    | Builds the site and checks it in Chrome and Firefox (see below)         |
-| `npm run check`           | Type-checks the app                                                     |
-| `npm run fetch-runtime`   | Downloads the pinned interpreters into `public/runtime/<language>/`     |
-| `npm run notices`         | Regenerates `THIRD-PARTY-NOTICES.md` after dependencies change          |
-
-`build:koans`, `check:koans` and `fetch-runtime` work on every language, or only those you name:
-`npm run check:koans -- --lang raku`.
-
-The koan list is compiled when the dev server starts, so restart it after adding or editing koans.
-
-## Project layout
-
-```
-languages/        one folder per language: its koans, prelude, highlighting and interpreter setup
-  index.ts          the languages the app offers
-  javascript/       see languages/javascript/README.md
-  lua/              see languages/lua/README.md
-  php/              see languages/php/README.md
-  python/           see languages/python/README.md
-  r/                see languages/r/README.md
-  raku/             see languages/raku/README.md
-  ruby/             see languages/ruby/README.md
-  sql/              see languages/sql/README.md
-  typescript/       see languages/typescript/README.md
-  _template/        a starting point for a new language
-src/              the app (Svelte 5 + TypeScript)
-  components/       the home page, the path, the koan page, the editor, the result panel, the logo animation
-  lib/              addresses, opened languages (course.ts), running koans, reading their results,
-                    progress and its export, the language-pack interface, offline mode (offline.ts)
-  sw.js             the service worker, filled in by the build (vite.config.ts)
-public/           static files: favicons, artwork, each language's interpreter worker
-  runtime/<id>/     a language's worker.js, with its interpreter beside it (downloaded)
-scripts/          build and check tools: koan lists, koan checker, interpreter download, notices
-  lib/languages.mjs the languages the tools know about
-  lib/pages.ts      the pages for search engines and shared links, added to the build
-tests/            tests for the app's own logic, run on real interpreter output
-design/           the logos' source image and the scripts that build the site's images from it
-```
-
-## How it works
-
-```
-languages/<id>/koans/ ──build-koans──► src/generated/<id>.json ──► the app
-                                                                    │  prelude + your code + epilogue
-                                                                    ▼
-                                     public/runtime/<id>/worker.js (a Web Worker running the interpreter)
-                                                                    │  test output (TAP)
-                                                                    ▼
-                                     src/lib/tap.ts ──► "Meditate on line 3", or "Enlightenment!"
-```
-
-- **Blanks.** Each language's prelude makes `___` a unique value and wraps its test library's
-  assertions, so any assertion given a `___` fails, whichever it is.
-- **Results.** Every language's tests print [TAP](https://testanything.org): `ok N - …`,
-  `not ok N - …`, `# expected: …`, `# got: …`, and `# at web line N` for the learner's line.
-  [tap.ts](src/lib/tap.ts) reads it: which assertions passed, the first failure and its line,
-  "your answer" against what the language computed, subtests, `todo` and `skip`. Errors outside the
-  tests are read with the language's own patterns.
-- **Runaway code.** An interpreter runs a program to completion without pausing, so it runs in a
-  Web Worker. After 8 seconds the worker is stopped and replaced
-  ([wasm-runtime.ts](src/lib/runtime/wasm-runtime.ts)).
-- **Highlighting.** The editor is [CodeMirror 6](https://codemirror.net), with each language's mode.
-- **Addresses** ([route.ts](src/lib/route.ts)): `#/` picks a language, `#/<language>/` is its
-  path and `#/<language>/koan/<section>/<name>` a koan. Raku Koans' `#/koan/…` addresses lead to
-  the same Raku koan.
-- **The home page** offers a one-blank koan to try by tapping an answer (from the packs' `teaser`),
-  a "continue" card pointing at the unsolved koan worked on last, a tile per language, and, out of
-  the way, export and import. It's laid out for a phone first.
-- **Loading.** The home page loads no language. Opening one loads its koans and editor mode (a
-  separate file of the build, `languages/<id>/content.ts`) and starts its interpreter downloading
-  ([course.ts](src/lib/course.ts)). The home page counts progress from
-  `src/generated/summary.json`, which lists every language's koan ids.
-- **Progress** ([progress.svelte.ts](src/lib/progress.svelte.ts)) is stored per language in the
-  browser's IndexedDB, one koan at a time, so tabs open side by side don't overwrite each other,
-  and each tab shows the others' progress as it happens. It stays on one device, and clearing the
-  site's data resets it. "Start over" on a language's path erases that language's progress.
-- **Export and import** ([transfer.ts](src/lib/transfer.ts)): the home page saves everyone's
-  progress to a JSON file (`"format": "koans.app/progress"`) and reads one back, keeping the newer
-  entry for each koan. Damaged entries and unknown languages are left out.
-- **Offline** ([sw.js](src/sw.js), [offline.ts](src/lib/offline.ts)): in a built site, a service
-  worker keeps the page, the code it starts with and its fonts, then each language's koans and interpreter
-  the first time it's opened. A language opened once then works offline, and isn't downloaded
-  again. The page itself comes from the network when it can (within 4 seconds), so a new version
-  shows at once. The build names each interpreter's cache after a hash of its folder in
-  `public/runtime/`, so an updated interpreter or worker replaces the old one; one the learner had
-  opened is downloaded again in the background. On a first visit the interpreter waits for the
-  service worker (up to 3 seconds), so that its files are saved too. The site can be installed as
-  an app (`manifest.webmanifest`). The dev server doesn't use the service worker.
-- **While an interpreter loads**, the koan page says so: "Downloading Python… 6.1 of 13.5 MB",
-  then "Starting Python…". The service worker reports each file's progress as it streams in; the
-  total is the interpreter's folder, less source maps, licences and what the language's `node.mjs`
-  lists as `onDemand` (files the browser loads only when needed). Without a service worker (the
-  dev server, or a first visit where it was slow to take over) it just says "Preparing Python…".
-- **Sharing a koan** ([share.ts](src/lib/share.ts)): Share puts the editor's code in a link,
-  compressed, after the `#` (`#/python/koan/numbers/division?code=…`), so it never reaches the
-  server and nothing is stored: whoever has the link has the code. On a phone it opens the
-  phone's share sheet; elsewhere it copies the link. Opening one shows that code with a note to
-  read it before running it; the learner's own code stays saved until they run the shared code
-  (which then becomes their attempt), and "Back to your own code" brings theirs back. A link
-  whose code can't be read says so.
-- **Pages for search engines and shared links** ([pages.ts](scripts/lib/pages.ts)). Search
-  engines don't read what comes after the #, so the build gives each language a page of its own
-  (`python/`, `ruby/`, …) with its title, description, canonical address and a preview image for
-  shared links (`public/social/`), and its path (groups and koan titles) as plain HTML. The home
-  page gets the same, listing the languages, plus `sitemap.xml` and `robots.txt`. The app is the
-  same on every page: on a language's page it opens that language's path and changes the address
-  to the site's own (`#/python/`), so everything after works as before. The plain HTML is hidden
-  while scripts run (the app replaces it), and shown without them.
-
-## Writing koans
-
-```
-languages/raku/koans/
-  05-lists-and-hashes/
-    _section.json              { "title": "Lists and hashes", "blurb": "…" }
-    03-hashes.raku              the koan, with ___ blanks
-    03-hashes.solution.raku     the same code, filled in (only each blank's answer reaches the browser)
-```
-
-A koan starts with a title and an intro, in the language's comment style, followed by code using
-its test library:
-
-```raku
-# title: Hashes
-# intro: A hash, marked by the `%` sigil, maps keys to values.
-my %capitals = UK => 'London', Germany => 'Berlin';
-is %capitals<UK>, ___, 'look up a key';
-```
-
-In the intro, wrap code in backticks (`` `%capitals` ``) to show it in the code font. Use double
-backticks for code that contains a backtick (``` ``#`( )`` ```).
-
-To add a group, create a folder with a numeric prefix and a `_section.json` holding its title and
-a one-line blurb.
-
-### Rules for blanks
-
-- The solution must **line up** with the koan: the same lines, with each `___` replaced by its
-  answer and nothing else changed. The hidden answer in the result panel relies on this, and the
-  checker rejects a koan that doesn't line up.
-- Put **at most one `___` on a line**.
-- Put each `___` **directly as an argument** of an assertion: the expected value, a type, a regex,
-  a code block or a named argument. Inside an expression it isn't caught by the prelude, and the
-  koan may die instead of failing.
-- Keep the `___` on the line the interpreter reports for that assertion. The app shows
-  "Meditate on line N" by looking for `___` on that line.
-
-Each language's README adds its own rules, like [Raku's](languages/raku/README.md#rules-for-raku-blanks).
-SQL, which has no assertions, has [rules of its own](languages/sql/README.md#rules-for-sql-blanks).
-
-Numeric prefixes set the order but are dropped from ids (`lists-and-hashes/hashes`), so koans can
-be reordered without losing anyone's progress. Renaming a koan, or moving it to another group,
-does reset its progress.
-
-**Then check everything:**
-
-```sh
-npm run check:koans
-npm test
-```
-
-`check:koans` runs every koan and solution on the same interpreter as the browser (under Node).
-Every line with a `___` must fail on its own while unfilled, every solution must pass, and the
-language's own lint must pass. `npm test` then checks the koans the way the app reads them: the
-hint for each failing line is its answer, and revealing every answer gives the solution.
-
-## Adding a language
-
-[languages/_template/](languages/_template/README.md) is a starting point, with step-by-step
-instructions. In short, a language is a folder in `languages/` with two descriptions of it, one for
-the build tools and one for the app, plus the files they point to:
-
-| File                                  | What it is                                                                 |
-|---------------------------------------|----------------------------------------------------------------------------|
-| `languages/<id>/node.mjs`             | For the tools: koan extension and comment style, prelude, epilogue, lint, where the interpreter is released, how to run it under Node. The type is in [scripts/lib/languages.mjs](scripts/lib/languages.mjs) |
-| `languages/<id>/pack.ts`              | For the app: name and wording, its look (accent colours and emblem), its path page's description and site link, a line of code for its tile and an optional koan to try, artwork, worker, highlighting, error formats. The type is in [src/lib/language.ts](src/lib/language.ts) |
-| `languages/<id>/prelude.*`            | Run before every koan                                                      |
-| `languages/<id>/runtime.lock.json`    | The pinned interpreter release, written by `fetch-runtime --update`        |
-| `languages/<id>/koans/`               | The koans                                                                  |
-| `languages/<id>/tap.test.ts`          | Tests of how the app reads that interpreter's real output                  |
-| `languages/<id>/README.md`            | The path, the language's own rules for blanks, its limitations             |
-| `public/runtime/<id>/worker.js`       | Runs the interpreter in a Web Worker, with the protocol in [wasm-runtime.ts](src/lib/runtime/wasm-runtime.ts) |
-
-Then list it in [scripts/lib/languages.mjs](scripts/lib/languages.mjs) and
-[languages/index.ts](languages/index.ts).
-
-**What every language must do:**
-
-1. `___` is a unique value, and any assertion given it fails, including pairs like `ok` and `nok`
-   that want opposite truths.
-2. Its tests print TAP, with `# expected:`/`# got:` diagnostics and `# at web line N` for the
-   learner's line. For a language without a TAP library, the prelude brings a small one.
-3. An error outside the tests names a line the pack's `errors.line` pattern can find.
-4. A program can be stopped at any moment by terminating its worker.
-
-## Browser tests
-
-`npm run test:browser` builds the site, serves it, and drives the Chrome and Firefox installed on
-the machine through every language's koan flow: a failing koan, its solution, an error, an
-infinite loop. It also checks what each page downloads (and that nothing comes from anywhere but
-the site), old addresses, export and import, two
-tabs sharing progress, every language working offline once opened (with its server stopped, in a
-freshly loaded page), the languages' own pages and the sitemap, (in Chrome) the download
-message on a slowed-down first visit, sharing a koan with its code (a link's round trip), and accessibility: [axe](https://github.com/dequelabs/axe-core)
-checks each kind of page against WCAG 2.2 A and AA, in both themes, on a desktop and a phone, and
-any finding fails.
-It takes several minutes per browser.
-
-`-- --browser chrome` (or `firefox`) runs one browser. Set `CHROME_PATH` or `FIREFOX_PATH` if a
-browser isn't where it's usually installed; one that isn't found is skipped with a warning. CI
-runs these checks on every change, before publishing.
-
-## Interpreters
-
-Each language's interpreter comes from its official releases, and its
-`languages/<id>/runtime.lock.json` pins the release and the checksums of its files.
-`npm run fetch-runtime` gets each one and checks it against the lock, and stops if anything
-differs. It comes from one of two kinds of source, set in the language's `node.mjs`:
-
-- **A GitHub release zip** (Raku): downloaded and also checked against the checksum published
-  with the release.
-- **An npm package** (Python's Pyodide, JavaScript's Acorn parser, the TypeScript compiler): installed by `npm install`,
-  which checks it against `package-lock.json`, then copied.
-- **An npm package not worth installing** (Ruby's ruby.wasm, too big; Lua's wasmoon, with
-  dependencies of its own; SQL's sql.js and PHP's php-wasm, with many builds; R's webR, with its demo app's): its tarball is downloaded from the npm registry and checked against the
-  integrity hash the registry publishes.
-
-The interpreter files aren't committed: the build fetches them.
-
-To move a language to a newer release:
-
-```sh
-npm run fetch-runtime -- --lang raku --update     # the latest release, or: --update v5.1.0
-npm run check:koans -- --lang raku                # every koan must still pass before you publish
-npm test
-```
-
-For an npm package, install the new version first (`npm install --save-dev pyodide@<version>`);
-`--update` then pins what's installed.
-
-## Publishing
-
-`npm run build` produces a static site in `dist/` that you can host anywhere.
-
-A build for publishing should run:
-
-```sh
-npm ci
-npm run fetch-runtime
-npm run check:koans
-npm test
-npm run build
-node tests/browser/run.mjs   # then publish dist/
-```
-
-koans.app itself is published by [deploy.yml](.github/workflows/deploy.yml) on every push to
-`main`: GitHub runs all of the above, then uploads `dist/` to **Cloudflare Pages** (project
-`koans-app`) with Cloudflare's `wrangler`, using the repository secrets `CLOUDFLARE_API_TOKEN`
-(a token with *Account → Cloudflare Pages → Edit*) and `CLOUDFLARE_ACCOUNT_ID`. Only files that
-changed are uploaded. [public/_headers](public/_headers) sets Cloudflare's HTTP headers. To try the
-build the way Cloudflare serves it: `npx wrangler pages dev dist`.
-
-- The site serves its own copy of each interpreter, and its fonts (from the `@fontsource-variable`
-  packages, in [src/fonts.css](src/fonts.css)), so once published it doesn't depend on GitHub,
-  Google or anyone else, and a visit sends no request anywhere but to the site. A changed interpreter can only affect a *new* build, and the lock stops that.
-- The same build works at the root of a domain (`koans.app`) or in a sub-folder
-  (`user.github.io/koans-app/`): its links are relative (`base: './'` in
-  [vite.config.ts](vite.config.ts)). It works on hosts with "pretty URLs" too, which redirect
-  `…/index.html` to its folder: the service worker saves each page by its folder's address.
-- Make sure `.wasm` files are served as `application/wasm`. The main hosts do this already.
-- Offline mode needs HTTPS (or `localhost`): browsers only run service workers there.
-- The pages' canonical addresses, sitemap and preview images use `site.url` in
-  [src/site.ts](src/site.ts) (`https://koans.app/`): change it if the site is published elsewhere.
-
-## Logos
-
-- **The gateless gate** (header, favicon, this README): vector art in
-  [GateMark.svelte](src/components/GateMark.svelte) and [public/favicon.svg](public/favicon.svg),
-  which switches to a light gate on dark browser tabs. After changing the SVG, regenerate the PNG
-  icons (the installed app's too) with `design/build-favicons.sh` (needs ImageMagick).
-- **Preview images for shared links** (`public/social/`, 1200 × 630): drawn from each language's
-  name, tagline, colours and emblem by `node design/build-social-images.mjs`, in the installed
-  Chrome. Run it again after changing any of those, or adding a language.
-- **The Raku Koans logo** (the Raku home page and its solved-koan animation):
-  [design/logo.jpg](design/logo.jpg) is the source. `python3 design/build-logo-assets.py` (needs
-  numpy, scipy and Pillow) builds `public/logo.webp` and the animation layers in `public/anim/`.
-
-## Known limitations
-
-- Answers are checked in the browser, so a learner could "pass" a koan by deleting its
-  assertions. That's fine for a learning tool.
-- Each language's README lists what its interpreter can't do in a browser.
+Every command, how the site works, its tests and how it's published:
+[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
 ## License
 
-- **Code**, including each language's prelude and the "gateless gate" mark:
-  [Artistic License 2.0](LICENSE).
+- **Code**, including each language's prelude, the "gateless gate" mark and the languages'
+  emblems: [Artistic License 2.0](LICENSE).
 - **Koans** (the koans, their solutions, and the groups' titles and blurbs):
   [CC BY-SA 4.0](LICENSE-CONTENT).
-- **Artwork** (the Raku Koans logo and its animation layers): [CC BY-SA 4.0](LICENSE-ARTWORK),
-  which lists the files it covers.
 - **Third-party software** shipped in the site: [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
 Contributions are accepted under these same licenses: see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 The name "koans.app" and the gateless gate mark identify this project. You're welcome to reuse
-the code, koans and artwork under their licenses, but please don't present a copy or fork as koans.app.
+the code and koans under their licenses, but please don't present a copy or fork as koans.app.

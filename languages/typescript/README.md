@@ -97,7 +97,7 @@ npm test
 
 ## Rules for TypeScript blanks
 
-On top of [the rules for every language](../../README.md#rules-for-blanks) and
+On top of [the rules for every language](../../CONTRIBUTING.md#rules-for-blanks) and
 [JavaScript's](../javascript/README.md#rules-for-javascript-blanks):
 
 - A koan, blanks and all, must type-check: blanks go where `expect`'s matchers accept anything, or

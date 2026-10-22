@@ -85,7 +85,7 @@ npm test
 
 ## Rules for Lua blanks
 
-On top of [the rules for every language](../../README.md#rules-for-blanks):
+On top of [the rules for every language](../../CONTRIBUTING.md#rules-for-blanks):
 
 - Put the expected value first, as busted does: `assert.are.equal(___, value)`.
 - A blank goes on a line that calls `assert`; `npm run check:koans` rejects one anywhere else.

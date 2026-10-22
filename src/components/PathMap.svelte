@@ -45,7 +45,7 @@
       {:else}
         <span class="done">
           You have walked the whole path.
-          {#if pack.mascot}{pack.mascot}{:else}<span class="done-mark"><Emblem {pack} size={28} /></span>{/if}
+          <span class="done-mark"><Emblem {pack} size={28} /></span>
         </span>
       {/if}
       {#if anySaved && !confirming}

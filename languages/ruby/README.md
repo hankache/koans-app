@@ -100,7 +100,7 @@ npm test
 
 ## Rules for Ruby blanks
 
-On top of [the rules for every language](../../README.md#rules-for-blanks):
+On top of [the rules for every language](../../CONTRIBUTING.md#rules-for-blanks):
 
 - A blank goes on the line of its `.to`, `.not_to` or `.to_not`, as a value: in `expect(…)` or as
   a matcher's argument. `npm run check:koans` rejects one anywhere else.

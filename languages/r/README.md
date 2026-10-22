@@ -111,7 +111,7 @@ runs, so the tools can exit.
 
 ## Rules for R blanks
 
-On top of [the rules for every language](../../README.md#rules-for-blanks):
+On top of [the rules for every language](../../CONTRIBUTING.md#rules-for-blanks):
 
 - A blank goes on a line that calls an `expect_*` function; `npm run check:koans` rejects one
   anywhere else.

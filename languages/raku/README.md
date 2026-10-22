@@ -1,6 +1,3 @@
-<p align="center">
-  <img src="../../public/logo.webp" alt="Raku Koans: a butterfly beside a torii gate framing a question mark" width="160">
-</p>
 
 # Raku
 
@@ -39,7 +36,7 @@ supplies, parametric roles and grammars.
 
 ```
 node.mjs            Raku for the build tools: prelude folding, epilogue, lint, running Raku.js under Node
-pack.ts             Raku for the app: wording, artwork, worker, highlighting, error formats
+pack.ts             Raku for the app: wording, look, worker, highlighting, error formats
 prelude.raku        run before every koan: makes ___ a unique value and wraps Test's assertions
 highlight.ts        the editor's Raku mode, a port of Ace's (words.ts holds its word lists)
 runtime.lock.json   the pinned Raku++ release and the checksums of its files
@@ -63,7 +60,7 @@ trailing `#` comment on a code line: it would comment out the rest.
 
 ## Rules for Raku blanks
 
-On top of [the rules for every language](../../README.md#rules-for-blanks):
+On top of [the rules for every language](../../CONTRIBUTING.md#rules-for-blanks):
 
 - Compare **types, `Any` and `Nil` with `is-deeply`**, never `is`. `is` compares strings, and every
   type object stringifies to an empty string, so `is $x.WHAT, Int` would accept any type.

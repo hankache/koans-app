@@ -41,7 +41,7 @@ the tools only know the languages listed in `scripts/lib/languages.mjs`, so noth
 6. **Register** the language in [scripts/lib/languages.mjs](../../scripts/lib/languages.mjs) and
    [languages/index.ts](../index.ts).
 7. **The koans**, in `koans/NN-section/`: a `_section.json` per group, and a koan with its
-   `.solution` per file pair. See [Writing koans](../../README.md#writing-koans) and
+   `.solution` per file pair. See [Writing koans](../../CONTRIBUTING.md#writing-koans) and
    [CONTRIBUTING.md](../../CONTRIBUTING.md).
 8. **Check.** `npm run check:koans -- --lang <id>` checks every koan and solution;
    `tap.test.ts` (fill it in) checks how the app reads the interpreter's real output; `npm test`

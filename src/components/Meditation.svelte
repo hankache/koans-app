@@ -2,7 +2,6 @@
 <script lang="ts">
   import type { Report } from '../lib/tap';
   import type { Reveal } from '../lib/koans';
-  import LogoGate from './LogoGate.svelte';
   import Emblem from './Emblem.svelte';
   import { inlineCode } from '../lib/inline-code';
   import { markCode } from '../../scripts/lib/code-words.mjs';
@@ -144,7 +143,7 @@
       {@render strip('good', count, true, done)}
       <div class="body">
         <div class="celebrate">
-          {#key report}{#if pack.art}<LogoGate size={72} art={pack.art} />{:else}<Emblem {pack} size={64} celebrate />{/if}{/key}
+          {#key report}<Emblem {pack} size={64} celebrate />{/key}
           <p class="small muted">{total === 1 ? 'The test passes.' : `All ${total} tests pass.`}</p>
         </div>
         {#if nextHref}<a class="next" href={nextHref}>Next koan →</a>{:else}<a class="next" href={pathHref}>Back to the path</a>{/if}

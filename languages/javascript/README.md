@@ -85,7 +85,7 @@ by the browser tests).
 
 ## Rules for JavaScript blanks
 
-On top of [the rules for every language](../../README.md#rules-for-blanks):
+On top of [the rules for every language](../../CONTRIBUTING.md#rules-for-blanks):
 
 - A blank goes on a line with an `expect(…)`, as a value: in `expect(…)` itself or as a matcher's
   argument, never as a matcher's name. `npm run check:koans` rejects one anywhere else.

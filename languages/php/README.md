@@ -105,7 +105,7 @@ file list in `node.mjs`.
 
 ## Rules for PHP blanks
 
-On top of [the rules for every language](../../README.md#rules-for-blanks):
+On top of [the rules for every language](../../CONTRIBUTING.md#rules-for-blanks):
 
 - Start every koan with `<?php` on its own first line.
 - A blank goes on a line that calls an assertion; `npm run check:koans` rejects one anywhere else.

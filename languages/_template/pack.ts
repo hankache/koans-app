@@ -18,8 +18,6 @@ export default {
   site: { url: 'https://TODO', label: 'TODO' },
   // A few lines in the language's own voice, said now and then when a koan passes.
   cheers: ['TODO'],
-  // Optional: mascot, an emoji shown when its whole path is walked; without it, its emblem.
-  // Optional: art: { celebration: 'folder/' }, the layers of its "passed" animation. Without it, the gate stands in.
   // On the home page: a few words on what it's for, where its path goes, its test framework, the
   // filters it shows under ('start', 'web', 'data', 'automate', 'think'), and koans to try.
   tag: 'TODO',
