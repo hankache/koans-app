@@ -1,7 +1,7 @@
 // Checks the built site in real browsers: the home page (its koan to try, where to continue, and its
 // phone layout), what each page downloads, every language's koan flow, old addresses, progress
-// across tabs, export/import, working offline, the message while an interpreter downloads, and the
-// pages for search engines.
+// across tabs, export/import, working offline, the message while an interpreter downloads, the
+// pages for search engines, and accessibility (axe, in both themes, on a desktop and a phone).
 //
 //   npm run test:browser                      Chrome and Firefox (builds the site first)
 //   npm run test:browser -- --browser chrome  one of them
@@ -10,6 +10,7 @@
 // set CHROME_PATH or FIREFOX_PATH to use another one. A missing browser is skipped with a warning,
 // unless it was asked for by name.
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -320,6 +321,66 @@ async function checkTabs(browser, base) {
 }
 
 /**
+ * Accessibility: axe (https://github.com/dequelabs/axe-core) on every kind of page, against WCAG 2.2
+ * A and AA and axe's best practices, in both themes, on a desktop and a phone. Any finding fails.
+ * The koan pages use JavaScript, whose interpreter starts at once: before a run, after a failing
+ * one, and solved (on a phone, with the report open).
+ */
+const axeSource = readFileSync(createRequire(import.meta.url).resolve('axe-core/axe.min.js'), 'utf8');
+
+async function audit(page, where) {
+  await page.addScriptTag({ content: axeSource });
+  const violations = await page.evaluate(async () => {
+    // The editor scrolls sideways on a phone. axe counts its text as not focusable (its tabIndex
+    // is -1), but text you can edit is: Tab reaches it, and the arrow keys scroll it. So that one
+    // rule leaves the editor out (its own selector, plus .cm-scroller).
+    axe.configure({ rules: [{ id: 'scrollable-region-focusable', selector: '*:not(select,textarea,.cm-scroller)' }] });
+    const { violations } = await axe.run(document, {
+      runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] },
+    });
+    return violations.flatMap(v => v.nodes.map(n => `${v.id}: ${n.target.join(' ')} (${n.failureSummary?.split('\n')[1]?.trim()})`));
+  });
+  check(`accessibility: ${where}`, violations.length === 0, violations.slice(0, 6).join(' | '));
+}
+
+async function checkAccessibility(browser, base) {
+  const first = readKoans(toolLanguages.find(l => l.id === 'javascript'))[0].koans[0];
+  for (const theme of ['dark', 'light']) {
+    for (const phone of [false, true]) {
+      const context = await browser.createBrowserContext();
+      const page = await context.newPage();
+      const where = `${theme} theme${phone ? ', phone' : ''}`;
+      try {
+        await page.setViewport(phone ? { width: 390, height: 844, isMobile: true, hasTouch: true } : { width: 1280, height: 900 });
+        await page.evaluateOnNewDocument(t => localStorage.setItem('koans:theme', t), theme);
+        await page.goto(`${base}#/`);
+        await page.waitForSelector('.tile');
+        await page.click('.keep-toggle');
+        await audit(page, `the home page (${where})`);
+        await page.goto(`${base}#/python/`);
+        await page.waitForSelector('.hero h1');
+        await audit(page, `a path (${where})`);
+        await page.goto(`${base}#/javascript/koan/${first.id}`);
+        await page.waitForSelector('.cm-content');
+        await audit(page, `a koan (${where})`);
+        await page.click(phone ? '.bar-run' : 'button.primary');
+        await panel(page, /Meditate/);
+        if (phone) await page.click('.summary');
+        await audit(page, `a failing koan (${where})`);
+        // On a phone the report is a sheet over the page, and Run is in the bar at the bottom.
+        if (phone) await page.$eval('.sheet-close', b => b.click());
+        await setCode(page, first.solution.trimEnd());
+        await page.click(phone ? '.bar-run' : 'button.primary');
+        await panel(page, /Enlightenment/);
+        await audit(page, `a solved koan (${where})`);
+      } finally {
+        await context.close();
+      }
+    }
+  }
+}
+
+/**
  * The pages for search engines and shared links (scripts/lib/pages.ts): each language's own page,
  * its plain HTML, and the app opening its path there, at the site's own address; and the sitemap.
  */
@@ -483,6 +544,7 @@ try {
       if (exported) await checkImport(browser, base, exported, dir);
       await checkTabs(browser, base);
       await checkPages(browser, base);
+      await checkAccessibility(browser, base);
       await checkOffline(browser);
       if (name === 'chrome') await checkLoading(browser, base);
     } finally {

@@ -5,7 +5,7 @@
   --bg-sunken: #efe9dc;
   --ink: #221d2b;
   --ink-soft: #5d5568;
-  --ink-faint: #958ca0;
+  --ink-faint: #6e6479; /* the faintest text: 4.5:1 on every background, as WCAG asks */
   --line: #e0d8c8;
 
   --wing-blue: #2f7fc9;
@@ -21,22 +21,28 @@
   --sec-4: #9a6535;
   --sec-5: #737049;
   --sec-6: #4e606a;
-  --pass: #2f9a6d;
+  --pass: #257956;
   --pass-bg: #e3f3ea;
-  --fail: #c2533a;
+  --fail: #ab4933;
   --fail-bg: #fbeae4;
   --gold: #d49a0b;
 
   --code-bg: #fffdf8;
-  --syn-keyword: #a53d8a;
-  --syn-string: #2f7a4f;
-  --syn-number: #b0600c;
-  --syn-variable: #2f6fb5;
-  --syn-comment: #958ca0;
-  --syn-type: #8a6412;
-  --syn-builtin: #2f7f78;
-  --syn-regexp: #b0463a;
-  --syn-blank: #d2458c;
+  --syn-keyword: #96377e;
+  --syn-string: #286843;
+  --syn-number: #8c4c0a;
+  --syn-variable: #285e99;
+  --syn-comment: #696074;
+  --syn-type: #785710;
+  --syn-builtin: #266660;
+  --syn-regexp: #9c3e33;
+  --syn-blank: #a72868;
+  /* The editor's tints: the failing line, an error's line, and the blanks (from their own pink).
+     Light enough that every syntax colour keeps 4.5:1 on them, as WCAG asks. */
+  --tint-fail: 8%;
+  --tint-error: 12%;
+  --tint-blank: 10%;
+  --blank-tint: #d2458c;
 
   --shadow: 0 1px 2px rgb(40 30 50 / 0.06), 0 8px 24px rgb(40 30 50 / 0.06);
   --font-display: 'Fraunces', Georgia, serif;
@@ -53,7 +59,7 @@
   --bg-sunken: #110e16;
   --ink: #efe9f5;
   --ink-soft: #b3a9c0;
-  --ink-faint: #7a7087;
+  --ink-faint: #8a8197;
   --line: #2e2838;
   --wing-blue: #6fb0f0;
   --wing-pink: #f07cb6;
@@ -70,15 +76,19 @@
   --fail-bg: #3a1f1a;
   --gold: #f5cc4a;
   --code-bg: #1a1621;
-  --syn-keyword: #e59ad5;
+  --syn-keyword: #e9a8db;
   --syn-string: #8fd6a8;
   --syn-number: #f5b86e;
   --syn-variable: #8ec3f5;
-  --syn-comment: #7a7087;
+  --syn-comment: #a69faf;
   --syn-type: #e2bf72;
   --syn-builtin: #7fcfc4;
-  --syn-regexp: #f0907f;
-  --syn-blank: #ff8fc7;
+  --syn-regexp: #f4aa9d;
+  --syn-blank: #ff9ecf;
+  --tint-fail: 12%;
+  --tint-error: 18%;
+  --tint-blank: 16%;
+  --blank-tint: #ff8fc7;
   --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.25);
   color-scheme: dark;
 }

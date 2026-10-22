@@ -68,7 +68,8 @@
 </script>
 
 <header class="bar" bind:offsetHeight={barHeight}>
-  <a class="brand" href="#/"><GateMark size={32} /> <span>{site.name}</span></a>
+  <!-- Named for screen readers even on a phone, where the wordmark is hidden. -->
+  <a class="brand" href="#/" aria-label="{site.name} home"><GateMark size={32} /> <span>{site.name}</span></a>
   {#if shown}
     <a class="lang" href={shown.href()}>{shown.pack.name}</a>
     <div class="meter"><Meter {passed} total={shown.allKoans.length} /></div>
@@ -148,7 +149,7 @@
   main { flex: 1 0 auto; width: 100%; box-sizing: border-box; max-width: 1120px; margin: 0 auto; padding: 0 16px; }
   footer { text-align: center; color: var(--ink-faint); font-size: 0.8rem; padding: 3rem 16px 2rem; }
   footer a { color: var(--ink-soft); }
-  .build { display: block; margin-top: 0.4rem; font-size: 0.72rem; opacity: 0.8; }
+  .build { display: block; margin-top: 0.4rem; font-size: 0.72rem; }
   .build a { color: inherit; }
 
   @media (max-width: 600px) {

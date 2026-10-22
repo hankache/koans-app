@@ -301,11 +301,13 @@
     color: var(--bg);
     padding: 0.15rem 0.6rem;
   }
-  /* The group's koans, one dot each: filled when solved, ringed for this one. */
-  .dots { display: flex; align-items: center; gap: 0.6rem; }
-  .dots ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.45rem; }
-  .dots a {
-    display: block;
+  /* The group's koans, one dot each: filled when solved, ringed for this one. Each link is a
+     24 px target (WCAG's smallest), with its 14 px dot drawn in the middle. */
+  .dots { display: flex; align-items: center; gap: 0.35rem; }
+  .dots ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; }
+  .dots a { display: grid; place-items: center; width: 24px; height: 24px; }
+  .dots a::before {
+    content: '';
     width: 14px;
     height: 14px;
     border-radius: 50%;
@@ -313,9 +315,9 @@
     border: 2px solid var(--line);
     transition: transform 0.15s;
   }
-  .dots a:hover { transform: scale(1.2); border-color: var(--lang); }
-  .dots a.done { background: var(--lang); border-color: var(--lang); }
-  .dots a.here { border-color: var(--lang); box-shadow: 0 0 0 3px color-mix(in srgb, var(--lang) 28%, transparent); }
+  .dots a:hover::before { transform: scale(1.2); border-color: var(--lang); }
+  .dots a.done::before { background: var(--lang); border-color: var(--lang); }
+  .dots a.here::before { border-color: var(--lang); box-shadow: 0 0 0 3px color-mix(in srgb, var(--lang) 28%, transparent); }
   .count { font-size: 0.82rem; color: var(--ink-soft); white-space: nowrap; }
   .intro code {
     font-family: var(--font-mono);

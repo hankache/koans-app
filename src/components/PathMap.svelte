@@ -20,6 +20,8 @@
     progress.resetAll();
     confirming = false;
   }
+  // How a koan's circle is read out: its number (what it shows, for voice control) and title, then this.
+  const STATE_WORDS: Record<string, string> = { new: 'not started', attempted: 'tried', passed: 'solved' };
 </script>
 
 <svelte:head><title>{pack.name} Koans · {site.name}</title></svelte:head>
@@ -80,7 +82,7 @@
               href={course.href(koan.id)}
               class="stone {state}"
               class:next={koan.id === next?.id}
-              aria-label="{koan.title} ({state})"
+              aria-label="{ki + 1}. {koan.title}, {STATE_WORDS[state]}"
             >
               {#if state === 'passed'}✓{:else}{ki + 1}{/if}
             </a>

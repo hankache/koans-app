@@ -529,7 +529,8 @@
   .now .num.fill-in { background: var(--home-accent); }
   .now .num.pass { background: var(--badge-green); }
   .demo { margin: 0; background: var(--bg-raised); border: 1px solid var(--line); box-shadow: var(--shadow); min-width: 0; }
-  .demo-code { margin: 0; padding: 20px; font: 15px/1.8 var(--font-mono); font-variant-ligatures: none; overflow-x: auto; white-space: pre; }
+  /* Wraps rather than scroll sideways on a phone: a scrolling box would need its own keyboard stop. */
+  .demo-code { margin: 0; padding: 20px; font: 15px/1.8 var(--font-mono); font-variant-ligatures: none; white-space: pre-wrap; }
   .demo-code .blank { padding: 1px 6px; background: color-mix(in srgb, var(--home-accent) 14%, transparent); transition: background 0.3s; }
   .demo-code .blank.typing { color: var(--ink); outline: 2px solid var(--home-accent); }
   .demo-code .blank.filled { background: var(--pass-bg); color: var(--pass); }

@@ -264,13 +264,13 @@
   .editor :global(.cm-blank) {
     cursor: pointer;
     color: var(--syn-blank);
-    background: color-mix(in srgb, var(--syn-blank) 16%, transparent);
+    background: color-mix(in srgb, var(--blank-tint) var(--tint-blank), transparent);
     font-weight: 600;
   }
   .editor :global(.cm-checks) { min-width: 1.4em; text-align: center; font-family: var(--font-body); font-weight: 700; font-size: 0.85em; }
   .editor :global(.cm-check-ok) { color: var(--pass); }
   .editor :global(.cm-check-bad) { color: var(--fail); }
-  .editor :global(.cm-mark-fail) { background: color-mix(in srgb, var(--fail) 12%, transparent); box-shadow: inset 3px 0 var(--fail); }
-  .editor :global(.cm-mark-error) { background: color-mix(in srgb, var(--fail) 18%, transparent); box-shadow: inset 3px 0 var(--fail); }
+  .editor :global(.cm-mark-fail) { background: color-mix(in srgb, var(--fail) var(--tint-fail), transparent); box-shadow: inset 3px 0 var(--fail); }
+  .editor :global(.cm-mark-error) { background: color-mix(in srgb, var(--fail) var(--tint-error), transparent); box-shadow: inset 3px 0 var(--fail); }
 
 </style>
