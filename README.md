@@ -314,12 +314,20 @@ npm run build
 node tests/browser/run.mjs   # then publish dist/
 ```
 
+koans.app itself is published by [deploy.yml](.github/workflows/deploy.yml) on every push to
+`main`: GitHub runs all of the above, then uploads `dist/` to **Cloudflare Pages** (project
+`koans-app`) with Cloudflare's `wrangler`, using the repository secrets `CLOUDFLARE_API_TOKEN`
+(a token with *Account → Cloudflare Pages → Edit*) and `CLOUDFLARE_ACCOUNT_ID`. Only files that
+changed are uploaded. [public/_headers](public/_headers) sets Cloudflare's HTTP headers. To try the
+build the way Cloudflare serves it: `npx wrangler pages dev dist`.
+
 - The site serves its own copy of each interpreter, and its fonts (from the `@fontsource-variable`
   packages, in [src/fonts.css](src/fonts.css)), so once published it doesn't depend on GitHub,
   Google or anyone else, and a visit sends no request anywhere but to the site. A changed interpreter can only affect a *new* build, and the lock stops that.
 - The same build works at the root of a domain (`koans.app`) or in a sub-folder
   (`user.github.io/koans-app/`): its links are relative (`base: './'` in
-  [vite.config.ts](vite.config.ts)).
+  [vite.config.ts](vite.config.ts)). It works on hosts with "pretty URLs" too, which redirect
+  `…/index.html` to its folder: the service worker saves each page by its folder's address.
 - Make sure `.wasm` files are served as `application/wasm`. The main hosts do this already.
 - Offline mode needs HTTPS (or `localhost`): browsers only run service workers there.
 - The pages' canonical addresses, sitemap and preview images use `site.url` in

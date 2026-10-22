@@ -1,0 +1,16 @@
+# HTTP headers for Cloudflare Pages, which reads this file and doesn't serve it
+# (https://developers.cloudflare.com/pages/configuration/headers/).
+
+# Every response: don't guess file types, send only the site's address to other sites, and
+# no camera, microphone or location for anything on the page.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# The app's code and fonts have a hash in their names, which changes with their content: browsers
+# can keep them for a year without asking again. Everything else (the pages, sw.js, the
+# interpreters, whose versions the service worker tracks) keeps Cloudflare's default: checked
+# again on each visit.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

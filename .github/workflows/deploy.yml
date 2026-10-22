@@ -1,8 +1,12 @@
-name: Deploy to GitHub Pages
+name: Deploy to Cloudflare Pages
 
 # Publishes the site on every push to main, but only if every check passes: a broken koan
 # or a build failure leaves the live site as it was. Can also be run by hand from the
-# Actions tab. Needs Settings → Pages → Source set to "GitHub Actions".
+# Actions tab.
+#
+# The site is served by Cloudflare Pages (project "koans-app", at koans.app), for its bandwidth:
+# GitHub only builds and checks it. Needs two repository secrets: CLOUDFLARE_API_TOKEN (a token
+# with Account → Cloudflare Pages → Edit) and CLOUDFLARE_ACCOUNT_ID.
 on:
   push:
     branches: [main]
@@ -10,27 +14,39 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 # One deploy at a time; a newer push waits rather than cancelling one mid-publish.
 concurrency:
-  group: pages
+  group: deploy
   cancel-in-progress: false
 
 jobs:
-  # Every check (checks.yml), then the built site uploaded for Pages.
+  # Every check (checks.yml), keeping the built site.
   build:
     uses: ./.github/workflows/checks.yml
     with:
-      pages: true
+      site: true
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      name: production
+      url: https://koans.app
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      # Cloudflare's own tool, pinned like everything else.
+      WRANGLER: npx --yes wrangler@4.152.0
     steps:
-      - id: deployment
-        uses: actions/deploy-pages@v5
+      - uses: actions/download-artifact@v8
+        with:
+          name: site
+          path: dist
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      # The first deploy creates the project; later ones find it.
+      - run: $WRANGLER pages project list | grep -qw koans-app || $WRANGLER pages project create koans-app --production-branch=main
+      # Only files that changed are uploaded: an unchanged interpreter costs nothing.
+      - run: $WRANGLER pages deploy dist --project-name=koans-app --branch=main --commit-dirty=true

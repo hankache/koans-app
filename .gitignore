@@ -14,3 +14,6 @@ public/runtime/r/webr/*
 
 # Copied from THIRD-PARTY-NOTICES.md at build time, so the deployed site carries it
 public/third-party-notices.txt
+
+# State of `wrangler pages dev`, Cloudflare's local emulator
+.wrangler/

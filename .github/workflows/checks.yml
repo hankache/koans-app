@@ -1,12 +1,13 @@
 name: Checks
 
 # Every check, shared by ci.yml (pull requests and branches) and deploy.yml (main), so the two
-# can't drift apart. With `pages`, the built site is also uploaded for GitHub Pages.
+# can't drift apart. With `site`, the built site is also kept (as the artifact "site") for
+# deploy.yml to publish.
 on:
   workflow_call:
     inputs:
-      pages:
-        description: Upload the built site for deploy.yml
+      site:
+        description: Keep the built site for deploy.yml
         type: boolean
         default: false
 
@@ -31,9 +32,10 @@ jobs:
       - run: npm run build
       # The built site in Chrome and Firefox (both come with GitHub's Ubuntu runners).
       - run: node tests/browser/run.mjs
-      - if: inputs.pages
-        uses: actions/configure-pages@v6
-      - if: inputs.pages
-        uses: actions/upload-pages-artifact@v5
+      - if: inputs.site
+        uses: actions/upload-artifact@v7
         with:
+          name: site
           path: dist
+          include-hidden-files: true
+          retention-days: 7

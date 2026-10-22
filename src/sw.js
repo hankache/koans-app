@@ -22,12 +22,13 @@ const at = path => new URL(path, scope).href;
 const ANY = { ignoreVary: true };
 
 /**
- * The page saved for a navigation to url, if it's one of the site's: index.html (whatever comes
- * after the #, which holds the routes), or a language's own (python/…).
+ * The page saved for a navigation to url, if it's one of the site's: the home page (whatever
+ * comes after the #, which holds the routes), or a language's own (python/…). Each is saved under
+ * its folder's address, with or without index.html (see the build's comment on `core`).
  */
 function pageFor(url) {
   const address = (url.origin + url.pathname).replace(/index\.html$/, '');
-  for (const path of ['', ...OFFLINE.pages]) if (address === at(path)) return at(`${path}index.html`);
+  for (const path of ['', ...OFFLINE.pages]) if (address === at(path)) return address;
   return null;
 }
 
@@ -54,7 +55,7 @@ async function keep(cache, url) {
 self.addEventListener('install', event => {
   event.waitUntil(
     (async () => {
-      // no-cache: the browser's HTTP cache may hold an index.html older than this build.
+      // no-cache: the browser's HTTP cache may hold a page older than this build.
       const shell = await caches.open(SHELL);
       await shell.addAll(OFFLINE.core.map(path => new Request(at(path), { cache: 'no-cache' })));
       await carryOver(shell);
