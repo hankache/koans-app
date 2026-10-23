@@ -1,0 +1,5 @@
+let () = check (list int) ":: puts an item in front" [0; 1; 2] (0 :: [1; 2])
+let () = check (list int) "the long way" [1; 2; 3] (1 :: 2 :: 3 :: [])
+let () = check (list int) "@ joins two lists" [1; 2; 3; 4] ([1; 2] @ [3; 4])
+let () = check int "List.length" 0 (List.length [])
+let () = check (list string) "a list of strings" ["a"; "b"] (List.rev ["b"; "a"])

@@ -5,6 +5,8 @@
 //   • npm: copied from an npm package, pinned (and checked on install) by package-lock.json
 //   • npm-tarball: downloaded from the npm registry without installing it (for packages too big
 //     to install for everyone), checked against the integrity hash the registry publishes
+//   • github-files: files committed to a GitHub repository, taken at a pinned commit (for
+//     interpreters that are published nowhere else), checked against the lock alone
 //
 //   npm run fetch-runtime                                 the pinned interpreters, verified
 //   npm run fetch-runtime -- --lang raku --update         move Raku to its latest release and re-pin it
@@ -12,6 +14,7 @@
 //   npm run fetch-runtime -- --lang python --update       re-pin Python to the installed package
 //                                                         (after npm install pyodide@<version>)
 //   npm run fetch-runtime -- --lang ruby --update [2.11.0]  move Ruby to the latest (or a given) version
+//   npm run fetch-runtime -- --lang ocaml --update [<sha>]  move OCaml to the latest (or a given) commit
 //
 // After --update, run `npm run check:koans` and `npm test` before publishing.
 import { createHash } from 'node:crypto';
@@ -118,6 +121,22 @@ async function npmTarball({ package: pkg, files }, lock) {
   return { tag: version, source: `https://www.npmjs.com/package/${pkg}/v/${version}`, pin: { archive }, files: found };
 }
 
+/**
+ * Files committed to a GitHub repository, at the commit pinned in the lock. With --update, the
+ * latest commit that changed them, or the one given.
+ */
+async function githubFiles({ repo, path, files }, lock) {
+  let commit = lock?.tag;
+  if (update) {
+    commit = wantedTag ?? JSON.parse((await download(`https://api.github.com/repos/${repo}/commits?path=${path}&per_page=1`)).toString())[0].sha;
+  }
+  const found = {};
+  for (const file of files) found[file] = await download(`https://raw.githubusercontent.com/${repo}/${commit}/${file}`);
+  const total = Object.values(found).reduce((sum, b) => sum + b.length, 0);
+  console.log(`✓ ${repo}@${commit.slice(0, 12)}  ${files.length} files, ${(total / 1e6).toFixed(1)} MB`);
+  return { tag: commit, source: `https://github.com/${repo}/tree/${commit}/${path}`, pin: {}, files: found };
+}
+
 /** Files from an installed npm package. */
 function npmPackage({ package: pkg, files }) {
   if (wantedTag) die(`--update takes no version for an npm package: npm install ${pkg}@<version> first`);
@@ -140,6 +159,7 @@ for (const lang of langs) {
   const got =
     kind === 'npm' ? npmPackage(lang.runtime)
     : kind === 'npm-tarball' ? await npmTarball(lang.runtime, lock)
+    : kind === 'github-files' ? await githubFiles(lang.runtime, lock)
     : await githubZip(lang.runtime, lock);
   if (!update && got.tag !== lock.tag) {
     die(`${lang.id}: found ${got.tag} but ${lang.id}/runtime.lock.json pins ${lock.tag}. Re-run with --update to accept it.`);

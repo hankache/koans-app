@@ -1,0 +1,8 @@
+(* title: Integers *)
+(* intro: Integer division drops the remainder, rounding toward zero, and `mod` gives the remainder, with the sign of the number divided. *)
+let () = check int "/ drops the remainder" ___ (17 / 5)
+let () = check int "mod is the remainder" ___ (17 mod 5)
+let () = check int "/ rounds toward zero" ___ (-7 / 2)
+let () = check int "mod takes the sign of the number divided" ___ (-7 mod 2)
+let () = check int "abs" ___ (abs (-7))
+let () = check int "a negative argument needs parentheses" ___ (min 3 (-5))

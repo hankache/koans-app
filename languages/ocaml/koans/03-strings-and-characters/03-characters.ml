@@ -1,0 +1,7 @@
+(* title: Characters *)
+(* intro: A `char` is one byte, written in single quotes. `Char.code` gives its number and `Char.chr` turns a number back into one. *)
+let () = check int "Char.code" ___ (Char.code 'A')
+let () = check char "Char.chr" ___ (Char.chr 97)
+let () = check char "Char.uppercase_ascii" ___ (Char.uppercase_ascii 'q')
+let () = check string "String.make 1 turns a char into a string" ___ (String.make 1 'z')
+let () = check bool "characters compare by their codes" ___ ('a' < 'b')

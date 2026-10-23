@@ -1,0 +1,6 @@
+let () = check bool "exists" true (List.exists (fun x -> x > 2) [1; 2; 3])
+let () = check bool "for_all" false (List.for_all (fun x -> x > 2) [1; 2; 3])
+let () = check (option int) "find_opt" (Some 4) (List.find_opt (fun x -> x > 3) [1; 4; 5])
+let () = check (list int) "sort" [1; 2; 3] (List.sort compare [3; 1; 2])
+let () = check (list int) "sort in reverse" [3; 2; 1] (List.sort (fun a b -> compare b a) [3; 1; 2])
+let () = check (pair (list int) (list int)) "partition" ([1; 3], [2]) (List.partition (fun x -> x mod 2 = 1) [1; 2; 3])

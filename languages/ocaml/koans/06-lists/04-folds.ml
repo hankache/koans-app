@@ -1,0 +1,7 @@
+(* title: Folds *)
+(* intro: `List.fold_left f init list` combines the items from the left: `f (f (f init a) b) c`. `List.fold_right` goes from the right. *)
+let () = check int "sum" ___ (List.fold_left ( + ) 0 [1; 2; 3; 4])
+let () = check int "the largest" ___ (List.fold_left max 0 [3; 9; 4])
+let () = check (list int) "fold_left with :: reverses" ___ (List.fold_left (fun acc x -> x :: acc) [] [1; 2; 3])
+let () = check (list int) "fold_right with :: copies" ___ (List.fold_right (fun x acc -> x :: acc) [1; 2; 3] [])
+let () = check string "joining with a fold" ___ (List.fold_left ( ^ ) "" ["a"; "b"; "c"])

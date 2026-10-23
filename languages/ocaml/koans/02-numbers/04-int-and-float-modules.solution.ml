@@ -1,0 +1,5 @@
+let () = check int "Int.max" 9 (Int.max 4 9)
+let () = check string "Int.to_string" "12" (Int.to_string 12)
+let () = check (Alcotest.float 1e-9) "Float.round rounds half away from zero" 3.0 (Float.round 2.5)
+let () = check (Alcotest.float 1e-9) "Float.of_int" 4.0 (Float.of_int 4)
+let () = check bool "Int.max_int + 1 wraps around" true (Int.max_int + 1 = Int.min_int)

@@ -1,0 +1,8 @@
+(* title: Equality *)
+(* intro: `=` compares structure, all the way down, and `<>` is its opposite. `compare` gives a negative number, zero or a positive number, and works on any type. *)
+let () = check bool "lists with the same items are equal" ___ ([1; 2] = [1; 2])
+let () = check bool "<> means not equal" ___ ("a" <> "b")
+let () = check int "compare: equal" ___ (compare 7 7)
+let () = check bool "compare: smaller is negative" ___ (compare 1 2 < 0)
+let () = check bool "strings compare alphabetically" ___ ("apple" < "banana")
+let () = check int "max works on any type" ___ (max 3 9)

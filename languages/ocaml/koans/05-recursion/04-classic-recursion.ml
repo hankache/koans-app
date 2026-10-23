@@ -1,0 +1,7 @@
+(* title: Classic recursion *)
+(* intro: Two recursive classics: Euclid's greatest common divisor, and Fibonacci numbers. *)
+let rec gcd a b = if b = 0 then a else gcd b (a mod b)
+let rec fib n = if n < 2 then n else fib (n - 1) + fib (n - 2)
+let () = check int "gcd 12 18" ___ (gcd 12 18)
+let () = check int "gcd of coprime numbers" ___ (gcd 9 28)
+let () = check (list int) "the first Fibonacci numbers" ___ (List.init 6 fib)

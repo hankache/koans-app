@@ -1,0 +1,7 @@
+(* title: The Int and Float modules *)
+(* intro: Each type has a module of functions: `Int`, `Float`, `String`, `List`… They hold constants too, like `Int.max_int`. *)
+let () = check int "Int.max" ___ (Int.max 4 9)
+let () = check string "Int.to_string" ___ (Int.to_string 12)
+let () = check (Alcotest.float 1e-9) "Float.round rounds half away from zero" ___ (Float.round 2.5)
+let () = check (Alcotest.float 1e-9) "Float.of_int" ___ (Float.of_int 4)
+let () = check bool "Int.max_int + 1 wraps around" ___ (Int.max_int + 1 = Int.min_int)

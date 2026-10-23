@@ -1,0 +1,6 @@
+(* title: Standard exceptions *)
+(* intro: The standard library raises `Not_found`, `Invalid_argument`, `Failure` and `Division_by_zero`. Many functions have an `_opt` twin that returns an option instead. *)
+let () = check_raises "dividing by zero" ___ (fun () -> ignore (1 / 0))
+let () = check_raises "List.nth past the end" ___ (fun () -> ignore (List.nth [1] 5))
+let () = check_raises "String.sub out of range" ___ (fun () -> ignore (String.sub "abc" 2 5))
+let () = check (option int) "the _opt twin" ___ (List.nth_opt [1] 5)

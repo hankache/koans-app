@@ -1,0 +1,7 @@
+(* title: Conversions *)
+(* intro: OCaml never converts silently: `float_of_int`, `int_of_float`, `string_of_int` and `int_of_string` do it when you ask. `int_of_string_opt` gives `None` instead of failing. An argument that is itself an application, like `Some 7`, goes in parentheses: `(Some 7)`. *)
+let () = check int "int_of_float drops the fraction" ___ (int_of_float 3.99)
+let () = check int "int_of_string reads a number" ___ (int_of_string "42")
+let () = check (option int) "int_of_string_opt: Some for a number" ___ (int_of_string_opt "7")
+let () = check (option int) "and None for anything else" ___ (int_of_string_opt "seven")
+let () = check string "string_of_float" ___ (string_of_float 2.5)

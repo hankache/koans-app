@@ -3,6 +3,7 @@
 import clojure from '../../languages/clojure/node.mjs';
 import javascript from '../../languages/javascript/node.mjs';
 import lua from '../../languages/lua/node.mjs';
+import ocaml from '../../languages/ocaml/node.mjs';
 import php from '../../languages/php/node.mjs';
 import r from '../../languages/r/node.mjs';
 import python from '../../languages/python/node.mjs';
@@ -22,11 +23,12 @@ import typescript from '../../languages/typescript/node.mjs';
  * @property {string} dir          the language's folder (absolute, ending in /)
  * @property {string} extension    of koan files: '.raku'
  * @property {string} comment      starts a koan's header lines (# title: …): '#', '//'
+ * @property {string} [commentEnd]  ends them, for a language whose comments must close: '*)'
  * @property {'all' | 'called'} [codeNames]  which names in its code count as code words (code-words.mjs)
  * @property {() => string} prelude  run before every koan
  * @property {string} epilogue     run after every koan
  * @property {(code: string) => string[] | Promise<string[]>} lint  problems in a koan that running it can't reveal
- * @property {GithubZip | NpmPackage | NpmTarball} runtime  where the interpreter comes from; its `files` go into `out`
+ * @property {GithubZip | NpmPackage | NpmTarball | GithubFiles} runtime  where the interpreter comes from; its `files` go into `out`
  * @property {string[]} [onDemand]  files (or folders, ending in /) in public/runtime/<id>/ that the
  *   browser loads only when needed, if ever: left out of the size the loading bar counts to. Source
  *   maps, licenses and package.json files are left out anyway
@@ -43,10 +45,13 @@ import typescript from '../../languages/typescript/node.mjs';
  *   an npm package downloaded from the registry, not installed: for packages too big for
  *   node_modules. `files` as for NpmPackage, except that files under `strip` keep their folders
  *   below it
+ * @typedef {{ kind: 'github-files', repo: string, path: string, files: string[], out: string, strip?: string }} GithubFiles
+ *   files committed to the GitHub repository `repo`, at a pinned commit; `path` is the folder
+ *   whose latest change --update moves to. `files` as for NpmTarball
  */
 
 /** @type {Language[]} */
-export const languages = [clojure, javascript, lua, php, python, r, raku, ruby, scheme, sql, typescript];
+export const languages = [clojure, javascript, lua, ocaml, php, python, r, raku, ruby, scheme, sql, typescript];
 
 /**
  * The languages named with --lang (repeat it, or separate names with commas), or else all of

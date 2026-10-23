@@ -1,0 +1,5 @@
+let () = check int "int_of_float drops the fraction" 3 (int_of_float 3.99)
+let () = check int "int_of_string reads a number" 42 (int_of_string "42")
+let () = check (option int) "int_of_string_opt: Some for a number" (Some 7) (int_of_string_opt "7")
+let () = check (option int) "and None for anything else" None (int_of_string_opt "seven")
+let () = check string "string_of_float" "2.5" (string_of_float 2.5)

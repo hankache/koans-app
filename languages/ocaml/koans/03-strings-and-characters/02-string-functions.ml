@@ -1,0 +1,7 @@
+(* title: String functions *)
+(* intro: `String.split_on_char` cuts a string apart, `String.concat` joins a list with a separator, and `String.trim` removes the spaces around. *)
+let () = check (list string) "split_on_char" ___ (String.split_on_char ',' "a,b,c")
+let () = check string "concat puts a separator between" ___ (String.concat "-" ["x"; "y"; "z"])
+let () = check string "trim" ___ (String.trim "  pad  ")
+let () = check bool "starts_with" ___ (String.starts_with ~prefix:"ko" "koan")
+let () = check (option int) "index_opt finds a character" ___ (String.index_opt "banana" 'n')

@@ -1,0 +1,5 @@
+let () = check int "sum" 10 (List.fold_left ( + ) 0 [1; 2; 3; 4])
+let () = check int "the largest" 9 (List.fold_left max 0 [3; 9; 4])
+let () = check (list int) "fold_left with :: reverses" [3; 2; 1] (List.fold_left (fun acc x -> x :: acc) [] [1; 2; 3])
+let () = check (list int) "fold_right with :: copies" [1; 2; 3] (List.fold_right (fun x acc -> x :: acc) [1; 2; 3] [])
+let () = check string "joining with a fold" "abc" (List.fold_left ( ^ ) "" ["a"; "b"; "c"])

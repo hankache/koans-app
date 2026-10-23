@@ -1,0 +1,7 @@
+(* title: List functions *)
+(* intro: The `List` module covers the usual needs: `List.hd` and `List.nth` take items, `List.mem` looks for one, `List.init` builds a list. *)
+let () = check int "List.hd: the first item" ___ (List.hd [10; 20; 30])
+let () = check (list int) "List.tl: the rest" ___ (List.tl [10; 20; 30])
+let () = check int "List.nth counts from 0" ___ (List.nth [10; 20; 30] 2)
+let () = check bool "List.mem" ___ (List.mem 20 [10; 20; 30])
+let () = check (list int) "List.init" ___ (List.init 3 (fun i -> i * 2))

@@ -1,0 +1,7 @@
+(* title: Types *)
+(* intro: Every expression has a type, which OCaml works out for you. Mixing types is an error before anything runs: `1 + 1.0` doesn't compile, because `+` is for ints and `+.` for floats. *)
+let () = check int "ints use +" ___ (2 + 3)
+let () = check (Alcotest.float 1e-9) "floats use +." ___ (2.5 +. 3.0)
+let () = check string "string_of_int converts" ___ (string_of_int 42)
+let () = check (Alcotest.float 1e-9) "float_of_int converts the other way" ___ (float_of_int 3)
+let () = check bool "if is an expression, with a value" ___ (if 3 > 2 then true else false)

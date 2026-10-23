@@ -1,0 +1,5 @@
+(* title: Pipelines *)
+(* intro: `x |> f` is `f x`: it lets a value flow through a pipeline of functions, read from left to right. `f @@ x` is also `f x`, and saves parentheses. *)
+let () = check int "|> passes the value on" ___ (3 |> fun x -> x * 2)
+let () = check int "a pipeline" ___ ([1; 2; 3; 4] |> List.map (fun x -> x * x) |> List.filter (fun x -> x mod 2 = 0) |> List.fold_left ( + ) 0 |> fun x -> x / 2)
+let () = check string "@@ saves parentheses" ___ (string_of_int @@ 3 + 4)

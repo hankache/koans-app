@@ -1,0 +1,6 @@
+let () = check bool "lists with the same items are equal" true ([1; 2] = [1; 2])
+let () = check bool "<> means not equal" true ("a" <> "b")
+let () = check int "compare: equal" 0 (compare 7 7)
+let () = check bool "compare: smaller is negative" true (compare 1 2 < 0)
+let () = check bool "strings compare alphabetically" true ("apple" < "banana")
+let () = check int "max works on any type" 9 (max 3 9)

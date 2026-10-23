@@ -1,0 +1,5 @@
+let twice f x = f (f x)
+let apply_n n f x = List.fold_left (fun acc _ -> f acc) x (List.init n Fun.id)
+let () = check int "twice" 12 (twice (fun x -> x * 2) 3)
+let () = check string "twice on strings" "hi!!" (twice (fun s -> s ^ "!") "hi")
+let () = check int "apply_n" 1024 (apply_n 10 (fun x -> x * 2) 1)

@@ -1,0 +1,5 @@
+let p = (3, "three")
+let () = check int "fst" 3 (fst p)
+let () = check string "snd" "three" (snd p)
+let () = check (triple int bool string) "a triple" (1, true, "x") (1, 1 > 0, "x")
+let () = check (list (pair string int)) "List.combine pairs two lists" [("a", 1); ("b", 2)] (List.combine ["a"; "b"] [1; 2])

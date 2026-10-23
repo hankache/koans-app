@@ -1,0 +1,5 @@
+let rec gcd a b = if b = 0 then a else gcd b (a mod b)
+let rec fib n = if n < 2 then n else fib (n - 1) + fib (n - 2)
+let () = check int "gcd 12 18" 6 (gcd 12 18)
+let () = check int "gcd of coprime numbers" 1 (gcd 9 28)
+let () = check (list int) "the first Fibonacci numbers" [0; 1; 1; 2; 3; 5] (List.init 6 fib)

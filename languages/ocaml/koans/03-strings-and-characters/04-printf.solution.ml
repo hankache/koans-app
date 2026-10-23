@@ -1,0 +1,5 @@
+let () = check string "%d and %s" "3 apples" (Printf.sprintf "%d %s" 3 "apples")
+let () = check string "%.2f: two decimals" "3.14" (Printf.sprintf "%.2f" 3.14159)
+let () = check string "%5d pads to a width" "   42" (Printf.sprintf "%5d" 42)
+let () = check string "%03d pads with zeros" "007" (Printf.sprintf "%03d" 7)
+let () = check string "%b for a bool" "true" (Printf.sprintf "%b" true)

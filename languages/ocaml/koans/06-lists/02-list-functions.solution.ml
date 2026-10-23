@@ -1,0 +1,5 @@
+let () = check int "List.hd: the first item" 10 (List.hd [10; 20; 30])
+let () = check (list int) "List.tl: the rest" [20; 30] (List.tl [10; 20; 30])
+let () = check int "List.nth counts from 0" 30 (List.nth [10; 20; 30] 2)
+let () = check bool "List.mem" true (List.mem 20 [10; 20; 30])
+let () = check (list int) "List.init" [0; 2; 4] (List.init 3 (fun i -> i * 2))

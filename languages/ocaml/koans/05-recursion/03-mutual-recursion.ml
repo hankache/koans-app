@@ -1,0 +1,7 @@
+(* title: Mutual recursion *)
+(* intro: `let rec … and …` defines functions that call each other. *)
+let rec is_even n = if n = 0 then true else is_odd (n - 1)
+and is_odd n = if n = 0 then false else is_even (n - 1)
+let () = check bool "even calls odd calls even" ___ (is_even 10)
+let () = check bool "and the other way" ___ (is_odd 7)
+let () = check bool "is_odd 0" ___ (is_odd 0)

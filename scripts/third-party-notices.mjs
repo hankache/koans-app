@@ -39,6 +39,45 @@ https://github.com/ajaxorg/ace, under the BSD 3-Clause License:
 ${readFileSync(new URL('./licenses/Ace-BSD-3-Clause.txt', import.meta.url), 'utf8').trim()}
 \`\`\`
 
+## OCaml toplevel (ocaml.org's playground)
+
+The interpreter the OCaml koans run on: \`public/runtime/ocaml/worker.min.js\` (the OCaml 5.0
+compiler and toplevel, compiled to JavaScript) and \`public/runtime/ocaml/stdlib/*.cmi\` (the compiled
+interfaces of OCaml's standard library), downloaded by \`npm run fetch-runtime\` from the
+\`playground/asset\` folder of https://github.com/ocaml/ocaml.org, at the commit pinned in
+\`languages/ocaml/runtime.lock.json\`. They are served unmodified.
+
+The playground's code (https://github.com/ocaml/ocaml.org/tree/main/playground) is under the ISC
+License:
+
+\`\`\`
+${readFileSync(new URL('./licenses/OCaml.org-ISC.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
+It is built from js_top_worker (https://github.com/tmattio/js_top_worker), under the ISC License
+above, which contains code from utop (https://github.com/ocaml-community/utop), under the BSD
+3-Clause License:
+
+\`\`\`
+${readFileSync(new URL('./licenses/utop-LICENSE.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
+It contains the OCaml compiler, toplevel and standard library, version 5.0.0
+(https://github.com/ocaml/ocaml/tree/5.0.0), and the js_of_ocaml compiler's runtime and toplevel
+libraries, version 5.4.0 (https://github.com/ocsigen/js_of_ocaml/tree/5.4.0), both under the GNU
+Lesser General Public License 2.1 with a static linking exception; their source code is at those
+addresses. OCaml's license:
+
+\`\`\`
+${readFileSync(new URL('./licenses/OCaml-LICENSE.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
+js_of_ocaml's license:
+
+\`\`\`
+${readFileSync(new URL('./licenses/js_of_ocaml-LICENSE.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
 ## Pyodide and CPython
 
 The interpreter the Python koans run on: \`public/runtime/python/\` (\`pyodide.mjs\`,

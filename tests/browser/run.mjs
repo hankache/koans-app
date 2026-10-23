@@ -32,6 +32,7 @@ const LANGUAGES = [
   { id: 'clojure', error: '(is true "fine")\n(nope)', says: /Unable to resolve symbol/, loop: '(loop [] (recur))' },
   { id: 'javascript', error: "expect(true, 'fine').toBe(true);\nnope();", says: /ReferenceError/, loop: 'while (true) {}' },
   { id: 'lua', error: "assert(true, 'fine')\nnope()", says: /attempt to call a nil value/, loop: 'while true do end' },
+  { id: 'ocaml', error: 'let () = check bool "fine" true true\nlet () = nope 1', says: /Unbound value nope/, loop: 'let () = while true do () done' },
   { id: 'php', error: "<?php\nnope();", says: /undefined function nope/, loop: '<?php\nwhile (true) {}' },
   { id: 'python', error: "assert True, 'fine'\nprint(nope)", says: /NameError/, loop: 'while True:\n    pass' },
   { id: 'r', error: 'x <- 1\nnope()', says: /could not find function/, loop: 'repeat {}' },
@@ -393,6 +394,7 @@ const ASK = '[typeof caches, typeof indexedDB, typeof BroadcastChannel].join()';
 const REACH = {
   clojure: `(println (js/eval ${JSON.stringify(ASK)}))`,
   javascript: `console.log(${ASK});`,
+  ocaml: `external js_eval : string -> string = "caml_js_eval_string"\nlet () = print_endline (js_eval ${JSON.stringify(ASK)})`,
   typescript: `const g: any = globalThis; console.log([typeof g.caches, typeof g.indexedDB, typeof g.BroadcastChannel].join());`,
   python: `import js; print(js.eval(${JSON.stringify(ASK)}))`,
   r: `print(webr::eval_js(${JSON.stringify(ASK)}))`,

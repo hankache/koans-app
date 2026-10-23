@@ -1,0 +1,5 @@
+let () = check int "Char.code" 65 (Char.code 'A')
+let () = check char "Char.chr" 'a' (Char.chr 97)
+let () = check char "Char.uppercase_ascii" 'Q' (Char.uppercase_ascii 'q')
+let () = check string "String.make 1 turns a char into a string" "z" (String.make 1 'z')
+let () = check bool "characters compare by their codes" true ('a' < 'b')

@@ -1,0 +1,5 @@
+let () = check (list int) "map" [1; 4; 9] (List.map (fun x -> x * x) [1; 2; 3])
+let () = check (list string) "map can change the type" ["1"; "2"] (List.map string_of_int [1; 2])
+let () = check (list int) "filter" [2; 4] (List.filter (fun x -> x mod 2 = 0) [1; 2; 3; 4])
+let () = check (list int) "filter_map keeps the Somes" [1; 3] (List.filter_map int_of_string_opt ["1"; "x"; "3"])
+let () = check (list int) "mapi passes the index" [0; 20; 60] (List.mapi (fun i x -> i * x) [5; 20; 30])

@@ -1,0 +1,6 @@
+let () = check int "/ drops the remainder" 3 (17 / 5)
+let () = check int "mod is the remainder" 2 (17 mod 5)
+let () = check int "/ rounds toward zero" (-3) (-7 / 2)
+let () = check int "mod takes the sign of the number divided" (-1) (-7 mod 2)
+let () = check int "abs" 7 (abs (-7))
+let () = check int "a negative argument needs parentheses" (-5) (min 3 (-5))

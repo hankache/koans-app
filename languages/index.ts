@@ -5,6 +5,7 @@ import type { LanguagePack } from '../src/lib/language';
 import clojure from './clojure/pack';
 import javascript from './javascript/pack';
 import lua from './lua/pack';
+import ocaml from './ocaml/pack';
 import php from './php/pack';
 import python from './python/pack';
 import r from './r/pack';
@@ -14,7 +15,7 @@ import scheme from './scheme/pack';
 import sql from './sql/pack';
 import typescript from './typescript/pack';
 
-export const packs: LanguagePack[] = [clojure, javascript, lua, php, python, r, raku, ruby, scheme, sql, typescript];
+export const packs: LanguagePack[] = [clojure, javascript, lua, ocaml, php, python, r, raku, ruby, scheme, sql, typescript];
 
 export const packById = new Map(packs.map(p => [p.id, p]));
 

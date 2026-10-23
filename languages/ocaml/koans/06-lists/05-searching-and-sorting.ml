@@ -1,0 +1,8 @@
+(* title: Searching and sorting *)
+(* intro: `List.exists` and `List.for_all` ask about the items, `List.find_opt` finds one, and `List.sort compare` sorts them. *)
+let () = check bool "exists" ___ (List.exists (fun x -> x > 2) [1; 2; 3])
+let () = check bool "for_all" ___ (List.for_all (fun x -> x > 2) [1; 2; 3])
+let () = check (option int) "find_opt" ___ (List.find_opt (fun x -> x > 3) [1; 4; 5])
+let () = check (list int) "sort" ___ (List.sort compare [3; 1; 2])
+let () = check (list int) "sort in reverse" ___ (List.sort (fun a b -> compare b a) [3; 1; 2])
+let () = check (pair (list int) (list int)) "partition" ___ (List.partition (fun x -> x mod 2 = 1) [1; 2; 3])

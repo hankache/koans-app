@@ -1,0 +1,7 @@
+(* title: Functions as arguments *)
+(* intro: A function can take another function as an argument. Its type says so: `twice : ('a -> 'a) -> 'a -> 'a`. *)
+let twice f x = f (f x)
+let apply_n n f x = List.fold_left (fun acc _ -> f acc) x (List.init n Fun.id)
+let () = check int "twice" ___ (twice (fun x -> x * 2) 3)
+let () = check string "twice on strings" ___ (twice (fun s -> s ^ "!") "hi")
+let () = check int "apply_n" ___ (apply_n 10 (fun x -> x * 2) 1)

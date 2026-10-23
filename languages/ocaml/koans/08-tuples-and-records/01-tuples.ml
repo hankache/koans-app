@@ -1,0 +1,7 @@
+(* title: Tuples *)
+(* intro: A tuple groups a fixed number of values, of any types: `(1, "one")` has type `int * string`. `fst` and `snd` take a pair apart. *)
+let p = (3, "three")
+let () = check int "fst" ___ (fst p)
+let () = check string "snd" ___ (snd p)
+let () = check (triple int bool string) "a triple" ___ (1, 1 > 0, "x")
+let () = check (list (pair string int)) "List.combine pairs two lists" ___ (List.combine ["a"; "b"] [1; 2])

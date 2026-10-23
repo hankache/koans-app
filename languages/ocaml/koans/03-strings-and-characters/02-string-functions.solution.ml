@@ -1,0 +1,5 @@
+let () = check (list string) "split_on_char" ["a"; "b"; "c"] (String.split_on_char ',' "a,b,c")
+let () = check string "concat puts a separator between" "x-y-z" (String.concat "-" ["x"; "y"; "z"])
+let () = check string "trim" "pad" (String.trim "  pad  ")
+let () = check bool "starts_with" true (String.starts_with ~prefix:"ko" "koan")
+let () = check (option int) "index_opt finds a character" (Some 2) (String.index_opt "banana" 'n')

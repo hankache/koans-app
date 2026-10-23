@@ -17,7 +17,8 @@ export function readKoans(lang) {
   const koansDir = join(lang.dir, 'koans');
   const ext = escape(lang.extension);
   const slug = name => name.replace(/^\d+-/, '').replace(new RegExp(`(\\.solution)?${ext}$`), '');
-  const header = new RegExp(`^${escape(lang.comment)}\\s*(\\w+):\\s*(.*)$`);
+  const end = lang.commentEnd ? `(?:\\s*${escape(lang.commentEnd)})` : '';
+  const header = new RegExp(`^${escape(lang.comment)}\\s*(\\w+):\\s*(.*?)${end}$`);
   const isKoan = new RegExp(`^\\d+-.*${ext}$`);
 
   const sections = [];

@@ -168,9 +168,9 @@ is skipped with a warning. CI runs these checks on every change, before publishi
 
 ## Interpreters
 
-Each interpreter comes from its official releases. `languages/<id>/runtime.lock.json` pins the
-release and the checksums of its files, and `npm run fetch-runtime` stops if anything differs. A
-language's `node.mjs` names one of three kinds of source:
+Each interpreter comes from where its project publishes it. `languages/<id>/runtime.lock.json`
+pins the release and the checksums of its files, and `npm run fetch-runtime` stops if anything
+differs. A language's `node.mjs` names one of four kinds of source:
 
 - **A GitHub release zip** (Raku), also checked against the checksum published with the release.
 - **An npm package** (Pyodide for Python, the Acorn parser for JavaScript, the TypeScript
@@ -179,6 +179,8 @@ language's `node.mjs` names one of three kinds of source:
   own; sql.js and php-wasm, with many builds; webR, with its demo app's dependencies; Scittle,
   with plugins and source maps; Stak, for its two files). Its tarball is downloaded from the npm
   registry and checked against the integrity hash the registry publishes.
+- **Files committed to a GitHub repository** (OCaml's toplevel, from ocaml.org's playground,
+  published nowhere else), downloaded at the commit the lock pins and checked against the lock.
 
 Interpreter files aren't committed; the build fetches them. To move a language to a newer release:
 

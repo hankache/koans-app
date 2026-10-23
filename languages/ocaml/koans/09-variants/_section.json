@@ -1,0 +1,4 @@
+{
+  "title": "Variants",
+  "blurb": "Types that are one of several cases, and the matches that handle them all."
+}

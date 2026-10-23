@@ -1,0 +1,7 @@
+(* title: Let rec *)
+(* intro: A function that calls itself needs `let rec`. It handles the simplest case directly, and every other case with a call on something smaller. *)
+let rec factorial n = if n = 0 then 1 else n * factorial (n - 1)
+let rec sum_to n = if n = 0 then 0 else n + sum_to (n - 1)
+let () = check int "factorial 5" ___ (factorial 5)
+let () = check int "the simplest case" ___ (factorial 0)
+let () = check int "sum_to 4" ___ (sum_to 4)

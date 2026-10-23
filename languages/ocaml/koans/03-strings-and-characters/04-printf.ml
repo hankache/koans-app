@@ -1,0 +1,7 @@
+(* title: Printf *)
+(* intro: `Printf.sprintf` builds a string from a format: `%d` for an int, `%s` for a string, `%f` for a float, with a width or precision if you like. The format is checked against the arguments' types when the code compiles. *)
+let () = check string "%d and %s" ___ (Printf.sprintf "%d %s" 3 "apples")
+let () = check string "%.2f: two decimals" ___ (Printf.sprintf "%.2f" 3.14159)
+let () = check string "%5d pads to a width" ___ (Printf.sprintf "%5d" 42)
+let () = check string "%03d pads with zeros" ___ (Printf.sprintf "%03d" 7)
+let () = check string "%b for a bool" ___ (Printf.sprintf "%b" true)

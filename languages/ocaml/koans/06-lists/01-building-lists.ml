@@ -1,0 +1,7 @@
+(* title: Building lists *)
+(* intro: A list is either empty, `[]`, or an item in front of a list: `1 :: [2; 3]`. `[1; 2; 3]` is a shorter way to write `1 :: 2 :: 3 :: []`. All its items have the same type. *)
+let () = check (list int) ":: puts an item in front" ___ (0 :: [1; 2])
+let () = check (list int) "the long way" ___ (1 :: 2 :: 3 :: [])
+let () = check (list int) "@ joins two lists" ___ ([1; 2] @ [3; 4])
+let () = check int "List.length" ___ (List.length [])
+let () = check (list string) "a list of strings" ___ (List.rev ["b"; "a"])

@@ -1,0 +1,7 @@
+(* title: Map and filter *)
+(* intro: `List.map` applies a function to every item, `List.filter` keeps the items a predicate accepts, and `List.filter_map` does both at once with an option. *)
+let () = check (list int) "map" ___ (List.map (fun x -> x * x) [1; 2; 3])
+let () = check (list string) "map can change the type" ___ (List.map string_of_int [1; 2])
+let () = check (list int) "filter" ___ (List.filter (fun x -> x mod 2 = 0) [1; 2; 3; 4])
+let () = check (list int) "filter_map keeps the Somes" ___ (List.filter_map int_of_string_opt ["1"; "x"; "3"])
+let () = check (list int) "mapi passes the index" ___ (List.mapi (fun i x -> i * x) [5; 20; 30])
