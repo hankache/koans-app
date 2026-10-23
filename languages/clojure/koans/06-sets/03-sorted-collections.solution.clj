@@ -1,0 +1,5 @@
+(is (= [1 2 3] (seq (sorted-set 3 1 2))) "a sorted set")
+(is (= [:a :b :c] (keys (sorted-map :c 3 :a 1 :b 2))) "a sorted map, by key")
+(is (= 1 (first (sorted-set 3 1 2))) "its first is the smallest")
+(is (= ["apple" "fig" "pear"] (seq (sorted-set "pear" "fig" "apple"))) "strings sort alphabetically")
+(is (= [3 2 1] (seq (sorted-set-by > 1 2 3))) "sorted-set-by takes a comparison")

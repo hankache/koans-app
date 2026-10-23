@@ -1,0 +1,6 @@
+(is (= #{1 2 3} (conj #{1 2} 3)) "conj adds a value")
+(is (= #{1 2} (conj #{1 2} 2)) "a value already there changes nothing")
+(is (= #{1} (disj #{1 2} 2)) "disj removes one")
+(is (= 2 (#{1 2 3} 2)) "a set gives back the value it holds")
+(is (= nil (#{1 2 3} 4)) "or nil")
+(is (= 3 (count (set [1 1 2 3 3]))) "set drops the duplicates")

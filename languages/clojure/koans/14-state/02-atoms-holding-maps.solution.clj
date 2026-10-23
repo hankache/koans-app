@@ -1,0 +1,8 @@
+(def app (atom {:users {} :count 0}))
+(swap! app assoc-in [:users :ada] {:age 36})
+(swap! app update :count inc)
+(is (= 1 (:count @app)) "update")
+(is (= 36 (get-in @app [:users :ada :age])) "assoc-in")
+(swap! app update-in [:users :ada :age] inc)
+(is (= 37 (get-in @app [:users :ada :age])) "update-in")
+(is (= [:ada] (keys (:users @app))) "the rest is unchanged")

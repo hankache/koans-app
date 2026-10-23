@@ -1,0 +1,6 @@
+(is (= 6 (inc 5)) "inc adds one")
+(is (= 4 (dec 5)) "dec takes one away")
+(is (= true (zero? 0)) "zero?")
+(is (= false (pos? -1)) "pos? asks for more than zero")
+(is (= true (odd? 7)) "odd?")
+(is (= 3 (abs -3)) "abs is the distance from zero")

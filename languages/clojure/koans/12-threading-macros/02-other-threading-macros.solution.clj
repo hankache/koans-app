@@ -1,0 +1,5 @@
+(is (= 12 (as-> 5 x (+ x 1) (* x 2))) "as-> names the value")
+(is (= 2 (some-> {:a {:b 1}} :a :b inc)) "some-> threads like ->")
+(is (= nil (some-> {:a nil} :a inc)) "but stops at nil instead of failing")
+(is (= 2 (cond-> 1 true inc false (* 10))) "cond-> skips steps whose test is false")
+(is (= {:n 1 :admin true} (cond-> {:n 1} true (assoc :admin true) false (assoc :guest true))) "useful for building maps")

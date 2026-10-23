@@ -1,0 +1,5 @@
+(is (= [1 1 2 2] (mapcat #(repeat 2 %) [1 2])) "mapcat")
+(is (= [0 1 4 9] (for [x (range 4)] (* x x))) "for")
+(is (= [0 2 4] (for [x (range 5) :when (even? x)] x)) ":when filters")
+(is (= [[:a 1] [:a 2] [:b 1] [:b 2]] (for [k [:a :b] n [1 2]] [k n])) "two collections: the last changes fastest")
+(is (= [2 4] (for [x [1 2] :let [y (* 2 x)]] y)) ":let names a value")

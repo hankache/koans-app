@@ -1,0 +1,6 @@
+(let [[a b] [1 2 3]] (is (= 2 b) "by position"))
+(let [[x & more] [1 2 3]] (is (= [2 3] more) "& gathers the rest"))
+(let [[_ second-item] [:a :b]] (is (= :b second-item) "_ skips an item"))
+(let [[a [b c]] [1 [2 3]]] (is (= 3 c) "patterns nest"))
+(let [[x :as all] [1 2]] (is (= [1 2] all) ":as keeps the whole"))
+(let [[a b c] [1 2]] (is (= nil c) "a missing item is nil"))

@@ -1,0 +1,6 @@
+(is (= true (< 1 2 3)) "in increasing order")
+(is (= false (< 1 3 2)) "every neighboring pair must hold")
+(is (= true (<= 1 1 2)) "<= allows equal neighbors")
+(is (= 7 (max 3 7 5)) "max")
+(is (= 3 (min 3 7 5)) "min")
+(is (= -1 (compare 1 2)) "compare gives -1 when the first is smaller")

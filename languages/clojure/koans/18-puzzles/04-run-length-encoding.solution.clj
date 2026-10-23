@@ -1,0 +1,6 @@
+(defn encode [s] (apply str (mapcat (fn [run] [(count run) (first run)]) (partition-by identity s))))
+(defn decode [s] (apply str (mapcat (fn [[_ n c]] (repeat (parse-long n) c)) (re-seq #"(\d+)(\D)" s))))
+(is (= "3a1b2c" (encode "aaabcc")) "each run becomes a count and a letter")
+(is (= [[\a \a] [\b] [\a]] (partition-by identity "aaba")) "runs, not equal values")
+(is (= "xxyyy" (decode "2x3y")) "decoding repeats each letter")
+(is (= "hello" (decode (encode "hello"))) "the round trip")

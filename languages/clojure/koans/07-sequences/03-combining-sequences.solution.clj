@@ -1,0 +1,6 @@
+(is (= [1 2 3 4] (concat [1 2] [3 4])) "concat joins")
+(is (= [:a 1 :b 2] (interleave [:a :b] [1 2])) "interleave alternates")
+(is (= ["a" "," "b"] (interpose "," ["a" "b"])) "interpose puts a separator between")
+(is (= [1 2 3 4] (flatten [1 [2 [3 4]]])) "flatten removes the nesting")
+(is (= [[1 2] [3 4]] (partition 2 [1 2 3 4])) "partition cuts into groups")
+(is (= [[1 2] [3]] (partition-all 2 [1 2 3])) "partition-all keeps the leftovers")

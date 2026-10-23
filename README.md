@@ -24,7 +24,7 @@
   </picture>
 </p>
 
-**737 koans in nine languages:** JavaScript, Lua, PHP, Python, R, Raku, Ruby, SQL and TypeScript.
+**816 koans in ten languages:** Clojure, JavaScript, Lua, PHP, Python, R, Raku, Ruby, SQL and TypeScript.
 
 A koan is a small program whose tests fail. Replace each `___` with the right answer until every
 test passes. Get one wrong, and the language shows you what it expected.
@@ -44,6 +44,7 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/). koans.app grew out
 
 | Language                            | Koans | Interpreter                                                  | Tests written with                      |
 |-------------------------------------|------:|--------------------------------------------------------------|-----------------------------------------|
+| [Clojure](languages/clojure/)       | 79    | [Scittle](https://github.com/babashka/scittle) (SCI)         | clojure.test's `is`                     |
 | [JavaScript](languages/javascript/) | 89    | the browser's own engine                                     | Vitest's `expect`                       |
 | [Lua](languages/lua/)               | 73    | [wasmoon](https://github.com/ceifa/wasmoon) (Lua 5.4)        | busted's assertions                     |
 | [PHP](languages/php/)               | 79    | [php-wasm](https://github.com/seanmorris/php-wasm) (PHP 8.5) | PHPUnit's assertions                    |

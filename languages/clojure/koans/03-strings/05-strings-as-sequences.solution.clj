@@ -1,0 +1,5 @@
+(is (= "cba" (apply str (reverse "abc"))) "reverse gives characters; apply str joins them")
+(is (= 3 (count (set "banana"))) "three different letters")
+(is (= {\a 3 \b 1 \n 2} (frequencies "banana")) "how often each appears")
+(is (= true (= [\a \b] (seq "ab"))) "its items are characters")
+(is (= "B-A-N" (str/join "-" (map str/upper-case "ban"))) "map works on strings too")

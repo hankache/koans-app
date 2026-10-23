@@ -1,0 +1,6 @@
+(is (= 10 (reduce + [1 2 3 4])) "sum")
+(is (= 110 (reduce + 100 [1 2 3 4])) "with a starting value")
+(is (= 4 (reduce max [3 1 4 1])) "the largest")
+(is (= '(3 2 1) (reduce conj '() [1 2 3])) "building a list")
+(is (= {:a 2 :b 1} (reduce (fn [m k] (update m k (fnil inc 0))) {} [:a :b :a])) "counting with a map")
+(is (= [1 3 6] (reductions + [1 2 3])) "reductions shows every step")

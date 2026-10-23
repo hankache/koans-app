@@ -1,0 +1,5 @@
+(is (= "HELLO!" (-> "hello" str/upper-case (str "!"))) "-> threads through the first argument")
+(is (= [4 16] (->> [1 2 3 4] (filter even?) (map #(* % %)))) "->> threads through the last")
+(is (= 10 (->> (range 5) (reduce +))) "into reduce")
+(is (= 7 (-> {:a {:b 7}} :a :b)) "keywords work as steps")
+(is (= '(g (f x 1)) (macroexpand-1 '(-> x (f 1) g))) "-> just rewrites the code")

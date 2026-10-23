@@ -1,0 +1,6 @@
+(is (= 15 ((partial + 10) 5)) "partial")
+(is (= 11 ((comp inc #(* 2 %)) 5)) "comp runs right to left: double, then inc")
+(is (= [1 3] ((juxt first last) [1 2 3])) "juxt")
+(is (= [1 3] (filter (complement even?) [1 2 3])) "complement")
+(is (= :same ((constantly :same) 1 2 3)) "constantly ignores its arguments")
+(is (= 5 (identity 5)) "identity gives back its argument")

@@ -1,0 +1,6 @@
+(is (= 3 (count '(+ 1 2))) "a quoted call is a list of three items")
+(is (= '+ (first '(+ 1 2))) "the first is a symbol")
+(is (= 3 (eval '(+ 1 2))) "eval runs it")
+(is (= '(* 2 3) (list '* 2 3)) "code can be built like any list")
+(is (= 6 (eval (list '* 2 3))) "and run")
+(is (= [1 2] (read-string "[1 2]")) "read-string turns text into data")

@@ -1,0 +1,6 @@
+(is (= 3 (quot 7 2)) "quot drops the remainder")
+(is (= 1 (rem 7 2)) "rem is the remainder")
+(is (= -3 (quot -7 2)) "quot rounds toward zero")
+(is (= -1 (rem -7 2)) "rem takes the sign of the number divided")
+(is (= 1 (mod -7 2)) "mod takes the sign of the divisor")
+(is (= true (zero? (mod 15 5))) "a remainder of zero means it divides exactly")

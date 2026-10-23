@@ -29,6 +29,7 @@ const koanIds = JSON.parse(readFileSync(join(root, 'src/generated/summary.json')
  * must stop with an error on line 2 matching `says`, and `loop` must never end.
  */
 const LANGUAGES = [
+  { id: 'clojure', error: '(is true "fine")\n(nope)', says: /Unable to resolve symbol/, loop: '(loop [] (recur))' },
   { id: 'javascript', error: "expect(true, 'fine').toBe(true);\nnope();", says: /ReferenceError/, loop: 'while (true) {}' },
   { id: 'lua', error: "assert(true, 'fine')\nnope()", says: /attempt to call a nil value/, loop: 'while true do end' },
   { id: 'php', error: "<?php\nnope();", says: /undefined function nope/, loop: '<?php\nwhile (true) {}' },
@@ -389,6 +390,7 @@ async function checkAccessibility(browser, base) {
  */
 const ASK = '[typeof caches, typeof indexedDB, typeof BroadcastChannel].join()';
 const REACH = {
+  clojure: `(println (js/eval ${JSON.stringify(ASK)}))`,
   javascript: `console.log(${ASK});`,
   typescript: `const g: any = globalThis; console.log([typeof g.caches, typeof g.indexedDB, typeof g.BroadcastChannel].join());`,
   python: `import js; print(js.eval(${JSON.stringify(ASK)}))`,

@@ -1,0 +1,6 @@
+(is (= 20 (nth [10 20 30] 1)) "nth counts from 0")
+(is (= nil (get [10 20 30] 5)) "get gives nil past the end")
+(is (= [1 2 3] (conj [1 2] 3)) "conj adds to the end")
+(is (= [1 :x 3] (assoc [1 2 3] 1 :x)) "assoc replaces the item at an index")
+(is (= 30 ([10 20 30] 2)) "a vector is a function of its indexes")
+(is (= [2 3] (subvec [1 2 3 4] 1 3)) "subvec takes a range")

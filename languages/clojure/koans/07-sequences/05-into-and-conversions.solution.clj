@@ -1,0 +1,6 @@
+(is (= [1 2 3] (vec '(1 2 3))) "vec makes a vector")
+(is (= #{1 2} (into #{} [1 2 2])) "into a set")
+(is (= '(3 2 1) (into '() [1 2 3])) "into a list adds each item to the front")
+(is (= {:a 1} (into {} [[:a 1]])) "pairs into a map")
+(is (= true (vector? (vec (range 3)))) "vector?")
+(is (= [] (empty [1 2])) "empty keeps the kind")

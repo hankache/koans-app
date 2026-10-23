@@ -1,0 +1,5 @@
+(is (= 2 (+ 1 1)) "= compares two values")
+(is (= "Clojure" (str "Clo" "jure")) "str joins strings")
+(is (= 3 (count [1 2 3])) "count counts the items")
+(is true "is passes when its form is true")
+(is (= true (= [1 2] [1 2])) "collections are equal when their contents are")

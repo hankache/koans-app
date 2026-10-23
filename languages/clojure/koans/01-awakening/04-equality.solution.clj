@@ -1,0 +1,6 @@
+(is (= true (= [1 2] [1 2])) "same contents, equal")
+(is (= true (= [1 2] '(1 2))) "a vector and a list with the same items are equal")
+(is (= false (= [1 2] #{1 2})) "but a set isn't a sequence")
+(is (= true (= {:a 1 :b 2} {:b 2 :a 1})) "map order doesn't matter")
+(is (= false (identical? [1] [1])) "two vectors, not the same object")
+(is (= true (not= 1 2)) "not= is the opposite")

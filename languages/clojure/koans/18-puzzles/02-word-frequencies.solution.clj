@@ -1,0 +1,7 @@
+(def text "the cat and the hat and the bat")
+(def tally (frequencies (str/split text #" ")))
+(is (= 3 (tally "the")) "how often \"the\" appears")
+(is (= nil (tally "dog")) "a word never seen isn't there")
+(is (= 5 (count tally)) "how many different words")
+(is (= ["the" 3] (apply max-key val tally)) "the most frequent")
+(is (= 8 (reduce + (vals tally))) "and how many in all")

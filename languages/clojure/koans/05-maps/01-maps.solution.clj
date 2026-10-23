@@ -1,0 +1,7 @@
+(def ada {:name "Ada" :age 36})
+(is (= "Ada" (get ada :name)) "get looks up a key")
+(is (= 36 (:age ada)) "a keyword looks itself up")
+(is (= "?" (get ada :email "?")) "a default for a missing key")
+(is (= "Ada" (ada :name)) "a map is a function of its keys")
+(is (= 2 (count ada)) "count counts the pairs")
+(is (= true (contains? ada :age)) "contains? asks about a key")

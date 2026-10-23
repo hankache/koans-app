@@ -1,0 +1,8 @@
+(defn sum-to [n] (loop [i 1 total 0] (if (> i n) total (recur (inc i) (+ total i)))))
+(defn factorial [n] (if (<= n 1) 1 (* n (factorial (dec n)))))
+(defn count-down [n] (if (zero? n) [:liftoff] (cons n (count-down (dec n)))))
+(is (= 15 (sum-to 5)) "loop and recur")
+(is (= 0 (sum-to 0)) "no rounds at all")
+(is (= 50005000 (sum-to 10000)) "recur doesn't use up the stack")
+(is (= 120 (factorial 5)) "plain recursion")
+(is (= [3 2 1 :liftoff] (count-down 3)) "recursion building a sequence")

@@ -1,0 +1,6 @@
+(defn square [x] (* x x))
+(defn greet [name] (str "Hello, " name "!"))
+(is (= 25 (square 5)) "a function returns its last value")
+(is (= "Hello, Ada!" (greet "Ada")) "another")
+(is (= true (fn? square)) "a function is a value")
+(is (= [1 4 9] (map square [1 2 3])) "and can be passed around")

@@ -1,0 +1,6 @@
+(def v [1 2 3])
+(is (= [1 2 3 4] (conj v 4)) "a new vector")
+(is (= [1 2 3] v) "v itself is unchanged")
+(is (= [1 2] (pop v)) "pop leaves out the last item")
+(is (= 3 (count v)) "still three")
+(is (= [0 1 2 3] (into [0] v)) "into pours one collection into another")

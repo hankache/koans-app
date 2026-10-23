@@ -1,0 +1,8 @@
+(def calls (atom 0))
+(defn slow-square [x] (swap! calls inc) (* x x))
+(def fast-square (memoize slow-square))
+(fast-square 4)
+(is (= 16 (fast-square 4)) "the same result")
+(is (= 1 @calls) "computed only once")
+(fast-square 5)
+(is (= 2 @calls) "a new argument is computed")

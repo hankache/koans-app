@@ -1,0 +1,6 @@
+(defn twice [f x] (f (f x)))
+(def ops {:add + :mul *})
+(is (= 12 (twice #(* 2 %) 3)) "a function passed in")
+(is (= [2 0] (map #(% 1) [inc dec])) "a vector of functions")
+(is (= 12 ((:mul ops) 3 4)) "a function from a map")
+(is (= 6 ((fnil + 0) nil 6)) "fnil replaces a nil argument")

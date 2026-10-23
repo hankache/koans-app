@@ -1,0 +1,6 @@
+(require '[clojure.set :as set])
+(is (= #{1 2 3} (set/union #{1 2} #{2 3})) "union: in either")
+(is (= #{2} (set/intersection #{1 2} #{2 3})) "intersection: in both")
+(is (= #{1} (set/difference #{1 2} #{2 3})) "difference: in the first only")
+(is (= true (set/subset? #{1} #{1 2})) "subset? asks")
+(is (= #{:a} (set/select keyword? #{:a "b"})) "select keeps what passes")

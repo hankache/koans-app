@@ -1,0 +1,7 @@
+(defn divide [a b] (if (zero? b) (throw (ex-info "Division by zero" {:a a})) (quot a b)))
+(defn try-divide [a b] (try (divide a b) (catch :default e (ex-data e))))
+(defn safe-parse [s] (or (parse-long s) :invalid))
+(is (= 5 (try-divide 10 2)) "no error")
+(is (= {:a 10} (try-divide 10 0)) "the error's data instead")
+(is (= :invalid (safe-parse "ten")) "or a value of your choice")
+(is (thrown-with-msg? :default #"zero" (divide 1 0)) "thrown-with-msg? checks the message too")

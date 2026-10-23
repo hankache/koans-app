@@ -1,0 +1,5 @@
+(is (= [0 1 2] (take 3 (range))) "(range) never ends; take stops it")
+(is (= [1 2 4 8] (take 4 (iterate #(* 2 %) 1))) "iterate applies a function again and again")
+(is (= [:a :b :a] (take 3 (cycle [:a :b]))) "cycle repeats a collection")
+(is (= [1 1 1] (repeat 3 1)) "repeat")
+(is (= 101 (first (filter #(> % 100) (range)))) "only what's needed is computed")

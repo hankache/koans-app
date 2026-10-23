@@ -1,0 +1,5 @@
+(is (= {:a 1 :b 2} (assoc {:a 1} :b 2)) "assoc adds a key")
+(is (= {:a 1} (dissoc {:a 1 :b 2} :b)) "dissoc removes one")
+(is (= {:n 6} (update {:n 5} :n inc)) "update applies a function to a value")
+(is (= {:n 15} (update {:n 5} :n + 10)) "and passes extra arguments on")
+(is (= {:a 1 :b 3 :c 4} (merge {:a 1 :b 2} {:b 3 :c 4})) "merge: the right side wins")

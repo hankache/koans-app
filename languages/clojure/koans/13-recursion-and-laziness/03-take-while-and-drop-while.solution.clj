@@ -1,0 +1,5 @@
+(is (= [1 2] (take-while #(< % 3) [1 2 3 1])) "take-while stops at the first failure")
+(is (= [3 1] (drop-while #(< % 3) [1 2 3 1])) "drop-while skips until then")
+(is (= [[1 3] [2 5]] (split-with odd? [1 3 2 5])) "split-with does both")
+(is (= [[1 2] [3]] (split-at 2 [1 2 3])) "split-at cuts at a position")
+(is (= [2 4 8 16] (take-while #(< % 20) (iterate #(* 2 %) 2))) "a finite piece of an infinite sequence")

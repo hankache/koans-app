@@ -1,0 +1,5 @@
+(is (= {:a 2 :b 1} (frequencies [:a :b :a])) "frequencies")
+(is (= {true [1 3] false [2]} (group-by odd? [1 2 3])) "group-by")
+(is (= {1 ["a" "c"] 2 ["bb"]} (group-by count ["a" "bb" "c"])) "by length")
+(is (= [[1 3] [2 4] [5]] (partition-by odd? [1 3 2 4 5])) "partition-by")
+(is (= "bb" (apply max-key count ["a" "bb" "c"])) "max-key finds the largest by a function")

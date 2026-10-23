@@ -1,0 +1,4 @@
+{
+  "title": "Recursion and laziness",
+  "blurb": "Looping without changing anything, and sequences computed only when needed."
+}

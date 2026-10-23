@@ -176,9 +176,9 @@ language's `node.mjs` names one of three kinds of source:
 - **An npm package** (Pyodide for Python, the Acorn parser for JavaScript, the TypeScript
   compiler), installed by `npm install`, checked against `package-lock.json`, then copied.
 - **An npm package not worth installing** (ruby.wasm, too large; wasmoon, with dependencies of its
-  own; sql.js and php-wasm, with many builds; webR, with its demo app's dependencies). Its tarball
-  is downloaded from the npm registry and checked against the integrity hash the registry
-  publishes.
+  own; sql.js and php-wasm, with many builds; webR, with its demo app's dependencies; Scittle,
+  with plugins and source maps). Its tarball is downloaded from the npm registry and checked
+  against the integrity hash the registry publishes.
 
 Interpreter files aren't committed; the build fetches them. To move a language to a newer release:
 

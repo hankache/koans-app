@@ -1,0 +1,6 @@
+(is (= "a+b+c" (str/replace "a-b-c" "-" "+")) "replace every occurrence")
+(is (= "a#b#" (str/replace "a1b2" #"\d" "#")) "or every match of a pattern")
+(is (= true (str/starts-with? "koan" "ko")) "how a string begins")
+(is (= 2 (str/index-of "banana" "n")) "where it first appears")
+(is (= nil (str/index-of "banana" "x")) "nil when it isn't there")
+(is (= true (str/blank? "  ")) "blank? means only whitespace")

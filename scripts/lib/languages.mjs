@@ -1,5 +1,6 @@
 // The languages the build tools know about. Each one is a folder in languages/ whose node.mjs
 // describes it; adding a language means adding it here.
+import clojure from '../../languages/clojure/node.mjs';
 import javascript from '../../languages/javascript/node.mjs';
 import lua from '../../languages/lua/node.mjs';
 import php from '../../languages/php/node.mjs';
@@ -44,7 +45,7 @@ import typescript from '../../languages/typescript/node.mjs';
  */
 
 /** @type {Language[]} */
-export const languages = [javascript, lua, php, python, r, raku, ruby, sql, typescript];
+export const languages = [clojure, javascript, lua, php, python, r, raku, ruby, sql, typescript];
 
 /**
  * The languages named with --lang (repeat it, or separate names with commas), or else all of

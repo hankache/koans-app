@@ -1,0 +1,6 @@
+(is (= [0 1 2 3 4] (range 5)) "range counts from 0")
+(is (= [2 4 6] (range 2 8 2)) "a start, an end and a step")
+(is (= [0 1 2] (take 3 (range 10))) "take")
+(is (= [7 8 9] (drop 7 (range 10))) "drop")
+(is (= [8 9] (take-last 2 (range 10))) "take-last")
+(is (= [1 2] (butlast [1 2 3])) "butlast")

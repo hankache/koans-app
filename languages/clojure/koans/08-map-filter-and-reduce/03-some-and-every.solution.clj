@@ -1,0 +1,6 @@
+(is (= true (some even? [1 2 3])) "some finds one")
+(is (= nil (some even? [1 3])) "nil when nothing passes")
+(is (= 3 (some #(when (> % 2) %) [1 3 5])) "some gives what the function gave")
+(is (= true (every? pos? [1 2 3])) "every? asks about all")
+(is (= true (every? pos? [])) "every? of nothing is true")
+(is (= true (not-any? neg? [1 2])) "not-any?")

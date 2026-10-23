@@ -1,0 +1,6 @@
+(def err (ex-info "Not found" {:status 404 :id 7}))
+(def wrapped (ex-info "Request failed" {} err))
+(is (= "Not found" (ex-message err)) "its message")
+(is (= 404 (:status (ex-data err))) "its data")
+(is (= "Not found" (ex-message (ex-cause wrapped))) "the cause is kept")
+(is (= 7 (try (throw err) (catch :default e (:id (ex-data e))))) "the data survives the throw")

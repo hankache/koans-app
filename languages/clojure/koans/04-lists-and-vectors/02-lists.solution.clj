@@ -1,0 +1,6 @@
+(is (= '(0 1 2) (conj '(1 2) 0)) "conj adds to the front")
+(is (= 1 (first '(1 2 3))) "first")
+(is (= '(2 3) (rest '(1 2 3))) "rest is everything after the first")
+(is (= 1 (peek '(1 2 3))) "peek looks at a list's front")
+(is (= 3 (peek [1 2 3])) "but at a vector's end")
+(is (= true (list? '(1))) "list? asks")

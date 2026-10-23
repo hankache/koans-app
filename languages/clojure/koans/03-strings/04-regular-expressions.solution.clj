@@ -1,0 +1,5 @@
+(is (= "42" (re-find #"\d+" "abc42def")) "the first match")
+(is (= ["1" "22" "333"] (re-seq #"\d+" "1 22 333")) "every match")
+(is (= nil (re-matches #"\d+" "12a")) "re-matches wants the whole string")
+(is (= ["12-34" "12" "34"] (re-matches #"(\d+)-(\d+)" "12-34")) "the match, then its groups")
+(is (= "2024" (second (re-find #"(\d{4})-\d\d" "on 2024-05"))) "a group's text")

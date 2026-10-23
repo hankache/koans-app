@@ -1,0 +1,5 @@
+(is (= true (contains? [:a :b] 1)) "index 1 exists")
+(is (= false (contains? [:a :b] :a)) "contains? doesn't look at values")
+(is (= :b (some #{:b} [:a :b])) "some with a set finds a value")
+(is (= nil (some #{:z} [:a :b])) "nil when it isn't there")
+(is (= 2 (count (filter #{:a} [:a :b :a]))) "count the matches")

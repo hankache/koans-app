@@ -1,0 +1,6 @@
+(def config {:db {:host "localhost" :port 5432}})
+(is (= 5432 (get-in config [:db :port])) "a path of keys")
+(is (= nil (get-in config [:db :user])) "nil when the path leads nowhere")
+(is (= {:db {:host "example.org" :port 5432}} (assoc-in config [:db :host] "example.org")) "assoc-in replaces a nested value")
+(is (= 5433 (get-in (update-in config [:db :port] inc) [:db :port])) "update-in changes one")
+(is (= {:a {:b 1}} (assoc-in {} [:a :b] 1)) "assoc-in builds the missing levels")

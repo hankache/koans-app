@@ -1,0 +1,8 @@
+(defmacro unless [test & body] `(if ~test nil (do ~@body)))
+(defmacro twice [form] `(do ~form ~form))
+(is (= :ran (unless false :ran)) "unless runs its body when the test is false")
+(is (= nil (unless true :ran)) "and not when it's true")
+(is (= '(if c nil (do x)) (macroexpand-1 '(unless c x))) "what it turns into")
+(def hits (atom 0))
+(twice (swap! hits inc))
+(is (= 2 @hits) "the form runs twice: a function would get its value once")

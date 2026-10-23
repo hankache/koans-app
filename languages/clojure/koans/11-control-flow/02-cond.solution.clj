@@ -1,0 +1,6 @@
+(defn size [n] (cond (< n 10) :small (< n 100) :medium :else :large))
+(is (= :small (size 5)) "the first true test wins")
+(is (= :medium (size 50)) "then the next")
+(is (= :large (size 500)) ":else takes the rest")
+(is (= nil (cond false 1)) "nil when no test passes")
+(is (= :two (condp = 2 1 :one 2 :two :many)) "condp")

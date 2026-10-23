@@ -2,6 +2,7 @@
 // its pack.ts describes it to the app, and its node.mjs to the build tools (listed in
 // scripts/lib/languages.mjs).
 import type { LanguagePack } from '../src/lib/language';
+import clojure from './clojure/pack';
 import javascript from './javascript/pack';
 import lua from './lua/pack';
 import php from './php/pack';
@@ -12,7 +13,7 @@ import ruby from './ruby/pack';
 import sql from './sql/pack';
 import typescript from './typescript/pack';
 
-export const packs: LanguagePack[] = [javascript, lua, php, python, r, raku, ruby, sql, typescript];
+export const packs: LanguagePack[] = [clojure, javascript, lua, php, python, r, raku, ruby, sql, typescript];
 
 export const packById = new Map(packs.map(p => [p.id, p]));
 

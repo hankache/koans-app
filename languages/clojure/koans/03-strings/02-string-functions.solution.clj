@@ -1,0 +1,6 @@
+(is (= "HELLO" (str/upper-case "hello")) "upper case")
+(is (= "pad" (str/trim "  pad  ")) "trim removes the spaces around")
+(is (= ["a" "b" "c"] (str/split "a,b,c" #",")) "split takes a regular expression")
+(is (= "x-y-z" (str/join "-" ["x" "y" "z"])) "join puts a separator between")
+(is (= true (str/includes? "hello" "ell")) "includes? looks inside")
+(is (= "Hello" (str/capitalize "hello")) "capitalize")

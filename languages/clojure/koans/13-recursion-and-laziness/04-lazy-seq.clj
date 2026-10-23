@@ -1,0 +1,11 @@
+;; title: Your own lazy sequences
+;; intro: `lazy-seq` makes a lazy sequence of your own: its body runs only when the sequence is first used. `doall` forces every item at once.
+(defn naturals [n] (lazy-seq (cons n (naturals (inc n)))))
+(defn fib ([] (fib 0 1)) ([a b] (lazy-seq (cons a (fib b (+ a b))))))
+(is (= ___ (take 3 (naturals 5))) "an infinite sequence of your own")
+(is (= ___ (take 7 (fib))) "Fibonacci numbers")
+(def touched (atom 0))
+(def lazy (map (fn [x] (swap! touched inc) x) [1 2 3]))
+(is (= ___ @touched) "nothing computed yet")
+(doall lazy)
+(is (= ___ @touched) "doall forces every item")

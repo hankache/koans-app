@@ -1,0 +1,6 @@
+(is (= 42 (parse-long "42")) "parse-long reads a whole number")
+(is (= nil (parse-long "forty")) "and gives nil for anything else")
+(is (= "42" (str 42)) "str makes text")
+(is (= 3 (int 3.9)) "int drops the fraction")
+(is (= true (number? 1.5)) "number? asks")
+(is (= false (number? "1")) "text is not a number")

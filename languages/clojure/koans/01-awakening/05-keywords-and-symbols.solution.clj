@@ -1,0 +1,6 @@
+(is (= :name (keyword "name")) "keyword makes a keyword")
+(is (= "name" (name :name)) "name gives back its text")
+(is (= "Ada" (:name {:name "Ada"})) "a keyword looks itself up in a map")
+(is (= true (keyword? :a)) "keyword? asks")
+(is (= true (symbol? 'inc)) "a quoted name is a symbol")
+(is (= "user" (namespace :user/id)) "a keyword can have a namespace")

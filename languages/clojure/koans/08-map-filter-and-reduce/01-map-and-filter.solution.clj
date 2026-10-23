@@ -1,0 +1,6 @@
+(is (= [2 3 4] (map inc [1 2 3])) "map")
+(is (= [2 4] (filter even? [1 2 3 4])) "filter")
+(is (= [1 3] (remove even? [1 2 3 4])) "remove")
+(is (= [11 22] (map + [1 2] [10 20])) "map can walk several sequences side by side")
+(is (= [1 9] (keep #(when (odd? %) (* % %)) [1 2 3])) "keep maps, then drops the nils")
+(is (= [[0 :a] [1 :b]] (map-indexed vector [:a :b])) "map-indexed passes the position too")

@@ -1,0 +1,6 @@
+(is (= 10 (+ 1 2 3 4)) "+ adds them all")
+(is (= -5 (- 5)) "- with one argument negates")
+(is (= 24 (* 1 2 3 4)) "* multiplies them all")
+(is (= 2 (/ 6 3)) "/ divides")
+(is (= 14 (+ 2 (* 3 4))) "the inner call runs first")
+(is (= 20 (* (+ 2 3) 4)) "so nesting sets the order")

@@ -1,0 +1,6 @@
+(is (= :big (if (> 10 5) :big :small)) "if picks a branch")
+(is (= nil (if false :yes)) "a missing false branch is nil")
+(is (= nil (when false :never)) "when gives nil when its test fails")
+(is (= 3 (when true 1 2 3)) "and its last form when it passes")
+(is (= "done" (do (str "ignored") "done")) "do gives its last form")
+(is (= :no (if-not true :yes :no)) "if-not reverses the test")

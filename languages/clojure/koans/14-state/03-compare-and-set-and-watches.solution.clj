@@ -1,0 +1,8 @@
+(def a (atom 0))
+(is (= true (compare-and-set! a 0 5)) "it held 0, so it changes")
+(is (= false (compare-and-set! a 0 9)) "it holds 5 now, not 0")
+(is (= 5 @a) "so it's still 5")
+(def log (atom []))
+(add-watch a :log (fn [_ _ old new] (swap! log conj [old new])))
+(swap! a inc)
+(is (= [[5 6]] @log) "the watch saw the old and the new value")

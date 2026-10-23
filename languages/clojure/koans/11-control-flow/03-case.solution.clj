@@ -1,0 +1,6 @@
+(defn kind [x] (case x (1 2 3) :small 10 :ten "ten" :text :other))
+(is (= :small (kind 2)) "one of a list")
+(is (= :ten (kind 10)) "a number")
+(is (= :text (kind "ten")) "a string")
+(is (= :other (kind 99)) "the default")
+(is (thrown? :default (case 5 1 :one)) "with no default, an unmatched case throws")

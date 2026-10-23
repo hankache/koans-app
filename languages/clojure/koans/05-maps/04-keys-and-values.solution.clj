@@ -1,0 +1,5 @@
+(is (= #{:a :b} (set (keys {:a 1 :b 2}))) "keys, in no promised order")
+(is (= 6 (reduce + (vals {:a 1 :b 2 :c 3}))) "vals")
+(is (= {:a 1} (select-keys {:a 1 :b 2} [:a])) "select-keys keeps some")
+(is (= {:a 1 :b 2} (zipmap [:a :b] [1 2])) "zipmap pairs keys with values")
+(is (= [[:a 1] [:b 2]] (seq {:a 1 :b 2})) "a map is a sequence of pairs")

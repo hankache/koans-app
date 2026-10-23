@@ -1,0 +1,8 @@
+(defprotocol Shape (area [s]) (describe [s]))
+(defrecord Square [side] Shape (area [_] (* side side)) (describe [_] "a square"))
+(defrecord Rect [w h] Shape (area [_] (* w h)) (describe [_] "a rectangle"))
+(is (= 9 (area (->Square 3))) "Square's area")
+(is (= 6 (area (->Rect 2 3))) "Rect's")
+(is (= "a rectangle" (describe (->Rect 1 1))) "another function of the protocol")
+(is (= [4 6] (map area [(->Square 2) (->Rect 2 3)])) "one call, two implementations")
+(is (= true (satisfies? Shape (->Square 1))) "satisfies? asks whether a value implements it")

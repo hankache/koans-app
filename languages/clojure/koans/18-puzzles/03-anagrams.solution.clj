@@ -1,0 +1,6 @@
+(def words ["listen" "silent" "enlist" "google" "cat" "act"])
+(def groups (group-by #(apply str (sort %)) words))
+(is (= ["listen" "silent" "enlist"] (groups "eilnst")) "sorted letters are the key")
+(is (= 3 (count groups)) "how many groups")
+(is (= ["cat" "act"] (groups "act")) "each group keeps the original order")
+(is (= true (= (sort "dusty") (sort "study"))) "a quick anagram test")

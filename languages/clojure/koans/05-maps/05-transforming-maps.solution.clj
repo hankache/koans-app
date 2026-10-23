@@ -1,0 +1,5 @@
+(is (= {:a 2 :b 3} (update-vals {:a 1 :b 2} inc)) "update-vals changes every value")
+(is (= {:a 10 :b 20} (into {} (map (fn [[k v]] [k (* 10 v)]) {:a 1 :b 2}))) "pairs back into a map")
+(is (= [:a :b] (sort (keys {:b 1 :a 2}))) "keywords sort too")
+(is (= {:a 3 :b 3} (merge-with + {:a 1 :b 3} {:a 2})) "merge-with combines values that clash")
+(is (= {1 :a} (reduce-kv (fn [m k v] (assoc m v k)) {} {:a 1})) "reduce-kv folds over keys and values")

@@ -1,0 +1,6 @@
+(def person {:name "Ada" :born 1815})
+(let [{:keys [name born]} person] (is (= 1815 born) ":keys names values after their keys"))
+(let [{n :name} person] (is (= "Ada" n) "or give a key a name of your own"))
+(let [{:keys [email] :or {email "none"}} person] (is (= "none" email) ":or gives a default"))
+(let [{:keys [name] :as all} person] (is (= 2 (count all)) ":as keeps the map"))
+(let [{{:keys [city]} :address} {:address {:city "London"}}] (is (= "London" city) "patterns nest"))

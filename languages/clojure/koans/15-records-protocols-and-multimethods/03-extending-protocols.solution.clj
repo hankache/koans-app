@@ -1,0 +1,11 @@
+(defprotocol Loud (shout [x]))
+(defrecord Dog [name])
+(defrecord Cat [name])
+(extend-protocol Loud
+  Dog (shout [d] (str (:name d) " barks"))
+  Cat (shout [c] (str (:name c) " hisses"))
+  nil (shout [_] "silence"))
+(is (= "Rex barks" (shout (->Dog "Rex"))) "a dog")
+(is (= "Tom hisses" (shout (->Cat "Tom"))) "a cat")
+(is (= "silence" (shout nil)) "even nil")
+(is (= false (satisfies? Loud 42)) "but not a number")

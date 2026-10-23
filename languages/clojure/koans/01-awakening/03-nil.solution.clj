@@ -1,0 +1,6 @@
+(is (= nil (get {:a 1} :b)) "a missing key gives nil")
+(is (= nil (first [])) "so does the first of nothing")
+(is (= 0 (count nil)) "nil counts as empty")
+(is (= '(1) (conj nil 1)) "conj onto nil makes a list")
+(is (= true (nil? nil)) "nil? asks")
+(is (= "none" (or nil "none")) "or gives the first true value")

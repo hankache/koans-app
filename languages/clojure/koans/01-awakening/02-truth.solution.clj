@@ -1,0 +1,6 @@
+(is (= :yes (if 0 :yes :no)) "zero is true")
+(is (= :yes (if "" :yes :no)) "so is the empty string")
+(is (= :no (if nil :yes :no)) "nil is false")
+(is (= false (boolean nil)) "boolean turns a value into true or false")
+(is (= true (boolean [])) "an empty vector is true")
+(is (= true (not false)) "not flips truth")

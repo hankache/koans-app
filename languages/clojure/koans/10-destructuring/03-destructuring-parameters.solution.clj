@@ -1,0 +1,8 @@
+(defn full-name [{:keys [first last]}] (str first " " last))
+(defn distance [[x1 y1] [x2 y2]] (+ (abs (- x2 x1)) (abs (- y2 y1))))
+(defn verbose? [& {:keys [verbose] :or {verbose false}}] verbose)
+(is (= "Ada Lovelace" (full-name {:first "Ada" :last "Lovelace"})) "a map parameter")
+(is (= 7 (distance [1 2] [4 6])) "two vector parameters")
+(is (= true (verbose? :verbose true)) "keyword arguments, gathered into a map")
+(is (= false (verbose?)) "with a default")
+(is (= [:a 1] (first (map (fn [[k v]] [k v]) {:a 1}))) "a map's entries take apart as pairs")

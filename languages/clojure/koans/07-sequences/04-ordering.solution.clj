@@ -1,0 +1,6 @@
+(is (= [1 2 3] (sort [3 1 2])) "sort")
+(is (= [3 2 1] (sort > [3 1 2])) "sort takes a comparison")
+(is (= ["a" "bb" "ccc"] (sort-by count ["ccc" "a" "bb"])) "sort-by sorts by a function's result")
+(is (= [3 2 1] (reverse [1 2 3])) "reverse")
+(is (= [1 2 3] (distinct [1 2 1 3 2])) "distinct keeps the first of each")
+(is (= [1 2 1] (dedupe [1 1 2 2 1])) "dedupe drops only repeats next to each other")

@@ -154,6 +154,23 @@ It contains Lua, https://www.lua.org, under the MIT License:
 ${readFileSync(new URL('./licenses/Lua-MIT.txt', import.meta.url), 'utf8').trim()}
 \`\`\`
 
+## Scittle (Clojure)
+
+The interpreter the Clojure koans run on: \`public/runtime/clojure/scittle.js\` (SCI, the Small
+Clojure Interpreter, compiled to JavaScript), downloaded by \`npm run fetch-runtime\` from the
+\`scittle\` npm package (the version pinned in \`languages/clojure/runtime.lock.json\`),
+https://github.com/babashka/scittle. Copyright © 2021 - 2022 Michiel Borkent, distributed under the
+Eclipse Public License 1.0. It is served unmodified; its source is at the address above.
+
+It is built from SCI (https://github.com/babashka/sci) and ClojureScript
+(https://github.com/clojure/clojurescript), both under the Eclipse Public License 1.0, and the
+Google Closure Library (https://github.com/google/closure-library), under the Apache License 2.0
+(see "Apache License 2.0" below). The Eclipse Public License 1.0:
+
+\`\`\`
+${readFileSync(new URL('./licenses/Scittle-EPL-1.0.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
 ## sql.js (SQLite)
 
 The database the SQL koans run on: \`public/runtime/sql/sql-wasm.js\` and \`sql-wasm.wasm\` (SQLite

@@ -1,0 +1,8 @@
+(defrecord Point [x y])
+(def p (->Point 1 2))
+(is (= 1 (:x p)) "a field, read like a map key")
+(is (= {:x 3 :y 4} (into {} (map->Point {:x 3 :y 4}))) "map->Point builds one from a map")
+(is (= 9 (:x (assoc p :x 9))) "assoc works as on a map")
+(is (= true (= p (->Point 1 2))) "records with equal fields are equal")
+(is (= false (= p {:x 1 :y 2})) "but not equal to a plain map")
+(is (= true (record? p)) "record?")

@@ -1,0 +1,4 @@
+{
+  "title": "Records, protocols and multimethods",
+  "blurb": "Polymorphism in Clojure: protocols dispatch on types, multimethods on anything."
+}

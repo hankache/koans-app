@@ -1,0 +1,6 @@
+(is (= 1 (first [1 2 3])) "first")
+(is (= '(2 3) (rest [1 2 3])) "rest gives a sequence")
+(is (= '(0 1 2) (cons 0 [1 2])) "cons puts an item in front")
+(is (= nil (seq [])) "the seq of an empty collection is nil")
+(is (= '() (rest [1])) "the rest of one item is empty, not nil")
+(is (= nil (next [1])) "next is like rest, but gives nil")

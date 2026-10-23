@@ -1,0 +1,5 @@
+(is (= "a1:b" (str "a" 1 :b)) "str joins anything")
+(is (= "" (str nil)) "nil becomes nothing")
+(is (= 5 (count "hello")) "count counts the characters")
+(is (= "ell" (subs "hello" 1 4)) "subs stops before its end")
+(is (= "llo" (subs "hello" 2)) "or goes to the end")
