@@ -73,6 +73,21 @@ export function makeRunner(DefaultRubyVM, module) {
   };
 }
 
+/**
+ * Takes from this worker what koan code must never reach: the site's saved files (caches), the
+ * learner's saved progress (indexedDB), and the channel open tabs sync it over (BroadcastChannel),
+ * all shared with the page. Koans don't need them, and code from a shared link could otherwise
+ * rewrite the site's offline copy or the learner's progress. Run once the interpreter has loaded,
+ * before any koan. Removed from the global object and every prototype above it, so they can't be
+ * found again; if one can't be removed, this throws rather than run koans with it.
+ */
+function lockDown(scope = globalThis) {
+  for (const name of ['caches', 'indexedDB', 'BroadcastChannel']) {
+    for (let o = scope; o; o = Object.getPrototypeOf(o)) Reflect.deleteProperty(o, name);
+    if (name in scope) throw new Error(`could not remove ${name} from the worker`);
+  }
+}
+
 // In a browser worker: load ruby.wasm's bundle (a script that defines a global) and compile Ruby
 // once, then answer the page.
 if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope && self.location.href === import.meta.url) {
@@ -81,7 +96,9 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
     if (!bundle.ok) throw new Error(`browser.umd.js: HTTP ${bundle.status}`);
     (0, eval)(`${await bundle.text()}\n//# sourceURL=browser.umd.js`);
     const module = await WebAssembly.compileStreaming(fetch(new URL('./ruby.wasm', import.meta.url)));
-    return makeRunner(globalThis['ruby-wasm-wasi'].DefaultRubyVM, module);
+    const run = makeRunner(globalThis['ruby-wasm-wasi'].DefaultRubyVM, module);
+    lockDown();
+    return run;
   })();
   ready.then(
     () => self.postMessage({ type: 'ready', version: 'ruby.wasm' }),

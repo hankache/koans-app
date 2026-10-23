@@ -14,7 +14,7 @@
 // Protocol:  in  { type: 'run', id, src }
 //            out { type: 'ready', version } | { type: 'loaderror', message }
 //                { type: 'done', id, rc, lines: [{ stream, text }] }
-import { run as runJavaScript } from '../javascript/worker.js';
+import { lockDown, run as runJavaScript } from '../javascript/worker.js';
 
 const KOAN = '/koan.ts';
 const TYPES = '/koans.d.ts';
@@ -272,6 +272,7 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
   const ready = (async () => {
     const [compiler, libs] = await Promise.all([read('typescript.js'), loadLibs(read)]);
     (0, eval)(`${compiler}\n//# sourceURL=typescript.js`);
+    lockDown();
     return { run: makeRunner(globalThis.ts, libs), version: globalThis.ts.version };
   })();
   ready.then(

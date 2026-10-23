@@ -79,6 +79,13 @@ languages/<id>/koans/ ──build-koans──► src/generated/<id>.json ──�
 - **Runaway code.** An interpreter runs a program to completion without pausing, so it runs in a
   Web Worker. After 8 seconds the worker is stopped and replaced
   ([wasm-runtime.ts](../src/lib/runtime/wasm-runtime.ts)).
+- **What koan code can reach.** A worker shares some of the page's powers: the site's saved files
+  (the service worker's `caches`), the learner's saved progress (`indexedDB`), and the channel tabs
+  sync it over (`BroadcastChannel`). Most interpreters can reach them through a bridge to
+  JavaScript, so code from a shared link could rewrite the site's offline copy or the learner's
+  progress. Every worker removes all three once its interpreter has loaded, before any koan runs
+  (`lockDown()`); R's also locks webR's own worker, where R runs. Koan code can still compute,
+  print, test and use the network, but it can no longer change anything the site keeps.
 - **Highlighting.** The editor is [CodeMirror 6](https://codemirror.net), with each language's mode.
 
 ### The app
@@ -149,6 +156,8 @@ the machine. It checks:
 - every language working offline once opened, with the server stopped and the page freshly loaded;
 - the languages' own pages and the sitemap;
 - sharing a koan, through a link's full round trip;
+- that koan code can't reach the site's saved files, progress or tab sync, in every language with a
+  bridge to JavaScript;
 - the download message on a slowed-down first visit (Chrome only);
 - accessibility: [axe](https://github.com/dequelabs/axe-core) checks each kind of page against
   WCAG 2.2 A and AA, in both themes, on desktop and phone sizes. Any finding fails the run.

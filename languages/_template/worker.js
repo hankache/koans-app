@@ -18,8 +18,26 @@ async function start() {
   return (interpreter = null);
 }
 
+/**
+ * Takes from this worker what koan code must never reach: the site's saved files (caches), the
+ * learner's saved progress (indexedDB), and the channel open tabs sync it over (BroadcastChannel),
+ * all shared with the page. Koans don't need them, and code from a shared link could otherwise
+ * rewrite the site's offline copy or the learner's progress. Run once the interpreter has loaded,
+ * before any koan. Keep it: tests/browser/run.mjs checks that koan code can't reach them, for
+ * every language with a bridge to JavaScript (add yours to REACH there).
+ */
+function lockDown(scope = globalThis) {
+  for (const name of ['caches', 'indexedDB', 'BroadcastChannel']) {
+    for (let o = scope; o; o = Object.getPrototypeOf(o)) Reflect.deleteProperty(o, name);
+    if (name in scope) throw new Error(`could not remove ${name} from the worker`);
+  }
+}
+
 let ready = start()
-  .then(() => self.postMessage({ type: 'ready', version: 'TODO' }))
+  .then(() => {
+    lockDown();
+    self.postMessage({ type: 'ready', version: 'TODO' });
+  })
   .catch(err => self.postMessage({ type: 'loaderror', message: String(err) }));
 
 self.onmessage = async ({ data }) => {

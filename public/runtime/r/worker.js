@@ -89,6 +89,22 @@ local({
 })
 `;
 
+/**
+ * Takes from a worker what koan code must never reach: the site's saved files (caches), the
+ * learner's saved progress (indexedDB), and the channel open tabs sync it over (BroadcastChannel),
+ * all shared with the page. Koans don't need them, and code from a shared link could otherwise
+ * rewrite the site's offline copy or the learner's progress. Run once R has started, before any koan, in this worker and in webR's own,
+ * where R runs (R code can run JavaScript there, with webr::eval_js). Removed from the global
+ * object and every prototype above it, so they can't be found again; if one can't be removed,
+ * this throws rather than run koans with it.
+ */
+function lockDown(scope = globalThis) {
+  for (const name of ['caches', 'indexedDB', 'BroadcastChannel']) {
+    for (let o = scope; o; o = Object.getPrototypeOf(o)) Reflect.deleteProperty(o, name);
+    if (name in scope) throw new Error(`could not remove ${name} from the worker`);
+  }
+}
+
 /** A runner on webR: the WebR class and ChannelType from webr.mjs, and the folder of webR's files. */
 export async function makeRunner(WebR, ChannelType, baseUrl) {
   // PostMessage: no SharedArrayBuffer, so no cross-origin isolation headers are needed.
@@ -97,6 +113,8 @@ export async function makeRunner(WebR, ChannelType, baseUrl) {
   const { warn } = console;
   console.warn = (...args) => /nested R REPLs/.test(String(args[0])) || warn(...args);
   await webR.init();
+  // R runs in webR's worker: lock that one too, before any koan.
+  await webR.evalRVoid(`webr::eval_js(${JSON.stringify(`(${lockDown})()`)})`);
   await webR.evalRVoid(RUNNER);
   const version = await webR.evalRString('paste(R.version$major, R.version$minor, sep = ".")');
 
@@ -130,7 +148,9 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
   const ready = (async () => {
     // webr.js is webR's browser build (webr.mjs imports Node's modules).
     const { WebR, ChannelType } = await import('./webr/webr.js');
-    return makeRunner(WebR, ChannelType, new URL('./webr/', import.meta.url).href);
+    const runner = await makeRunner(WebR, ChannelType, new URL('./webr/', import.meta.url).href);
+    lockDown();
+    return runner;
   })();
   ready.then(
     ({ version }) => self.postMessage({ type: 'ready', version }),

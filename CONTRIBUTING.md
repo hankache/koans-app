@@ -128,6 +128,10 @@ Then register it in [scripts/lib/languages.mjs](scripts/lib/languages.mjs) and
 3. Report errors outside the tests with a line number that the pack's `errors.line` pattern can
    find.
 4. Let a running program be stopped at any moment, by terminating its worker.
+5. Take away, once its interpreter has loaded, what koan code must never reach: the site's saved
+   files, the learner's saved progress, and the channel tabs sync it over (`lockDown()` in every
+   worker). If the language can run JavaScript, add it to `REACH` in
+   [tests/browser/run.mjs](tests/browser/run.mjs), which checks this.
 
 ## Before you send a change
 

@@ -1,8 +1,8 @@
 // Checks the built site in real browsers: the home page (its koan to try, where to continue, and its
 // phone layout), what each page downloads, every language's koan flow, old addresses, progress
 // across tabs, export/import, working offline, the message while an interpreter downloads, the
-// pages for search engines, accessibility (axe, in both themes, on a desktop and a phone), and
-// sharing a koan with your code in its link.
+// pages for search engines, accessibility (axe, in both themes, on a desktop and a phone),
+// sharing a koan with your code in its link, and what koan code can't reach.
 //
 //   npm run test:browser                      Chrome and Firefox (builds the site first)
 //   npm run test:browser -- --browser chrome  one of them
@@ -382,6 +382,38 @@ async function checkAccessibility(browser, base) {
 }
 
 /**
+ * What koan code can't reach: the site's saved files, the learner's saved progress, and the channel
+ * tabs sync it over, which every interpreter's worker removes before running koans (lockDown in
+ * each worker.js). Asked from inside a koan, through each language's bridge to JavaScript (Lua,
+ * Raku and SQL have none). A shared link's code runs the same way.
+ */
+const ASK = '[typeof caches, typeof indexedDB, typeof BroadcastChannel].join()';
+const REACH = {
+  javascript: `console.log(${ASK});`,
+  typescript: `const g: any = globalThis; console.log([typeof g.caches, typeof g.indexedDB, typeof g.BroadcastChannel].join());`,
+  python: `import js; print(js.eval(${JSON.stringify(ASK)}))`,
+  r: `print(webr::eval_js(${JSON.stringify(ASK)}))`,
+  ruby: `require 'js'; puts JS.eval(${JSON.stringify(`return ${ASK}`)})`,
+  php: `<?php echo (new Vrzno)->eval(${JSON.stringify(ASK)});`,
+};
+
+async function checkSandbox(browser, base) {
+  const context = await browser.createBrowserContext();
+  const page = await context.newPage();
+  try {
+    for (const [id, code] of Object.entries(REACH)) {
+      const first = readKoans(toolLanguages.find(l => l.id === id))[0].koans[0];
+      await page.goto(`${base}#/${id}/koan/${first.id}`);
+      await page.waitForSelector('.cm-content');
+      const out = await run(page, code, /undefined|object|function|rror/);
+      check(`${id}: koan code can't reach the site's saved files, progress or tabs`, out.includes('undefined,undefined,undefined'), out.slice(0, 160));
+    }
+  } finally {
+    await context.close();
+  }
+}
+
+/**
  * Sharing a koan: Share copies a link with the code in it (the clipboard is a stand-in that keeps
  * what it's given); opening it shows that code and a note, leaving the learner's own code saved;
  * "Back to your own code" brings theirs back; running the shared code makes it theirs; and a
@@ -609,6 +641,7 @@ try {
       await checkPages(browser, base);
       await checkAccessibility(browser, base);
       await checkShare(browser, base);
+      await checkSandbox(browser, base);
       await checkOffline(browser);
       if (name === 'chrome') await checkLoading(browser, base);
     } finally {
