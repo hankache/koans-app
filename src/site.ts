@@ -6,6 +6,6 @@ export const site = {
   url: 'https://koans.app/',
   // What the site is, in a line: the home page's title and description for search results.
   tagline: 'Learn a programming language by fixing failing tests',
-  // Not created yet (see PLAN.md, phase 0): update this if the repository ends up elsewhere.
+  // The source repository: "Report a problem" issues, the footer and the docs link to it.
   repo: 'https://github.com/hankache/koans-app',
 };

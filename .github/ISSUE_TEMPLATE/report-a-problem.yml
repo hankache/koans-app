@@ -25,6 +25,6 @@ body:
     id: problem
     attributes:
       label: What's wrong?
-      description: What you expected, what happened, and the code you ran if it matters.
+      description: What you expected and what happened. If the code you ran matters, Share on the koan's page gives a link to it.
     validations:
       required: true
