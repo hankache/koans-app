@@ -5,6 +5,7 @@ import javascript from '../../languages/javascript/node.mjs';
 import lua from '../../languages/lua/node.mjs';
 import ocaml from '../../languages/ocaml/node.mjs';
 import php from '../../languages/php/node.mjs';
+import prolog from '../../languages/prolog/node.mjs';
 import r from '../../languages/r/node.mjs';
 import python from '../../languages/python/node.mjs';
 import raku from '../../languages/raku/node.mjs';
@@ -51,7 +52,7 @@ import typescript from '../../languages/typescript/node.mjs';
  */
 
 /** @type {Language[]} */
-export const languages = [clojure, javascript, lua, ocaml, php, python, r, raku, ruby, scheme, sql, typescript];
+export const languages = [clojure, javascript, lua, ocaml, php, prolog, python, r, raku, ruby, scheme, sql, typescript];
 
 /**
  * The languages named with --lang (repeat it, or separate names with commas), or else all of

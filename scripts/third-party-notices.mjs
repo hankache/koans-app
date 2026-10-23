@@ -78,6 +78,26 @@ js_of_ocaml's license:
 ${readFileSync(new URL('./licenses/js_of_ocaml-LICENSE.txt', import.meta.url), 'utf8').trim()}
 \`\`\`
 
+## SWI-Prolog (Prolog)
+
+The interpreter the Prolog koans run on: \`public/runtime/prolog/swipl-web.js\`, \`swipl-web.wasm\` and
+\`swipl-web.data\` (SWI-Prolog compiled to WebAssembly, with its libraries), downloaded by
+\`npm run fetch-runtime\` from the \`swipl-wasm\` npm package (the version pinned in
+\`languages/prolog/runtime.lock.json\`), https://github.com/SWI-Prolog/npm-swipl-wasm. SWI-Prolog's
+source is at https://github.com/SWI-Prolog/swipl-devel. Its license:
+
+\`\`\`
+${readFileSync(new URL('./licenses/SWI-Prolog-LICENSE.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
+It contains LibBF, for its unbounded integers, under the MIT License:
+
+\`\`\`
+${readFileSync(new URL('./licenses/LibBF-MIT.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
+and zlib, under the zlib License (see "Zlib" below).
+
 ## Pyodide and CPython
 
 The interpreter the Python koans run on: \`public/runtime/python/\` (\`pyodide.mjs\`,

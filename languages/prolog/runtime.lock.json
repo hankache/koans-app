@@ -1,0 +1,11 @@
+{
+  "source": "https://www.npmjs.com/package/swipl-wasm/v/8.2.5",
+  "tag": "8.2.5",
+  "version": "SWI-Prolog 10.1.19",
+  "archive": "0d728917d606d1d9314f29a30c035d2770a8467814f1de121ca6d888ce10d5df",
+  "files": {
+    "dist/swipl/swipl-web.js": "b71b671c5396c0d3ab4e04ee0376bfb47319cdfcf4b00b202ba3fdb671de6e7d",
+    "dist/swipl/swipl-web.wasm": "80674a1223edc60629460fca12e322f9c27fdeb20ef72fc0f755edea1906a3b2",
+    "dist/swipl/swipl-web.data": "a980ac3f2ecb5a5d670b8470ab77c780768c0c6421ed51ef063f606d736c55a4"
+  }
+}

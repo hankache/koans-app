@@ -1,0 +1,4 @@
+{
+  "title": "Facts and rules",
+  "blurb": "A Prolog program is a database: facts that are true, and rules that derive more."
+}
