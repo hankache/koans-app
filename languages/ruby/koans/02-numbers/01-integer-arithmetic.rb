@@ -1,5 +1,5 @@
 # title: Integer arithmetic
-# intro: Dividing two integers gives an integer, rounded down (towards minus infinity). `%` takes the sign of the divisor, and `**` raises to a power.
+# intro: Dividing two integers gives an integer, rounded down (toward minus infinity). `%` takes the sign of the divisor, and `**` raises to a power.
 expect(7 / 2).to eq(___), 'integer division drops the fraction'
 expect(-7 / 2).to eq(___), 'by rounding down'
 expect(-7 % 3).to eq(___), "% takes the divisor's sign"

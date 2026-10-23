@@ -15,7 +15,7 @@ on:
 permissions:
   contents: read
 
-# One deploy at a time; a newer push waits rather than cancelling one mid-publish.
+# One deploy at a time; a newer push waits rather than canceling one mid-publish.
 concurrency:
   group: deploy
   cancel-in-progress: false

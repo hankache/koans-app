@@ -1,5 +1,5 @@
 // title: Mixins
-// intro: A class can extend the result of a function, so behaviour can be mixed into classes that don't share a parent.
+// intro: A class can extend the result of a function, so behavior can be mixed into classes that don't share a parent.
 const Serializable = Base => class extends Base {
   toJSON() {
     return JSON.stringify({ ...this });

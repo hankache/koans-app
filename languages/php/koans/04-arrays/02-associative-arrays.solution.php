@@ -1,7 +1,7 @@
 <?php
 $person = ['name' => 'Ada', 'born' => 1815];
 assertSame('Ada', $person['name'], 'read by key');
-$person['field'] = 'maths';
+$person['field'] = 'math';
 assertSame(['name', 'born', 'field'], array_keys($person), 'keys keep their order');
 assertArrayHasKey('born', $person, 'assertArrayHasKey');
 $mixed = ['1' => 'a', true => 'b'];

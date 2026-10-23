@@ -1,5 +1,5 @@
 // title: Higher-order functions
-// intro: A function that takes or returns functions can build new behaviour out of old: composing, currying, or wrapping.
+// intro: A function that takes or returns functions can build new behavior out of old: composing, currying, or wrapping.
 const compose = (f, g) => x => f(g(x));
 const inc = n => n + 1;
 const double = n => n * 2;

@@ -1,6 +1,6 @@
 # title: Rounding
-# intro: `round` rounds a half to the even neighbour, as the IEC 60559 standard says, so `round(2.5)` is 2. `floor`, `ceiling`, `trunc` and `signif` round in other ways.
-test_that("halves go to the even neighbour", expect_equal(round(2.5), ___))
+# intro: `round` rounds a half to the even neighbor, as the IEC 60559 standard says, so `round(2.5)` is 2. `floor`, `ceiling`, `trunc` and `signif` round in other ways.
+test_that("halves go to the even neighbor", expect_equal(round(2.5), ___))
 test_that("and so 3.5 goes up", expect_equal(round(3.5), ___))
 test_that("round to places", expect_equal(round(3.14159, 2), ___))
 test_that("signif keeps significant digits", expect_equal(signif(123456, 2), ___))

@@ -49,7 +49,7 @@ function hash(dir: string, files: string[]): string {
 
 /**
  * What the browser downloads to start a language's interpreter, in bytes: its folder, less what
- * it loads only on demand (the language's `onDemand`), source maps and licences.
+ * it loads only on demand (the language's `onDemand`), source maps and licenses.
  */
 function startSize(dir: string, files: string[]): number {
   const onDemand = languages.find(l => l.id === dir)?.onDemand ?? [];
@@ -72,7 +72,7 @@ function offline(): Plugin {
     enforce: 'post',
     generateBundle(_, bundle) {
       // The page, the code it starts with (the entry and what it imports), its fonts, and the small public
-      // files: icons, logo and animations. Not the interpreters, the long licence notices, the
+      // files: icons, logo and animations. Not the interpreters, the long license notices, the
       // images for link previews, or the host's own files (_headers).
       // The page is saved under its folder's address ('' is the site's own), never .../index.html:
       // hosts with "pretty URLs" (Cloudflare Pages) redirect that to the folder, and a redirect

@@ -1,5 +1,5 @@
 // title: Word count
-// intro: Counting how often each word appears: split, normalise, then tally into a `Map`.
+// intro: Counting how often each word appears: split, normalize, then tally into a `Map`.
 const text = 'the cat and the hat and the bat';
 const counts = new Map();
 for (const w of text.split(' ')) counts.set(w, (counts.get(w) ?? 0) + 1);

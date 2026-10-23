@@ -1,5 +1,5 @@
 # title: Custom conditions
-# intro: A condition is a list with a message and a class vector. Signalling one of your own classes lets callers handle exactly that problem.
+# intro: A condition is a list with a message and a class vector. Signaling one of your own classes lets callers handle exactly that problem.
 out_of_stock <- function(item) {
   structure(class = c("out_of_stock", "error", "condition"),
             list(message = paste(item, "is out of stock"), call = sys.call(-1), item = item))

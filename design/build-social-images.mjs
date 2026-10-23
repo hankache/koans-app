@@ -5,7 +5,7 @@
 //
 //   node design/build-social-images.mjs
 //
-// Run it again after changing a language's name, tagline, test framework, colours or emblem, or
+// Run it again after changing a language's name, tagline, test framework, colors or emblem, or
 // adding one. (No koan counts: they'd go out of date with every new koan. The pages give them.)
 import { mkdirSync, readdirSync, readFileSync } from 'node:fs';
 import { computeSystemExecutablePath } from '@puppeteer/browsers';

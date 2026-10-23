@@ -27,7 +27,7 @@ rescue Exception => e
   message = e.message.lines.first.to_s.chomp
   if e.is_a?(SyntaxError)
     line ||= e.message[/koan\\.rb:(\\d+)/, 1]&.to_i
-    # Ruby points under the code with ^ and explains after it (in colour, for a terminal).
+    # Ruby points under the code with ^ and explains after it (in color, for a terminal).
     found = e.message.gsub(/\\e\\[[\\d;]*m/, "").lines.find { |l| l.match?(/\\|\\s*\\^/) }
     message = found ? found[/\\^[\\^~]*\\s*(.*)/, 1].strip : "syntax error"
   end

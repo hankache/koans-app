@@ -347,7 +347,7 @@
     padding: 56px 0 24px;
   }
   :global([data-theme='dark']) .home { --home-accent: #f07cb6; --badge-red: var(--fail); --badge-green: var(--pass); }
-  /* A language's own colour, in either theme. */
+  /* A language's own color, in either theme. */
   .tile, .mark, .bar, .emblems a, .tabs button { --accent: var(--accent-light, var(--ink)); }
   :global([data-theme='dark']) :is(.tile, .mark, .bar, .emblems a, .tabs button) { --accent: var(--accent-dark, var(--ink)); }
 
@@ -523,7 +523,7 @@
   .steps li.now { background: var(--bg-raised); border-color: var(--line); }
   .steps strong { display: block; color: var(--ink); }
   .num { flex: none; width: 30px; height: 30px; display: grid; place-items: center; background: var(--line); color: var(--ink-soft); font-weight: 600; font-size: 14px; transition: background 0.3s; }
-  /* Light text on these needs darker shades than the theme's result colours, in the light theme. */
+  /* Light text on these needs darker shades than the theme's result colors, in the light theme. */
   .now .num { background: var(--ink); color: var(--bg); }
   .now .num.red { background: var(--badge-red); }
   .now .num.fill-in { background: var(--home-accent); }

@@ -3,7 +3,7 @@ if '2024-01-05' ~~ / (\d+) '-' (\d+) '-' (\d+) / {
     is ~$2, '05', '$2 is the third';
     is $/.list.elems, 3, 'three captures in all';
 }
-if 'colour=blue' ~~ / $<key>=\w+ '=' $<value>=\w+ / {
-    is ~$<key>, 'colour', 'a named capture';
+if 'color=blue' ~~ / $<key>=\w+ '=' $<value>=\w+ / {
+    is ~$<key>, 'color', 'a named capture';
     is ~$<value>, 'blue', 'and another';
 }

@@ -1,5 +1,5 @@
 # title: The collections module
-# intro: `collections` has specialised containers: `Counter` counts things, `defaultdict` fills in missing keys, `deque` adds and removes at both ends, and `namedtuple` names a tuple's fields.
+# intro: `collections` has specialized containers: `Counter` counts things, `defaultdict` fills in missing keys, `deque` adds and removes at both ends, and `namedtuple` names a tuple's fields.
 from collections import Counter, defaultdict, deque, namedtuple
 
 counts = Counter('banana')

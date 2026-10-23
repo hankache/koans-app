@@ -191,7 +191,7 @@
 </div>
 
 <style>
-  /* Neutral whatever the result: the colour is in the strip, the marks and the edge. */
+  /* Neutral whatever the result: the color is in the strip, the marks and the edge. */
   .panel {
     border: 1px solid var(--line);
     background: var(--bg-raised);

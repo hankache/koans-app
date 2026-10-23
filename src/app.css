@@ -14,7 +14,7 @@
   --accent: var(--wing-pink);
   --amber: #c98a06;
 
-  /* Section colours, taken from the logo: teal, gold, navy, copper, olive, slate. */
+  /* Section colors, taken from the logo: teal, gold, navy, copper, olive, slate. */
   --sec-1: #3f7f78;
   --sec-2: #a8822f;
   --sec-3: #173f4d;
@@ -38,7 +38,7 @@
   --syn-regexp: #9c3e33;
   --syn-blank: #a72868;
   /* The editor's tints: the failing line, an error's line, and the blanks (from their own pink).
-     Light enough that every syntax colour keeps 4.5:1 on them, as WCAG asks. */
+     Light enough that every syntax color keeps 4.5:1 on them, as WCAG asks. */
   --tint-fail: 8%;
   --tint-error: 12%;
   --tint-blank: 10%;

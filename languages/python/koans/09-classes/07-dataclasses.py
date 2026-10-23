@@ -17,11 +17,11 @@ class Bag:
 assert Bag().items == ___, 'each Bag gets its own list'
 
 @dataclass(frozen=True)
-class Colour:
+class Color:
     name: str
 
 def repaint():
-    Colour('red').name = 'blue'
+    Color('red').name = 'blue'
 
 with pytest.raises(___):  # a frozen dataclass cannot change
     repaint()

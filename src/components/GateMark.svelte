@@ -1,4 +1,4 @@
-<!-- The "gateless gate" mark: a torii in the text colour framing an amber question mark. -->
+<!-- The "gateless gate" mark: a torii in the text color framing an amber question mark. -->
 <script lang="ts">
   let { size = 32 }: { size?: number } = $props();
 </script>

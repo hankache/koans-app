@@ -18,7 +18,7 @@
   const { pack, progress } = untrack(() => course);
   const koan = $derived(course.koanById.get(id)!);
   const section = $derived(course.sectionOf(id));
-  const nav = $derived(course.neighbours(id));
+  const nav = $derived(course.neighbors(id));
   const index = $derived(section.koans.indexOf(koan) + 1);
   // A GitHub issue about this koan, its form filled in (.github/ISSUE_TEMPLATE/report-a-problem.yml).
   const reportHref = $derived(

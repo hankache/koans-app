@@ -54,7 +54,7 @@ export interface LanguagePack {
   /** Finishes "fix failing tests written with …" on its path page: its test framework, linked: 'pytest'. */
   testedWith: { name: string; url: string };
   /**
-   * How it looks: an accent colour for each theme, and its emblem's symbol: SVG drawn in the
+   * How it looks: an accent color for each theme, and its emblem's symbol: SVG drawn in the
    * gate's doorway of a 64-unit box, its solid parts in {F} and its cut-outs in {C} (see Emblem.svelte).
    */
   look: { accent: { light: string; dark: string }; emblem: string };

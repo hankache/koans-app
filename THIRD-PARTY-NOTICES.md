@@ -2458,7 +2458,7 @@ BLAS, LAPACK and webR's JavaScript), downloaded by `npm run fetch-runtime` from 
 package (the version pinned in `languages/r/runtime.lock.json`), https://github.com/r-wasm/webr.
 R is free software under the GNU GPL; webR's binaries are distributed under the GNU GPL version 3,
 and are served here unmodified, as webR publishes them. Their source: https://github.com/r-wasm/webr
-and https://www.r-project.org. webR's licensing, with the full licence texts:
+and https://www.r-project.org. webR's licensing, with the full license texts:
 
 ```
 # Software Licensing
@@ -3279,7 +3279,7 @@ It contains SQLite, https://sqlite.org, which is in the public domain.
 ## Fonts
 
 Fraunces, Inter and JetBrains Mono are served with the site, from the @fontsource-variable
-packages listed below with their licence, the SIL Open Font License 1.1.
+packages listed below with their license, the SIL Open Font License 1.1.
 
 ## JavaScript packages
 

@@ -34,7 +34,7 @@ export class Course {
     return this.sections.find(s => s.koans.some(k => k.id === id))!;
   }
 
-  neighbours(id: string) {
+  neighbors(id: string) {
     const i = this.allKoans.findIndex(k => k.id === id);
     return { prev: this.allKoans[i - 1], next: this.allKoans[i + 1] };
   }

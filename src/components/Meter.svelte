@@ -22,7 +22,7 @@
     flex: 1;
     min-width: 40px;
     height: 10px;
-    /* A faint tint of the text colour: visible on the header in both themes. */
+    /* A faint tint of the text color: visible on the header in both themes. */
     background: color-mix(in srgb, var(--ink) 12%, transparent);
     overflow: hidden;
   }
