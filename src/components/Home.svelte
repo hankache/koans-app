@@ -168,7 +168,7 @@
     <div class="try">
       <div class="try-head">
         <span class="small">Try one, in <strong>{tryPack.name}</strong></span>
-        <div class="tabs" role="tablist" aria-label="Language to try">
+        <div class="tabs" role="tablist" aria-label="Language to try" style:--columns={Math.ceil(packs.length / 2)}>
           {#each packs as p (p.id)}
             <button
               role="tab"
@@ -379,11 +379,12 @@
   .try { background: var(--bg-raised); border: 1px solid var(--line); box-shadow: var(--shadow); min-width: 0; }
   .try-head { padding: 14px 16px 12px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
   .try-head strong { color: var(--ink); }
-  .tabs { display: flex; gap: 4px; overflow-x: auto; }
+  /* Two even rows, however many languages there are: no scrolling. */
+  .tabs { display: grid; grid-template-columns: repeat(var(--columns), minmax(0, 1fr)); gap: 4px; justify-items: center; }
   .tabs button {
-    flex: none;
-    width: 44px;
-    height: 44px;
+    width: 100%;
+    max-width: 44px;
+    aspect-ratio: 1;
     display: grid;
     place-items: center;
     padding: 0;
