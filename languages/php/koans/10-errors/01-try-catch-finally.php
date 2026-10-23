@@ -1,5 +1,5 @@
 // title: try, catch and finally
-// intro: `catch` handles an exception of a given class, or of several with `|`; `finally` always runs. Since PHP 8, the variable in `catch` is optional.
+// intro: `catch` handles an exception of a given class, or of several with `|`; `finally` always runs. The variable in `catch` can be left out when you don't need it.
 <?php
 function attempt(callable $f): array
 {

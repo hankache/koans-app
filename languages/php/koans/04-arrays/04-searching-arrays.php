@@ -1,5 +1,5 @@
 // title: Searching arrays
-// intro: `in_array` and `array_search` look for a value, strictly when told to; `array_key_exists` asks for a key; PHP 8.4 added `array_find`, `array_any` and `array_all`.
+// intro: `in_array` and `array_search` look for a value, strictly when told to; `array_key_exists` asks for a key; `array_find`, `array_any` and `array_all` test each item with a function.
 <?php
 $ids = [10, '20', 30];
 assertSame(___, in_array(20, $ids), 'in_array compares with == by default');

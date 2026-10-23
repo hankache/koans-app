@@ -17,5 +17,5 @@ $p = new Point(3, 4);
 assertSame(___, $p->y, 'promoted properties');
 assertThrows(___, fn() => $p->x = 9, 'readonly cannot change');
 $moved = $p->withX(10);
-assertSame(___, [$moved->x, $moved->y], 'clone with new values, from inside the class (PHP 8.5)');
+assertSame(___, [$moved->x, $moved->y], 'clone with new values, from inside the class');
 assertSame(___, $p->x, 'the original is unchanged');

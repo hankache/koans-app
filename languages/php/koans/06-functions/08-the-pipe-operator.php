@@ -1,5 +1,5 @@
 // title: The pipe operator
-// intro: PHP 8.5's pipe operator, `|>`, passes the value on its left to the callable on its right, so a chain of calls reads from left to right instead of inside out.
+// intro: The pipe operator, `|>`, passes the value on its left to the callable on its right, so a chain of calls reads from left to right instead of inside out.
 <?php
 $result = '  Hello World  ' |> trim(...) |> strtolower(...) |> ucfirst(...);
 assertSame(___, $result, 'left to right');

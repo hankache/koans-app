@@ -1,5 +1,5 @@
 -- title: Bitwise operators
--- intro: Lua 5.4 works on the bits of integers with `&`, `|`, `~` (exclusive or, or not when it has one operand), `<<` and `>>`.
+-- intro: Lua works on the bits of integers with `&`, `|`, `~` (exclusive or, or not when it has one operand), `<<` and `>>`.
 assert.are.equal(___, 12 & 10, '& keeps the bits set in both')
 assert.are.equal(___, 12 | 10, '| keeps the bits set in either')
 assert.are.equal(___, 12 ~ 10, '~ between two numbers is exclusive or')

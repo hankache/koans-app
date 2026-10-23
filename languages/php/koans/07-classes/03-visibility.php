@@ -1,5 +1,5 @@
 // title: Visibility
-// intro: `public` members are open to everyone, `protected` to the class and its children, `private` to the class alone. PHP 8.4's asymmetric visibility, `public private(set)`, makes a property readable everywhere but writable only inside.
+// intro: `public` members are open to everyone, `protected` to the class and its children, `private` to the class alone. Asymmetric visibility, `public private(set)`, makes a property readable everywhere but writable only inside its class.
 <?php
 class Account
 {

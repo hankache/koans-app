@@ -89,6 +89,8 @@ at a time. When writing one:
   marked ([scripts/lib/code-words.mjs](scripts/lib/code-words.mjs) has the rules).
 - **Answers are short** and written the way the language writes values: `[1, 2, 3]`, `'text'`,
   `TypeError`.
+- **Describe the language as it is**, without "since version X" or "new in X": learners run
+  the current interpreter, and version history dates a koan without teaching anything.
 - **Don't depend on one interpreter's quirks**: exact error-message wording, how many digits a float
   prints in one engine, the order of things the language doesn't promise to order. The koans run on
   one interpreter per language, but they should be true of the language.

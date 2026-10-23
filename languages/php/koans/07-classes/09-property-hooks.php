@@ -1,5 +1,5 @@
 // title: Property hooks
-// intro: PHP 8.4's property hooks attach code to a property: a `get` hook computes its value when read, a `set` hook runs when it's assigned, so getters and setters aren't needed.
+// intro: Property hooks attach code to a property: a `get` hook computes its value when read, a `set` hook runs when it's assigned, so getters and setters aren't needed.
 <?php
 class User
 {
