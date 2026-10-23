@@ -1,0 +1,5 @@
+(test-equal "filter" '(2 4) (filter even? '(1 2 3 4)))
+(test-equal "fold sums" 10 (fold + 0 '(1 2 3 4)))
+(test-equal "fold sees the items in order, so cons reverses" '(3 2 1) (fold cons '() '(1 2 3)))
+(test-equal "reduce starts from the first item" 9 (reduce max 0 '(3 9 4)))
+(test-equal "iota counts" '(0 1 2 3) (iota 4))

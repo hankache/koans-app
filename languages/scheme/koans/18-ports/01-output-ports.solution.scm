@@ -1,0 +1,5 @@
+(define (to-string print value) (let ((port (open-output-string))) (print value port) (get-output-string port)))
+(test-equal "display prints the text" "hi" (to-string display "hi"))
+(test-equal "write prints it as code, with quotes" "\"hi\"" (to-string write "hi"))
+(test-equal "a list, written" "(1 \"a\" #\\b)" (to-string write (list 1 "a" #\b)))
+(test-equal "displayed" "(1 a b)" (to-string display (list 1 "a" #\b)))

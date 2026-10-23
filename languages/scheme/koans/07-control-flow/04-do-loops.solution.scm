@@ -1,0 +1,5 @@
+(test-equal "sum of 0 to 4" 10 (do ((i 0 (+ i 1)) (sum 0 (+ sum i))) ((= i 5) sum)))
+(test-equal "building a list" '(1 2 3) (do ((i 3 (- i 1)) (acc '() (cons i acc))) ((= i 0) acc)))
+(define v (make-vector 3))
+(do ((i 0 (+ i 1))) ((= i 3)) (vector-set! v i (* i i)))
+(test-equal "a loop for its effects" #(0 1 4) v)

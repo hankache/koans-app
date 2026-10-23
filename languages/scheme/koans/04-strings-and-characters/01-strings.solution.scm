@@ -1,0 +1,6 @@
+(test-equal "string-append" "Hello, world" (string-append "Hello" ", " "world"))
+(test-equal "string-length" 5 (string-length "hello"))
+(test-equal "substring stops before its end" "ell" (substring "hello" 1 4))
+(test-equal "string-upcase" "LOUD" (string-upcase "loud"))
+(test-equal "string=? compares" #t (string=? "abc" "abc"))
+(test-equal "string<? compares alphabetically" #t (string<? "apple" "banana"))

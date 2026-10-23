@@ -1,0 +1,6 @@
+(test-equal "quotient drops the remainder" 3 (quotient 17 5))
+(test-equal "remainder is what's left" 2 (remainder 17 5))
+(test-equal "quotient rounds toward zero" -3 (quotient -7 2))
+(test-equal "remainder takes the sign of the number divided" -1 (remainder -7 2))
+(test-equal "modulo takes the sign of the divisor" 1 (modulo -7 2))
+(test-equal "floor/ gives both, as two values" '(2 1) (call-with-values (lambda () (floor/ 7 3)) list))

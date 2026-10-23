@@ -1,0 +1,7 @@
+(define (count-leaves tree)
+  (cond ((null? tree) 0)
+        ((pair? tree) (+ (count-leaves (car tree)) (count-leaves (cdr tree))))
+        (else 1)))
+(test-equal "a flat list" 3 (count-leaves '(a b c)))
+(test-equal "nested" 4 (count-leaves '((a b) (c (d)))))
+(test-equal "length counts only the top level" 2 (length '((a b) (c (d)))))

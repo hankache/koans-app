@@ -1,0 +1,5 @@
+(test-equal "the operator comes first" 6 (+ 1 2 3))
+(test-equal "the inner list runs first" 14 (+ 2 (* 3 4)))
+(test-equal "so nesting sets the order" 20 (* (+ 2 3) 4))
+(test-equal "- with one argument negates" -5 (- 5))
+(test-equal "comparisons take several arguments" #t (< 1 2 3))

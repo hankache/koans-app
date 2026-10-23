@@ -1,0 +1,5 @@
+(define indent (make-parameter 2))
+(define (spaces) (make-string (indent) #\space))
+(test-equal "its value" 2 (indent))
+(test-equal "changed inside parameterize" "    " (parameterize ((indent 4)) (spaces)))
+(test-equal "and back afterward" "  " (spaces))

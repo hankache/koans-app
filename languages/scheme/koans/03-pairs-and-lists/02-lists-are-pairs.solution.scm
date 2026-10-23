@@ -1,0 +1,6 @@
+(test-equal "cons onto the empty list" '(3) (cons 3 '()))
+(test-equal "a chain of pairs" '(1 2 3) (cons 1 (cons 2 (cons 3 '()))))
+(test-equal "cons puts an item in front" '(0 1 2) (cons 0 '(1 2)))
+(test-equal "cdr is the rest" '(2 3) (cdr '(1 2 3)))
+(test-equal "the rest of one item is the empty list" '() (cdr '(1)))
+(test-equal "cons of a list onto a list nests it" '((1 2) 3) (cons '(1 2) '(3)))

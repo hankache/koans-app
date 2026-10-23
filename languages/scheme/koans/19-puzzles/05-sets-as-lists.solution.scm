@@ -1,0 +1,6 @@
+(define (union a b) (fold (lambda (x acc) (if (member x acc) acc (append acc (list x)))) a b))
+(define (intersection a b) (filter (lambda (x) (member x b)) a))
+(define (difference a b) (filter (lambda (x) (not (member x b))) a))
+(test-equal "union: in either" '(1 2 3 4) (union '(1 2 3) '(2 4)))
+(test-equal "intersection: in both" '(2) (intersection '(1 2 3) '(2 4)))
+(test-equal "difference: in the first only" '(1 3) (difference '(1 2 3) '(2 4)))

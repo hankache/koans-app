@@ -1,0 +1,6 @@
+(test-equal "vector-map" #(1 4 9) (vector-map square #(1 2 3)))
+(test-equal "vector-append" #(1 2 3) (vector-append #(1) #(2 3)))
+(test-equal "vector-copy can take a range" #(b c) (vector-copy #(a b c d) 1 3))
+(define total 0)
+(vector-for-each (lambda (x) (set! total (+ total x))) #(1 2 3))
+(test-equal "vector-for-each runs for every item" 6 total)

@@ -1,0 +1,6 @@
+(define square-it (lambda (x) (* x x)))
+(define (double x) (* 2 x))
+(test-equal "a procedure made by lambda" 25 (square-it 5))
+(test-equal "the shorter form" 10 (double 5))
+(test-equal "lambda can be called right away" 7 ((lambda (a b) (+ a b)) 3 4))
+(test-equal "procedures are values" #t (procedure? double))

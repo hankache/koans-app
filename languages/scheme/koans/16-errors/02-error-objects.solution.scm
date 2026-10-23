@@ -1,0 +1,5 @@
+(define (caught thunk) (guard (e ((error-object? e) e)) (thunk)))
+(define e (caught (lambda () (error "Out of stock:" 'tea 3))))
+(test-equal "an error object" #t (error-object? e))
+(test-equal "its message" "Out of stock:" (error-object-message e))
+(test-equal "its irritants" '(tea 3) (error-object-irritants e))

@@ -1,0 +1,6 @@
+(test-equal "+ adds them all" 10 (+ 1 2 3 4))
+(test-equal "* multiplies them all" 24 (* 1 2 3 4))
+(test-equal "- subtracts the rest from the first" 5 (- 10 3 2))
+(test-equal "square" 49 (square 7))
+(test-equal "abs" 7 (abs -7))
+(test-equal "max" 9 (max 3 9 4))

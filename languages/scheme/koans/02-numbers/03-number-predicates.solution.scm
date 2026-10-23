@@ -1,0 +1,6 @@
+(test-equal "zero?" #t (zero? 0))
+(test-equal "positive?" #f (positive? -4))
+(test-equal "even?" #t (even? 10))
+(test-equal "odd?" #f (odd? 10))
+(test-equal "every neighboring pair must be in order" #f (< 1 3 2))
+(test-equal "= compares numbers" #t (= 4 4 4))

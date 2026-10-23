@@ -1,0 +1,6 @@
+(test-equal "expt" 1024 (expt 2 10))
+(test-equal "gcd" 6 (gcd 12 18))
+(test-equal "lcm" 12 (lcm 4 6))
+(test-equal "number->string" "42" (number->string 42))
+(test-equal "in base 2" "1010" (number->string 10 2))
+(test-equal "string->number gives #f for anything else" #f (string->number "forty"))

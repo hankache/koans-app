@@ -24,7 +24,8 @@
   </picture>
 </p>
 
-**816 koans in ten languages:** Clojure, JavaScript, Lua, PHP, Python, R, Raku, Ruby, SQL and TypeScript.
+**890 koans in eleven languages:** Clojure, JavaScript, Lua, PHP, Python, R, Raku, Ruby, Scheme, SQL and
+TypeScript.
 
 A koan is a small program whose tests fail. Replace each `___` with the right answer until every
 test passes. Get one wrong, and the language shows you what it expected.
@@ -52,6 +53,7 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/). koans.app grew out
 | [R](languages/r/)                   | 78    | [webR](https://docs.r-wasm.org/webr/latest/) (R 4.6)         | testthat's expectations                 |
 | [Raku](languages/raku/)             | 105   | [Raku++](https://github.com/ash/rakupp) (Raku.js)            | Raku's `Test` module                    |
 | [Ruby](languages/ruby/)             | 90    | [ruby.wasm](https://github.com/ruby/ruby.wasm) (CRuby 4.0)   | RSpec's `expect`                        |
+| [Scheme](languages/scheme/)         | 74    | [Stak](https://github.com/raviqqe/stak) (R7RS)               | SRFI 64's tests                         |
 | [SQL](languages/sql/)               | 72    | [sql.js](https://github.com/sql-js/sql.js) (SQLite 3.49)     | expected rows, in `-- expect:` comments |
 | [TypeScript](languages/typescript/) | 65    | [TypeScript compiler](https://github.com/microsoft/TypeScript) (TypeScript 6), then the browser's engine | Vitest's `expect` and `expectTypeOf`    |
 

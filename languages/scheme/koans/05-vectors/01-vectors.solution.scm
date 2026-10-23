@@ -1,0 +1,6 @@
+(define v (vector 'a 'b 'c))
+(test-equal "vector-ref counts from 0" 'b (vector-ref v 1))
+(test-equal "vector-length" 3 (vector-length v))
+(test-equal "a vector is written with #" #(1 2) (vector 1 2))
+(test-equal "vector->list" '(a b c) (vector->list v))
+(test-equal "list->vector" #(x y) (list->vector '(x y)))

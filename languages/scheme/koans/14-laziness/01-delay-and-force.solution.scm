@@ -1,0 +1,7 @@
+(define runs 0)
+(define p (delay (begin (set! runs (+ runs 1)) 42)))
+(test-equal "nothing has run yet" 0 runs)
+(test-equal "force runs it" 42 (force p))
+(force p)
+(test-equal "but only once" 1 runs)
+(test-equal "promise?" #t (promise? p))

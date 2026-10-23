@@ -1,0 +1,5 @@
+(test-equal "test-equal compares two values" 2 (+ 1 1))
+(test-equal "strings are values too" "Scheme" (string-append "Sch" "eme"))
+(test-assert "test-assert wants a true value" #t)
+(test-equal "a comparison gives #t or #f" #f (> 1 2))
+(test-equal "lists are equal when their items are" '(1 2) (list 1 2))

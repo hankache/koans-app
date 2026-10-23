@@ -1,0 +1,12 @@
+(define (tally items)
+  (fold (lambda (item counts)
+          (let ((entry (assq item counts)))
+            (if entry
+                (begin (set-cdr! entry (+ (cdr entry) 1)) counts)
+                (cons (cons item 1) counts))))
+        '()
+        items))
+(define counts (tally '(a b a c a b)))
+(test-equal "how many a" 3 (cdr (assq 'a counts)))
+(test-equal "how many c" 1 (cdr (assq 'c counts)))
+(test-equal "how many keys" 3 (length counts))

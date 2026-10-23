@@ -1,0 +1,6 @@
+(define x 10)
+(test-equal "x is a variable" 10 x)
+(test-equal "'x is the symbol itself" 'x 'x)
+(test-equal "a quoted call is a list" 3 (length '(+ 1 2)))
+(test-equal "its first item is a symbol" '+ (car '(+ 1 2)))
+(test-assert "symbol? asks" (symbol? 'x))

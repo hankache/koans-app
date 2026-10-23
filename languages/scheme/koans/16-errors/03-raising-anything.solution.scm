@@ -1,0 +1,5 @@
+(define (classify thunk) (guard (e ((symbol? e) (list 'symbol e)) ((string? e) (list 'string e))) (thunk)))
+(test-equal "a symbol" '(symbol oops) (classify (lambda () (raise 'oops))))
+(test-equal "a string" '(string "bad") (classify (lambda () (raise "bad"))))
+(test-equal "a number gets past both" 'outer (guard (e (#t 'outer)) (classify (lambda () (raise 42)))))
+(test-equal "=> passes the test's value on" 42 (guard (e ((assq 'code e) => cdr)) (raise (list (cons 'code 42)))))

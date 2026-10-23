@@ -1,0 +1,7 @@
+(define colors '(red green blue))
+(test-equal "list-ref counts from 0" 'green (list-ref colors 1))
+(test-equal "list-tail drops from the front" '(blue) (list-tail colors 2))
+(test-equal "cadr: the car of the cdr" 'green (cadr colors))
+(test-equal "caddr: the third" 'blue (caddr colors))
+(test-equal "cddr: all but the first two" '(blue) (cddr colors))
+(test-equal "caar: the first of the first" 1 (caar '((1 2) (3 4))))

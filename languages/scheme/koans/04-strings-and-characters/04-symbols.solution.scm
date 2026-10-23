@@ -1,0 +1,5 @@
+(test-equal "symbol->string" "apple" (symbol->string 'apple))
+(test-equal "string->symbol" 'pear (string->symbol "pear"))
+(test-equal "the same name, the same symbol" #t (eq? 'fig (string->symbol "fig")))
+(test-equal "symbols in a list" '(a b) (list 'a 'b))
+(test-equal "symbol=?" #t (symbol=? 'kiwi 'kiwi))

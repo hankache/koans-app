@@ -1,0 +1,5 @@
+(define (sum-to n acc) (if (= n 0) acc (sum-to (- n 1) (+ acc n))))
+(define (count-down n) (if (= n 0) 'liftoff (count-down (- n 1))))
+(test-equal "the accumulator holds the result so far" 15 (sum-to 5 0))
+(test-equal "a million calls deep, and no stack used" 'liftoff (count-down 1000000))
+(test-equal "the same, with a big sum" 500000500000 (sum-to 1000000 0))

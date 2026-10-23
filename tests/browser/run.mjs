@@ -37,6 +37,7 @@ const LANGUAGES = [
   { id: 'r', error: 'x <- 1\nnope()', says: /could not find function/, loop: 'repeat {}' },
   { id: 'raku', error: "is 1, 1, 'fine';\ndie 'boom';", says: /boom/, loop: 'loop { }' },
   { id: 'ruby', error: "expect(true).to be(true), 'fine'\nnope", says: /NameError/, loop: 'loop { }' },
+  { id: 'scheme', error: '(test-assert "fine" #t)\n(error "Something bad:" 42)', says: /Something bad: 42/, loop: '(let loop () (loop))' },
   { id: 'sql', error: "SELECT 1; -- expect: 1\nINSERT INTO nowhere VALUES (1);", says: /no such table/, loop: 'WITH RECURSIVE n(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM n) SELECT count(*) FROM n;' },
   { id: 'typescript', error: "expect(true, 'fine').toBe(true);\nconst n: number = 'text';", says: /TS2322/, loop: 'while (true) {}' },
 ];

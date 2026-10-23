@@ -1,0 +1,6 @@
+(define (my-even? n) (if (= n 0) #t (my-odd? (- n 1))))
+(define (my-odd? n) (if (= n 0) #f (my-even? (- n 1))))
+(test-equal "even calls odd calls even" #t (my-even? 10))
+(test-equal "and the other way" #t (my-odd? 7))
+(test-equal "tail calls, so deep is fine" #f (my-even? 100001))
+(test-equal "letrec, locally" 120 (letrec ((fact (lambda (n) (if (= n 0) 1 (* n (fact (- n 1))))))) (fact 5)))

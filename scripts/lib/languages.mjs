@@ -8,6 +8,7 @@ import r from '../../languages/r/node.mjs';
 import python from '../../languages/python/node.mjs';
 import raku from '../../languages/raku/node.mjs';
 import ruby from '../../languages/ruby/node.mjs';
+import scheme from '../../languages/scheme/node.mjs';
 import sql from '../../languages/sql/node.mjs';
 import typescript from '../../languages/typescript/node.mjs';
 
@@ -45,7 +46,7 @@ import typescript from '../../languages/typescript/node.mjs';
  */
 
 /** @type {Language[]} */
-export const languages = [clojure, javascript, lua, php, python, r, raku, ruby, sql, typescript];
+export const languages = [clojure, javascript, lua, php, python, r, raku, ruby, scheme, sql, typescript];
 
 /**
  * The languages named with --lang (repeat it, or separate names with commas), or else all of

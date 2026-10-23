@@ -1,0 +1,6 @@
+(test-equal "list" '(1 2 3) (list 1 2 3))
+(test-equal "list keeps a list argument as one item" '(1 (2 3)) (list 1 '(2 3)))
+(test-equal "append joins lists" '(1 2 3 4) (append '(1 2) '(3) '(4)))
+(test-equal "reverse" '(3 2 1) (reverse '(1 2 3)))
+(test-equal "length" 0 (length '()))
+(test-equal "make-list" '(x x x) (make-list 3 'x))

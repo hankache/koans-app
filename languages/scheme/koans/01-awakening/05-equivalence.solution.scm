@@ -1,0 +1,6 @@
+(test-equal "the same symbol is always eq?" #t (eq? 'a 'a))
+(test-equal "two new lists are different objects" #f (eq? (list 1 2) (list 1 2)))
+(test-equal "but their contents are equal" #t (equal? (list 1 2) (list 1 2)))
+(test-equal "eqv? compares numbers" #t (eqv? 100 100))
+(test-equal "equal? compares strings" #t (equal? "abc" "abc"))
+(test-equal "the empty list is one object" #t (eq? '() '()))

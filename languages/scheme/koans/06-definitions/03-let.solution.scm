@@ -1,0 +1,6 @@
+(test-equal "let names values" 7 (let ((a 3) (b 4)) (+ a b)))
+(define x 1)
+(test-equal "an inner name hides an outer one" 2 (let ((x 2)) x))
+(test-equal "and leaves it unchanged" 1 x)
+(test-equal "let's values see the outer x" 11 (let ((x 10) (y x)) (+ x y)))
+(test-equal "let* sees the names before" 20 (let* ((x 10) (y x)) (+ x y)))

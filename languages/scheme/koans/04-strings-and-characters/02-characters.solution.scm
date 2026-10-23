@@ -1,0 +1,6 @@
+(test-equal "string-ref" #\b (string-ref "abc" 1))
+(test-equal "char-upcase" #\A (char-upcase #\a))
+(test-equal "char-numeric?" #t (char-numeric? #\7))
+(test-equal "digit-value gives its number" 7 (digit-value #\7))
+(test-equal "char->integer gives its code" 65 (char->integer #\A))
+(test-equal "characters compare like numbers" #t (char<? #\a #\b #\c))

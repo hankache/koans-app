@@ -1,0 +1,7 @@
+(define log '())
+(when (> 3 1) (set! log (cons 'when log)))
+(unless (> 3 1) (set! log (cons 'unless log)))
+(test-equal "only when ran" '(when) log)
+(test-equal "and gives #f at the first false value" #f (and 1 #f (car '())))
+(test-equal "or stops at the first true value" 'first (or 'first (car '())))
+(test-equal "and with no arguments" #t (and))

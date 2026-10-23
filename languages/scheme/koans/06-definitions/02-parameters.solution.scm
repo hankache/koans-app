@@ -1,0 +1,8 @@
+(define (count-args . args) (length args))
+(define (first-and-rest first . rest) (list first rest))
+(define greet (case-lambda (() "Hello!") ((name) (string-append "Hello, " name "!"))))
+(test-equal "all the arguments, as a list" 3 (count-args 'a 'b 'c))
+(test-equal "or none" 0 (count-args))
+(test-equal "one named, the rest gathered" '(1 (2 3)) (first-and-rest 1 2 3))
+(test-equal "case-lambda with no arguments" "Hello!" (greet))
+(test-equal "and with one" "Hello, Ada!" (greet "Ada"))

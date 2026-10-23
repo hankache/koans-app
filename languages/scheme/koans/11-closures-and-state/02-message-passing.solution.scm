@@ -1,0 +1,11 @@
+(define (make-account balance)
+  (lambda (message amount)
+    (case message
+      ((deposit) (set! balance (+ balance amount)) balance)
+      ((withdraw) (if (> amount balance) 'insufficient (begin (set! balance (- balance amount)) balance)))
+      (else 'unknown))))
+(define acc (make-account 100))
+(test-equal "deposit" 150 (acc 'deposit 50))
+(test-equal "withdraw" 120 (acc 'withdraw 30))
+(test-equal "too much" 'insufficient (acc 'withdraw 500))
+(test-equal "the balance is unchanged" 120 (acc 'deposit 0))

@@ -1,0 +1,5 @@
+(test-equal "find" 4 (find (lambda (x) (> x 3)) '(1 4 5)))
+(test-equal "find gives #f when nothing matches" #f (find (lambda (x) (> x 9)) '(1 4 5)))
+(test-equal "any" #t (any odd? '(2 3 4)))
+(test-equal "every" #f (every odd? '(1 2 3)))
+(test-equal "every of nothing is true" #t (every odd? '()))

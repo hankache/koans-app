@@ -1,0 +1,7 @@
+(define (flatten tree)
+  (cond ((null? tree) '())
+        ((pair? tree) (append (flatten (car tree)) (flatten (cdr tree))))
+        (else (list tree))))
+(test-equal "flatten" '(1 2 3 4) (flatten '(1 (2 (3)) 4)))
+(test-equal "already flat" '(a b) (flatten '(a b)))
+(test-equal "empty lists vanish" '(x) (flatten '(() (x) ())))

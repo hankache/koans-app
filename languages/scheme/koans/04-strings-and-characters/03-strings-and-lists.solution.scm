@@ -1,0 +1,5 @@
+(test-equal "string->list" '(#\h #\i) (string->list "hi"))
+(test-equal "list->string" "ok" (list->string (list #\o #\k)))
+(test-equal "reversing a string" "cba" (list->string (reverse (string->list "abc"))))
+(test-equal "string makes a string of characters" "ab" (string #\a #\b))
+(test-equal "string-map applies to every character" "ABC" (string-map char-upcase "abc"))

@@ -1,0 +1,13 @@
+(define calls 0)
+(define (slow-square n) (set! calls (+ calls 1)) (* n n))
+(define (memoize f)
+  (let ((cache '()))
+    (lambda (n)
+      (let ((hit (assv n cache)))
+        (if hit
+            (cdr hit)
+            (let ((result (f n))) (set! cache (cons (cons n result) cache)) result))))))
+(define fast-square (memoize slow-square))
+(fast-square 4)
+(test-equal "the same answer" 16 (fast-square 4))
+(test-equal "computed once" 1 calls)

@@ -1,0 +1,6 @@
+(define p (cons 1 2))
+(test-equal "car is the first" 1 (car p))
+(test-equal "cdr is the second" 2 (cdr p))
+(test-equal "a pair is written with a dot" '(1 . 2) p)
+(test-equal "pair?" #t (pair? p))
+(test-equal "the empty list is not a pair" #f (pair? '()))

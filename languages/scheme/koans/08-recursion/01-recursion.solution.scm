@@ -1,0 +1,6 @@
+(define (factorial n) (if (= n 0) 1 (* n (factorial (- n 1)))))
+(define (my-length lst) (if (null? lst) 0 (+ 1 (my-length (cdr lst)))))
+(test-equal "factorial" 120 (factorial 5))
+(test-equal "the simplest case" 1 (factorial 0))
+(test-equal "recursion on a list" 3 (my-length '(a b c)))
+(test-equal "the empty list is the simplest list" 0 (my-length '()))

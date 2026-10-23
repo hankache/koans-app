@@ -1,0 +1,6 @@
+(define (divide a b) (values (quotient a b) (remainder a b)))
+(test-equal "call-with-values passes them on" '(3 2) (call-with-values (lambda () (divide 17 5)) list))
+(test-equal "let-values names them" 5 (let-values (((q r) (divide 17 5))) (+ q r)))
+(define-values (whole left) (divide 20 6))
+(test-equal "define-values defines them" 3 whole)
+(test-equal "the other one" 2 left)

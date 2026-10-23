@@ -1,0 +1,7 @@
+(define log '())
+(define (note x) (set! log (cons x log)))
+(dynamic-wind (lambda () (note 'before)) (lambda () (note 'during)) (lambda () (note 'after)))
+(test-equal "in order" '(before during after) (reverse log))
+(set! log '())
+(call/cc (lambda (k) (dynamic-wind (lambda () (note 'in)) (lambda () (k 'escaped) (note 'never)) (lambda () (note 'out)))))
+(test-equal "after runs even on the way out" '(in out) (reverse log))

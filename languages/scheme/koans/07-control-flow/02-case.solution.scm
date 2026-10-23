@@ -1,0 +1,5 @@
+(define (kind n) (case n ((1 2 3) 'small) ((10 100) 'round) (else 'other)))
+(test-equal "one of a list" 'small (kind 2))
+(test-equal "another list" 'round (kind 100))
+(test-equal "else" 'other (kind 7))
+(test-equal "symbols work too" 'vowel (case 'e ((a e i o u) 'vowel) (else 'consonant)))

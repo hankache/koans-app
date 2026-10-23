@@ -171,6 +171,17 @@ Google Closure Library (https://github.com/google/closure-library), under the Ap
 ${readFileSync(new URL('./licenses/Scittle-EPL-1.0.txt', import.meta.url), 'utf8').trim()}
 \`\`\`
 
+## Stak (Scheme)
+
+The interpreter the Scheme koans run on: \`public/runtime/scheme/stak_wasm.js\` and
+\`stak_wasm_bg.wasm\` (Stak Scheme compiled to WebAssembly), downloaded by \`npm run fetch-runtime\`
+from the \`@raviqqe/stak\` npm package (the version pinned in \`languages/scheme/runtime.lock.json\`),
+https://github.com/raviqqe/stak. Its license (from its repository; the npm package has no copy):
+
+\`\`\`
+${readFileSync(new URL('./licenses/Stak-LICENSE.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
 ## sql.js (SQLite)
 
 The database the SQL koans run on: \`public/runtime/sql/sql-wasm.js\` and \`sql-wasm.wasm\` (SQLite

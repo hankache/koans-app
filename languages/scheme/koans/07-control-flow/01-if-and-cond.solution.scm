@@ -1,0 +1,6 @@
+(define (sign n) (cond ((< n 0) 'negative) ((= n 0) 'zero) (else 'positive)))
+(test-equal "if picks a branch" 'big (if (> 10 5) 'big 'small))
+(test-equal "the first true clause wins" 'negative (sign -3))
+(test-equal "the next" 'zero (sign 0))
+(test-equal "else takes the rest" 'positive (sign 8))
+(test-equal "=> passes the test's value to a procedure" 2 (cond ((assv 'b '((a 1) (b 2))) => cadr) (else #f)))

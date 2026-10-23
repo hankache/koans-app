@@ -1,0 +1,6 @@
+(define (update alist key value) (cons (cons key value) alist))
+(define stock '((apples . 3) (pears . 5)))
+(define new-stock (update stock 'apples 10))
+(test-equal "the new pair hides the old one" 10 (cdr (assq 'apples new-stock)))
+(test-equal "the old list is unchanged" 3 (cdr (assq 'apples stock)))
+(test-equal "the keys" '(apples pears) (map car stock))

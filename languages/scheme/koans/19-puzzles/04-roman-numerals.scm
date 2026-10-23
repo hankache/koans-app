@@ -1,0 +1,11 @@
+;; title: Roman numerals
+;; intro: Roman numerals are built greedily: take the largest value that fits, write its letters, and repeat with what's left.
+(define numerals '((1000 . "M") (900 . "CM") (500 . "D") (400 . "CD") (100 . "C") (90 . "XC") (50 . "L") (40 . "XL") (10 . "X") (9 . "IX") (5 . "V") (4 . "IV") (1 . "I")))
+(define (roman n)
+  (let loop ((n n) (pairs numerals) (out ""))
+    (cond ((= n 0) out)
+          ((>= n (caar pairs)) (loop (- n (caar pairs)) pairs (string-append out (cdar pairs))))
+          (else (loop n (cdr pairs) out)))))
+(test-equal "one before five" ___ (roman 4))
+(test-equal "forty-two" ___ (roman 42))
+(test-equal "1990" ___ (roman 1990))

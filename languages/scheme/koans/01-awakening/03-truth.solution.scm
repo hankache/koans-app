@@ -1,0 +1,6 @@
+(test-equal "zero is true" 'yes (if 0 'yes 'no))
+(test-equal "so is the empty list" 'yes (if '() 'yes 'no))
+(test-equal "#f is the only false value" 'no (if #f 'yes 'no))
+(test-equal "not turns true into #f" #f (not 3))
+(test-equal "and gives its last value when all are true" 3 (and 1 2 3))
+(test-equal "or gives the first true value" 2 (or #f 2 3))

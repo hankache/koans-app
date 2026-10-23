@@ -1,0 +1,10 @@
+{
+  "source": "https://www.npmjs.com/package/@raviqqe/stak/v/0.12.33",
+  "tag": "0.12.33",
+  "version": "Stak Scheme",
+  "archive": "c8d260c63c0d5b1f513aef349d2e74ccbd76c807604bb1f655c499c37e604588",
+  "files": {
+    "stak_wasm.js": "3fd078d743a42bb5a54cb0a7f2d7ef20354430c33df756a7ca477778b00d55dd",
+    "stak_wasm_bg.wasm": "449543f957e16f1fcb9143d86d92c8f2442ef3d27d998d2fff2b61dd92f964d4"
+  }
+}
