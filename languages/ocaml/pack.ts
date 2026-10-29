@@ -25,7 +25,7 @@ export default {
   framework: 'Alcotest',
   kinds: ['think'],
   teasers: [
-    { before: 'let () = check (list int) "" ', after: ' (1 :: [2; 3])', choices: ['[1; 2; 3]', '[1; [2; 3]]', '[3; 2; 1]'], answer: '[1; 2; 3]', why: ':: puts an item in front of a list.' },
+    { before: 'let () = check int "" ', after: ' (List.length [1, 2, 3])', choices: ['3', '1', '6'], answer: '1', why: 'Commas make a tuple: [1, 2, 3] is a list holding one tuple. OCaml separates list items with ;.' },
     { before: 'let () = check int "" ', after: ' (7 / 2)', choices: ['3', '3.5', '4'], answer: '3', why: '/ divides whole numbers and drops the remainder.' },
   ],
   // The koan as a file of its test framework, named its way (test_name.ml), on the editor's bar.

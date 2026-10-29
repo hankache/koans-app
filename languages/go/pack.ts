@@ -26,7 +26,7 @@ export default {
   kinds: ['web', 'automate'],
   teasers: [
     { before: 'assert.Equal(t, ', after: ', 7/2)', choices: ['3', '3.5', '4'], answer: '3', why: '/ on two integers gives an integer: the remainder is dropped.' },
-    { context: 's := []int{10, 20, 30, 40}', before: 'assert.Equal(t, ', after: ', s[1:3])', choices: ['[]int{20, 30}', '[]int{10, 20, 30}', '[]int{20, 30, 40}'], answer: '[]int{20, 30}', why: 's[1:3] takes the items from index 1 up to, but not including, index 3.' },
+    { context: 'var count int', before: 'assert.Equal(t, ', after: ', count)', choices: ['0', 'nil', '-1'], answer: '0', why: 'A variable declared without a value starts at its type\'s zero value: 0 for an int.' },
     { before: 'assert.Equal(t, ', after: ', len("héllo"))', choices: ['5', '6', '4'], answer: '6', why: 'len counts bytes, and é takes two in UTF-8.' },
   ],
   // The koan as a file of its test framework, named its way (slices_test.go), on the editor's bar.

@@ -25,8 +25,8 @@ export default {
   framework: 'clojure.test',
   kinds: ['data', 'think'],
   teasers: [
-    { before: '(is (= ', after: ' (conj [1 2] 3)))', choices: ['[1 2 3]', '[3 1 2]', '[[1 2] 3]'], answer: '[1 2 3]', why: 'conj adds to the end of a vector, where it is cheapest.' },
-    { before: '(is (= ', after: " (conj '(1 2) 3)))", choices: ["'(1 2 3)", "'(3 1 2)", '[1 2 3]'], answer: "'(3 1 2)", why: 'On a list, conj adds to the front, where it is cheapest.' },
+    { before: '(is (= ', after: ' (+ 1 2 3)))', choices: ['6', '123', '3'], answer: '6', why: 'In Clojure the function comes first, and + adds any number of numbers.' },
+    { before: '(is (= ', after: ' (get {:name "Ada"} :name)))', choices: ['"Ada"', ':name', 'nil'], answer: '"Ada"', why: 'get looks up a key in a map; :name is a keyword, Clojure\'s usual kind of key.' },
   ],
   // The koan as a file of its test framework, named its way (clojure.test: name_test.clj), on the editor's bar.
   testFile: slug => `${slug.replaceAll('-', '_')}_test.clj`,

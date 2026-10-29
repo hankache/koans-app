@@ -158,8 +158,8 @@ async function checkSite(browser, base) {
     return text(page, '.feedback');
   };
   check('the koan to try opens on the first language', (await text(page, '.try-head')).includes('Clojure'));
-  check('the koan to try says when an answer is wrong', /Not quite/.test(await choose('[3 1 2]')));
-  check('and when it is right', /Enlightenment/.test(await choose('[1 2 3]')) && (await text(page, '.code')).includes('[1 2 3]'));
+  check('the koan to try says when an answer is wrong', /Not quite/.test(await choose('123')));
+  check('and when it is right', /Enlightenment/.test(await choose('6')) && (await text(page, '.code')).includes('(= 6 (+ 1 2 3))'));
 
   await page.click('a.tile[href="#/python/"]');
   await page.waitForSelector('.sections');
