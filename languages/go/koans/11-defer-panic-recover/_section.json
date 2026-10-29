@@ -1,0 +1,4 @@
+{
+  "title": "Defer, panic and recover",
+  "blurb": "Calls deferred to the end of a function, and stopping a panic."
+}

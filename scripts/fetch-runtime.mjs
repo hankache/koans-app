@@ -7,6 +7,9 @@
 //     to install for everyone), checked against the integrity hash the registry publishes
 //   • github-files: files committed to a GitHub repository, taken at a pinned commit (for
 //     interpreters that are published nowhere else), checked against the lock alone
+//   • go-toolchain: Go's compiler, linker and standard library, built for WebAssembly by the
+//     official Go release for this computer, downloaded from go.dev and checked against the
+//     checksum go.dev publishes; the files it builds are checked against the lock
 //
 //   npm run fetch-runtime                                 the pinned interpreters, verified
 //   npm run fetch-runtime -- --lang raku --update         move Raku to its latest release and re-pin it
@@ -15,10 +18,12 @@
 //                                                         (after npm install pyodide@<version>)
 //   npm run fetch-runtime -- --lang ruby --update [2.11.0]  move Ruby to the latest (or a given) version
 //   npm run fetch-runtime -- --lang ocaml --update [<sha>]  move OCaml to the latest (or a given) commit
+//   npm run fetch-runtime -- --lang go --update [go1.27.3]  move Go to the latest (or a given) release
 //
 // After --update, run `npm run check:koans` and `npm test` before publishing.
+import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { basename, dirname, join } from 'node:path';
 import { gunzipSync, inflateRawSync } from 'node:zlib';
@@ -148,8 +153,63 @@ function npmPackage({ package: pkg, files }) {
   return { tag: version, source: `https://www.npmjs.com/package/${pkg}/v/${version}`, pin: {}, files: found };
 }
 
+/**
+ * Go's own toolchain, built for WebAssembly (wasip1): the compiler (in parts, each under the
+ * host's 25 MB limit per file), the linker, and the standard library packages koans may import,
+ * with all they depend on, as compiled archives. go.json lists them for the worker. The official
+ * Go release for this computer builds them, downloaded once into node_modules/.cache.
+ */
+async function goToolchain({ packages, exclude = [] }, lock) {
+  const releases = JSON.parse((await download('https://go.dev/dl/?mode=json&include=all')).toString());
+  const tag = update ? (wantedTag ?? releases.find(r => r.stable).version) : lock.tag;
+  const release = releases.find(r => r.version === tag) ?? die(`go.dev has no release ${tag}`);
+  const os = { linux: 'linux', darwin: 'darwin' }[process.platform] ?? die(`no Go release for ${process.platform} here`);
+  const arch = { x64: 'amd64', arm64: 'arm64' }[process.arch] ?? die(`no Go release for ${process.arch} here`);
+  const file = release.files.find(f => f.os === os && f.arch === arch && f.kind === 'archive') ?? die(`${tag} has no ${os}-${arch} archive`);
+
+  const cache = join(dirname(createRequire(import.meta.url).resolve('../package.json')), 'node_modules/.cache/koans-go', tag);
+  const go = join(cache, 'go/bin/go');
+  if (!existsSync(go)) {
+    const tgz = await download(`https://go.dev/dl/${file.filename}`);
+    if (sha256(tgz) !== file.sha256) die(`${file.filename} does not match the checksum go.dev publishes`);
+    console.log(`✓ ${file.filename}  ${(tgz.length / 1e6).toFixed(1)} MB, checksum verified`);
+    mkdirSync(cache, { recursive: true });
+    writeFileSync(join(cache, file.filename), tgz);
+    execFileSync('tar', ['-xzf', file.filename], { cwd: cache });
+    rmSync(join(cache, file.filename));
+  }
+  const env = { ...process.env, GOOS: 'wasip1', GOARCH: 'wasm', GOCACHE: join(cache, 'build'), GOPATH: join(cache, 'path'),
+    GOFLAGS: '-trimpath', GOTOOLCHAIN: 'local', CGO_ENABLED: '0', GOENV: 'off', GOWORK: 'off' };
+  delete env.GOROOT;
+  const run = (...args) => execFileSync(go, args, { cwd: cache, env, maxBuffer: 1 << 26 }).toString();
+
+  const files = {};
+  run('build', '-ldflags=-s -w', '-o', 'compile.wasm', 'cmd/compile');
+  run('build', '-ldflags=-s -w', '-o', 'link.wasm', 'cmd/link');
+  const compiler = readFileSync(join(cache, 'compile.wasm'));
+  const part = 20e6;
+  const parts = [];
+  for (let i = 0; i * part < compiler.length; i++) {
+    parts.push(`compile.${i}.wasm`);
+    files[`compile.${i}.wasm`] = compiler.subarray(i * part, (i + 1) * part);
+  }
+  files['link.wasm'] = readFileSync(join(cache, 'link.wasm'));
+
+  const archives = {};
+  for (const line of run('list', '-export', '-deps', '-f', '{{if .Export}}{{.ImportPath}}\t{{.Export}}{{end}}', ...packages).trim().split('\n')) {
+    const [path, archive] = line.split('\t');
+    if (exclude.includes(path)) die(`${path} is replaced by the koans' own, but ${packages.join(', ')} depend on it`);
+    archives[path] = `pkg/${path}.a`;
+    files[archives[path]] = readFileSync(archive);
+  }
+  files['go.json'] = Buffer.from(JSON.stringify({ version: tag, compile: parts, link: 'link.wasm', packages: archives }, null, 1) + '\n');
+  const total = Object.values(files).reduce((n, b) => n + b.length, 0);
+  console.log(`✓ ${tag}: compiler, linker and ${Object.keys(archives).length} packages built for WebAssembly, ${(total / 1e6).toFixed(1)} MB`);
+  return { tag, source: `https://go.dev/dl/#${tag}`, pin: {}, files };
+}
+
 for (const lang of langs) {
-  const { kind = 'github-zip', files: FILES, out } = lang.runtime;
+  const { kind = 'github-zip', out } = lang.runtime;
   const lockPath = lang.dir + 'runtime.lock.json';
   const lock = existsSync(lockPath) ? JSON.parse(readFileSync(lockPath, 'utf8')) : null;
   if (!update && !lock) {
@@ -160,9 +220,21 @@ for (const lang of langs) {
     kind === 'npm' ? npmPackage(lang.runtime)
     : kind === 'npm-tarball' ? await npmTarball(lang.runtime, lock)
     : kind === 'github-files' ? await githubFiles(lang.runtime, lock)
+    : kind === 'go-toolchain' ? await goToolchain(lang.runtime, lock)
     : await githubZip(lang.runtime, lock);
   if (!update && got.tag !== lock.tag) {
     die(`${lang.id}: found ${got.tag} but ${lang.id}/runtime.lock.json pins ${lock.tag}. Re-run with --update to accept it.`);
+  }
+
+  // A built toolchain's files are whatever it built; a lock pins that list too.
+  const FILES = lang.runtime.files ?? Object.keys(got.files).sort();
+  if (!update && lang.runtime.files === undefined && FILES.join() !== Object.keys(lock.files).sort().join()) {
+    die(`${lang.id}: the files built differ from those in ${lang.id}/runtime.lock.json`);
+  }
+  if (kind === 'go-toolchain' && existsSync(out)) {
+    // What an earlier build left: packages and compiler parts this one may not have.
+    rmSync(out + 'pkg', { recursive: true, force: true });
+    for (const f of readdirSync(out)) if (/^compile\.\d+\.wasm$/.test(f)) rmSync(out + f);
   }
 
   const hashes = {};
@@ -173,7 +245,7 @@ for (const lang of langs) {
     // Flat: a package's dist/acorn.mjs is served as acorn.mjs. With `strip`, files under that
     // prefix keep their folders (webR's dist/vfs/etc/… is served as vfs/etc/…).
     const strip = lang.runtime.strip;
-    const target = out + (strip && file.startsWith(strip) ? file.slice(strip.length) : basename(file));
+    const target = out + (kind === 'go-toolchain' ? file : strip && file.startsWith(strip) ? file.slice(strip.length) : basename(file));
     mkdirSync(dirname(target), { recursive: true });
     writeFileSync(target, got.files[file]);
     console.log(`✓ ${file}  ${(got.files[file].length / 1e6).toFixed(1)} MB`);

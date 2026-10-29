@@ -917,6 +917,47 @@ THE SOFTWARE.
 
 and zlib, under the zlib License (see "Zlib" below).
 
+## Go
+
+The compiler the Go koans are compiled with: `public/runtime/go/compile.*.wasm` (Go's `cmd/compile`,
+in parts), `link.wasm` (`cmd/link`) and `pkg/**/*.a` (Go's standard library, compiled), built for
+WebAssembly by `npm run fetch-runtime` from the official Go release pinned in
+`languages/go/runtime.lock.json` (https://go.dev/dl/). Go's source is at https://go.dev/s/go-source
+(https://github.com/golang/go). Under the BSD 3-Clause License:
+
+```
+Copyright 2009 The Go Authors.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+   * Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above
+copyright notice, this list of conditions and the following disclaimer
+in the documentation and/or other materials provided with the
+distribution.
+   * Neither the name of Google LLC nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```
+
+The koans' `assert` and `require` (`public/runtime/go/support/`) are written for koans.app, after the
+API of testify (https://github.com/stretchr/testify); they contain none of its code.
+
 ## Pyodide and CPython
 
 The interpreter the Python koans run on: `public/runtime/python/` (`pyodide.mjs`,

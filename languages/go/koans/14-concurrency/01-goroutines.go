@@ -1,0 +1,33 @@
+// title: Goroutines
+// intro: `go f()` runs `f` concurrently, in a goroutine, and doesn't wait for it. A `sync.WaitGroup` waits for goroutines to finish, and a `sync.Mutex` lets only one at a time change shared data.
+package koans
+
+import (
+	"sync"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestGoroutines(t *testing.T) {
+	var wg sync.WaitGroup
+	squares := make([]int, 5)
+	for i := range 5 {
+		wg.Go(func() {
+			squares[i] = i * i
+		})
+	}
+	wg.Wait()
+	assert.Equal(t, ___, squares, "each goroutine fills its own item; Wait waits for them all")
+	var mu sync.Mutex
+	total := 0
+	for i := 1; i <= 100; i++ {
+		wg.Go(func() {
+			mu.Lock()
+			defer mu.Unlock()
+			total += i
+		})
+	}
+	wg.Wait()
+	assert.Equal(t, ___, total, "the Mutex lets one goroutine at a time change total")
+}

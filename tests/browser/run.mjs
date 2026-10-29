@@ -30,6 +30,7 @@ const koanIds = JSON.parse(readFileSync(join(root, 'src/generated/summary.json')
  */
 const LANGUAGES = [
   { id: 'clojure', error: '(is true "fine")\n(nope)', says: /Unable to resolve symbol/, loop: '(loop [] (recur))' },
+  { id: 'go', error: 'package koans\nvar x int = "two"', says: /cannot use "two"/, loop: 'package koans\n\nimport "testing"\n\nfunc TestLoop(t *testing.T) {\n\tfor {\n\t}\n}' },
   { id: 'javascript', error: "expect(true, 'fine').toBe(true);\nnope();", says: /ReferenceError/, loop: 'while (true) {}' },
   { id: 'lua', error: "assert(true, 'fine')\nnope()", says: /attempt to call a nil value/, loop: 'while true do end' },
   { id: 'ocaml', error: 'let () = check bool "fine" true true\nlet () = nope 1', says: /Unbound value nope/, loop: 'let () = while true do () done' },

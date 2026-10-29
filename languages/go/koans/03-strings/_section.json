@@ -1,0 +1,4 @@
+{
+  "title": "Strings",
+  "blurb": "Strings as bytes, the strings package, runes and UTF-8, and formatting with fmt."
+}

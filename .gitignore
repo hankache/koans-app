@@ -8,6 +8,9 @@ src/generated/
 # each language's worker.js is ours and committed
 public/runtime/*/*
 !public/runtime/*/worker.js
+# Go's in-memory WASI and the koans' own testing, assert and require are ours too
+!public/runtime/go/wasi.js
+!public/runtime/go/support/
 !public/runtime/r/webr/
 public/runtime/r/webr/*
 !public/runtime/r/webr/package.json

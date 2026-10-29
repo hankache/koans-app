@@ -98,6 +98,21 @@ ${readFileSync(new URL('./licenses/LibBF-MIT.txt', import.meta.url), 'utf8').tri
 
 and zlib, under the zlib License (see "Zlib" below).
 
+## Go
+
+The compiler the Go koans are compiled with: \`public/runtime/go/compile.*.wasm\` (Go's \`cmd/compile\`,
+in parts), \`link.wasm\` (\`cmd/link\`) and \`pkg/**/*.a\` (Go's standard library, compiled), built for
+WebAssembly by \`npm run fetch-runtime\` from the official Go release pinned in
+\`languages/go/runtime.lock.json\` (https://go.dev/dl/). Go's source is at https://go.dev/s/go-source
+(https://github.com/golang/go). Under the BSD 3-Clause License:
+
+\`\`\`
+${readFileSync(new URL('./licenses/Go-LICENSE.txt', import.meta.url), 'utf8').trim()}
+\`\`\`
+
+The koans' \`assert\` and \`require\` (\`public/runtime/go/support/\`) are written for koans.app, after the
+API of testify (https://github.com/stretchr/testify); they contain none of its code.
+
 ## Pyodide and CPython
 
 The interpreter the Python koans run on: \`public/runtime/python/\` (\`pyodide.mjs\`,

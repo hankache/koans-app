@@ -24,14 +24,14 @@
   </picture>
 </p>
 
-**1,035 koans in thirteen languages:** Clojure, JavaScript, Lua, OCaml, PHP, Prolog, Python, R, Raku,
-Ruby, Scheme, SQL and TypeScript.
+**1,108 koans in fourteen languages:** Clojure, Go, JavaScript, Lua, OCaml, PHP, Prolog, Python, R,
+Raku, Ruby, Scheme, SQL and TypeScript.
 
 A koan is a small program whose tests fail. Replace each `___` with the right answer until every
 test passes. Get one wrong, and the language shows you what it expected.
 
-- **Nothing to install, no account.** Each language's real interpreter runs in your browser,
-  compiled to WebAssembly. Your progress stays there too.
+- **Nothing to install, no account.** Each language's real interpreter (or, for Go, its real
+  compiler) runs in your browser, compiled to WebAssembly. Your progress stays there too.
 - **Test-driven from the start.** The koans use each language's own testing tools (pytest, RSpec,
   PHPUnit, testthat…), so you learn the language and how to test it at the same time.
 - **Works offline** once a language has been opened, and installs as an app on phones and desktops.
@@ -46,6 +46,7 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/). koans.app grew out
 | Language                            | Koans | Interpreter                                                  | Tests written with                      |
 |-------------------------------------|------:|--------------------------------------------------------------|-----------------------------------------|
 | [Clojure](languages/clojure/)       | 79    | [Scittle](https://github.com/babashka/scittle) (SCI)         | clojure.test's `is`                     |
+| [Go](languages/go/)                 | 73    | [Go's own compiler](https://go.dev) (Go 1.27), built for WebAssembly | testify's `assert`                      |
 | [JavaScript](languages/javascript/) | 89    | the browser's own engine                                     | Vitest's `expect`                       |
 | [Lua](languages/lua/)               | 73    | [wasmoon](https://github.com/ceifa/wasmoon) (Lua 5.4)        | busted's assertions                     |
 | [OCaml](languages/ocaml/)           | 75    | [ocaml.org's toplevel](https://ocaml.org/play) (OCaml 5.0)   | Alcotest's `check`                      |

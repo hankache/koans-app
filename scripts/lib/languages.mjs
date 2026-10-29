@@ -1,6 +1,7 @@
 // The languages the build tools know about. Each one is a folder in languages/ whose node.mjs
 // describes it; adding a language means adding it here.
 import clojure from '../../languages/clojure/node.mjs';
+import go from '../../languages/go/node.mjs';
 import javascript from '../../languages/javascript/node.mjs';
 import lua from '../../languages/lua/node.mjs';
 import ocaml from '../../languages/ocaml/node.mjs';
@@ -29,7 +30,7 @@ import typescript from '../../languages/typescript/node.mjs';
  * @property {() => string} prelude  run before every koan
  * @property {string} epilogue     run after every koan
  * @property {(code: string) => string[] | Promise<string[]>} lint  problems in a koan that running it can't reveal
- * @property {GithubZip | NpmPackage | NpmTarball | GithubFiles} runtime  where the interpreter comes from; its `files` go into `out`
+ * @property {GithubZip | NpmPackage | NpmTarball | GithubFiles | GoToolchain} runtime  where the interpreter comes from; its `files` go into `out`
  * @property {string[]} [onDemand]  files (or folders, ending in /) in public/runtime/<id>/ that the
  *   browser loads only when needed, if ever: left out of the size the loading bar counts to. Source
  *   maps, licenses and package.json files are left out anyway
@@ -49,10 +50,14 @@ import typescript from '../../languages/typescript/node.mjs';
  * @typedef {{ kind: 'github-files', repo: string, path: string, files: string[], out: string, strip?: string }} GithubFiles
  *   files committed to the GitHub repository `repo`, at a pinned commit; `path` is the folder
  *   whose latest change --update moves to. `files` as for NpmTarball
+ * @typedef {{ kind: 'go-toolchain', packages: string[], exclude?: string[], out: string, files?: undefined }} GoToolchain
+ *   Go's compiler, linker and the standard library `packages` (with their dependencies), built for
+ *   WebAssembly by an official Go release; none of them may depend on the packages in `exclude`.
+ *   The files are what it builds, kept in their folders
  */
 
 /** @type {Language[]} */
-export const languages = [clojure, javascript, lua, ocaml, php, prolog, python, r, raku, ruby, scheme, sql, typescript];
+export const languages = [clojure, go, javascript, lua, ocaml, php, prolog, python, r, raku, ruby, scheme, sql, typescript];
 
 /**
  * The languages named with --lang (repeat it, or separate names with commas), or else all of

@@ -9,7 +9,12 @@ import { runner } from './run';
 function program(id: string, t: Teaser, choice: string) {
   const code = `${t.context ? `${t.context}\n` : ''}${t.before}${choice}${t.after}\n`;
   // The teaser leaves out PHP's opening tag; the file needs it.
-  return id === 'php' ? `<?php\n${code}` : code;
+  if (id === 'php') return `<?php\n${code}`;
+  // And Go's package, imports and test function.
+  if (id === 'go') {
+    return `package koans\n\nimport (\n\t"testing"\n\n\t"github.com/stretchr/testify/assert"\n)\n\nfunc TestTeaser(t *testing.T) {\n${code}}\n`;
+  }
+  return code;
 }
 
 for (const pack of packs) {

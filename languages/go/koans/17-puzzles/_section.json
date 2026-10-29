@@ -1,0 +1,4 @@
+{
+  "title": "Puzzles",
+  "blurb": "Small programs to read and predict: loop variables, shadowing, shared slices, defers and method sets."
+}

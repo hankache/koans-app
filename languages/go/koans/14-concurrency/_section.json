@@ -1,0 +1,4 @@
+{
+  "title": "Goroutines and channels",
+  "blurb": "Running functions concurrently, and passing values between them."
+}

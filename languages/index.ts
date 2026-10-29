@@ -3,6 +3,7 @@
 // scripts/lib/languages.mjs).
 import type { LanguagePack } from '../src/lib/language';
 import clojure from './clojure/pack';
+import go from './go/pack';
 import javascript from './javascript/pack';
 import lua from './lua/pack';
 import ocaml from './ocaml/pack';
@@ -16,7 +17,7 @@ import scheme from './scheme/pack';
 import sql from './sql/pack';
 import typescript from './typescript/pack';
 
-export const packs: LanguagePack[] = [clojure, javascript, lua, ocaml, php, prolog, python, r, raku, ruby, scheme, sql, typescript];
+export const packs: LanguagePack[] = [clojure, go, javascript, lua, ocaml, php, prolog, python, r, raku, ruby, scheme, sql, typescript];
 
 export const packById = new Map(packs.map(p => [p.id, p]));
 
