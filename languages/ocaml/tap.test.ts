@@ -17,7 +17,7 @@ describe('parseRun on real OCaml output', () => {
       if (r.status !== 'failed') throw new Error(`${line}: expected a failure, got ${r.status}`);
       expect(r.failure).toMatchObject({ n: 2, description: 'b', line: 2, blank: true });
     }
-  });
+  }, 30_000); // four fresh toplevels: past the default 5 s when the whole suite runs at once
 
   test('a wrong answer shows the answer against what OCaml computed', async () => {
     const r = await report('let () = check (list (pair int string)) "pairs" [(1, "x")] [(1, "y")]\n');
