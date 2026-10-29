@@ -1,4 +1,4 @@
 {
   "title": "Grouping",
-  "blurb": "Aggregate functions, GROUP BY, HAVING, DISTINCT and group_concat."
+  "blurb": "Aggregate functions, `GROUP BY`, `HAVING`, `DISTINCT` and `group_concat`."
 }

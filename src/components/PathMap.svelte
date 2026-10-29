@@ -70,7 +70,7 @@
         <span class="num">{String(si + 1).padStart(2, '0')}</span>
         <div>
           <h2>{section.title}</h2>
-          <p>{section.blurb}</p>
+          <p>{#each inlineCode(section.blurb) as part}{#if part.code}<code>{part.text}</code>{:else}{part.text}{/if}{/each}</p>
         </div>
         <span class="count">{done}/{section.koans.length}</span>
       </header>

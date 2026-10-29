@@ -1,4 +1,4 @@
 {
   "title": "Control flow",
-  "blurb": "Choosing and repeating: if, switch, the loops, break and continue, and the operators that short-circuit."
+  "blurb": "Choosing and repeating: `if`, `switch`, the loops, `break` and `continue`, and the operators that short-circuit."
 }

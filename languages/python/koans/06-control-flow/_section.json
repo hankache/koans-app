@@ -1,4 +1,4 @@
 {
   "title": "Control flow",
-  "blurb": "Choosing and repeating: if, for, while, match, and the walrus."
+  "blurb": "Choosing and repeating: `if`, `for`, `while`, `match`, and the walrus, `:=`."
 }

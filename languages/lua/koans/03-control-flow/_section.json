@@ -1,4 +1,4 @@
 {
   "title": "Control flow",
-  "blurb": "Choosing and repeating: if, the numeric and generic for, while and repeat, break and goto."
+  "blurb": "Choosing and repeating: `if`, the numeric and generic `for`, `while` and `repeat`, `break` and `goto`."
 }

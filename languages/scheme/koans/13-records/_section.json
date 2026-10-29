@@ -1,4 +1,4 @@
 {
   "title": "Records",
-  "blurb": "Defining your own types with define-record-type."
+  "blurb": "Defining your own types with `define-record-type`."
 }

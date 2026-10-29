@@ -1,4 +1,4 @@
 {
   "title": "Control flow",
-  "blurb": "Choosing what to do: if, when, cond, case, and naming values with let."
+  "blurb": "Choosing what to do: `if`, `when`, `cond`, `case`, and naming values with `let`."
 }

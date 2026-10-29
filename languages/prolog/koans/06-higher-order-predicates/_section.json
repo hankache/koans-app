@@ -1,4 +1,4 @@
 {
   "title": "Higher-order predicates",
-  "blurb": "Passing goals around: call, maplist, foldl and lambdas."
+  "blurb": "Passing goals around: `call`, `maplist`, `foldl` and lambdas."
 }

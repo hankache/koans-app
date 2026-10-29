@@ -145,7 +145,7 @@ async function checkSite(browser, base) {
 
   // The home page, and loading each language only when it's opened
   await page.goto(`${base}#/`, { waitUntil: 'networkidle0' });
-  const names = await page.$$eval('.tile .name', ns => ns.map(n => n.textContent));
+  const names = await page.$$eval('.tile:not(.suggest) .name', ns => ns.map(n => n.textContent));
   check('the home page lists every language', names.length === LANGUAGES.length, names.join(', '));
   check('the home page loads no language', seen.loaded.length === 0, seen.loaded.join(' '));
   check('a first visit shows no "continue"', !(await page.$('.resume')));
@@ -261,7 +261,7 @@ async function checkImport(browser, base, exported, dir) {
   await (await page.$('input[type=file]')).uploadFile(path);
   await page.waitForSelector('.note');
   await page.waitForSelector('.tile .progress');
-  const after = await page.$$eval('.tile', ts => ts.map(t => t.textContent.replace(/\s+/g, ' ').trim()));
+  const after = await page.$$eval('.tile:not(.suggest)', ts => ts.map(t => t.textContent.replace(/\s+/g, ' ').trim()));
   check('import in a fresh browser brings the progress back', after.length === LANGUAGES.length && after.every(t => /\b1\/\d+/.test(t)), await text(page, '.note'));
 
   await (await page.$('input[type=file]')).uploadFile(path);

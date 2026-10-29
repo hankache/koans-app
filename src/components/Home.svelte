@@ -280,6 +280,22 @@
           </a>
         </li>
       {/each}
+      <!-- The next path: an invitation to suggest a language, or write its koans. -->
+      <li>
+        <a class="tile suggest" href="{site.repo}/issues/new?template=suggest-a-language.yml" target="_blank" rel="noopener">
+          <span class="tile-top">
+            <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg></span>
+            <span class="tile-name">
+              <span class="name">Your language?</span>
+              <span class="tag">Suggest the next path</span>
+            </span>
+          </span>
+          <span class="journey">Tell us which language you'd like koans for, or help write them.</span>
+          <span class="fill"></span>
+          <span class="status">Suggest one ↗</span>
+          <svg class="chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>
+        </a>
+      </li>
     </ul>
   </section>
 
@@ -313,8 +329,7 @@
       </ol>
     </div>
     <figure class="demo" aria-label="A koan going from red to green">
-      <pre class="demo-code"><span class="kw">assert</span> 1 + 1 == <span class="blank" class:typing={step === 1} class:filled={step === 2}>{step === 0 ? '___' : '2'}</span>, <span class="str">'one and one'</span>
-<span class="kw">assert</span> <span class="str">'Py'</span> + <span class="str">'thon'</span> == <span class="str">'Python'</span>, <span class="str">'strings join'</span></pre>
+      <pre class="demo-code"><span class="line"><span class="kw">assert</span> 1 + 1 == <span class="blank" class:typing={step === 1} class:filled={step === 2}>{step === 0 ? '___' : '2'}</span>, <span class="str">'one and one'</span></span><span class="line"><span class="kw">assert</span> <span class="str">'Py'</span> + <span class="str">'thon'</span> == <span class="str">'Python'</span>, <span class="str">'strings join'</span></span></pre>
       <figcaption class="demo-result" class:red={step === 0} class:green={step === 2} role="presentation">
         {#if step === 0}✗ A test fails: meditate on line 1{:else if step === 1}Running…{:else}✓ Enlightenment! Both tests pass.{/if}
       </figcaption>
@@ -489,6 +504,10 @@
   }
   .tile:hover { transform: translateY(-2px); border-color: var(--ink-faint); border-top-color: var(--accent); }
   .tile.dim { opacity: 0.32; }
+  .tile.suggest { background: transparent; border: 1px dashed var(--ink-faint); }
+  .tile.suggest:hover { border-color: var(--ink-soft); }
+  .tile.suggest .mark svg { width: 26px; height: 26px; fill: none; stroke: var(--ink-soft); stroke-width: 2; stroke-linecap: round; }
+  .tile.suggest .status { color: var(--ink-soft); }
   .tile-top { display: flex; align-items: center; gap: 14px; }
   .tile-name { display: flex; flex-direction: column; min-width: 0; }
   .tile .mark { width: 56px; height: 56px; }
@@ -550,6 +569,10 @@
   .demo { margin: 0; background: var(--bg-raised); border: 1px solid var(--line); box-shadow: var(--shadow); min-width: 0; }
   /* Wraps rather than scroll sideways on a phone: a scrolling box would need its own keyboard stop. */
   .demo-code { margin: 0; padding: 20px; font: 15px/1.8 var(--font-mono); font-variant-ligatures: none; white-space: pre-wrap; }
+  /* On a narrow screen a line wraps between tokens, never inside a string, and its
+     continuation is indented, as an editor shows it. */
+  .demo-code .line { display: block; padding-left: 2ch; text-indent: -2ch; }
+  .demo-code .str, .demo-code .blank { white-space: nowrap; }
   .demo-code .blank { padding: 1px 6px; background: color-mix(in srgb, var(--home-accent) 14%, transparent); transition: background 0.3s; }
   .demo-code .blank.typing { color: var(--ink); outline: 2px solid var(--home-accent); }
   .demo-code .blank.filled { background: var(--pass-bg); color: var(--pass); }

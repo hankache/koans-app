@@ -3,7 +3,7 @@
   import { EditorView, keymap, lineNumbers, highlightActiveLine, Decoration, WidgetType, GutterMarker, gutter, type DecorationSet } from '@codemirror/view';
   import { Compartment, EditorState, RangeSet, StateEffect, StateField, type Extension } from '@codemirror/state';
   import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
-  import { HighlightStyle, syntaxHighlighting, bracketMatching } from '@codemirror/language';
+  import { HighlightStyle, syntaxHighlighting, bracketMatching, codeFolding, foldEffect, unfoldEffect, foldedRanges } from '@codemirror/language';
   import type { Reveal } from '../lib/koans';
   import { tags as t } from '@lezer/highlight';
 
@@ -141,6 +141,32 @@
     initialSpacer: () => new CheckMark(true),
   });
 
+  // A block of imports, `import (` to `)` (Go's), starts folded, so the koan opens on its tests.
+  // Clicking the fold opens it; so does a run that flags a line inside it.
+  function importFolds(state: EditorState) {
+    const folds: { from: number; to: number }[] = [];
+    for (let n = 1; n <= state.doc.lines; n++) {
+      if (!/^import \($/.test(state.doc.line(n).text)) continue;
+      for (let m = n + 1; m <= state.doc.lines; m++) {
+        if (state.doc.line(m).text === ')') {
+          if (m > n + 1) folds.push({ from: state.doc.line(n).to, to: state.doc.line(m).from });
+          break;
+        }
+      }
+    }
+    return folds.map(f => foldEffect.of(f));
+  }
+  /** Unfolds whatever hides a line (1-based). */
+  function unfoldAt(state: EditorState, lineNumber: number) {
+    if (lineNumber > state.doc.lines) return [];
+    const pos = state.doc.line(lineNumber).from;
+    const effects: StateEffect<{ from: number; to: number }>[] = [];
+    foldedRanges(state).between(pos, pos, (from, to) => {
+      if (from <= pos && pos <= to) effects.push(unfoldEffect.of({ from, to }));
+    });
+    return effects;
+  }
+
   // Long lines wrap on wide screens; on a phone they scroll sideways, so code keeps its shape.
   const wrapping = new Compartment();
   const narrow = matchMedia('(max-width: 640px)');
@@ -163,6 +189,7 @@
   export function focusLine(lineNumber?: number) {
     if (!view) return;
     if (lineNumber && lineNumber <= view.state.doc.lines) {
+      view.dispatch({ effects: unfoldAt(view.state, lineNumber) });
       view.dispatch({ selection: { anchor: view.state.doc.line(lineNumber).from }, scrollIntoView: true });
     }
     view.focus();
@@ -180,6 +207,7 @@
           history(),
           highlightActiveLine(),
           bracketMatching(),
+          codeFolding({ placeholderText: '…' }),
           language,
           syntaxHighlighting(highlight),
           spotField,
@@ -216,6 +244,7 @@
         ],
       }),
     });
+    view.dispatch({ effects: importFolds(view.state) });
     const rewrap = (e: MediaQueryListEvent) => view.dispatch({ effects: wrapping.reconfigure(wrapFor(e.matches)) });
     narrow.addEventListener('change', rewrap);
     return () => {
@@ -228,12 +257,14 @@
   $effect(() => {
     if (view && value !== view.state.doc.toString()) {
       view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: value } });
+      view.dispatch({ effects: importFolds(view.state) });
     }
   });
 
   $effect(() => {
     void markRun; // redraw after every run, even for the same line
-    view?.dispatch({ effects: [setMark.of({ line: markLine, kind: markKind }), setChecks.of(checks)] });
+    if (!view) return;
+    view.dispatch({ effects: [setMark.of({ line: markLine, kind: markKind }), setChecks.of(checks), ...(markLine ? unfoldAt(view.state, markLine) : [])] });
   });
 </script>
 
@@ -266,6 +297,14 @@
     color: var(--syn-blank);
     background: color-mix(in srgb, var(--blank-tint) var(--tint-blank), transparent);
     font-weight: 600;
+  }
+  .editor :global(.cm-foldPlaceholder) {
+    margin: 0 0.15em;
+    padding: 0 0.45em;
+    background: color-mix(in srgb, var(--ink) 8%, transparent);
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    cursor: pointer;
   }
   .editor :global(.cm-checks) { min-width: 1.4em; text-align: center; font-family: var(--font-body); font-weight: 700; font-size: 0.85em; }
   .editor :global(.cm-check-ok) { color: var(--pass); }

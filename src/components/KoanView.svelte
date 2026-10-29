@@ -238,7 +238,7 @@
   const summary = $derived.by(() => {
     if (loading) return loading.detail ? `${loading.text} ${loading.detail}` : loading.text;
     if (running) return 'Meditating…';
-    if (!report) return runtimeError ?? (sharing === 'yes' ? 'Read it, then Run' : 'Replace each ___, then Run');
+    if (!report) return runtimeError ?? (sharing === 'yes' ? 'Read it, then Run' : 'Fill in each ___');
     if (report.status === 'passed') return '✓ Enlightenment!';
     if (report.status === 'error') return `✗ Error${report.line ? ` on line ${report.line}` : ''}`;
     const f = report.failure;

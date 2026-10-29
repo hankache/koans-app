@@ -1,4 +1,4 @@
 {
   "title": "Continuations",
-  "blurb": "call/cc: the rest of the computation, as a procedure."
+  "blurb": "`call/cc`: the rest of the computation, as a procedure."
 }
