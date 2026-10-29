@@ -92,11 +92,23 @@
   async function exportProgress() {
     await Promise.all(languages.map(l => l.progress.ready()));
     const file = makeExport(Object.fromEntries(languages.map(l => [l.pack.id, l.progress.snapshot()])));
-    const url = URL.createObjectURL(new Blob([JSON.stringify(file, null, 2) + '\n'], { type: 'application/json' }));
+    const blob = new Blob([JSON.stringify(file, null, 2) + '\n'], { type: 'application/json' });
     const name = exportName();
+    const saved = Object.values(file.languages).reduce((n, map) => n + Object.keys(map).length, 0);
+    // On a phone, the share sheet: AirDrop, email, Drive or Files, in one tap.
+    const shared = new File([blob], name, { type: 'application/json' });
+    if (matchMedia('(pointer: coarse)').matches && navigator.canShare?.({ files: [shared] })) {
+      try {
+        await navigator.share({ files: [shared], title: 'koans.app progress' });
+        note = { text: `Shared ${koans(saved)} as ${name}.` };
+        return;
+      } catch (e) {
+        if ((e as Error).name === 'AbortError') return; // the learner closed the share sheet
+      }
+    }
+    const url = URL.createObjectURL(blob);
     Object.assign(document.createElement('a'), { href: url, download: name }).click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-    const saved = Object.values(file.languages).reduce((n, map) => n + Object.keys(map).length, 0);
     note = { text: `Saved ${koans(saved)} to ${name}.` };
   }
 
