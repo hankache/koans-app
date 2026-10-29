@@ -51,7 +51,8 @@
   });
 
   // "Try one": a one-blank koan, answered by tapping, in any language, with another on request.
-  let tryId = $state('javascript');
+  // It opens on the first language's first teaser, as the tabs list them.
+  let tryId = $state(packs[0].id);
   let tryIndex = $state(0);
   let picked = $state<string | null>(null);
   const tryPack = $derived(packs.find(p => p.id === tryId) ?? packs[0]);
@@ -164,7 +165,7 @@
       </ul>
       <div class="pick">
         <span class="small">Pick a path</span>
-        <ul class="emblems">
+        <ul class="emblems" style:--columns={Math.ceil(languages.length / 2)}>
           {#each languages as l (l.pack.id)}
             <li>
               <a href={href(l.pack.id)} title={l.pack.name} aria-label={l.pack.name}
@@ -197,7 +198,7 @@
       <div class="try-body">
         <p class="hint">Which answer makes the test pass?</p>
         <pre class="code">{#if teaser.context}<span class="context">{teaser.context}</span>
-{/if}{teaser.before}<span class="blank" class:filled={right}>{right ? teaser.answer : '___'}</span>{teaser.after}</pre>
+{/if}<span class="piece">{teaser.before.trimEnd()}</span>{teaser.before.match(/\s*$/)?.[0]}<wbr><span class="blank" class:filled={right}>{right ? teaser.answer : '___'}</span><wbr>{teaser.after.match(/^\s*/)?.[0]}<span class="piece">{teaser.after.trimStart()}</span></pre>
         <div class="choices">
           {#each teaser.choices as choice (choice)}
             <button
@@ -377,16 +378,18 @@
   .facts { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
   .facts li { padding: 5px 11px; border: 1px solid var(--line); background: var(--bg-raised); font-size: 14px; font-weight: 500; white-space: nowrap; }
   .pick { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
-  .emblems { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  /* Two even rows, however many languages there are; on a narrow screen the squares shrink. */
+  .emblems { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--columns), minmax(0, 52px)); gap: 6px; }
   .emblems a {
-    width: 52px;
-    height: 52px;
+    width: 100%;
+    aspect-ratio: 1;
     display: grid;
     place-items: center;
     background: color-mix(in srgb, var(--accent) 11%, transparent);
     transition: transform 0.15s;
   }
   .emblems a:hover { transform: translateY(-2px); }
+  .emblems a :global(svg) { width: 77%; height: auto; }
 
   .try { background: var(--bg-raised); border: 1px solid var(--line); box-shadow: var(--shadow); min-width: 0; }
   .try-head { padding: 14px 16px 12px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
@@ -413,11 +416,14 @@
     border: 1px solid var(--line);
     font: 15px/1.7 var(--font-mono);
     font-variant-ligatures: none; /* the font shorthand resets it */
-    overflow-x: auto;
-    white-space: pre;
+    /* A line too long for the panel wraps rather than scrolling, but only beside the blank: the
+       code before it, the blank and the code after it each stay in one piece. */
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
   }
+  .code .piece { white-space: pre; }
   .context { color: var(--ink-soft); }
-  .code .blank { padding: 1px 6px; background: color-mix(in srgb, var(--home-accent) 14%, transparent); }
+  .code .blank { white-space: nowrap; padding: 1px 6px; background: color-mix(in srgb, var(--home-accent) 14%, transparent); }
   .code .blank.filled { background: var(--pass-bg); color: var(--pass); }
   .choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
   .choice { min-height: 52px; padding: 0 8px; font: 600 15px var(--font-mono); font-variant-ligatures: none; overflow-wrap: anywhere; }
@@ -614,5 +620,9 @@
     .chevron { display: block; flex: none; width: 20px; height: 20px; }
     .how { margin-top: 48px; padding: 36px 0; }
     .steps li { padding: 12px; }
+  }
+  /* The smallest phones: a size smaller, so the longest piece of a koan to try still fits. */
+  @media (max-width: 359px) {
+    .code { font-size: 13px; }
   }
 </style>

@@ -151,14 +151,15 @@ async function checkSite(browser, base) {
   check('a first visit shows no "continue"', !(await page.$('.resume')));
   check('a first visit opens in the dark theme', (await page.evaluate(() => document.documentElement.dataset.theme)) === 'dark');
 
-  // Its koan to try: a wrong answer, then the right one (JavaScript's, shown first).
+  // Its koan to try: a wrong answer, then the right one (Clojure's first, as the first language).
   const choose = async answer => {
     const buttons = await page.$$('.choice');
     for (const b of buttons) if ((await b.evaluate(e => e.textContent)) === answer) await b.click();
     return text(page, '.feedback');
   };
-  check('the koan to try says when an answer is wrong', /Not quite/.test(await choose('7')));
-  check('and when it is right', /Enlightenment/.test(await choose("'52'")) && (await text(page, '.code')).includes("'52'"));
+  check('the koan to try opens on the first language', (await text(page, '.try-head')).includes('Clojure'));
+  check('the koan to try says when an answer is wrong', /Not quite/.test(await choose('[3 1 2]')));
+  check('and when it is right', /Enlightenment/.test(await choose('[1 2 3]')) && (await text(page, '.code')).includes('[1 2 3]'));
 
   await page.click('a.tile[href="#/python/"]');
   await page.waitForSelector('.sections');
