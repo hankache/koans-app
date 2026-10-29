@@ -99,6 +99,9 @@
   {/if}
 </main>
 
+<!-- Not while a language opens: drawn under a nearly empty page, the footer would then be pushed
+     down, a layout shift. It appears below the content instead. -->
+{#if !(lang && !shown && !loadError)}
 <footer>
   © 2026 Naoum Hankache ·
   Code: <a href="https://opensource.org/license/artistic-2-0">Artistic License 2.0</a> ·
@@ -112,6 +115,7 @@
     {/if}
   </span>
 </footer>
+{/if}
 
 <style>
   .bar {

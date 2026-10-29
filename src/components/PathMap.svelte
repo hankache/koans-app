@@ -212,10 +212,21 @@
   .stone:hover { transform: scale(1.1); }
   .stone.attempted { border-color: var(--wing); color: var(--ink); }
   .stone.passed { background: var(--wing); border-color: var(--wing); color: var(--bg); }
-  .stone.next { border-color: var(--wing); color: var(--ink); animation: breathe 2.4s ease-in-out infinite; }
+  .stone.next { position: relative; border-color: var(--wing); color: var(--ink); }
+  /* The next koan breathes: a ring that grows and fades. Only transform and opacity change, which
+     the browser animates off the main thread, so it costs nothing while an interpreter starts. */
+  .stone.next::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    border: 2px solid var(--wing);
+    pointer-events: none;
+    animation: breathe 2.4s ease-in-out infinite;
+  }
   @keyframes breathe {
-    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--wing) 45%, transparent); }
-    50% { box-shadow: 0 0 0 9px color-mix(in srgb, var(--wing) 0%, transparent); }
+    0%, 100% { transform: scale(1); opacity: 0.45; }
+    50% { transform: scale(1.4); opacity: 0; }
   }
   .title { margin-top: 0.45rem; font-size: 0.82rem; color: var(--ink-soft); line-height: 1.3; padding: 0 0.3rem; }
 
