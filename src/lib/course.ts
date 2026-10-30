@@ -1,6 +1,7 @@
 // An opened language: its koans, its learner's progress, and its interpreter. Opening one loads
 // its content (koans and editor mode) and saved progress; the interpreter starts downloading
-// when the course first asks for it.
+// when the course first asks for it. Only one interpreter runs at a time: asking for a language's
+// stops the one before, so a tab that visits several languages doesn't hold them all in memory.
 import type { Extension } from '@codemirror/state';
 import type { Koan, Section } from './koans';
 import type { LanguageContent, LanguagePack } from './language';
@@ -46,9 +47,19 @@ export class Course {
 
   /** Created lazily, but call early (e.g. when the path opens) to start downloading the interpreter. */
   getRuntime(): WasmRuntime {
+    if (active !== this) {
+      active?.stopRuntime();
+      active = this;
+    }
     const { url, type } = this.pack.worker;
     // On a first visit, after the service worker takes over, so the interpreter is saved for offline use.
     return (this.runtime ??= new WasmRuntime(`${import.meta.env.BASE_URL}${url}`, type, whenControlled()));
+  }
+
+  /** Frees the interpreter; the next getRuntime starts a new one. */
+  stopRuntime() {
+    this.runtime?.stop();
+    this.runtime = undefined;
   }
 
   async runKoan(code: string): Promise<Report> {
@@ -59,6 +70,8 @@ export class Course {
 }
 
 const courses = new Map<string, Promise<Course>>();
+/** The course whose interpreter is running, if any. */
+let active: Course | null = null;
 
 /** Opens a language, once per page: later calls get the same course. */
 export function openCourse(pack: LanguagePack): Promise<Course> {
