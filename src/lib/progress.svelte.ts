@@ -1,5 +1,6 @@
 // Learner progress, kept in this browser's IndexedDB and shared by the site's open tabs.
 import { get, set, update } from 'idb-keyval';
+import { keepForGood } from './storage';
 
 export interface KoanProgress {
   status: 'attempted' | 'passed';
@@ -48,8 +49,6 @@ export class Progress {
         if (!map[id] || map[id].updatedAt < entry.updatedAt) map[id] = entry;
       }
       this.map = map;
-      // Ask the browser not to evict our data under storage pressure.
-      void navigator.storage?.persist?.();
     } catch {
       // Private mode or blocked storage: keep going in memory.
     }
@@ -72,6 +71,8 @@ export class Progress {
     });
     this.map[id] = next(this.map[id]);
     void this.save(id, next);
+    // Something worth keeping now: ask the browser not to clear it (once per visit).
+    if (passed) void keepForGood();
   }
 
   /** Restores a koan's starting code. Its status stays until the next run re-evaluates it. */

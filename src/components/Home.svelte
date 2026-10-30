@@ -10,6 +10,7 @@
   import { href } from '../lib/route';
   import { exportName, makeExport, readImport } from '../lib/transfer';
   import { site } from '../site';
+  import { isKept } from '../lib/storage';
   import Emblem from './Emblem.svelte';
   import { inlineCode } from '../lib/inline-code';
   import type { Kind } from '../lib/language';
@@ -87,6 +88,11 @@
 
   // Export and import, out of the way until asked for.
   let keeping = $state(false);
+  // Whether the browser keeps progress for good: when it says no, the page suggests an export.
+  let kept = $state<boolean | null>(null);
+  onMount(() => {
+    void isKept().then(k => (kept = k));
+  });
   let note = $state<{ text: string; error?: boolean } | null>(null);
   let fileInput = $state<HTMLInputElement>();
 
@@ -221,6 +227,7 @@
   </section>
 
   {#if resume}
+    <div class="resume-block">
     <a class="resume" href={href(resume.l.pack.id, resume.koan.id)}>
       <span class="mark" style:--accent-light={resume.l.pack.look.accent.light} style:--accent-dark={resume.l.pack.look.accent.dark}>
         <Emblem pack={resume.l.pack} size={40} />
@@ -237,6 +244,14 @@
       </span>
       <span class="go" aria-hidden="true">→</span>
     </a>
+    {#if kept === false}
+      <p class="keep-warning">
+        This browser may clear your progress when it runs low on space.
+        <button class="link" onclick={exportProgress}>Export a copy</button>
+      </p>
+      {#if note && !keeping}<p class="note" class:error={note.error} role="status">{note.text}</p>{/if}
+    {/if}
+    </div>
   {/if}
 
   <section id="languages" class="paths">
@@ -351,7 +366,8 @@
     {#if keeping}
       <div class="keep-panel">
         <p>
-          Progress is saved in this browser only. Export it to keep a copy, or to carry it to another
+          Progress is saved in this browser only{#if kept === true}, which has agreed to keep it{:else if kept === false},
+          which may clear it when it runs low on space{/if}. Export it to keep a copy, or to carry it to another
           browser. Importing keeps whichever is newer for each koan, so it never undoes your work.
         </p>
         <div class="buttons">
@@ -451,9 +467,8 @@
   .another { flex: none; min-height: 40px; padding: 0 12px; background: transparent; font-weight: 500; }
 
   /* Continue */
+  .resume-block { order: 2; margin-top: 48px; }
   .resume {
-    order: 2;
-    margin-top: 48px;
     display: flex;
     align-items: center;
     gap: 16px;
@@ -464,6 +479,9 @@
     text-decoration: none;
   }
   .resume:hover { border-color: var(--ink-faint); }
+  .keep-warning { margin: 10px 0 0; font-size: 14px; color: var(--ink-soft); }
+  .keep-warning .link { padding: 0; min-height: 0; border: 0; background: none; color: var(--ink); font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; }
+  .resume-block .note { margin: 6px 0 0; font-size: 14px; color: var(--ink-soft); }
   .resume-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
   .resume-title { font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.2; }
   .go { flex: none; font-size: 24px; font-weight: 600; }
@@ -613,7 +631,8 @@
   @media (max-width: 640px) {
     .home { padding-top: 16px; }
     /* On a phone, a returning learner sees where to continue first. */
-    .resume { order: 0; margin: 0 0 24px; padding: 14px; gap: 12px; }
+    .resume-block { order: 0; margin: 0 0 24px; }
+    .resume { padding: 14px; gap: 12px; }
     .resume .bar { flex: 1 1 auto; }
     .resume-title { font-size: 18px; }
     .hero { padding-top: 8px; }
