@@ -30,10 +30,10 @@ Raku, Ruby, Scheme, SQL and TypeScript.
 A koan is a small program whose tests fail. Replace each `___` with the right answer until every
 test passes. Get one wrong, and the language shows you what it expected.
 
-- **Nothing to install, no account.** Each language's real interpreter (or, for Go, its real
-  compiler) runs in your browser, compiled to WebAssembly. Your progress stays there too.
+- **Nothing to install, no account.** Each language's real interpreter runs in your browser,
+  compiled to WebAssembly. Your progress stays there too.
 - **Test-driven from the start.** The koans use each language's own testing tools (pytest, RSpec,
-  PHPUnit, testthat…), so you learn the language and how to test it at the same time.
+  PHPUnit, testthat, etc.), so you learn the language and how to test it at the same time.
 - **Works offline** once a language has been opened, and installs as an app on phones and desktops.
 - **Help when you're stuck.** Reveal any blank's answer, or share a link to your attempt.
 - **Free and open source.** The code is under the Artistic License 2.0, the koans under CC BY-SA 4.0.
@@ -43,22 +43,22 @@ The idea comes from [Ruby Koans](https://www.rubykoans.com/). koans.app grew out
 
 ## Languages
 
-| Language                            | Koans | Interpreter                                                  | Tests written with                      |
-|-------------------------------------|------:|--------------------------------------------------------------|-----------------------------------------|
-| [Clojure](languages/clojure/)       | 79    | [Scittle](https://github.com/babashka/scittle) (SCI)         | clojure.test's `is`                     |
-| [Go](languages/go/)                 | 73    | [Go's own compiler](https://go.dev) (Go 1.27), built for WebAssembly | testify's `assert`                      |
-| [JavaScript](languages/javascript/) | 89    | the browser's own engine                                     | Vitest's `expect`                       |
-| [Lua](languages/lua/)               | 73    | [wasmoon](https://github.com/ceifa/wasmoon) (Lua 5.4)        | busted's assertions                     |
-| [OCaml](languages/ocaml/)           | 75    | [ocaml.org's toplevel](https://ocaml.org/play) (OCaml 5.0)   | Alcotest's `check`                      |
-| [PHP](languages/php/)               | 79    | [php-wasm](https://github.com/seanmorris/php-wasm) (PHP 8.5) | PHPUnit's assertions                    |
-| [Prolog](languages/prolog/)         | 70    | [SWI-Prolog](https://www.swi-prolog.org) (SWI-Prolog 10.1)   | plunit's `test/2`                       |
-| [Python](languages/python/)         | 86    | [Pyodide](https://pyodide.org) (CPython 3.14)                | pytest's plain `assert`                 |
-| [R](languages/r/)                   | 78    | [webR](https://docs.r-wasm.org/webr/latest/) (R 4.6)         | testthat's expectations                 |
-| [Raku](languages/raku/)             | 105   | [Raku++](https://github.com/ash/rakupp) (Raku.js)            | Raku's `Test` module                    |
-| [Ruby](languages/ruby/)             | 90    | [ruby.wasm](https://github.com/ruby/ruby.wasm) (CRuby 4.0)   | RSpec's `expect`                        |
-| [Scheme](languages/scheme/)         | 74    | [Stak](https://github.com/raviqqe/stak) (R7RS)               | SRFI 64's tests                         |
-| [SQL](languages/sql/)               | 72    | [sql.js](https://github.com/sql-js/sql.js) (SQLite 3.49)     | expected rows, in `-- expect:` comments |
-| [TypeScript](languages/typescript/) | 65    | [TypeScript compiler](https://github.com/microsoft/TypeScript) (TypeScript 6), then the browser's engine | Vitest's `expect` and `expectTypeOf`    |
+| Language                            | Koans | Interpreter                                                                   | Tests written with                      |
+|-------------------------------------|------:|-------------------------------------------------------------------------------|-----------------------------------------|
+| [Clojure](languages/clojure/)       | 79    | [Scittle](https://github.com/babashka/scittle) (SCI)                          | clojure.test's `is`                     |
+| [Go](languages/go/)                 | 73    | [Go compiler](https://go.dev) (Go 1.27)                                       | testify's `assert`                      |
+| [JavaScript](languages/javascript/) | 89    | Browser JavaScript engine                                                     | Vitest's `expect`                       |
+| [Lua](languages/lua/)               | 73    | [wasmoon](https://github.com/ceifa/wasmoon) (Lua 5.4)                         | busted's assertions                     |
+| [OCaml](languages/ocaml/)           | 75    | [ocaml.org's toplevel](https://ocaml.org/play) (OCaml 5.0)                    | Alcotest's `check`                      |
+| [PHP](languages/php/)               | 79    | [php-wasm](https://github.com/seanmorris/php-wasm) (PHP 8.5)                  | PHPUnit's assertions                    |
+| [Prolog](languages/prolog/)         | 70    | [SWI-Prolog](https://www.swi-prolog.org) (SWI-Prolog 10.1)                    | plunit's `test/2`                       |
+| [Python](languages/python/)         | 86    | [Pyodide](https://pyodide.org) (CPython 3.14)                                 | pytest's plain `assert`                 |
+| [R](languages/r/)                   | 78    | [webR](https://docs.r-wasm.org/webr/latest/) (R 4.6)                          | testthat's expectations                 |
+| [Raku](languages/raku/)             | 105   | [Raku++](https://github.com/ash/rakupp) (Raku.js)                             | Raku's `Test` module                    |
+| [Ruby](languages/ruby/)             | 90    | [ruby.wasm](https://github.com/ruby/ruby.wasm) (CRuby 4.0)                    | RSpec's `expect`                        |
+| [Scheme](languages/scheme/)         | 74    | [Stak](https://github.com/raviqqe/stak) (R7RS)                                | SRFI 64's tests                         |
+| [SQL](languages/sql/)               | 72    | [sql.js](https://github.com/sql-js/sql.js) (SQLite 3.49)                      | expected rows, in `-- expect:` comments |
+| [TypeScript](languages/typescript/) | 65    | [TypeScript compiler](https://github.com/microsoft/TypeScript) (TypeScript 6) | Vitest's `expect` and `expectTypeOf`    |
 
 ## Contributing
 
