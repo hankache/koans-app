@@ -51,7 +51,10 @@
     color: var(--accent-light);
   }
   :global([data-theme='dark']) .emblem { color: var(--accent-dark); }
-  .gate { fill: currentColor; opacity: 0.42; }
+  /* The gate is a backdrop for the symbol: stronger on paper, where a muted color fades. */
+  .emblem { --gate: 0.65; }
+  :global([data-theme='dark']) .emblem { --gate: 0.42; }
+  .gate { fill: currentColor; opacity: var(--gate); }
   /* When a koan is solved: the symbol rises into the doorway and the gate brightens. */
   .rise { transform-box: fill-box; transform-origin: center; animation: rise 0.9s cubic-bezier(0.3, 0.7, 0.3, 1) both; }
   .glow { animation: glow 1.4s ease-out both; }
@@ -63,7 +66,7 @@
   @keyframes glow {
     0% { opacity: 0.2; }
     50% { opacity: 0.75; }
-    100% { opacity: 0.42; }
+    100% { opacity: var(--gate); }
   }
   @media (prefers-reduced-motion: reduce) {
     .rise, .glow { animation: none; }
