@@ -10,4 +10,4 @@ is greet('Jane'), 'Hello, Jane', 'named parameters are optional';
 is greet('Jane', :greeting<Hi>), 'Hi, Jane', 'pass one by name';
 is greet('Jane', :loud), 'HELLO, JANE', ':loud passes True';
 sub needs(:$name!) { $name }
-dies-ok { needs() }, 'a ! makes it required: call it without a name';
+dies-ok { needs() }, 'a `!` makes it required: call it without a name';

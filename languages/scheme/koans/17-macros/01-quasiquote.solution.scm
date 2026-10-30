@@ -2,4 +2,4 @@
 (test-equal ", puts a value in" '(a 5) `(a ,n))
 (test-equal "without it, the symbol stays" '(a n) `(a n))
 (test-equal ",@ splices a list in" '(1 2 3 4) `(1 ,@(list 2 3) 4))
-(test-equal "any expression can go after ," '(sum 7) `(sum ,(+ 3 4)))
+(test-equal "any expression can go after `,`" '(sum 7) `(sum ,(+ 3 4)))

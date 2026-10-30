@@ -1,5 +1,5 @@
 # title: Functions
-# intro: `function(args) body` makes a function; it returns the value of its last expression, or `return()` earlier. Short functions can be written `\\(x)`.
+# intro: `function(args) body` makes a function; it returns the value of its last expression, or `return()` earlier. Short functions can be written `\(x)`.
 area <- function(width, height) width * height
 test_that("call it", expect_equal(area(3, 4), ___))
 test_that("arguments by name, in any order", expect_equal(area(height = 2, width = 5), ___))

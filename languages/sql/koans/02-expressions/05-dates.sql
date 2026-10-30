@@ -1,5 +1,5 @@
 -- title: Dates
--- intro: SQLite stores dates as text like '2026-10-14' and does date arithmetic with functions: `date` with modifiers such as '+1 day', `strftime` for formatting, and `julianday` for counting days.
+-- intro: SQLite stores dates as text like `'2026-10-14'` and does date arithmetic with functions: `date` with modifiers such as `'+1 day'`, `strftime` for formatting, and `julianday` for counting days.
 -- add a day
 SELECT date('2026-10-14', '+1 day');
 -- expect: ___

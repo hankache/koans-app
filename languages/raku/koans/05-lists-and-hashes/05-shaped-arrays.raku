@@ -8,5 +8,5 @@ my @tbl[3;2];
 @tbl[1;0] = 2; @tbl[1;1] = 'y';
 @tbl[2;0] = 3; @tbl[2;1] = 'z';
 is-deeply @tbl.shape, ___, 'shape describes the dimensions: a 3x2 grid';
-is @tbl[1;1], ___, 'index each dimension, separated by ;';
+is @tbl[1;1], ___, 'index each dimension, separated by `;`';
 is @tbl[2;0], ___, 'third row, first column';

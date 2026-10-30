@@ -13,6 +13,6 @@ SELECT c.title FROM enrolments e JOIN courses c ON c.id = e.course_id JOIN stude
 SELECT c.title, count(e.student_id) FROM courses c LEFT JOIN enrolments e ON e.course_id = c.id GROUP BY c.id ORDER BY c.title;
 -- expect: ('Logic', 2), ('Machines', 1), ('Poetry', 1)
 
--- the pair is the key, so nobody enrols twice
+-- the pair is the key, so nobody enrolls twice
 INSERT INTO enrolments VALUES (1, 1);
 -- expect: error: UNIQUE

@@ -1,5 +1,5 @@
 # title: say and print
-# intro: `say` writes a line and adds a newline; `print` adds nothing. Here, `capture()` collects what the code writes, so we can test it. (`get`, `prompt`, `run` and `shell` need a real terminal, so they are not covered.)
+# intro: `say` writes a line and adds a newline; `print` adds nothing. Here, `capture()` collects what the code writes, so the koan can test it. (`get`, `prompt`, `run` and `shell` need a real terminal, so they are not covered.)
 sub capture(&code) {
     my $out = '';
     my $*OUT = class {

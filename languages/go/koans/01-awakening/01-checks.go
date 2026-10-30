@@ -1,5 +1,5 @@
 // title: Checks
-// intro: A Go test is a function named `TestXxx` that takes `t *testing.T`. testify's `assert.Equal(t, expected, actual, message)` checks that two values are equal: replace each `___` with the value that makes the check pass.
+// intro: A Go test is a function named `TestXxx` that takes `t *testing.T`. With testify, `assert.Equal(t, expected, actual, message)` checks that two values are equal: replace each `___` with the value that makes the check pass.
 package koans
 
 import (

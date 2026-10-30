@@ -1,5 +1,5 @@
 // title: void and never
-// intro: `void` is what a function that returns nothing returns. `never` is the type with no values: what a function that never returns returns, and what is left when every case is ruled out.
+// intro: `void` is the result of a function that returns nothing. `never` is the type with no values: the result of a function that never returns, and what is left when every case is ruled out.
 function log(message: string) {
   console.info(message);
 }
