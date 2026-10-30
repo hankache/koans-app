@@ -15,7 +15,7 @@
     "test:browser": "node tests/browser/run.mjs",
     "predev": "npm run build:koans",
     "dev": "vite",
-    "prebuild": "npm run build:koans && node -e \"require('fs').copyFileSync('THIRD-PARTY-NOTICES.md', 'public/third-party-notices.txt')\"",
+    "prebuild": "npm run build:koans && node scripts/notices-text.mjs",
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",

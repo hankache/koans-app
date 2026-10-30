@@ -1,19 +1,45 @@
 # Third-party notices
 
-koans.app ships the following third-party software in the built site. Their licenses are
-reproduced below.
+koans.app ships the third-party software below in the built site. Each section says what a
+component is, where it comes from and its license; the full license texts are folded under each
+one. A license text several components share is printed once, at the end.
 
-## Raku.js (Raku++)
+## Summary
 
-The interpreter the Raku koans run on: `public/runtime/raku/rakujs.js` and `rakujs.wasm`, downloaded by
-`npm run fetch-runtime` from the Raku++ releases at https://github.com/ash/rakupp/releases.
-Licensed under the Artistic License 2.0, the same license as koans.app's code; see `LICENSE`.
+| Component | Used for | License |
+|---|---|---|
+| [Raku.js](#rakujs) | Raku interpreter | Artistic License 2.0 |
+| [Ace](#ace) | Raku syntax highlighting | BSD 3-Clause |
+| [OCaml toplevel](#ocaml-toplevel) | OCaml interpreter | ISC, BSD 3-Clause, LGPL 2.1 with linking exception |
+| [SWI-Prolog](#swi-prolog) | Prolog interpreter | BSD 2-Clause, MIT (LibBF), zlib |
+| [Go](#go) | Go compiler, linker and standard library | BSD 3-Clause |
+| [Pyodide and CPython](#pyodide-and-cpython) | Python interpreter | MPL 2.0 (Pyodide), PSF License (CPython) |
+| [Acorn](#acorn) | Finding a JavaScript syntax error's line | MIT |
+| [TypeScript](#typescript) | TypeScript compiler | Apache License 2.0 |
+| [ruby.wasm](#rubywasm) | Ruby interpreter | MIT (ruby.wasm), Ruby License and others (Ruby and its libraries) |
+| [php-wasm](#php-wasm) | PHP interpreter | Apache License 2.0 (php-wasm), PHP License 3.01 (PHP) |
+| [webR](#webr) | R interpreter | GNU GPL 3 (the binaries), MIT (webR's own code) |
+| [wasmoon](#wasmoon) | Lua interpreter | MIT (wasmoon and Lua) |
+| [Scittle](#scittle) | Clojure interpreter | Eclipse Public License 1.0, Apache License 2.0 (Closure Library) |
+| [Stak](#stak) | Scheme interpreter | MIT |
+| [sql.js](#sqljs) | SQLite database | MIT (sql.js), public domain (SQLite) |
+| [Fonts](#fonts) | Fraunces, Inter and JetBrains Mono | SIL Open Font License 1.1 |
+| [JavaScript packages](#javascript-packages) | The editor and the app | MIT, Apache-2.0 |
 
-## Ace (Raku syntax highlighting)
+## Raku.js
+
+`public/runtime/raku/rakujs.js` and `rakujs.wasm`, downloaded by `npm run fetch-runtime` from the
+Raku++ releases at https://github.com/ash/rakupp/releases. Under the Artistic License 2.0, the same
+license as koans.app's code: see `LICENSE`.
+
+## Ace
 
 The editor's Raku highlighting (`languages/raku/highlight.ts`, `languages/raku/words.ts`) is adapted
 from Ace's Raku mode (ace-builds 1.44.0, `src/mode/raku_highlight_rules.js`),
-https://github.com/ajaxorg/ace, under the BSD 3-Clause License:
+https://github.com/ajaxorg/ace.
+
+<details>
+<summary>BSD 3-Clause License</summary>
 
 ```
 Copyright (c) 2010, Ajax.org B.V.
@@ -42,16 +68,28 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
-## OCaml toplevel (ocaml.org's playground)
+</details>
 
-The interpreter the OCaml koans run on: `public/runtime/ocaml/worker.min.js` (the OCaml 5.0
-compiler and toplevel, compiled to JavaScript) and `public/runtime/ocaml/stdlib/*.cmi` (the compiled
-interfaces of OCaml's standard library), downloaded by `npm run fetch-runtime` from the
-`playground/asset` folder of https://github.com/ocaml/ocaml.org, at the commit pinned in
-`languages/ocaml/runtime.lock.json`. They are served unmodified.
+## OCaml toplevel
 
-The playground's code (https://github.com/ocaml/ocaml.org/tree/main/playground) is under the ISC
-License:
+`public/runtime/ocaml/worker.min.js` (the OCaml 5.0 compiler and toplevel, compiled to JavaScript)
+and `public/runtime/ocaml/stdlib/*.cmi` (the compiled interfaces of OCaml's standard library),
+downloaded by `npm run fetch-runtime` from the `playground/asset` folder of
+https://github.com/ocaml/ocaml.org, at the commit pinned in `languages/ocaml/runtime.lock.json`, and
+served unmodified.
+
+- The playground's code (https://github.com/ocaml/ocaml.org/tree/main/playground) is under the ISC
+  License. It is built from js_top_worker (https://github.com/tmattio/js_top_worker), under the same
+  license, which contains code from utop (https://github.com/ocaml-community/utop), under the BSD
+  3-Clause License.
+- It contains the OCaml compiler, toplevel and standard library, version 5.0.0
+  (https://github.com/ocaml/ocaml/tree/5.0.0), and the js_of_ocaml compiler's runtime and toplevel
+  libraries, version 5.4.0 (https://github.com/ocsigen/js_of_ocaml/tree/5.4.0), both under the GNU
+  Lesser General Public License 2.1 with a static linking exception; their source code is at those
+  addresses.
+
+<details>
+<summary>ISC License (the playground and js_top_worker)</summary>
 
 ```
 ISC License (ISC)
@@ -62,9 +100,10 @@ Permission to use, copy, modify, and/or distribute this software for any purpose
 THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ```
 
-It is built from js_top_worker (https://github.com/tmattio/js_top_worker), under the ISC License
-above, which contains code from utop (https://github.com/ocaml-community/utop), under the BSD
-3-Clause License:
+</details>
+
+<details>
+<summary>BSD 3-Clause License (utop)</summary>
 
 ```
 Copyright (c) 2011, Jeremie Dimino <jeremie@dimino.org>
@@ -93,11 +132,10 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
-It contains the OCaml compiler, toplevel and standard library, version 5.0.0
-(https://github.com/ocaml/ocaml/tree/5.0.0), and the js_of_ocaml compiler's runtime and toplevel
-libraries, version 5.4.0 (https://github.com/ocsigen/js_of_ocaml/tree/5.4.0), both under the GNU
-Lesser General Public License 2.1 with a static linking exception; their source code is at those
-addresses. OCaml's license:
+</details>
+
+<details>
+<summary>OCaml's license (LGPL 2.1 with linking exception)</summary>
 
 ```
 In the following, "the OCaml Core System" refers to all files marked
@@ -305,7 +343,10 @@ That's all there is to it!
 --------------------------------------------------
 ```
 
-js_of_ocaml's license:
+</details>
+
+<details>
+<summary>js_of_ocaml's license (LGPL 2.1 with linking exception)</summary>
 
 ```
 In the following, "the Compiler and Library" refers to all files
@@ -840,15 +881,21 @@ necessary.  Here is a sample; alter the names:
 That's all there is to it!
 ```
 
-## SWI-Prolog (Prolog)
+</details>
 
-The interpreter the Prolog koans run on: `public/runtime/prolog/swipl-web.js`, `swipl-web.wasm` and
-`swipl-web.data` (SWI-Prolog compiled to WebAssembly, with its libraries), downloaded by
-`npm run fetch-runtime` from the `swipl-wasm` npm package (the version pinned in
-`languages/prolog/runtime.lock.json`), https://github.com/SWI-Prolog/npm-swipl-wasm. SWI-Prolog's
-source is at https://github.com/SWI-Prolog/swipl-devel. Its license:
+## SWI-Prolog
 
-```
+`public/runtime/prolog/swipl-web.js`, `swipl-web.wasm` and `swipl-web.data` (SWI-Prolog compiled to
+WebAssembly, with its libraries), downloaded by `npm run fetch-runtime` from the `swipl-wasm` npm
+package (the version pinned in `languages/prolog/runtime.lock.json`),
+https://github.com/SWI-Prolog/npm-swipl-wasm. SWI-Prolog's source is at
+https://github.com/SWI-Prolog/swipl-devel. It contains LibBF, for its unbounded integers, under the
+MIT License, and zlib, under the zlib License (its text is in ruby.wasm's notices).
+
+<details>
+<summary>SWI-Prolog's license</summary>
+
+````
 # SWI-Prolog copyright status
 
 SWI-Prolog is covered by the Simplified BSD license:
@@ -889,9 +936,12 @@ additional requirements are loaded into a particular version.
   ```
   ?- license.
   ```
-```
+````
 
-It contains LibBF, for its unbounded integers, under the MIT License:
+</details>
+
+<details>
+<summary>MIT License (LibBF)</summary>
 
 ```
 Copyright (c) 2017-2020 Fabrice Bellard
@@ -915,15 +965,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-and zlib, under the zlib License (see "Zlib" below).
+</details>
 
 ## Go
 
-The compiler the Go koans are compiled with: `public/runtime/go/compile.*.wasm` (Go's `cmd/compile`,
-in parts), `link.wasm` (`cmd/link`) and `pkg/**/*.a` (Go's standard library, compiled), built for
-WebAssembly by `npm run fetch-runtime` from the official Go release pinned in
-`languages/go/runtime.lock.json` (https://go.dev/dl/). Go's source is at https://go.dev/s/go-source
-(https://github.com/golang/go). Under the BSD 3-Clause License:
+`public/runtime/go/compile.*.wasm` (Go's `cmd/compile`, in parts), `link.wasm` (`cmd/link`) and
+`pkg/**/*.a` (Go's standard library, compiled), built for WebAssembly by `npm run fetch-runtime` from
+the official Go release pinned in `languages/go/runtime.lock.json` (https://go.dev/dl/). Go's source
+is at https://go.dev/s/go-source (https://github.com/golang/go).
+
+The koans' `assert` and `require` (`public/runtime/go/support/`) are written for koans.app, after the
+API of testify (https://github.com/stretchr/testify); they contain none of its code.
+
+<details>
+<summary>BSD 3-Clause License</summary>
 
 ```
 Copyright 2009 The Go Authors.
@@ -955,18 +1010,18 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
-The koans' `assert` and `require` (`public/runtime/go/support/`) are written for koans.app, after the
-API of testify (https://github.com/stretchr/testify); they contain none of its code.
+</details>
 
 ## Pyodide and CPython
 
-The interpreter the Python koans run on: `public/runtime/python/` (`pyodide.mjs`,
-`pyodide.asm.mjs`, `pyodide.asm.wasm`, `python_stdlib.zip`, `pyodide-lock.json`), copied by
-`npm run fetch-runtime` from the `pyodide` npm package (the version pinned in
-`languages/python/runtime.lock.json`).
+`public/runtime/python/` (`pyodide.mjs`, `pyodide.asm.mjs`, `pyodide.asm.wasm`, `python_stdlib.zip`,
+`pyodide-lock.json`), copied by `npm run fetch-runtime` from the `pyodide` npm package (the version
+pinned in `languages/python/runtime.lock.json`). Pyodide's source code is at
+https://github.com/pyodide/pyodide, tagged with that version. It contains CPython, the Python
+interpreter and its standard library (https://github.com/python/cpython).
 
-Pyodide is licensed under the Mozilla Public License 2.0. Its source code is at
-https://github.com/pyodide/pyodide, tagged with the version above.
+<details>
+<summary>Mozilla Public License 2.0 (Pyodide)</summary>
 
 ```
 Mozilla Public License Version 2.0
@@ -1344,8 +1399,10 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
   defined by the Mozilla Public License, v. 2.0.
 ```
 
-It contains CPython, the Python interpreter and its standard library, under the Python Software
-Foundation License (https://github.com/python/cpython):
+</details>
+
+<details>
+<summary>Python Software Foundation License (CPython)</summary>
 
 ```
 A. HISTORY OF THE SOFTWARE
@@ -1627,11 +1684,15 @@ OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ```
 
+</details>
+
 ## Acorn
 
-The JavaScript parser the JavaScript koans use to find a syntax error's line:
-`public/runtime/javascript/acorn.mjs`, copied by `npm run fetch-runtime` from the `acorn` npm
-package (the version pinned in `languages/javascript/runtime.lock.json`), https://github.com/acornjs/acorn.
+`public/runtime/javascript/acorn.mjs`, copied by `npm run fetch-runtime` from the `acorn` npm package
+(the version pinned in `languages/javascript/runtime.lock.json`), https://github.com/acornjs/acorn.
+
+<details>
+<summary>MIT License</summary>
 
 ```
 MIT License
@@ -1657,73 +1718,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
+</details>
+
 ## TypeScript
 
 The compiler the TypeScript koans are checked and compiled with, and the library files they're
 checked against: `public/runtime/typescript/typescript.js` and `lib.*.d.ts`, copied by
 `npm run fetch-runtime` from the `typescript` npm package (the version pinned in
-`languages/typescript/runtime.lock.json`), https://github.com/microsoft/TypeScript. Licensed
-under the Apache License 2.0:
+`languages/typescript/runtime.lock.json`), https://github.com/microsoft/TypeScript. Under the Apache
+License 2.0. The full text is under [Apache License 2.0](#apache-license-20), below.
 
-```
-Apache License
-
-Version 2.0, January 2004
-
-http://www.apache.org/licenses/ 
-
-TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
-
-1. Definitions.
-
-"License" shall mean the terms and conditions for use, reproduction, and distribution as defined by Sections 1 through 9 of this document.
-
-"Licensor" shall mean the copyright owner or entity authorized by the copyright owner that is granting the License.
-
-"Legal Entity" shall mean the union of the acting entity and all other entities that control, are controlled by, or are under common control with that entity. For the purposes of this definition, "control" means (i) the power, direct or indirect, to cause the direction or management of such entity, whether by contract or otherwise, or (ii) ownership of fifty percent (50%) or more of the outstanding shares, or (iii) beneficial ownership of such entity.
-
-"You" (or "Your") shall mean an individual or Legal Entity exercising permissions granted by this License.
-
-"Source" form shall mean the preferred form for making modifications, including but not limited to software source code, documentation source, and configuration files.
-
-"Object" form shall mean any form resulting from mechanical transformation or translation of a Source form, including but not limited to compiled object code, generated documentation, and conversions to other media types.
-
-"Work" shall mean the work of authorship, whether in Source or Object form, made available under the License, as indicated by a copyright notice that is included in or attached to the work (an example is provided in the Appendix below).
-
-"Derivative Works" shall mean any work, whether in Source or Object form, that is based on (or derived from) the Work and for which the editorial revisions, annotations, elaborations, or other modifications represent, as a whole, an original work of authorship. For the purposes of this License, Derivative Works shall not include works that remain separable from, or merely link (or bind by name) to the interfaces of, the Work and Derivative Works thereof.
-
-"Contribution" shall mean any work of authorship, including the original version of the Work and any modifications or additions to that Work or Derivative Works thereof, that is intentionally submitted to Licensor for inclusion in the Work by the copyright owner or by an individual or Legal Entity authorized to submit on behalf of the copyright owner. For the purposes of this definition, "submitted" means any form of electronic, verbal, or written communication sent to the Licensor or its representatives, including but not limited to communication on electronic mailing lists, source code control systems, and issue tracking systems that are managed by, or on behalf of, the Licensor for the purpose of discussing and improving the Work, but excluding communication that is conspicuously marked or otherwise designated in writing by the copyright owner as "Not a Contribution."
-
-"Contributor" shall mean Licensor and any individual or Legal Entity on behalf of whom a Contribution has been received by Licensor and subsequently incorporated within the Work.
-
-2. Grant of Copyright License. Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to reproduce, prepare Derivative Works of, publicly display, publicly perform, sublicense, and distribute the Work and such Derivative Works in Source or Object form.
-
-3. Grant of Patent License. Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable (except as stated in this section) patent license to make, have made, use, offer to sell, sell, import, and otherwise transfer the Work, where such license applies only to those patent claims licensable by such Contributor that are necessarily infringed by their Contribution(s) alone or by combination of their Contribution(s) with the Work to which such Contribution(s) was submitted. If You institute patent litigation against any entity (including a cross-claim or counterclaim in a lawsuit) alleging that the Work or a Contribution incorporated within the Work constitutes direct or contributory patent infringement, then any patent licenses granted to You under this License for that Work shall terminate as of the date such litigation is filed.
-
-4. Redistribution. You may reproduce and distribute copies of the Work or Derivative Works thereof in any medium, with or without modifications, and in Source or Object form, provided that You meet the following conditions:
-
-You must give any other recipients of the Work or Derivative Works a copy of this License; and
-
-You must cause any modified files to carry prominent notices stating that You changed the files; and
-
-You must retain, in the Source form of any Derivative Works that You distribute, all copyright, patent, trademark, and attribution notices from the Source form of the Work, excluding those notices that do not pertain to any part of the Derivative Works; and
-
-If the Work includes a "NOTICE" text file as part of its distribution, then any Derivative Works that You distribute must include a readable copy of the attribution notices contained within such NOTICE file, excluding those notices that do not pertain to any part of the Derivative Works, in at least one of the following places: within a NOTICE text file distributed as part of the Derivative Works; within the Source form or documentation, if provided along with the Derivative Works; or, within a display generated by the Derivative Works, if and wherever such third-party notices normally appear. The contents of the NOTICE file are for informational purposes only and do not modify the License. You may add Your own attribution notices within Derivative Works that You distribute, alongside or as an addendum to the NOTICE text from the Work, provided that such additional attribution notices cannot be construed as modifying the License. You may add Your own copyright statement to Your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of Your modifications, or for any such Derivative Works as a whole, provided Your use, reproduction, and distribution of the Work otherwise complies with the conditions stated in this License.
-
-5. Submission of Contributions. Unless You explicitly state otherwise, any Contribution intentionally submitted for inclusion in the Work by You to the Licensor shall be under the terms and conditions of this License, without any additional terms or conditions. Notwithstanding the above, nothing herein shall supersede or modify the terms of any separate license agreement you may have executed with Licensor regarding such Contributions.
-
-6. Trademarks. This License does not grant permission to use the trade names, trademarks, service marks, or product names of the Licensor, except as required for reasonable and customary use in describing the origin of the Work and reproducing the content of the NOTICE file.
-
-7. Disclaimer of Warranty. Unless required by applicable law or agreed to in writing, Licensor provides the Work (and each Contributor provides its Contributions) on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including, without limitation, any warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You are solely responsible for determining the appropriateness of using or redistributing the Work and assume any risks associated with Your exercise of permissions under this License.
-
-8. Limitation of Liability. In no event and under no legal theory, whether in tort (including negligence), contract, or otherwise, unless required by applicable law (such as deliberate and grossly negligent acts) or agreed to in writing, shall any Contributor be liable to You for damages, including any direct, indirect, special, incidental, or consequential damages of any character arising as a result of this License or out of the use or inability to use the Work (including but not limited to damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other commercial damages or losses), even if such Contributor has been advised of the possibility of such damages.
-
-9. Accepting Warranty or Additional Liability. While redistributing the Work or Derivative Works thereof, You may choose to offer, and charge a fee for, acceptance of support, warranty, indemnity, or other liability obligations and/or rights consistent with this License. However, in accepting such obligations, You may act only on Your own behalf and on Your sole responsibility, not on behalf of any other Contributor, and only if You agree to indemnify, defend, and hold each Contributor harmless for any liability incurred by, or claims asserted against, such Contributor by reason of your accepting any such warranty or additional liability.
-
-END OF TERMS AND CONDITIONS
-```
-
-Its notices for third-party material in the library files:
+<details>
+<summary>Notices for third-party material in the library files</summary>
 
 ```
 /*!----------------- TypeScript ThirdPartyNotices -------------------------------------------------------
@@ -1920,12 +1926,17 @@ MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
 ------------- End of ThirdPartyNotices ------------------------------------------- */
 ```
 
-## ruby.wasm (Ruby)
+</details>
 
-The interpreter the Ruby koans run on: `public/runtime/ruby/ruby.wasm` (CRuby compiled to
-WebAssembly) and `browser.umd.js`, downloaded by `npm run fetch-runtime` from the
-`@ruby/4.0-wasm-wasi` npm package (the version pinned in `languages/ruby/runtime.lock.json`),
-https://github.com/ruby/ruby.wasm. Its license:
+## ruby.wasm
+
+`public/runtime/ruby/ruby.wasm` (CRuby compiled to WebAssembly) and `browser.umd.js`, downloaded by
+`npm run fetch-runtime` from the `@ruby/4.0-wasm-wasi` npm package (the version pinned in
+`languages/ruby/runtime.lock.json`), https://github.com/ruby/ruby.wasm. Its notices cover Ruby itself
+and the libraries built into it: LibYAML, zlib, wasi-libc, OpenSSL and wasi-vfs.
+
+<details>
+<summary>MIT License (ruby.wasm)</summary>
 
 ```
 MIT License
@@ -1951,9 +1962,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-And its notices, for Ruby itself and the libraries built into it:
+</details>
 
-```
+<details>
+<summary>Notices for Ruby and the libraries built into it</summary>
+
+````
 # Notices for ruby.wasm
 
 This product has binary distribution forms and they may contain third party material from the projects listed below.
@@ -3246,15 +3260,23 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-```
+````
 
-## php-wasm (PHP)
+</details>
 
-The interpreter the PHP koans run on: `public/runtime/php/` (PHP 8.5 compiled to WebAssembly,
-its JavaScript loader and php-wasm's runtime wrapper), downloaded by `npm run fetch-runtime` from
-the `php-wasm` npm package (the version pinned in `languages/php/runtime.lock.json`),
-https://github.com/seanmorris/php-wasm. php-wasm is dual licensed under the Apache License 2.0
-(see "Apache License 2.0" below), which this project uses, and the GNU GPL version 2. Its notice:
+## php-wasm
+
+`public/runtime/php/` (PHP 8.5 compiled to WebAssembly, its JavaScript loader and php-wasm's runtime
+wrapper), downloaded by `npm run fetch-runtime` from the `php-wasm` npm package (the version pinned in
+`languages/php/runtime.lock.json`), https://github.com/seanmorris/php-wasm. php-wasm is dual licensed
+under the Apache License 2.0, which this project uses, and the GNU GPL version 2.
+The full text is under [Apache License 2.0](#apache-license-20), below.
+
+PHP itself, https://www.php.net, is under the PHP License, version 3.01; the libraries built into it
+(PCRE2, timelib, lexbor and others) are under their own licenses, listed in PHP's source.
+
+<details>
+<summary>php-wasm's notice</summary>
 
 ```
 php-wasm
@@ -3293,8 +3315,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-PHP itself, https://www.php.net, is under the PHP License, version 3.01; the libraries built into
-it (PCRE2, timelib, lexbor and others) are under their own licenses, listed in PHP's source.
+</details>
+
+<details>
+<summary>PHP License 3.01</summary>
 
 ```
 --------------------------------------------------------------------
@@ -3367,14 +3391,18 @@ PHP includes the Zend Engine, freely available at
 <http://www.zend.com>.
 ```
 
-## webR (R)
+</details>
 
-The interpreter the R koans run on: `public/runtime/r/webr/` (R compiled to WebAssembly, with
-BLAS, LAPACK and webR's JavaScript), downloaded by `npm run fetch-runtime` from the `webr` npm
-package (the version pinned in `languages/r/runtime.lock.json`), https://github.com/r-wasm/webr.
-R is free software under the GNU GPL; webR's binaries are distributed under the GNU GPL version 3,
-and are served here unmodified, as webR publishes them. Their source: https://github.com/r-wasm/webr
-and https://www.r-project.org. webR's licensing, with the full license texts:
+## webR
+
+`public/runtime/r/webr/` (R compiled to WebAssembly, with BLAS, LAPACK and webR's JavaScript),
+downloaded by `npm run fetch-runtime` from the `webr` npm package (the version pinned in
+`languages/r/runtime.lock.json`), https://github.com/r-wasm/webr. R is free software under the GNU
+GPL; webR's binaries are distributed under the GNU GPL version 3, and are served here unmodified, as
+webR publishes them. Their source: https://github.com/r-wasm/webr and https://www.r-project.org.
+
+<details>
+<summary>webR's licensing, with the full license texts</summary>
 
 ```
 # Software Licensing
@@ -4082,12 +4110,17 @@ Public License instead of this License.  But first, please read
 <https://www.gnu.org/licenses/why-not-lgpl.html>.
 ```
 
-## wasmoon (Lua)
+</details>
 
-The interpreter the Lua koans run on: `public/runtime/lua/index.js` and `glue.wasm` (Lua 5.4
-compiled to WebAssembly), downloaded by `npm run fetch-runtime` from the `wasmoon` npm package
-(the version pinned in `languages/lua/runtime.lock.json`), https://github.com/ceifa/wasmoon.
-Its license (from its repository; the npm package has no copy):
+## wasmoon
+
+`public/runtime/lua/index.js` and `glue.wasm` (Lua 5.4 compiled to WebAssembly), downloaded by
+`npm run fetch-runtime` from the `wasmoon` npm package (the version pinned in
+`languages/lua/runtime.lock.json`), https://github.com/ceifa/wasmoon. Its license comes from its
+repository: the npm package has no copy. It contains Lua, https://www.lua.org.
+
+<details>
+<summary>MIT License (wasmoon)</summary>
 
 ```
 MIT License
@@ -4113,7 +4146,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-It contains Lua, https://www.lua.org, under the MIT License:
+</details>
+
+<details>
+<summary>MIT License (Lua)</summary>
 
 ```
 Copyright © 1994–2026 Lua.org, PUC-Rio.
@@ -4137,18 +4173,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-## Scittle (Clojure)
+</details>
 
-The interpreter the Clojure koans run on: `public/runtime/clojure/scittle.js` (SCI, the Small
-Clojure Interpreter, compiled to JavaScript), downloaded by `npm run fetch-runtime` from the
-`scittle` npm package (the version pinned in `languages/clojure/runtime.lock.json`),
-https://github.com/babashka/scittle. Copyright © 2021 - 2022 Michiel Borkent, distributed under the
-Eclipse Public License 1.0. It is served unmodified; its source is at the address above.
+## Scittle
+
+`public/runtime/clojure/scittle.js` (SCI, the Small Clojure Interpreter, compiled to JavaScript),
+downloaded by `npm run fetch-runtime` from the `scittle` npm package (the version pinned in
+`languages/clojure/runtime.lock.json`), https://github.com/babashka/scittle. Copyright © 2021 - 2022
+Michiel Borkent, under the Eclipse Public License 1.0, and served unmodified; its source is at that
+address.
 
 It is built from SCI (https://github.com/babashka/sci) and ClojureScript
-(https://github.com/clojure/clojurescript), both under the Eclipse Public License 1.0, and the
-Google Closure Library (https://github.com/google/closure-library), under the Apache License 2.0
-(see "Apache License 2.0" below). The Eclipse Public License 1.0:
+(https://github.com/clojure/clojurescript), both under the Eclipse Public License 1.0, and the Google
+Closure Library (https://github.com/google/closure-library), under the Apache License 2.0.
+The full text is under [Apache License 2.0](#apache-license-20), below.
+
+<details>
+<summary>Eclipse Public License 1.0</summary>
 
 ```
 Eclipse Public License - v 1.0
@@ -4351,12 +4392,17 @@ after the cause of action arose. Each party waives its rights to a jury trial in
 any resulting litigation.
 ```
 
-## Stak (Scheme)
+</details>
 
-The interpreter the Scheme koans run on: `public/runtime/scheme/stak_wasm.js` and
-`stak_wasm_bg.wasm` (Stak Scheme compiled to WebAssembly), downloaded by `npm run fetch-runtime`
-from the `@raviqqe/stak` npm package (the version pinned in `languages/scheme/runtime.lock.json`),
-https://github.com/raviqqe/stak. Its license (from its repository; the npm package has no copy):
+## Stak
+
+`public/runtime/scheme/stak_wasm.js` and `stak_wasm_bg.wasm` (Stak Scheme compiled to WebAssembly),
+downloaded by `npm run fetch-runtime` from the `@raviqqe/stak` npm package (the version pinned in
+`languages/scheme/runtime.lock.json`), https://github.com/raviqqe/stak. Its license comes from its
+repository: the npm package has no copy.
+
+<details>
+<summary>MIT License</summary>
 
 ```
 MIT License
@@ -4382,11 +4428,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## sql.js (SQLite)
+</details>
 
-The database the SQL koans run on: `public/runtime/sql/sql-wasm.js` and `sql-wasm.wasm` (SQLite
-compiled to WebAssembly), downloaded by `npm run fetch-runtime` from the `sql.js` npm package (the
-version pinned in `languages/sql/runtime.lock.json`), https://github.com/sql-js/sql.js. Its license:
+## sql.js
+
+`public/runtime/sql/sql-wasm.js` and `sql-wasm.wasm` (SQLite compiled to WebAssembly), downloaded by
+`npm run fetch-runtime` from the `sql.js` npm package (the version pinned in
+`languages/sql/runtime.lock.json`), https://github.com/sql-js/sql.js. It contains SQLite,
+https://sqlite.org, which is in the public domain.
+
+<details>
+<summary>sql.js's license</summary>
 
 ```
 MIT license
@@ -4435,36 +4487,154 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-It contains SQLite, https://sqlite.org, which is in the public domain.
+</details>
 
 ## Fonts
 
-Fraunces, Inter and JetBrains Mono are served with the site, from the @fontsource-variable
-packages listed below with their license, the SIL Open Font License 1.1.
+Fraunces, Inter and JetBrains Mono are served with the site, from the `@fontsource-variable` npm
+packages, under the SIL Open Font License 1.1.
+
+- @fontsource-variable/fraunces 5.3.0: Copyright 2020 The Fraunces Project Authors (github.com/undercasetype/Fraunces) Fraunces-Italic[SOFT,WONK,opsz,wght].ttf: Copyright 2020 The Fraunces Project Authors (github.com/undercasetype/Fraunces)
+- @fontsource-variable/inter 5.3.0: Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter) Inter-Italic[opsz,wght].ttf: Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter)
+- @fontsource-variable/jetbrains-mono 5.3.0: Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono) JetBrainsMono-Italic[wght].ttf: Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)
+
+<details>
+<summary>SIL Open Font License 1.1</summary>
+
+```
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+
+-----------------------------------------------------------
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+-----------------------------------------------------------
+
+PREAMBLE
+The goals of the Open Font License (OFL) are to stimulate worldwide
+development of collaborative font projects, to support the font creation
+efforts of academic and linguistic communities, and to provide a free and
+open framework in which fonts may be shared and improved in partnership
+with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves. The
+fonts, including any derivative works, can be bundled, embedded,
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works. The fonts and derivatives,
+however, cannot be released under any other type of license. The
+requirement for fonts to remain under this license does not apply
+to any document created using the fonts or their derivatives.
+
+DEFINITIONS
+"Font Software" refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+"Reserved Font Name" refers to any names specified as such after the
+copyright statement(s).
+
+"Original Version" refers to the collection of Font Software components as
+distributed by the Copyright Holder(s).
+
+"Modified Version" refers to any derivative made by adding to, deleting,
+or substituting -- in part or in whole -- any of the components of the
+Original Version, by changing formats or by porting the Font Software to a
+new environment.
+
+"Author" refers to any designer, engineer, programmer, technical
+writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components,
+in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled,
+redistributed and/or sold with any software, provided that each copy
+contains the above copyright notice and this license. These can be
+included either as stand-alone text files, human-readable headers or
+in the appropriate machine-readable metadata fields within text or
+binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font
+Name(s) unless explicit written permission is granted by the corresponding
+Copyright Holder. This restriction only applies to the primary font name as
+presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+Software shall not be used to promote, endorse or advertise any
+Modified Version, except to acknowledge the contribution(s) of the
+Copyright Holder(s) and the Author(s) or with their explicit written
+permission.
+
+5) The Font Software, modified or unmodified, in part or in whole,
+must be distributed entirely under this license, and must not be
+distributed under any other license. The requirement for fonts to
+remain under this license does not apply to any document created
+using the Font Software.
+
+TERMINATION
+This license becomes null and void if any of the above conditions are
+not met.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+OTHER DEALINGS IN THE FONT SOFTWARE.
+```
+
+</details>
 
 ## JavaScript packages
 
-### @codemirror/autocomplete 6.20.3, @codemirror/commands 6.11.1, @codemirror/lang-css 6.3.1, @codemirror/lang-html 6.4.12, @codemirror/lang-javascript 6.2.5, @codemirror/lang-php 6.0.2, @codemirror/lang-python 6.2.1, @codemirror/lang-sql 6.10.0, @codemirror/language 6.12.4, @codemirror/legacy-modes 6.5.4, @codemirror/lint 6.9.7, @codemirror/state 6.7.6, @codemirror/view 6.43.13
+The app's runtime dependencies, and theirs, compiled into the site's code, grouped by license.
 
-- @codemirror/autocomplete 6.20.3 (MIT)
-- @codemirror/commands 6.11.1 (MIT)
-- @codemirror/lang-css 6.3.1 (MIT)
-- @codemirror/lang-html 6.4.12 (MIT)
-- @codemirror/lang-javascript 6.2.5 (MIT)
-- @codemirror/lang-php 6.0.2 (MIT)
-- @codemirror/lang-python 6.2.1 (MIT)
-- @codemirror/lang-sql 6.10.0 (MIT)
-- @codemirror/language 6.12.4 (MIT)
-- @codemirror/legacy-modes 6.5.4 (MIT)
-- @codemirror/lint 6.9.7 (MIT)
-- @codemirror/state 6.7.6 (MIT)
-- @codemirror/view 6.43.13 (MIT)
+### MIT: @codemirror, @lezer, @marijn, crelt, style-mod, svelte, w3c-keyname
+
+- @codemirror/autocomplete 6.20.3: Copyright (C) 2018-2021 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @codemirror/commands 6.11.1: Copyright (C) 2018-2021 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @codemirror/lang-css 6.3.1: Copyright (C) 2018-2021 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @codemirror/lang-html 6.4.12: Copyright (C) 2018-2021 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @codemirror/lang-javascript 6.2.5: Copyright (C) 2018-2021 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @codemirror/lang-php 6.0.2: Copyright (C) 2018-2021 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @codemirror/lang-python 6.2.1: Copyright (C) 2018-2021 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @codemirror/lang-sql 6.10.0: Copyright (C) 2018-2021 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @codemirror/language 6.12.4: Copyright (C) 2018-2021 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @codemirror/legacy-modes 6.5.4: Copyright (C) 2018-2021 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @codemirror/lint 6.9.7: Copyright (C) 2018-2021 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @codemirror/state 6.7.6: Copyright (C) 2018-2021 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @codemirror/view 6.43.13: Copyright (C) 2018-2021 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @lezer/common 1.5.3: Copyright (C) 2018 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @lezer/css 1.3.9: Copyright (C) 2018 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @lezer/highlight 1.2.4: Copyright (C) 2018 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @lezer/html 1.3.13: Copyright (C) 2018 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @lezer/javascript 1.5.6: Copyright (C) 2018 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @lezer/lr 1.4.10: Copyright (C) 2018 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @lezer/php 1.0.6: Copyright (C) 2018 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @lezer/python 1.1.19: Copyright (C) 2020 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- @marijn/find-cluster-break 1.0.4: Copyright (C) 2024 by Marijn Haverbeke <marijn@haverbeke.berlin>
+- crelt 1.0.7: Copyright (C) 2020 by Marijn Haverbeke <marijn@haverbeke.berlin>
+- style-mod 4.1.4: Copyright (C) 2018 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+- svelte 5.57.1: Copyright (c) 2016-2025 [Svelte Contributors](https://github.com/sveltejs/svelte/graphs/contributors)
+- w3c-keyname 2.2.8: Copyright (C) 2016 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
+
+<details>
+<summary>MIT license text</summary>
 
 ```
 MIT License
 
-Copyright (C) 2018-2021 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -4484,511 +4654,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### @fontsource-variable/fraunces 5.3.0
+</details>
 
-- @fontsource-variable/fraunces 5.3.0 (OFL-1.1)
+### Apache-2.0: idb-keyval
 
-```
-Copyright 2020 The Fraunces Project Authors (github.com/undercasetype/Fraunces) Fraunces-Italic[SOFT,WONK,opsz,wght].ttf: Copyright 2020 The Fraunces Project Authors (github.com/undercasetype/Fraunces)
+- idb-keyval 6.3.0: Copyright 2016, Jake Archibald
 
-This Font Software is licensed under the SIL Open Font License, Version 1.1.
-This license is copied below, and is also available with a FAQ at:
-http://scripts.sil.org/OFL
+The full text is under [Apache License 2.0](#apache-license-20), below.
 
+## License texts
 
------------------------------------------------------------
-SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
------------------------------------------------------------
+The full texts of licenses that several components above share.
 
-PREAMBLE
-The goals of the Open Font License (OFL) are to stimulate worldwide
-development of collaborative font projects, to support the font creation
-efforts of academic and linguistic communities, and to provide a free and
-open framework in which fonts may be shared and improved in partnership
-with others.
+### Apache License 2.0
 
-The OFL allows the licensed fonts to be used, studied, modified and
-redistributed freely as long as they are not sold by themselves. The
-fonts, including any derivative works, can be bundled, embedded,
-redistributed and/or sold with any software provided that any reserved
-names are not used by derivative works. The fonts and derivatives,
-however, cannot be released under any other type of license. The
-requirement for fonts to remain under this license does not apply
-to any document created using the fonts or their derivatives.
-
-DEFINITIONS
-"Font Software" refers to the set of files released by the Copyright
-Holder(s) under this license and clearly marked as such. This may
-include source files, build scripts and documentation.
-
-"Reserved Font Name" refers to any names specified as such after the
-copyright statement(s).
-
-"Original Version" refers to the collection of Font Software components as
-distributed by the Copyright Holder(s).
-
-"Modified Version" refers to any derivative made by adding to, deleting,
-or substituting -- in part or in whole -- any of the components of the
-Original Version, by changing formats or by porting the Font Software to a
-new environment.
-
-"Author" refers to any designer, engineer, programmer, technical
-writer or other person who contributed to the Font Software.
-
-PERMISSION & CONDITIONS
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of the Font Software, to use, study, copy, merge, embed, modify,
-redistribute, and sell modified and unmodified copies of the Font
-Software, subject to the following conditions:
-
-1) Neither the Font Software nor any of its individual components,
-in Original or Modified Versions, may be sold by itself.
-
-2) Original or Modified Versions of the Font Software may be bundled,
-redistributed and/or sold with any software, provided that each copy
-contains the above copyright notice and this license. These can be
-included either as stand-alone text files, human-readable headers or
-in the appropriate machine-readable metadata fields within text or
-binary files as long as those fields can be easily viewed by the user.
-
-3) No Modified Version of the Font Software may use the Reserved Font
-Name(s) unless explicit written permission is granted by the corresponding
-Copyright Holder. This restriction only applies to the primary font name as
-presented to the users.
-
-4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
-Software shall not be used to promote, endorse or advertise any
-Modified Version, except to acknowledge the contribution(s) of the
-Copyright Holder(s) and the Author(s) or with their explicit written
-permission.
-
-5) The Font Software, modified or unmodified, in part or in whole,
-must be distributed entirely under this license, and must not be
-distributed under any other license. The requirement for fonts to
-remain under this license does not apply to any document created
-using the Font Software.
-
-TERMINATION
-This license becomes null and void if any of the above conditions are
-not met.
-
-DISCLAIMER
-THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
-OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
-COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
-DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
-OTHER DEALINGS IN THE FONT SOFTWARE.
-```
-
-### @fontsource-variable/inter 5.3.0
-
-- @fontsource-variable/inter 5.3.0 (OFL-1.1)
-
-```
-Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter) Inter-Italic[opsz,wght].ttf: Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter)
-
-This Font Software is licensed under the SIL Open Font License, Version 1.1.
-This license is copied below, and is also available with a FAQ at:
-http://scripts.sil.org/OFL
-
-
------------------------------------------------------------
-SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
------------------------------------------------------------
-
-PREAMBLE
-The goals of the Open Font License (OFL) are to stimulate worldwide
-development of collaborative font projects, to support the font creation
-efforts of academic and linguistic communities, and to provide a free and
-open framework in which fonts may be shared and improved in partnership
-with others.
-
-The OFL allows the licensed fonts to be used, studied, modified and
-redistributed freely as long as they are not sold by themselves. The
-fonts, including any derivative works, can be bundled, embedded,
-redistributed and/or sold with any software provided that any reserved
-names are not used by derivative works. The fonts and derivatives,
-however, cannot be released under any other type of license. The
-requirement for fonts to remain under this license does not apply
-to any document created using the fonts or their derivatives.
-
-DEFINITIONS
-"Font Software" refers to the set of files released by the Copyright
-Holder(s) under this license and clearly marked as such. This may
-include source files, build scripts and documentation.
-
-"Reserved Font Name" refers to any names specified as such after the
-copyright statement(s).
-
-"Original Version" refers to the collection of Font Software components as
-distributed by the Copyright Holder(s).
-
-"Modified Version" refers to any derivative made by adding to, deleting,
-or substituting -- in part or in whole -- any of the components of the
-Original Version, by changing formats or by porting the Font Software to a
-new environment.
-
-"Author" refers to any designer, engineer, programmer, technical
-writer or other person who contributed to the Font Software.
-
-PERMISSION & CONDITIONS
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of the Font Software, to use, study, copy, merge, embed, modify,
-redistribute, and sell modified and unmodified copies of the Font
-Software, subject to the following conditions:
-
-1) Neither the Font Software nor any of its individual components,
-in Original or Modified Versions, may be sold by itself.
-
-2) Original or Modified Versions of the Font Software may be bundled,
-redistributed and/or sold with any software, provided that each copy
-contains the above copyright notice and this license. These can be
-included either as stand-alone text files, human-readable headers or
-in the appropriate machine-readable metadata fields within text or
-binary files as long as those fields can be easily viewed by the user.
-
-3) No Modified Version of the Font Software may use the Reserved Font
-Name(s) unless explicit written permission is granted by the corresponding
-Copyright Holder. This restriction only applies to the primary font name as
-presented to the users.
-
-4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
-Software shall not be used to promote, endorse or advertise any
-Modified Version, except to acknowledge the contribution(s) of the
-Copyright Holder(s) and the Author(s) or with their explicit written
-permission.
-
-5) The Font Software, modified or unmodified, in part or in whole,
-must be distributed entirely under this license, and must not be
-distributed under any other license. The requirement for fonts to
-remain under this license does not apply to any document created
-using the Font Software.
-
-TERMINATION
-This license becomes null and void if any of the above conditions are
-not met.
-
-DISCLAIMER
-THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
-OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
-COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
-DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
-OTHER DEALINGS IN THE FONT SOFTWARE.
-```
-
-### @fontsource-variable/jetbrains-mono 5.3.0
-
-- @fontsource-variable/jetbrains-mono 5.3.0 (OFL-1.1)
-
-```
-Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono) JetBrainsMono-Italic[wght].ttf: Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)
-
-This Font Software is licensed under the SIL Open Font License, Version 1.1.
-This license is copied below, and is also available with a FAQ at:
-http://scripts.sil.org/OFL
-
-
------------------------------------------------------------
-SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
------------------------------------------------------------
-
-PREAMBLE
-The goals of the Open Font License (OFL) are to stimulate worldwide
-development of collaborative font projects, to support the font creation
-efforts of academic and linguistic communities, and to provide a free and
-open framework in which fonts may be shared and improved in partnership
-with others.
-
-The OFL allows the licensed fonts to be used, studied, modified and
-redistributed freely as long as they are not sold by themselves. The
-fonts, including any derivative works, can be bundled, embedded,
-redistributed and/or sold with any software provided that any reserved
-names are not used by derivative works. The fonts and derivatives,
-however, cannot be released under any other type of license. The
-requirement for fonts to remain under this license does not apply
-to any document created using the fonts or their derivatives.
-
-DEFINITIONS
-"Font Software" refers to the set of files released by the Copyright
-Holder(s) under this license and clearly marked as such. This may
-include source files, build scripts and documentation.
-
-"Reserved Font Name" refers to any names specified as such after the
-copyright statement(s).
-
-"Original Version" refers to the collection of Font Software components as
-distributed by the Copyright Holder(s).
-
-"Modified Version" refers to any derivative made by adding to, deleting,
-or substituting -- in part or in whole -- any of the components of the
-Original Version, by changing formats or by porting the Font Software to a
-new environment.
-
-"Author" refers to any designer, engineer, programmer, technical
-writer or other person who contributed to the Font Software.
-
-PERMISSION & CONDITIONS
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of the Font Software, to use, study, copy, merge, embed, modify,
-redistribute, and sell modified and unmodified copies of the Font
-Software, subject to the following conditions:
-
-1) Neither the Font Software nor any of its individual components,
-in Original or Modified Versions, may be sold by itself.
-
-2) Original or Modified Versions of the Font Software may be bundled,
-redistributed and/or sold with any software, provided that each copy
-contains the above copyright notice and this license. These can be
-included either as stand-alone text files, human-readable headers or
-in the appropriate machine-readable metadata fields within text or
-binary files as long as those fields can be easily viewed by the user.
-
-3) No Modified Version of the Font Software may use the Reserved Font
-Name(s) unless explicit written permission is granted by the corresponding
-Copyright Holder. This restriction only applies to the primary font name as
-presented to the users.
-
-4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
-Software shall not be used to promote, endorse or advertise any
-Modified Version, except to acknowledge the contribution(s) of the
-Copyright Holder(s) and the Author(s) or with their explicit written
-permission.
-
-5) The Font Software, modified or unmodified, in part or in whole,
-must be distributed entirely under this license, and must not be
-distributed under any other license. The requirement for fonts to
-remain under this license does not apply to any document created
-using the Font Software.
-
-TERMINATION
-This license becomes null and void if any of the above conditions are
-not met.
-
-DISCLAIMER
-THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
-OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
-COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
-DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
-OTHER DEALINGS IN THE FONT SOFTWARE.
-```
-
-### @lezer/common 1.5.3, @lezer/css 1.3.9, @lezer/highlight 1.2.4, @lezer/html 1.3.13, @lezer/javascript 1.5.6, @lezer/lr 1.4.10, @lezer/php 1.0.6
-
-- @lezer/common 1.5.3 (MIT)
-- @lezer/css 1.3.9 (MIT)
-- @lezer/highlight 1.2.4 (MIT)
-- @lezer/html 1.3.13 (MIT)
-- @lezer/javascript 1.5.6 (MIT)
-- @lezer/lr 1.4.10 (MIT)
-- @lezer/php 1.0.6 (MIT)
-
-```
-MIT License
-
-Copyright (C) 2018 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-```
-
-### @lezer/python 1.1.19
-
-- @lezer/python 1.1.19 (MIT)
-
-```
-MIT License
-
-Copyright (C) 2020 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-```
-
-### @marijn/find-cluster-break 1.0.4
-
-- @marijn/find-cluster-break 1.0.4 (MIT)
-
-```
-MIT License
-
-Copyright (C) 2024 by Marijn Haverbeke <marijn@haverbeke.berlin>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-```
-
-### crelt 1.0.7
-
-- crelt 1.0.7 (MIT)
-
-```
-Copyright (C) 2020 by Marijn Haverbeke <marijn@haverbeke.berlin>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-```
-
-### idb-keyval 6.3.0
-
-- idb-keyval 6.3.0 (Apache-2.0)
-
-```
-Copyright 2016, Jake Archibald
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```
-
-### style-mod 4.1.4
-
-- style-mod 4.1.4 (MIT)
-
-```
-Copyright (C) 2018 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-```
-
-### svelte 5.57.1
-
-- svelte 5.57.1 (MIT)
-
-```
-Copyright (c) 2016-2025 [Svelte Contributors](https://github.com/sveltejs/svelte/graphs/contributors)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-```
-
-### w3c-keyname 2.2.8
-
-- w3c-keyname 2.2.8 (MIT)
-
-```
-Copyright (C) 2016 by Marijn Haverbeke <marijn@haverbeke.berlin> and others
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-```
-
-## Apache License 2.0
-
-The full text, for the Apache-2.0 packages above.
+<details>
+<summary>Apache License 2.0</summary>
 
 ```
 Apache License
@@ -5193,3 +4874,5 @@ Apache License
    See the License for the specific language governing permissions and
    limitations under the License.
 ```
+
+</details>
