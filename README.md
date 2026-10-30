@@ -75,7 +75,7 @@ npm run fetch-runtime   # downloads each language's interpreter
 npm run dev             # http://localhost:5173
 ```
 
-More in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
+More in [DEVELOPMENT.md](DEVELOPMENT.md).
 
 ## License
 

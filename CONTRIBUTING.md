@@ -8,7 +8,7 @@ Thank you for helping. Contributions come in four sizes:
 - **Improve the site** itself (`src/`, `scripts/`).
 
 This guide covers the koans. To run, build and test the site, see
-[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
+[DEVELOPMENT.md](DEVELOPMENT.md).
 
 Not ready to change things yourself? [Open an issue](https://github.com/hankache/koans-app/issues/new/choose)
 to report a problem, suggest a language or propose a koan; each has a short form. Every koan's page
